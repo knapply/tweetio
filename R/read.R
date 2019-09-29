@@ -23,7 +23,7 @@
         .SDcols = dttm_cols]
   }
 
-  out
+  out[]
 }
 
 
@@ -80,7 +80,7 @@ read_tweets <- function(file_path, type = c("normal", "nested_doc"),
     }), 
     .SDcols = chr_cols]
   
-  out
+  out[]
 }
 
 
