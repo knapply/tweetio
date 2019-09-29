@@ -6,4 +6,4 @@ development:
 template:
   params:
     bootswatch: cerulean
-#    ganalytics:
+    ganalytics: UA-140885143-4

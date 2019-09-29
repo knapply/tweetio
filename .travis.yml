@@ -1,0 +1,14 @@
+# Travis configuration guide for R language:
+#   https://docs.travis-ci.com/user/languages/r/
+#   https://github.com/craigcitro/r-travis/wiki/Porting-to-native-R-support-in-Travis
+
+language: R
+cache: packages
+
+jobs:
+  include:
+  - r: release
+  - r: devel
+
+after_success:
+  - Rscript -e 'covr::codecov()'

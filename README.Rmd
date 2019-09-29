@@ -44,7 +44,9 @@ knitr::opts_chunk$set(
 
 The [`{rtweet}`](https://rtweet.info/) package __spoils R users rotten__.
 
-The underlying data carpentry is so abstracted that the user probably doesn't know what Twitter data actually look like, which is a pretty amazing accomplishment. Do you think `user_id` is a variable Twitter uses? If so, you should probably thank Michael Kearney. He may very well be the only reason you've ever been able to work with Twitter data in R (while keeping your sanity).
+The underlying data carpentry is so abstracted that the user probably doesn't know what Twitter data actually look like, which is a pretty amazing accomplishment. 
+
+Do you think `user_id` is a variable Twitter uses? If so, you should probably thank Michael Kearney. He may very well be the only reason you've ever been able to work with Twitter data in R (while keeping your sanity).
 
 Instead of providing an entire suite of collection, structuring, and analysis tools like `{rtweet}` does, `{tweetio}` focuses on one thing: going from raw tweets to `{rtweet}`-style data frames __as fast as possible__, whether the data came from the Twitter APIs, a vendor, or some other source. You bring the data, `{tweetio}` gets it into R.
 

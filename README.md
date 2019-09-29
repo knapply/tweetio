@@ -29,10 +29,12 @@ rotten**.
 
 The underlying data carpentry is so abstracted that the user probably
 doesn’t know what Twitter data actually look like, which is a pretty
-amazing accomplishment. Do you think `user_id` is a variable Twitter
-uses? If so, you should probably thank Michael Kearney. He may very well
-be the only reason you’ve ever been able to work with Twitter data in R
-(while keeping your sanity).
+amazing accomplishment.
+
+Do you think `user_id` is a variable Twitter uses? If so, you should
+probably thank Michael Kearney. He may very well be the only reason
+you’ve ever been able to work with Twitter data in R (while keeping
+your sanity).
 
 Instead of providing an entire suite of collection, structuring, and
 analysis tools like `{rtweet}` does, `{tweetio}` focuses on one thing:
@@ -79,7 +81,7 @@ rtweet_time <- system.time(
 ```
 
     #>    user  system elapsed 
-    #>    3.68    0.12    3.82
+    #>    3.26    0.09    3.36
 
 ``` r
 rtweet_parsed %>% 
@@ -91,7 +93,7 @@ rtweet_parsed %>%
     #>    # rows # columns 
     #>  "22,760"      "71"
 
-3.82 seconds for 22,760 tweets ain’t too shabby.
+3.36 seconds for 22,760 tweets ain’t too shabby.
 
 How about some vendor data?
 
@@ -116,7 +118,7 @@ single_vendor_time <- system.time(
 ```
 
     #>    user  system elapsed 
-    #>   20.83    1.22   22.09
+    #>   20.81    0.91   21.73
 
 ``` r
 single_vendor_parsed %>% 
@@ -128,7 +130,7 @@ single_vendor_parsed %>%
     #>    # rows # columns 
     #>  "94,139"      "71"
 
-22.09 seconds for 94,139 tweets seems pretty fast.
+21.73 seconds for 94,139 tweets seems pretty fast.
 
 How about bulk data? While maybe not “big” data, handling millions of
 lines of JSON in R isn’t exactly a picnic.
@@ -156,7 +158,7 @@ system.time(
 ```
 
     #>    user  system elapsed 
-    #>  114.45    5.21  214.80
+    #>   93.36    5.25  188.80
 
 ``` r
 bulk_parsed %>% 
