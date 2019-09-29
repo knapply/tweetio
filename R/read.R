@@ -2,8 +2,6 @@
 .read_tweets <- function(file_path, type) {
   stopifnot(file.exists(file_path))
   
-  .SD <- NULL
-  
   init <- read_tweets_(file_path, type = type)
   
   res <- do.call(cbind.data.frame, list(unname(init), stringsAsFactors = FALSE))
@@ -19,6 +17,7 @@
                           "traptor_rule_date_added")
   dttm_cols <- intersect(names(out), possible_dttm_cols)
   if (length(dttm_cols)) {
+    .SD <- NULL # silence R CMD Check NOTE
     out[, (dttm_cols) := lapply(.SD, format_dttm),
         .SDcols = dttm_cols]
   }
@@ -44,9 +43,8 @@
 #' @importFrom data.table rbindlist
 #' @export
 read_tweets <- function(file_path, type = c("normal", "nested_doc"),
-                        .furrr = TRUE, .progress = TRUE, .strategy = NULL, ...) {
-  .SD <- NULL
-  
+                        .furrr = TRUE,
+                        .progress = TRUE, .strategy = NULL, ...) {
   type <- match.arg(type, c("normal", "nested_doc"))
   
   if (length(file_path) == 1L) {
@@ -74,6 +72,7 @@ read_tweets <- function(file_path, type = c("normal", "nested_doc"),
   }
   
   chr_cols <- names(out)[vapply(out, is.character, FUN.VALUE = logical(1L))]
+  .SD <- NULL # silence R CMD Check NOTE
   out[, (chr_cols) := lapply(.SD, function(.x) {
       .x[.x == ""] <- NA_character_
       .x
