@@ -3,10 +3,9 @@
 
 #include "gzstream.h"
 
-// #include <knapply.hpp>
-
 #include <progress.hpp>
 #include <progress_bar.hpp>
+
 
 Rcpp::List read_tweets_nested_doc(const std::string& file_path) {
   i32 n_lines = knapply::count_lines<igzstream>(file_path);
@@ -44,8 +43,6 @@ Rcpp::List read_tweets_nested_doc(const std::string& file_path) {
 }
 
 
-
-
 Rcpp::List read_tweets_normal(const std::string& file_path) {
   i32 n_lines = knapply::count_lines<igzstream>(file_path);
   
@@ -76,8 +73,6 @@ Rcpp::List read_tweets_normal(const std::string& file_path) {
 
   return res.to_r();
 }
-
-
 
 
 // [[Rcpp::export]]

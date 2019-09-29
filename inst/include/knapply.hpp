@@ -4,6 +4,5 @@
 #include <knapply/main.hpp>
 #include <knapply/utils.hpp>
 #include <knapply/json.hpp>
-// #include <gzstream/gzstream.h>
 
 #endif
