@@ -20,8 +20,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/",
   message = FALSE,
-  warning = FALSE,
-  cache = TRUE
+  warning = FALSE
 )
 
 # options(width = 400)
@@ -47,7 +46,7 @@ knitr::opts_chunk$set(
 
 __The [`{rtweet}`](https://rtweet.info/) package spoils R users rotten__.
 
-The underlying data carpentry is so abstracted that the user doesn't need to know anything about the horrors of Twitter data, which is pretty amazing.
+The underlying data carpentry is so seamless that the user doesn't need to know anything about the horrors of Twitter data, which is pretty amazing.
 
 `{tweetio}` focuses on one thing: __going from raw tweets to `{rtweet}`-style data frames as fast as possible__, whether the data came from the Twitter APIs, a vendor, or some other source. You bring the data, `{tweetio}` gets it into R.
 
@@ -124,7 +123,6 @@ single_vendor_parsed %>%
 How about bulk data? While maybe not "big" data, handling millions of lines of JSON in R isn't exactly a picnic.
 
 ```{r}
-length(all_vendor_files)
 all_vendor_files %>% 
   map_dbl(file.size) %>% 
   sum() %>% 

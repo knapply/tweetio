@@ -93,7 +93,7 @@
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
 <p><strong>The <a href="https://rtweet.info/"><code>{rtweet}</code></a> package spoils R users rotten</strong>.</p>
-<p>The underlying data carpentry is so abstracted that the user doesn’t need to know anything about the horrors of Twitter data, which is pretty amazing.</p>
+<p>The underlying data carpentry is so seamless that the user doesn’t need to know anything about the horrors of Twitter data, which is pretty amazing.</p>
 <p><code>{tweetio}</code> focuses on one thing: <strong>going from raw tweets to <code>{rtweet}</code>-style data frames as fast as possible</strong>, whether the data came from the Twitter APIs, a vendor, or some other source. You bring the data, <code>{tweetio}</code> gets it into R.</p>
 <p>To accomplish this, <code>{tweetio}</code> uses a combination of C++ via <code>{Rcpp}</code>, the <code>rapidjson</code> C++ library (made available by <code>{rapidjsonr}</code>), and <code>{data.table}</code>.</p>
 <p>Major inspiration from {<code>ndjson</code>} was taken, including its handling of gzipped-files. Bulk processing of multiple files is handled by <code>{future}</code> and <code>{furrr}</code>, if available.</p>
@@ -101,7 +101,7 @@
 <div id="installation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h1>
-<p>You’ll need a C++ compiler. If you’re using Windows, that means (Rtools)[<a href="https://cran.r-project.org/bin/windows/Rtools/" class="uri">https://cran.r-project.org/bin/windows/Rtools/</a>].</p>
+<p>You’ll need a C++ compiler. If you’re using Windows, that means <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># install.packages("remotes")</span></a>
 <a class="sourceLine" id="cb1-2" title="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"knapply/tweetio"</span>)</a></code></pre></div>
 </div>
@@ -121,14 +121,14 @@
 <a class="sourceLine" id="cb4-2" title="2">  rtweet_parsed &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_tweets.html">read_tweets</a></span>(path_to_rtweet_stream, <span class="dt">type =</span> <span class="st">"normal"</span>)</a>
 <a class="sourceLine" id="cb4-3" title="3">); rtweet_time</a></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt;    3.28    0.11    3.44</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt;    4.65    0.18    4.86</span></a></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">rtweet_parsed <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-2" title="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-3" title="3"><span class="st">  </span>scales<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/scales/man/number_format.html">comma</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-4" title="4"><span class="st">  </span><span class="kw">set_names</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"# rows"</span>, <span class="st">"# columns"</span>))</a></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co">#&gt;    # rows # columns </span></a>
 <a class="sourceLine" id="cb7-2" title="2"><span class="co">#&gt;  "22,760"      "71"</span></a></code></pre></div>
-<p>3.44 seconds for 22,760 tweets ain’t too shabby.</p>
+<p>4.86 seconds for 22,760 tweets ain’t too shabby.</p>
 <p>How about some vendor data?</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">path_to_vendor_data &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="st">"path_to_vendor_data.rds"</span>)</a>
 <a class="sourceLine" id="cb8-2" title="2"></a>
@@ -144,34 +144,32 @@
 <a class="sourceLine" id="cb10-3" title="3">                                      <span class="dt">type =</span> <span class="st">"nested_doc"</span>)</a>
 <a class="sourceLine" id="cb10-4" title="4">); single_vendor_time</a></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="co">#&gt;   20.64    1.22   21.93</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-2" title="2"><span class="co">#&gt;   21.86    1.48   23.40</span></a></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">single_vendor_parsed <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb12-2" title="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb12-3" title="3"><span class="st">  </span>scales<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/scales/man/number_format.html">comma</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb12-4" title="4"><span class="st">  </span><span class="kw">set_names</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"# rows"</span>, <span class="st">"# columns"</span>))</a></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co">#&gt;    # rows # columns </span></a>
 <a class="sourceLine" id="cb13-2" title="2"><span class="co">#&gt;  "94,139"      "71"</span></a></code></pre></div>
-<p>21.93 seconds for 94,139 tweets seems pretty fast.</p>
+<p>23.4 seconds for 94,139 tweets seems pretty fast.</p>
 <p>How about bulk data? While maybe not “big” data, handling millions of lines of JSON in R isn’t exactly a picnic.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(all_vendor_files)</a></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co">#&gt; [1] 30</span></a></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">all_vendor_files <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-2" title="2"><span class="st">  </span><span class="kw">map_dbl</span>(file.size) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-3" title="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-4" title="4"><span class="st">  </span>scales<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/scales/man/number_bytes_format.html">number_bytes</a></span>() <span class="co"># 47 Gb before compression</span></a></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co">#&gt; [1] "6 Gb"</span></a></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(</a>
-<a class="sourceLine" id="cb18-2" title="2">  bulk_parsed &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_tweets.html">read_tweets</a></span>(all_vendor_files, <span class="dt">type =</span> <span class="st">"nested_doc"</span>, </a>
-<a class="sourceLine" id="cb18-3" title="3">                             <span class="dt">.progress =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb18-4" title="4">)</a></code></pre></div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb19-2" title="2"><span class="co">#&gt;   98.59    5.09  195.06</span></a></code></pre></div>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1">bulk_parsed <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb20-2" title="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb20-3" title="3"><span class="st">  </span>scales<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/scales/man/number_format.html">comma</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb20-4" title="4"><span class="st">  </span><span class="kw">set_names</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"# rows"</span>, <span class="st">"# columns"</span>))</a></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co">#&gt;      # rows   # columns </span></a>
-<a class="sourceLine" id="cb21-2" title="2"><span class="co">#&gt; "2,626,381"        "71"</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">all_vendor_files <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="st">  </span><span class="kw">map_dbl</span>(file.size) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="st">  </span>scales<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/scales/man/number_bytes_format.html">number_bytes</a></span>() <span class="co"># 47 Gb before compression</span></a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co">#&gt; [1] "6 Gb"</span></a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(</a>
+<a class="sourceLine" id="cb16-2" title="2">  bulk_parsed &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_tweets.html">read_tweets</a></span>(all_vendor_files, <span class="dt">type =</span> <span class="st">"nested_doc"</span>, </a>
+<a class="sourceLine" id="cb16-3" title="3">                             <span class="dt">.progress =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb16-4" title="4">)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co">#&gt;    user  system elapsed </span></a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="co">#&gt;  102.14    5.09  204.56</span></a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">bulk_parsed <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="st">  </span>scales<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/scales/man/number_format.html">comma</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="st">  </span><span class="kw">set_names</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"# rows"</span>, <span class="st">"# columns"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co">#&gt;      # rows   # columns </span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="co">#&gt; "2,626,381"        "71"</span></a></code></pre></div>
 <p>Nearly 3,000,000 tweets in a few minutes? Until Rtools 40 hits (or the simdjson library decides to relax its C++17 requirement), I’m not certain we can go much faster.</p>
 </div>
 

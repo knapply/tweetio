@@ -27,8 +27,8 @@ bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](h
 **The [`{rtweet}`](https://rtweet.info/) package spoils R users
 rotten**.
 
-The underlying data carpentry is so abstracted that the user doesn’t
-need to know anything about the horrors of Twitter data, which is pretty
+The underlying data carpentry is so seamless that the user doesn’t need
+to know anything about the horrors of Twitter data, which is pretty
 amazing.
 
 `{tweetio}` focuses on one thing: **going from raw tweets to
@@ -47,7 +47,7 @@ gzipped-files. Bulk processing of multiple files is handled by
 # Installation
 
 You’ll need a C++ compiler. If you’re using Windows, that means
-(Rtools)\[<https://cran.r-project.org/bin/windows/Rtools/>\].
+[Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 
 ``` r
 # install.packages("remotes")
@@ -78,7 +78,7 @@ rtweet_time <- system.time(
 ```
 
     #>    user  system elapsed 
-    #>    3.28    0.11    3.44
+    #>    4.65    0.18    4.86
 
 ``` r
 rtweet_parsed %>% 
@@ -90,7 +90,7 @@ rtweet_parsed %>%
     #>    # rows # columns 
     #>  "22,760"      "71"
 
-3.44 seconds for 22,760 tweets ain’t too shabby.
+4.86 seconds for 22,760 tweets ain’t too shabby.
 
 How about some vendor data?
 
@@ -115,7 +115,7 @@ single_vendor_time <- system.time(
 ```
 
     #>    user  system elapsed 
-    #>   20.64    1.22   21.93
+    #>   21.86    1.48   23.40
 
 ``` r
 single_vendor_parsed %>% 
@@ -127,16 +127,10 @@ single_vendor_parsed %>%
     #>    # rows # columns 
     #>  "94,139"      "71"
 
-21.93 seconds for 94,139 tweets seems pretty fast.
+23.4 seconds for 94,139 tweets seems pretty fast.
 
 How about bulk data? While maybe not “big” data, handling millions of
 lines of JSON in R isn’t exactly a picnic.
-
-``` r
-length(all_vendor_files)
-```
-
-    #> [1] 30
 
 ``` r
 all_vendor_files %>% 
@@ -155,7 +149,7 @@ system.time(
 ```
 
     #>    user  system elapsed 
-    #>   98.59    5.09  195.06
+    #>  102.14    5.09  204.56
 
 ``` r
 bulk_parsed %>% 
