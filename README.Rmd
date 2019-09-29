@@ -9,6 +9,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+
+
 <!-- README.Rmd generates README.md. -->
 
 ```{r, echo = FALSE}
@@ -42,17 +44,15 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-The [`{rtweet}`](https://rtweet.info/) package __spoils R users rotten__.
+__The [`{rtweet}`](https://rtweet.info/) package spoils R users rotten__.
 
-The underlying data carpentry is so abstracted that the user probably doesn't know what Twitter data actually look like, which is a pretty amazing accomplishment. 
+The underlying data carpentry is so abstracted that the user doesn't need to know anything about the horrors of Twitter data, which is pretty amazing.
 
-Do you think `user_id` is a variable Twitter uses? If so, you should probably thank Michael Kearney. He may very well be the only reason you've ever been able to work with Twitter data in R (while keeping your sanity).
-
-Instead of providing an entire suite of collection, structuring, and analysis tools like `{rtweet}` does, `{tweetio}` focuses on one thing: going from raw tweets to `{rtweet}`-style data frames __as fast as possible__, whether the data came from the Twitter APIs, a vendor, or some other source. You bring the data, `{tweetio}` gets it into R.
+`{tweetio}` focuses on one thing: __going from raw tweets to `{rtweet}`-style data frames as fast as possible__, whether the data came from the Twitter APIs, a vendor, or some other source. You bring the data, `{tweetio}` gets it into R.
 
 To accomplish this, `{tweetio}` uses a combination of C++ via `{Rcpp}`, the `rapidjson` C++ library (made available by `{rapidjsonr}`), and `{data.table}`.
 
-Major inspiration from {`ndjson`} was followed, including its handling of gzipped-files. Bulk processing of multiple files is handled by `{future}` and `{furrr}`, if available.
+Major inspiration from {`ndjson`} was taken, including its handling of gzipped-files. Bulk processing of multiple files is handled by `{future}` and `{furrr}`, if available.
 
 
 # Installation
@@ -136,7 +136,7 @@ bulk_parsed %>%
   set_names(c("# rows", "# columns"))
 ```
 
-Nearly 3,000,000 tweets in a few minutes? Until Rtools 40 hits, making C++17 available on all platforms, I'm not certain we can go much faster.
+Nearly 3,000,000 tweets in a few minutes? Until Rtools 40 hits (or the simdjson library decides to relax its C++17 requirement), I'm not certain we can go much faster.
 
 
 

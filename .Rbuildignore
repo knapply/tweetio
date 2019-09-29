@@ -5,7 +5,7 @@
 ^README.Rmd$
 ^data-raw$
 ^man-roxygen$
-^inst/example-data$
+# ^inst/example-data$
 ^docs$
 ^_pkgdown.yml$
 ^.travis.yml$

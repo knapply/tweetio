@@ -1,5 +1,7 @@
 destination: docs
 
+url: https://knapply.github.io/homophily
+
 development:
   mode: unreleased
 
@@ -7,3 +9,11 @@ template:
   params:
     bootswatch: cerulean
     ganalytics: UA-140885143-4
+
+
+navbar:
+  right:
+    - icon: fa-twitter
+      href: https://twitter.com/knapply_
+    - icon: fa-github fa-lg
+      href: https://github.com/knapply/tweetio

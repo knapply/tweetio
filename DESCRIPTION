@@ -19,10 +19,12 @@ Imports:
     data.table,
     Rcpp
 Suggests:
+    here,
     knitr,
     furrr,
     future,
-    rtweet
+    rtweet,
+    testthat
 URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio
 BugReports: https://github.com/knapply/tweetio/issues
 Encoding: UTF-8

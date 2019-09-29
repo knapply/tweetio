@@ -1,4 +1,10 @@
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
+
+<style>
+font-family: 'Fira Code', monospace;
+</style>
+
 <!-- README.Rmd generates README.md. -->
 
 # `{tweetio}`
@@ -24,30 +30,24 @@ bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](h
 
 # Introduction
 
-The [`{rtweet}`](https://rtweet.info/) package **spoils R users
+**The [`{rtweet}`](https://rtweet.info/) package spoils R users
 rotten**.
 
-The underlying data carpentry is so abstracted that the user probably
-doesn’t know what Twitter data actually look like, which is a pretty
-amazing accomplishment.
+The underlying data carpentry is so abstracted that the user doesn’t
+need to know anything about the horrors of Twitter data, which is pretty
+amazing.
 
-Do you think `user_id` is a variable Twitter uses? If so, you should
-probably thank Michael Kearney. He may very well be the only reason
-you’ve ever been able to work with Twitter data in R (while keeping
-your sanity).
-
-Instead of providing an entire suite of collection, structuring, and
-analysis tools like `{rtweet}` does, `{tweetio}` focuses on one thing:
-going from raw tweets to `{rtweet}`-style data frames **as fast as
-possible**, whether the data came from the Twitter APIs, a vendor, or
-some other source. You bring the data, `{tweetio}` gets it into R.
+`{tweetio}` focuses on one thing: **going from raw tweets to
+`{rtweet}`-style data frames as fast as possible**, whether the data
+came from the Twitter APIs, a vendor, or some other source. You bring
+the data, `{tweetio}` gets it into R.
 
 To accomplish this, `{tweetio}` uses a combination of C++ via `{Rcpp}`,
 the `rapidjson` C++ library (made available by `{rapidjsonr}`), and
 `{data.table}`.
 
-Major inspiration from {`ndjson`} was followed, including its handling
-of gzipped-files. Bulk processing of multiple files is handled by
+Major inspiration from {`ndjson`} was taken, including its handling of
+gzipped-files. Bulk processing of multiple files is handled by
 `{future}` and `{furrr}`, if available.
 
 # Installation
@@ -81,7 +81,7 @@ rtweet_time <- system.time(
 ```
 
     #>    user  system elapsed 
-    #>    3.26    0.09    3.36
+    #>    3.43    0.17    3.61
 
 ``` r
 rtweet_parsed %>% 
@@ -93,7 +93,7 @@ rtweet_parsed %>%
     #>    # rows # columns 
     #>  "22,760"      "71"
 
-3.36 seconds for 22,760 tweets ain’t too shabby.
+3.61 seconds for 22,760 tweets ain’t too shabby.
 
 How about some vendor data?
 
@@ -118,7 +118,7 @@ single_vendor_time <- system.time(
 ```
 
     #>    user  system elapsed 
-    #>   20.81    0.91   21.73
+    #>   21.27    1.20   22.50
 
 ``` r
 single_vendor_parsed %>% 
@@ -130,45 +130,27 @@ single_vendor_parsed %>%
     #>    # rows # columns 
     #>  "94,139"      "71"
 
-21.73 seconds for 94,139 tweets seems pretty fast.
+22.5 seconds for 94,139 tweets seems pretty fast.
 
 How about bulk data? While maybe not “big” data, handling millions of
 lines of JSON in R isn’t exactly a picnic.
 
 ``` r
 length(all_vendor_files)
-```
-
-    #> [1] 30
-
-``` r
 all_vendor_files %>% 
   map_dbl(file.size) %>% 
   sum() %>% 
   scales::number_bytes() # 47 Gb before compression
-```
-
-    #> [1] "6 Gb"
-
-``` r
 system.time(
   bulk_parsed <- read_tweets(all_vendor_files, type = "nested_doc", 
                              .progress = FALSE)
 )
-```
-
-    #>    user  system elapsed 
-    #>   93.36    5.25  188.80
-
-``` r
 bulk_parsed %>% 
   dim() %>% 
   scales::comma() %>% 
   set_names(c("# rows", "# columns"))
 ```
 
-    #>      # rows   # columns 
-    #> "2,626,381"        "71"
-
-Nearly 3,000,000 tweets in a few minutes? Until Rtools 40 hits, making
-C++17 available on all platforms, I’m not certain we can go much faster.
+Nearly 3,000,000 tweets in a few minutes? Until Rtools 40 hits (or the
+simdjson library decides to relax its C++17 requirement), I’m not
+certain we can go much faster.
