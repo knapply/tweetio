@@ -27,8 +27,8 @@ bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](h
 **The [`{rtweet}`](https://rtweet.info/) package spoils R users
 rotten**. The underlying data carpentry is so seamless that the user
 doesn’t need to know anything about the horrors of Twitter data, which
-is pretty amazing. If you use `{rtweet}`, you owe Michael Kearney some
-serious gratitude (and citations).
+is pretty amazing. If you use `{rtweet}`, you owe Mike Kearney some
+serious gratitude (*and citations*).
 
 `{tweetio}` is **not** a competitor to `{rtweet}`. It only focuses on
 one thing: **going from raw tweets to `{rtweet}`-style data frames as
@@ -64,9 +64,7 @@ library(tweetio)
 library(purrr)
 
 path_to_rtweet_stream <- "inst/example-data/api-stream.json.gz"
-path_to_rtweet_stream %>%
-  file.size() %>% 
-  scales::number_bytes() # 153 Mb before compression
+path_to_rtweet_stream %>% file.size() %>% scales::number_bytes() # 153 Mb before compression
 ```
 
     #> [1] "18 Mb"
@@ -78,31 +76,24 @@ rtweet_time <- system.time(
 ```
 
     #>    user  system elapsed 
-    #>    5.05    0.15    5.22
+    #>    3.69    0.03    3.74
 
 ``` r
-rtweet_parsed %>% 
-  dim() %>% 
-  scales::comma() %>% 
-  set_names(c("# rows", "# columns"))
+rtweet_parsed %>% dim() %>% scales::comma() %>% set_names(c("# rows", "# columns"))
 ```
 
     #>    # rows # columns 
     #>  "22,760"      "71"
 
-5.22 seconds for 22,760 tweets ain’t too shabby.
+3.74 seconds for 22,760 tweets ain’t too shabby.
 
 How about some vendor data?
 
 ``` r
-path_to_vendor_data <- readRDS("path_to_vendor_data.rds")
-
 all_vendor_files <- dir(path_to_vendor_data, pattern = "\\.jsonl\\.gz$",
                         full.names = TRUE)
 
-all_vendor_files[[1L]] %>% 
-  file.size() %>% 
-  scales::number_bytes() # 1.6 Gb before compression
+all_vendor_files[[1L]] %>% file.size() %>% scales::number_bytes() # 1.6 Gb before compression
 ```
 
     #> [1] "173 Mb"
@@ -115,28 +106,22 @@ single_vendor_time <- system.time(
 ```
 
     #>    user  system elapsed 
-    #>   24.44    1.58   26.17
+    #>   22.30    1.08   23.44
 
 ``` r
-single_vendor_parsed %>% 
-  dim() %>% 
-  scales::comma() %>% 
-  set_names(c("# rows", "# columns"))
+single_vendor_parsed %>% dim() %>% scales::comma() %>% set_names(c("# rows", "# columns"))
 ```
 
     #>    # rows # columns 
     #>  "94,139"      "71"
 
-26.17 seconds for 94,139 tweets seems pretty fast.
+23.44 seconds for 94,139 tweets seems pretty fast.
 
 How about bulk data? While maybe not “big” data, handling millions of
 lines of JSON in R isn’t exactly a picnic.
 
 ``` r
-all_vendor_files %>% 
-  map_dbl(file.size) %>% 
-  sum() %>% 
-  scales::number_bytes() # 47 Gb before compression
+all_vendor_files %>% map_dbl(file.size) %>% sum() %>% scales::number_bytes() # 47 Gb before compression
 ```
 
     #> [1] "6 Gb"
@@ -149,13 +134,10 @@ system.time(
 ```
 
     #>    user  system elapsed 
-    #>  110.57    5.48  218.70
+    #>  109.99    5.49  213.31
 
 ``` r
-bulk_parsed %>% 
-  dim() %>% 
-  scales::comma() %>% 
-  set_names(c("# rows", "# columns"))
+bulk_parsed %>% dim() %>% scales::comma() %>% set_names(c("# rows", "# columns"))
 ```
 
     #>      # rows   # columns 

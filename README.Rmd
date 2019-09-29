@@ -71,9 +71,7 @@ library(tweetio)
 library(purrr)
 
 path_to_rtweet_stream <- "inst/example-data/api-stream.json.gz"
-path_to_rtweet_stream %>%
-  file.size() %>% 
-  scales::number_bytes() # 153 Mb before compression
+path_to_rtweet_stream %>% file.size() %>% scales::number_bytes() # 153 Mb before compression
 ```
 
 
@@ -81,10 +79,7 @@ path_to_rtweet_stream %>%
 rtweet_time <- system.time(
   rtweet_parsed <- read_tweets(path_to_rtweet_stream, type = "normal")
 ); rtweet_time
-rtweet_parsed %>% 
-  dim() %>% 
-  scales::comma() %>% 
-  set_names(c("# rows", "# columns"))
+rtweet_parsed %>% dim() %>% scales::comma() %>% set_names(c("# rows", "# columns"))
 ```
 
 `r rtweet_time[["elapsed"]]` seconds for `r scales::comma(nrow(rtweet_parsed))` tweets ain't too shabby.
@@ -92,15 +87,16 @@ rtweet_parsed %>%
 
 How about some vendor data?
 
-```{r}
+```{r, echo=FALSE}
 path_to_vendor_data <- readRDS("path_to_vendor_data.rds")
+```
 
+
+```{r}
 all_vendor_files <- dir(path_to_vendor_data, pattern = "\\.jsonl\\.gz$",
                         full.names = TRUE)
 
-all_vendor_files[[1L]] %>% 
-  file.size() %>% 
-  scales::number_bytes() # 1.6 Gb before compression
+all_vendor_files[[1L]] %>% file.size() %>% scales::number_bytes() # 1.6 Gb before compression
 ```
 
 ```{r}
@@ -108,10 +104,7 @@ single_vendor_time <- system.time(
   single_vendor_parsed <- read_tweets(all_vendor_files[[1L]], 
                                       type = "nested_doc")
 ); single_vendor_time
-single_vendor_parsed %>% 
-  dim() %>% 
-  scales::comma() %>% 
-  set_names(c("# rows", "# columns"))
+single_vendor_parsed %>% dim() %>% scales::comma() %>% set_names(c("# rows", "# columns"))
 ```
 
 
@@ -121,18 +114,12 @@ single_vendor_parsed %>%
 How about bulk data? While maybe not "big" data, handling millions of lines of JSON in R isn't exactly a picnic.
 
 ```{r}
-all_vendor_files %>% 
-  map_dbl(file.size) %>% 
-  sum() %>% 
-  scales::number_bytes() # 47 Gb before compression
+all_vendor_files %>% map_dbl(file.size) %>% sum() %>% scales::number_bytes() # 47 Gb before compression
 system.time(
   bulk_parsed <- read_tweets(all_vendor_files, type = "nested_doc", 
                              .progress = FALSE)
 )
-bulk_parsed %>% 
-  dim() %>% 
-  scales::comma() %>% 
-  set_names(c("# rows", "# columns"))
+bulk_parsed %>% dim() %>% scales::comma() %>% set_names(c("# rows", "# columns"))
 ```
 
 Nearly 3,000,000 tweets in a few minutes? Until Rtools 40 hits (or the simdjson library decides to relax its C++17 requirement), I'm not certain we can go much faster.
