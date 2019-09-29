@@ -1,0 +1,32 @@
+Package: tweetio
+Title: Really, Really, Ridiculously Fast Tweet Data
+Version: 0.0.0.9000
+Authors@R: 
+    person("Brendan", "Knapp", 
+           email = "brendan.g.knapp@gmail.com", 
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-3284-4972"))
+Description: 
+    `{tweetio}`'s goal is to go from raw tweets to `{rtweet}`-style data frames 
+    as fast as possible, whether or not the data came from the Twitter API, a 
+    third-party vendor, or some other library.
+License: GPL-3 + file LICENSE
+Depends: R (>= 3.6)
+SystemRequirements: zlib, C++11
+LinkingTo: 
+    rapidjsonr, Rcpp, RcppProgress
+Imports:
+    data.table,
+    Rcpp
+Suggests:
+    knitr,
+    furrr,
+    future,
+    rtweet
+URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio
+BugReports: https://github.com/knapply/tweetio/issues
+Encoding: UTF-8
+LazyData: yes
+RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr

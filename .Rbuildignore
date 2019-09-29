@@ -1,0 +1,10 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.vscode$
+^path_to_vendor_data\.rds$
+^README.Rmd$
+^data-raw$
+^man-roxygen$
+^inst/example-data$
+^docs$
+^_pkgdown.yml$

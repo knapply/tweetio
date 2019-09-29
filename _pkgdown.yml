@@ -1,0 +1,9 @@
+destination: docs
+
+development:
+  mode: unreleased
+
+template:
+  params:
+    bootswatch: cerulean
+#    ganalytics:
