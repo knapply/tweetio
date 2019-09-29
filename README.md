@@ -1,10 +1,4 @@
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
-
-<style>
-font-family: 'Fira Code', monospace;
-</style>
-
 <!-- README.Rmd generates README.md. -->
 
 # `{tweetio}`
@@ -52,6 +46,9 @@ gzipped-files. Bulk processing of multiple files is handled by
 
 # Installation
 
+You’ll need a C++ compiler. If you’re using Windows, that means
+(Rtools)\[<https://cran.r-project.org/bin/windows/Rtools/>\].
+
 ``` r
 # install.packages("remotes")
 remotes::install_github("knapply/tweetio")
@@ -81,7 +78,7 @@ rtweet_time <- system.time(
 ```
 
     #>    user  system elapsed 
-    #>    3.43    0.17    3.61
+    #>    3.28    0.11    3.44
 
 ``` r
 rtweet_parsed %>% 
@@ -93,7 +90,7 @@ rtweet_parsed %>%
     #>    # rows # columns 
     #>  "22,760"      "71"
 
-3.61 seconds for 22,760 tweets ain’t too shabby.
+3.44 seconds for 22,760 tweets ain’t too shabby.
 
 How about some vendor data?
 
@@ -118,7 +115,7 @@ single_vendor_time <- system.time(
 ```
 
     #>    user  system elapsed 
-    #>   21.27    1.20   22.50
+    #>   20.64    1.22   21.93
 
 ``` r
 single_vendor_parsed %>% 
@@ -130,26 +127,45 @@ single_vendor_parsed %>%
     #>    # rows # columns 
     #>  "94,139"      "71"
 
-22.5 seconds for 94,139 tweets seems pretty fast.
+21.93 seconds for 94,139 tweets seems pretty fast.
 
 How about bulk data? While maybe not “big” data, handling millions of
 lines of JSON in R isn’t exactly a picnic.
 
 ``` r
 length(all_vendor_files)
+```
+
+    #> [1] 30
+
+``` r
 all_vendor_files %>% 
   map_dbl(file.size) %>% 
   sum() %>% 
   scales::number_bytes() # 47 Gb before compression
+```
+
+    #> [1] "6 Gb"
+
+``` r
 system.time(
   bulk_parsed <- read_tweets(all_vendor_files, type = "nested_doc", 
                              .progress = FALSE)
 )
+```
+
+    #>    user  system elapsed 
+    #>   98.59    5.09  195.06
+
+``` r
 bulk_parsed %>% 
   dim() %>% 
   scales::comma() %>% 
   set_names(c("# rows", "# columns"))
 ```
+
+    #>      # rows   # columns 
+    #> "2,626,381"        "71"
 
 Nearly 3,000,000 tweets in a few minutes? Until Rtools 40 hits (or the
 simdjson library decides to relax its C++17 requirement), I’m not

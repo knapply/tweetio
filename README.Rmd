@@ -20,7 +20,8 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/",
   message = FALSE,
-  warning = FALSE
+  warning = FALSE,
+  cache = TRUE
 )
 
 # options(width = 400)
@@ -56,6 +57,8 @@ Major inspiration from {`ndjson`} was taken, including its handling of gzipped-f
 
 
 # Installation
+
+You'll need a C++ compiler. If you're using Windows, that means [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 
 ```{r, eval=FALSE}
 # install.packages("remotes")

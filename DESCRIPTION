@@ -19,6 +19,7 @@ Imports:
     data.table,
     Rcpp
 Suggests:
+    covr,
     here,
     knitr,
     furrr,

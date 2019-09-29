@@ -1,7 +1,9 @@
 #include <knapply/structures.hpp>
 #include <knapply/utils.hpp>
 
-#include <gzstream/gzstream.h>
+#include "gzstream.h"
+
+// #include <knapply.hpp>
 
 #include <progress.hpp>
 #include <progress_bar.hpp>
