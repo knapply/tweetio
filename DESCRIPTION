@@ -1,6 +1,6 @@
 Package: tweetio
 Title: Really, Really, Ridiculously Fast Tweet Data
-Version: 0.0.0.9000
+Version: 0.1
 Authors@R: 
     person("Brendan", "Knapp", 
            email = "brendan.g.knapp@gmail.com", 

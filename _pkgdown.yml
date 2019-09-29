@@ -2,9 +2,6 @@ destination: docs
 
 url: https://knapply.github.io/homophily
 
-development:
-  mode: unreleased
-
 template:
   params:
     bootswatch: cerulean
