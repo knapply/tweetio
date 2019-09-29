@@ -25,16 +25,16 @@ bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](h
 # Introduction
 
 **The [`{rtweet}`](https://rtweet.info/) package spoils R users
-rotten**.
+rotten**. The underlying data carpentry is so seamless that the user
+doesn’t need to know anything about the horrors of Twitter data, which
+is pretty amazing. If you use `{rtweet}`, you owe Michael Kearney some
+serious gratitude (and citations).
 
-The underlying data carpentry is so seamless that the user doesn’t need
-to know anything about the horrors of Twitter data, which is pretty
-amazing.
-
-`{tweetio}` focuses on one thing: **going from raw tweets to
-`{rtweet}`-style data frames as fast as possible**, whether the data
-came from the Twitter APIs, a vendor, or some other source. You bring
-the data, `{tweetio}` gets it into R.
+`{tweetio}` is **not** a competitor to `{rtweet}`. It only focuses on
+one thing: **going from raw tweets to `{rtweet}`-style data frames as
+fast as possible**, whether the data came from the Twitter APIs, a
+vendor, or some other source. You bring the data, `{tweetio}` gets it
+into R.
 
 To accomplish this, `{tweetio}` uses a combination of C++ via `{Rcpp}`,
 the `rapidjson` C++ library (made available by `{rapidjsonr}`), and
@@ -78,7 +78,7 @@ rtweet_time <- system.time(
 ```
 
     #>    user  system elapsed 
-    #>    4.65    0.18    4.86
+    #>    5.05    0.15    5.22
 
 ``` r
 rtweet_parsed %>% 
@@ -90,7 +90,7 @@ rtweet_parsed %>%
     #>    # rows # columns 
     #>  "22,760"      "71"
 
-4.86 seconds for 22,760 tweets ain’t too shabby.
+5.22 seconds for 22,760 tweets ain’t too shabby.
 
 How about some vendor data?
 
@@ -115,7 +115,7 @@ single_vendor_time <- system.time(
 ```
 
     #>    user  system elapsed 
-    #>   21.86    1.48   23.40
+    #>   24.44    1.58   26.17
 
 ``` r
 single_vendor_parsed %>% 
@@ -127,7 +127,7 @@ single_vendor_parsed %>%
     #>    # rows # columns 
     #>  "94,139"      "71"
 
-23.4 seconds for 94,139 tweets seems pretty fast.
+26.17 seconds for 94,139 tweets seems pretty fast.
 
 How about bulk data? While maybe not “big” data, handling millions of
 lines of JSON in R isn’t exactly a picnic.
@@ -149,7 +149,7 @@ system.time(
 ```
 
     #>    user  system elapsed 
-    #>  102.14    5.09  204.56
+    #>  110.57    5.48  218.70
 
 ``` r
 bulk_parsed %>% 

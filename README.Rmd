@@ -44,11 +44,9 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-__The [`{rtweet}`](https://rtweet.info/) package spoils R users rotten__.
+__The [`{rtweet}`](https://rtweet.info/) package spoils R users rotten__. The underlying data carpentry is so seamless that the user doesn't need to know anything about the horrors of Twitter data, which is pretty amazing. If you use `{rtweet}`, you owe Mike Kearney some serious gratitude (_and citations_).
 
-The underlying data carpentry is so seamless that the user doesn't need to know anything about the horrors of Twitter data, which is pretty amazing.
-
-`{tweetio}` focuses on one thing: __going from raw tweets to `{rtweet}`-style data frames as fast as possible__, whether the data came from the Twitter APIs, a vendor, or some other source. You bring the data, `{tweetio}` gets it into R.
+`{tweetio}` is __not__ a competitor to `{rtweet}`. It only focuses on one thing: __going from raw tweets to `{rtweet}`-style data frames as fast as possible__, whether the data came from the Twitter APIs, a vendor, or some other source. You bring the data, `{tweetio}` gets it into R.
 
 To accomplish this, `{tweetio}` uses a combination of C++ via `{Rcpp}`, the `rapidjson` C++ library (made available by `{rapidjsonr}`), and `{data.table}`.
 
