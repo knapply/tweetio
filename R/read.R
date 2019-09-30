@@ -7,7 +7,7 @@
   res <- do.call(cbind.data.frame, list(unname(init), stringsAsFactors = FALSE))
   
   out <- as.data.table(
-    res[!is.na(res$user_id), ]
+    res[!is.na(res$status_id), ]
   )
   
   possible_dttm_cols <- c("created_at", "account_created_at",

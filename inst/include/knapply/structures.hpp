@@ -102,11 +102,11 @@ class TweetDF {
         this->is_quote                     = vec_lgl(n_vals, NA_LOGICAL);
         this->is_retweeted                 = vec_lgl(n_vals, NA_LOGICAL);
 
-        this->hashtags                     = Rcpp::List(n_vals);
-        this->urls_expanded_url            = Rcpp::List(n_vals);
-        this->media_expanded_url           = Rcpp::List(n_vals);
-        this->mentions_user_id             = Rcpp::List(n_vals);
-        this->mentions_screen_name         = Rcpp::List(n_vals);
+        this->hashtags                     = Rcpp::List( n_vals, vec_chr(0) );
+        this->urls_expanded_url            = Rcpp::List( n_vals, vec_chr(0) );
+        this->media_expanded_url           = Rcpp::List( n_vals, vec_chr(0) );
+        this->mentions_user_id             = Rcpp::List( n_vals, vec_chr(0) );
+        this->mentions_screen_name         = Rcpp::List( n_vals, vec_chr(0) );
 
         this->lang                         = vec_chr(n_vals, NA_STRING);
 
@@ -148,7 +148,7 @@ class TweetDF {
         this->place_type                   = vec_chr(n_vals, NA_STRING);
         this->country                      = vec_chr(n_vals, NA_STRING);
         this->country_code                 = vec_chr(n_vals, NA_STRING);
-        this->bbox_coords                  = Rcpp::List(n_vals, vec_dbl(0));
+        this->bbox_coords                  = Rcpp::List( n_vals, vec_dbl(0) );
 
         // this->status_url                   = vec_chr(n_vals, NA_STRING);
         this->name                         = vec_chr(n_vals, NA_STRING);
@@ -253,119 +253,121 @@ class TweetDF {
     };
 
 
-    Rcpp::List to_r() {
+    Rcpp::List to_r(const i32& max_length) {
         using Rcpp::_;
+        const auto seq_out = Rcpp::seq(0, max_length);
+        const auto row_names = Rcpp::seq(1, max_length + 1);
 
         Rcpp::List main = Rcpp::List::create(
-            _["user_id"]              = this->user_id,
-            _["status_id"]            = this->status_id,
-            _["created_at"]           = this->created_at,
-            _["screen_name"]          = this->screen_name,
-            _["text"]                 = this->text,
-            _["source"]               = this->source,
-            _["reply_to_status_id"]   = this->reply_to_status_id,
-            _["reply_to_user_id"]     = this->reply_to_user_id,
-            _["reply_to_screen_name"] = this->reply_to_screen_name,
-            _["is_quote"]             = this->is_quote,
-            _["is_retweeted"]         = this->is_retweeted
+            _["user_id"]              = this->user_id[seq_out],
+            _["status_id"]            = this->status_id[seq_out],
+            _["created_at"]           = this->created_at[seq_out],
+            _["screen_name"]          = this->screen_name[seq_out],
+            _["text"]                 = this->text[seq_out],
+            _["source"]               = this->source[seq_out],
+            _["reply_to_status_id"]   = this->reply_to_status_id[seq_out],
+            _["reply_to_user_id"]     = this->reply_to_user_id[seq_out],
+            _["reply_to_screen_name"] = this->reply_to_screen_name[seq_out],
+            _["is_quote"]             = this->is_quote[seq_out],
+            _["is_retweeted"]         = this->is_retweeted[seq_out]
         );
         main.attr("class") = "data.frame";
-        main.attr("row.names") = Rcpp::seq( 1, this->user_id.size() );
+        main.attr("row.names") = row_names;
 
 
         Rcpp::List entities = Rcpp::List::create(
-            _["hashtags"]             = this->hashtags,
-            _["urls_expanded_url"]    = this->urls_expanded_url,
-            _["media_expanded_url"]   = this->media_expanded_url,
-            _["mentions_user_id"]     = this->mentions_user_id,
-            _["mentions_screen_name"] = this->mentions_screen_name
+            _["hashtags"]             = this->hashtags[seq_out],
+            _["urls_expanded_url"]    = this->urls_expanded_url[seq_out],
+            _["media_expanded_url"]   = this->media_expanded_url[seq_out],
+            _["mentions_user_id"]     = this->mentions_user_id[seq_out],
+            _["mentions_screen_name"] = this->mentions_screen_name[seq_out]
         );
         entities.attr("class") = "data.frame";
-        entities.attr("row.names") = Rcpp::seq( 1, this->user_id.size() );
+        entities.attr("row.names") = row_names;
 
 
         Rcpp::List meta = Rcpp::List::create(
-            _["lang"]                 = this->lang
+            _["lang"]                 = this->lang[seq_out]
         );
         meta.attr("class") = "data.frame";
-        meta.attr("row.names") = Rcpp::seq( 1, this->user_id.size() );
+        meta.attr("row.names") = row_names;
 
 
         Rcpp::List quoted = Rcpp::List::create(
-            _["quoted_status_id"]          = this->quoted_status_id,
-            _["quoted_text"]               = this->quoted_text,
-            _["quoted_created_at"]         = this->quoted_created_at,
-            _["quoted_source"]             = this->quoted_source,
-            _["quoted_favorite_count"]     = this->quoted_favorite_count,
-            _["quoted_retweet_count"]      = this->quoted_retweet_count,
-            _["quoted_user_id"]            = this->quoted_user_id,
-            _["quoted_screen_name"]        = this->quoted_screen_name,
-            _["quoted_name"]               = this->quoted_name,
-            _["quoted_followers_count"]    = this->quoted_followers_count,
-            _["quoted_friends_count"]      = this->quoted_friends_count,
-            _["quoted_statuses_count"]     = this->quoted_statuses_count,
-            _["quoted_location"]           = this->quoted_location,
-            _["quoted_description"]        = this->quoted_description,
-            _["quoted_verified"]           = this->quoted_verified
+            _["quoted_status_id"]          = this->quoted_status_id[seq_out],
+            _["quoted_text"]               = this->quoted_text[seq_out],
+            _["quoted_created_at"]         = this->quoted_created_at[seq_out],
+            _["quoted_source"]             = this->quoted_source[seq_out],
+            _["quoted_favorite_count"]     = this->quoted_favorite_count[seq_out],
+            _["quoted_retweet_count"]      = this->quoted_retweet_count[seq_out],
+            _["quoted_user_id"]            = this->quoted_user_id[seq_out],
+            _["quoted_screen_name"]        = this->quoted_screen_name[seq_out],
+            _["quoted_name"]               = this->quoted_name[seq_out],
+            _["quoted_followers_count"]    = this->quoted_followers_count[seq_out],
+            _["quoted_friends_count"]      = this->quoted_friends_count[seq_out],
+            _["quoted_statuses_count"]     = this->quoted_statuses_count[seq_out],
+            _["quoted_location"]           = this->quoted_location[seq_out],
+            _["quoted_description"]        = this->quoted_description[seq_out],
+            _["quoted_verified"]           = this->quoted_verified[seq_out]
         );
         quoted.attr("class") = "data.frame";
-        quoted.attr("row.names") = Rcpp::seq( 1, this->user_id.size() );
+        quoted.attr("row.names") = row_names;
 
 
         Rcpp::List retweet = Rcpp::List::create(
-            _["retweet_status_id"]         = this->retweet_status_id,
-            _["retweet_text"]              = this->retweet_text,
-            _["retweet_created_at"]        = this->retweet_created_at,
-            _["retweet_source"]            = this->retweet_source,
-            _["retweet_favorite_count"]    = this->retweet_favorite_count,
-            _["retweet_retweet_count"]     = this->retweet_retweet_count,
-            _["retweet_user_id"]           = this->retweet_user_id,
-            _["retweet_screen_name"]       = this->retweet_screen_name,
-            _["retweet_name"]              = this->retweet_name,
-            _["retweet_followers_count"]   = this->retweet_followers_count,
-            _["retweet_friends_count"]     = this->retweet_friends_count,
-            _["retweet_statuses_count"]    = this->retweet_statuses_count,
-            _["retweet_location"]          = this->retweet_location,
-            _["retweet_description"]       = this->retweet_description,
-            _["retweet_verified"]          = this->retweet_verified
+            _["retweet_status_id"]         = this->retweet_status_id[seq_out],
+            _["retweet_text"]              = this->retweet_text[seq_out],
+            _["retweet_created_at"]        = this->retweet_created_at[seq_out],
+            _["retweet_source"]            = this->retweet_source[seq_out],
+            _["retweet_favorite_count"]    = this->retweet_favorite_count[seq_out],
+            _["retweet_retweet_count"]     = this->retweet_retweet_count[seq_out],
+            _["retweet_user_id"]           = this->retweet_user_id[seq_out],
+            _["retweet_screen_name"]       = this->retweet_screen_name[seq_out],
+            _["retweet_name"]              = this->retweet_name[seq_out],
+            _["retweet_followers_count"]   = this->retweet_followers_count[seq_out],
+            _["retweet_friends_count"]     = this->retweet_friends_count[seq_out],
+            _["retweet_statuses_count"]    = this->retweet_statuses_count[seq_out],
+            _["retweet_location"]          = this->retweet_location[seq_out],
+            _["retweet_description"]       = this->retweet_description[seq_out],
+            _["retweet_verified"]          = this->retweet_verified[seq_out]
         );
         retweet.attr("class") = "data.frame";
-        retweet.attr("row.names") = Rcpp::seq( 1, this->user_id.size() );
+        retweet.attr("row.names") = row_names;
 
 
         Rcpp::List geo = Rcpp::List::create(
-            _["place_url"]                 = this->place_url,
-            _["place_name"]                = this->place_name,
-            _["place_full_name"]           = this->place_full_name,
-            _["place_type"]                = this->place_type,
-            _["country"]                   = this->country,
-            _["country_code"]              = this->country_code,
-            _["bbox_coords"]               = this->bbox_coords
+            _["place_url"]                 = this->place_url[seq_out],
+            _["place_name"]                = this->place_name[seq_out],
+            _["place_full_name"]           = this->place_full_name[seq_out],
+            _["place_type"]                = this->place_type[seq_out],
+            _["country"]                   = this->country[seq_out],
+            _["country_code"]              = this->country_code[seq_out],
+            _["bbox_coords"]               = this->bbox_coords[seq_out]
         );
         geo.attr("class") = "data.frame";
-        geo.attr("row.names") = Rcpp::seq( 1, this->user_id.size() );
+        geo.attr("row.names") = row_names;
 
         Rcpp::List other = Rcpp::List::create(
-            _["name"]                      = this->name,
-            _["location"]                  = this->location,
-            _["description"]               = this->description,
-            _["url"]                       = this->url,
-            _["protected"]                 = this->protected_,
-            _["followers_count"]           = this->followers_count,
-            _["friends_count"]             = this->friends_count,
-            _["listed_count"]              = this->listed_count,
-            _["statuses_count"]            = this->statuses_count,
-            _["favourites_count"]          = this->favourites_count,
-            _["account_created_at"]        = this->account_created_at,
-            _["verified"]                  = this->verified,
-            _["account_lang"]              = this->account_lang,
-            _["profile_banner_url"]        = this->profile_banner_url,
-            _["profile_image_url"]         = this->profile_image_url,
-            _["timestamp_ms"]              = this->timestamp_ms,
-            _["contributors_enabled"]      = this->contributors_enabled
+            _["name"]                      = this->name[seq_out],
+            _["location"]                  = this->location[seq_out],
+            _["description"]               = this->description[seq_out],
+            _["url"]                       = this->url[seq_out],
+            _["protected"]                 = this->protected_[seq_out],
+            _["followers_count"]           = this->followers_count[seq_out],
+            _["friends_count"]             = this->friends_count[seq_out],
+            _["listed_count"]              = this->listed_count[seq_out],
+            _["statuses_count"]            = this->statuses_count[seq_out],
+            _["favourites_count"]          = this->favourites_count[seq_out],
+            _["account_created_at"]        = this->account_created_at[seq_out],
+            _["verified"]                  = this->verified[seq_out],
+            _["account_lang"]              = this->account_lang[seq_out],
+            _["profile_banner_url"]        = this->profile_banner_url[seq_out],
+            _["profile_image_url"]         = this->profile_image_url[seq_out],
+            _["timestamp_ms"]              = this->timestamp_ms[seq_out],
+            _["contributors_enabled"]      = this->contributors_enabled[seq_out]
         );
         other.attr("class") = "data.frame";
-        other.attr("row.names") = Rcpp::seq( 1, this->user_id.size() );
+        other.attr("row.names") = row_names;
 
 
         return Rcpp::List::create(

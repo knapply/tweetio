@@ -39,7 +39,7 @@ Rcpp::List read_tweets_nested_doc(const std::string& file_path) {
 
   in_file.close();
 
-  return res.to_r();
+  return res.to_r(i);
 }
 
 
@@ -71,7 +71,7 @@ Rcpp::List read_tweets_normal(const std::string& file_path) {
 
   in_file.close();
 
-  return res.to_r();
+  return res.to_r(i);
 }
 
 
