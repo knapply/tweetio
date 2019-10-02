@@ -14,6 +14,7 @@ jobs:
   - r: release
   - r: 3.5
   - r: 3.4
+  - r: 3.3
 
 after_success:
   - Rscript -e 'covr::codecov()'
