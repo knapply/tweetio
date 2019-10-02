@@ -36,7 +36,7 @@
     res[!is.na(res$status_id), ]
   )
   
-  clean_dttm_cols(out)
+  out
 }
 
 
@@ -52,7 +52,9 @@
 #' 
 #' @export
 read_tweets <- function(file_path, ...) {
-  .read_tweets(file_path, ...)
+  out <- .read_tweets(file_path, ...)
+  
+  finalize_cols(out)
 }
 
 
@@ -68,7 +70,7 @@ read_tweets <- function(file_path, ...) {
 #' @export
 read_tweets_bulk <- function(file_paths, in_parallel = TRUE, .strategy = NULL, ...) {
   if (length(file_paths) == 1L) {
-    read_tweets(file_paths)
+    return(read_tweets(file_paths))
   }
   
   use_future <- all(in_parallel,
@@ -86,11 +88,11 @@ read_tweets_bulk <- function(file_paths, in_parallel = TRUE, .strategy = NULL, .
   
   out <- rbindlist(init)
   
-  clean_dttm_cols(out)
+  finalize_cols(out)
 }
 
 
-clean_dttm_cols <- function(x, ...) {
+finalize_cols <- function(x, ...) {
   .SD <- NULL # silence R CMD Check NOTE
   
   chr_cols <- names(x)[vapply(x, is.character, FUN.VALUE = logical(1L))]
@@ -100,6 +102,18 @@ clean_dttm_cols <- function(x, ...) {
     .x
   }), 
   .SDcols = chr_cols]
+  
+  
+  possible_dttm_cols <- c("created_at", "account_created_at",
+                          "retweet_created_at", "quoted_created_at",
+                          "timestamp", "timestamp_ms",
+                          "traptor_timestamp", "traptor_system_timestamp",
+                          "traptor_rule_date_added")
+  dttm_cols <- intersect(names(x), possible_dttm_cols)
+  if (length(dttm_cols)) {
+    x[, (dttm_cols) := lapply(.SD, format_dttm),
+        .SDcols = dttm_cols]
+  }
   
   x[]
 }
