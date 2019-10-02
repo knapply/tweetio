@@ -4,11 +4,16 @@
 
 language: R
 cache: packages
+os:
+  - linux
+  - osx
+  - windows
 
 jobs:
   include:
-  - r: release
   - r: devel
+  - r: release
+  - r: 3.5
 
 after_success:
   - Rscript -e 'covr::codecov()'
