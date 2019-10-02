@@ -255,9 +255,14 @@ class TweetDF {
 
     Rcpp::List to_r(const i32& max_length) {
         using Rcpp::_;
-        const auto seq_out = Rcpp::seq(0, max_length);
-        const auto row_names = Rcpp::seq(1, max_length + 1);
 
+        vec_int seq_out(max_length);
+        vec_chr row_names(max_length);
+        for (i32 i = 0; i < seq_out.size(); ++i) {
+            seq_out[i] = i;
+            row_names[i] = Rcpp::String(i + 1);
+        }
+        
         Rcpp::List main = Rcpp::List::create(
             _["user_id"]              = this->user_id[seq_out],
             _["status_id"]            = this->status_id[seq_out],

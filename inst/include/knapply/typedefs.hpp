@@ -1,13 +1,13 @@
 #include <Rcpp.h>
 
-typedef short int i16;
-typedef unsigned short int u16;
+typedef int16_t i16;
+typedef uint32_t u16;
 
-typedef int i32;
-typedef unsigned int u32;
+typedef int32_t i32;
+typedef uint32_t u32;
 
-typedef long long int i64;
-typedef unsigned long long int u64;
+typedef int64_t i64;
+typedef uint64_t u64;
 
 
 typedef float f32;

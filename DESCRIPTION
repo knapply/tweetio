@@ -22,8 +22,8 @@ Suggests:
     covr,
     here,
     knitr,
-    furrr,
     future,
+    future.apply,
     rtweet,
     testthat
 URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio

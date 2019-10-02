@@ -1,8 +1,34 @@
 #' @importFrom data.table := as.data.table
-.read_tweets <- function(file_path, type) {
+#' @importFrom utils unzip
+.read_tweets <- function(file_path, ...) {
+  stopifnot(is.character(file_path) && length(file_path) == 1L)
   stopifnot(file.exists(file_path))
+
+  if (grepl("\\.csv$", file_path, ignore.case = TRUE)) {
+    stop("Tweets in CSV files are not yet supported.",
+         call. = FALSE)
+  }
   
-  init <- read_tweets_(file_path, type = type)
+  if (grepl("\\.zip$", file_path)) {
+    temp_dir <- tempdir(check = TRUE)
+    target_dir <- paste0(temp_dir, "/tweetio")
+    dir.create(target_dir)
+    on.exit(unlink(target_dir, force = TRUE))
+
+    unzip(zipfile = file_path, exdir = target_dir)
+    unzipped <- dir(target_dir, full.names = TRUE)
+    if (length(unzipped) == 0L) {
+      stop("`file_path` is a ZIP archive, but it's empty.")
+    }
+    if (length(unzipped) > 1L) {
+      stop("`file_path` is a ZIP archive with multiple files. Only ZIP archives
+           with one file are supported.")
+    }
+
+    file_path <- unzipped
+  }
+  
+  init <- read_tweets_(file_path)
   
   res <- do.call(cbind.data.frame, list(unname(init), stringsAsFactors = FALSE))
   
@@ -10,77 +36,70 @@
     res[!is.na(res$status_id), ]
   )
   
-  possible_dttm_cols <- c("created_at", "account_created_at",
-                          "retweet_created_at", "quoted_created_at",
-                          "timestamp", "timestamp_ms",
-                          "traptor_timestamp", "traptor_system_timestamp",
-                          "traptor_rule_date_added")
-  dttm_cols <- intersect(names(out), possible_dttm_cols)
-  if (length(dttm_cols)) {
-    .SD <- NULL # silence R CMD Check NOTE
-    out[, (dttm_cols) := lapply(.SD, format_dttm),
-        .SDcols = dttm_cols]
-  }
-
-  out[]
+  clean_dttm_cols(out)
 }
 
 
 #' Read tweets into a data frame
 #' 
-#' @param file_path Path(s) to tweet files.
-#' @param type Either `"normal"` (default) for unnested data or `"nested_doc"` if the data
-#'  are nested inside a JSON element named `"doc"`.
-#' @param .furrr If `file_path` contains multiple files, whether to use `{furrr}`
-#'  to process the files in parallel.
-#' @param .progress Default: `TRUE`. `TRUE` or `FALSE` value passed to `furrr::future_map()`.
-#' @param .strategy Default: `NULL`. Argument passed to `future::plan()`.
-#' @param ... Other arguments passed to `future::plan()`.
+#' @param file_path Path to tweet files.
+#' @param file_paths Paths to multiple tweet files.
+#' @param ... Arguments passed to or from other methods.
+#' 
+#' @return `data.table`
 #' 
 #' @template author-bk
 #' 
-#' 
-#' @importFrom data.table rbindlist
 #' @export
-read_tweets <- function(file_path, type = c("normal", "nested_doc"),
-                        .furrr = TRUE,
-                        .progress = TRUE, .strategy = NULL, ...) {
-  type <- match.arg(type, c("normal", "nested_doc"))
-  
-  if (length(file_path) == 1L) {
-    return(.read_tweets(file_path, type))
-  }
-  
-  use_furrr <- all(.furrr,
-                   requireNamespace("future", quietly = TRUE),
-                   requireNamespace("furrr", quietly = TRUE))
-  
-  if (!use_furrr) {
-    out <- rbindlist(
-      lapply(file_path, .read_tweets, type = type)
-    )
-  
-  } else {
-    if (is.null(.strategy)) .strategy <- future::multiprocess
-    
-    future::plan(strategy = .strategy, ...)
-    out <- rbindlist(
-      furrr::future_map(file_path, .read_tweets, type = type,
-                        .progress = .progress)
-    )
-
-  }
-  
-  chr_cols <- names(out)[vapply(out, is.character, FUN.VALUE = logical(1L))]
-  .SD <- NULL # silence R CMD Check NOTE
-  out[, (chr_cols) := lapply(.SD, function(.x) {
-      .x[.x == ""] <- NA_character_
-      .x
-    }), 
-    .SDcols = chr_cols]
-  
-  out[]
+read_tweets <- function(file_path, ...) {
+  .read_tweets(file_path, ...)
 }
 
 
 
+#' @rdname read_tweets
+#' 
+#' @param in_parallel Default: `TRUE`. Whether to use `future.apply::future_lapply()`
+#'  to process the files in parallel. Ignored if `{future}` or `{future.apply}` are not installed.
+#' @param .strategy Default: `NULL`. argument passed to `future::plan()`'s `strategy` parameter.
+#'   If `NULL`, `future::multiprocess` is used. Ignored if `{future}` or `{future.apply}` are not installed.
+#' 
+#' @importFrom data.table rbindlist
+#' @export
+read_tweets_bulk <- function(file_paths, in_parallel = TRUE, .strategy = NULL, ...) {
+  if (length(file_paths) == 1L) {
+    read_tweets(file_paths)
+  }
+  
+  use_future <- all(in_parallel,
+                    requireNamespace("future", quietly = TRUE),
+                    requireNamespace("future.apply", quietly = TRUE))
+  
+  if (use_future) {
+    if (is.null(.strategy)) .strategy <- future::multiprocess
+    future::plan(strategy = .strategy, ...)
+
+    init <- future.apply::future_lapply(file_paths, .read_tweets)
+  } else {
+    init <- lapply(file_paths, .read_tweets)
+  }
+  
+  out <- rbindlist(init)
+  
+  clean_dttm_cols(out)
+}
+
+
+clean_dttm_cols <- function(x, ...) {
+  .SD <- NULL # silence R CMD Check NOTE
+  
+  chr_cols <- names(x)[vapply(x, is.character, FUN.VALUE = logical(1L))]
+  
+  x[, (chr_cols) := lapply(.SD, function(.x) {
+    .x[.x == ""] <- NA_character_
+    .x
+  }), 
+  .SDcols = chr_cols]
+  
+  x[]
+}
