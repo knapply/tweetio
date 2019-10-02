@@ -54,7 +54,7 @@ __The [`{rtweet}`](https://rtweet.info/) package spoils R users _rotten_... in t
 
 > ___You__ bring the data, `{tweetio}` gets them into R._
 
-`{tweetio}` focuses on one thing: __going from raw tweets to `{rtweet}`-style data frames (or other useful structures) as quickly and efficiently as possible__. Whether the data came from the Twitter API, a vendor, or some other source, `{tweetio}`'s job is to get them into R.
+`{tweetio}` focuses on one thing: __going from raw tweets to `{rtweet}`-style data frames (or other useful structures) as quickly and efficiently as possible__. Whether the data came from the Twitter API, a database dump, or some other source, `{tweetio}`'s job is to get them into R.
 
 ## Installation
 
@@ -124,9 +124,9 @@ big_rtweet_time
 ```
 
 
-### Vendor Data
+### Data Dumps
 
-Vendors seem to love storing social media data in Elasticsearch databases, meaning that the data collected from APIs is stored inside a nested JSON object named `"doc"`. `"doc"` is typically embedded in a ton of system metadata, most of which you probably don't care about.
+People seem to love storing social media data in Elasticsearch databases, meaning that the data collected from APIs is stored inside a nested JSON object named `"doc"`. `"doc"` is typically embedded in a ton of system metadata, most of which you probably don't care about.
 
 This has three unfortunate consequences:
 
@@ -137,28 +137,27 @@ This has three unfortunate consequences:
 `{tweetio}` solves this by parsing everything at the C++ level, but only returning the actual tweet data to R.
 
 ```{r, echo=FALSE}
-path_to_vendor_data <- readRDS("path_to_vendor_data.rds")
-all_vendor_files <- dir(path_to_vendor_data, 
-                        pattern = "-full-\\d{4}\\.jsonl\\.gz$", 
-                        full.names = TRUE)
+data_dump_path <- readRDS("data-dump-path.rds")
+all_data_dumps <- dir(data_dump_path, pattern = "-full-\\d{4}\\.jsonl\\.gz$", 
+                      full.names = TRUE)
 
-single_vendor_file <- all_vendor_files[[1L]]
-single_vendor_file_size <- file.size(single_vendor_file)
+single_data_dump <- all_data_dumps[[1L]]
+single_data_dump_size <- file.size(single_data_dump)
 
 library(scales)
-number_bytes(single_vendor_file_size)
+number_bytes(single_data_dump_size)
 ```
 
 
 ```{r}
-single_vendor_time <- microbenchmark(
+single_data_dump_time <- microbenchmark(
 
-  single_vendor_parsed <- read_tweets(single_vendor_file) # ********************
+  single_data_dump_parsed <- read_tweets(single_data_dump) # ********************
   
   , times = 1
 )
 
-single_vendor_time
+single_data_dump_time
 ```
 
 
@@ -170,7 +169,7 @@ We can run `read_tweets_bulk()` either sequentially or in parallel. By setting `
 
 
 ```{r}
-sequential_bulk_files <- all_vendor_files[1:4]
+sequential_bulk_files <- all_data_dumps[1:4]
 sequential_bulk_file_size <- sum(sapply(sequential_bulk_files, file.size))
 
 number_bytes(sequential_bulk_file_size)
@@ -192,7 +191,7 @@ sequential_bulk_time
 If `in_parallel=` is set to `TRUE` (the default) _and_ `{future}` and `{future.apply}` are available, `read_tweets_bulk()` can be run in parallel via `future.apply::future_lapply()`.
 
 ```{r}
-parallel_bulk_file_size <- sum(sapply(all_vendor_files, file.size))
+parallel_bulk_file_size <- sum(sapply(all_data_dumps, file.size))
 
 number_bytes(parallel_bulk_file_size)
 ```
@@ -200,7 +199,7 @@ number_bytes(parallel_bulk_file_size)
 ```{r}
 parallel_bulk_time <- microbenchmark(
   
-  read_tweets_bulk(all_vendor_files) # *****************************************
+  read_tweets_bulk(all_data_dumps) # *****************************************
   
   , times = 1
 )
@@ -213,21 +212,21 @@ parallel_bulk_time
 
 ```{r}
 res <- microbenchmark(
-  read_tweets(all_vendor_files[[1]]),
-  read_tweets(all_vendor_files[[2]]),
-  read_tweets(all_vendor_files[[3]]),
-  read_tweets(all_vendor_files[[4]]),
-  read_tweets(all_vendor_files[[5]]),
-  read_tweets(all_vendor_files[[6]]),
-  read_tweets(all_vendor_files[[7]]),
-  read_tweets(all_vendor_files[[8]]),
-  read_tweets(all_vendor_files[[9]]),
-  read_tweets(all_vendor_files[[10]]),
-  read_tweets(all_vendor_files[[11]]),
-  read_tweets(all_vendor_files[[12]]),
-  read_tweets(all_vendor_files[[13]]),
-  read_tweets(all_vendor_files[[14]]),
-  read_tweets(all_vendor_files[[15]]),
+  read_tweets(all_data_dumps[[1]]),
+  read_tweets(all_data_dumps[[2]]),
+  read_tweets(all_data_dumps[[3]]),
+  read_tweets(all_data_dumps[[4]]),
+  read_tweets(all_data_dumps[[5]]),
+  read_tweets(all_data_dumps[[6]]),
+  read_tweets(all_data_dumps[[7]]),
+  read_tweets(all_data_dumps[[8]]),
+  read_tweets(all_data_dumps[[9]]),
+  read_tweets(all_data_dumps[[10]]),
+  read_tweets(all_data_dumps[[11]]),
+  read_tweets(all_data_dumps[[12]]),
+  read_tweets(all_data_dumps[[13]]),
+  read_tweets(all_data_dumps[[14]]),
+  read_tweets(all_data_dumps[[15]]),
   
   times = 3
 )
