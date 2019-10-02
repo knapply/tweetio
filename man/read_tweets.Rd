@@ -2,25 +2,28 @@
 % Please edit documentation in R/read.R
 \name{read_tweets}
 \alias{read_tweets}
+\alias{read_tweets_bulk}
 \title{Read tweets into a data frame}
 \usage{
-read_tweets(file_path, type = c("normal", "nested_doc"), .furrr = TRUE,
-  .progress = TRUE, .strategy = NULL, ...)
+read_tweets(file_path, ...)
+
+read_tweets_bulk(file_paths, in_parallel = TRUE, .strategy = NULL, ...)
 }
 \arguments{
-\item{file_path}{Path(s) to tweet files.}
+\item{file_path}{Path to tweet files.}
 
-\item{type}{Either \code{"normal"} (default) for unnested data or \code{"nested_doc"} if the data
-are nested inside a JSON element named \code{"doc"}.}
+\item{...}{Arguments passed to or from other methods.}
 
-\item{.furrr}{If \code{file_path} contains multiple files, whether to use \code{{furrr}}
-to process the files in parallel.}
+\item{file_paths}{Paths to multiple tweet files.}
 
-\item{.progress}{Default: \code{TRUE}. \code{TRUE} or \code{FALSE} value passed to \code{furrr::future_map()}.}
+\item{in_parallel}{Default: \code{TRUE}. Whether to use \code{future.apply::future_lapply()}
+to process the files in parallel. Ignored if \code{{future}} or \code{{future.apply}} are not installed.}
 
-\item{.strategy}{Default: \code{NULL}. Argument passed to \code{future::plan()}.}
-
-\item{...}{Other arguments passed to \code{future::plan()}.}
+\item{.strategy}{Default: \code{NULL}. argument passed to \code{future::plan()}'s \code{strategy} parameter.
+If \code{NULL}, \code{future::multiprocess} is used. Ignored if \code{{future}} or \code{{future.apply}} are not installed.}
+}
+\value{
+\code{data.table}
 }
 \description{
 Read tweets into a data frame

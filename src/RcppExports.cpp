@@ -6,20 +6,19 @@
 using namespace Rcpp;
 
 // read_tweets_
-SEXP read_tweets_(const std::string& file_path, const std::string& type);
-RcppExport SEXP _tweetio_read_tweets_(SEXP file_pathSEXP, SEXP typeSEXP) {
+SEXP read_tweets_(const std::string& file_path);
+RcppExport SEXP _tweetio_read_tweets_(SEXP file_pathSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string& >::type file_path(file_pathSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_tweets_(file_path, type));
+    rcpp_result_gen = Rcpp::wrap(read_tweets_(file_path));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_tweetio_read_tweets_", (DL_FUNC) &_tweetio_read_tweets_, 2},
+    {"_tweetio_read_tweets_", (DL_FUNC) &_tweetio_read_tweets_, 1},
     {NULL, NULL, 0}
 };
 

@@ -49,11 +49,12 @@ __The [`{rtweet}`](https://rtweet.info/) package spoils R users _rotten_... in t
 `{tweetio}` is __not__ a competitor to `{rtweet}`, but it definitely attempts to emulate its data frame schema because...
 
 1. It's incredibly easy to use.
-2. It'd be a waste not to maximize compatibiltiy with tools built specifically around `{rtweet}`'s data frames.
+2. It's more efficient to analyze than a key-value format following the raw data.
+3. It'd be a waste not to maximize compatibiltiy with tools built specifically around `{rtweet}`'s data frames.
 
 > ___You__ bring the data, `{tweetio}` gets them into R._
 
-`{tweetio}` only focuses on one thing: __going from raw tweets to `{rtweet}`-style data frames (or other useful structures) as quickly and efficiently as possible__. Whether the data came from the Twitter API, a vendor, or some other source, `{tweetio}`'s job is to get them into R.
+`{tweetio}` focuses on one thing: __going from raw tweets to `{rtweet}`-style data frames (or other useful structures) as quickly and efficiently as possible__. Whether the data came from the Twitter API, a vendor, or some other source, `{tweetio}`'s job is to get them into R.
 
 ## Installation
 
@@ -64,11 +65,25 @@ You'll need a C++ compiler. If you're using Windows, that means [Rtools](https:/
 remotes::install_github("knapply/tweetio")
 ```
 
+## Supported Data Inputs
+
+- [x] Twitter API streams: .json, .json.gz
+- [x] API to Elasticsearch data dump (JSON Array): .json, .json.gz
+- [x] API to Elasticsearch data dump (line-delimited JSON): .jsonl, .jsonl.gz
+
+
+## Supported Data Outputs
+
+- [ ] CSV
+- [ ] .graphml via [`{tweetgraph}`](https://knapply.github.io/tweetgraph/) integration
+
+
+
 ## Usage
 
 ### Simple Example
 
-First, we'll save a stream of tweets using `rtweet::stream_tweets()`. We'll set `timeout=` to `15` seconds here, but in a real scenario you would likely be streaming for _much_ longer.
+First, we'll save a stream of tweets using `rtweet::stream_tweets()`.
 
 ```{r}
 temp_file <- tempfile(fileext = ".json")
@@ -84,17 +99,16 @@ small_rtweet_stream <- read_tweets(temp_file)
 dplyr::glimpse(small_rtweet_stream)
 ```
 
-
 ### Scaling Up
 
 In reality, we're more interested in handling larger data sets. Here's a larger file obtained using `rtweet::stream_tweets()` that has been compressed to an 18 Mb .gz file (153 Mb uncompressed).
 
 ```{r}
 big_rtweet_stream <- read_tweets("inst/example-data/api-stream.json.gz")
-dim(big_rtweet_stream)
+nrow(big_rtweet_stream)
 ```
 
-That's `r scales::comma(nrow(big_rtweet_stream))` tweets, but how long does that take?
+How long does that take?
 
 ```{r}
 big_rtweet_time <- microbenchmark::microbenchmark(
@@ -107,37 +121,35 @@ big_rtweet_time
 
 ### Vendor Data
 
-It seems that the trend for third-party data vendors is to embed what the APIs provide inside a JSON object named `"doc"`, which is typically embedded in a ton of platform metadata (that you probably don't care about).
+Vendors seem to love storing social media data in Elasticsearch databases, meaning that the data collected from APIs is stored inside a nested JSON object named `"doc"`. `"doc"` is typically embedded in a ton of system metadata, most of which you probably don't care about.
 
 This has three unfortunate consequences:
 
 1. Packages that were purpose-built to work directly with the Twitter API aren't going to play along with your data.
-2. You're going to waste most of your time and computational resources on getting data into R that you're not going to use.
+2. You're going to waste most of your time (and memory) getting data into R that you're not going to use.
 3. The data are _very_ tedious to restructure in R (lists of lists of lists of lists of lists...).
 
 `{tweetio}` solves this by parsing everything at the C++ level, but only returning the actual tweet data to R.
 
 ```{r, echo=FALSE}
 path_to_vendor_data <- readRDS("path_to_vendor_data.rds")
-all_vendor_files <- dir(path_to_vendor_data, pattern = "\\.jsonl\\.gz$",
-                        full.names = TRUE)
+all_vendor_files <- dir(path_to_vendor_data, pattern = "\\.jsonl\\.gz$", full.names = TRUE)
 
 # 173 Mb, 1.6 Gb uncompressed
 single_vendor_file <- all_vendor_files[[1L]] 
 ```
 
-The only difference between reading data following this nested `"doc"` convention and `"normal"` data is that the user must set `type=` to `"nested_doc"`. This will likely be simplified to auto-detect the schema in the future.
 
 ```{r}
-single_vendor_parsed <- read_tweets(single_vendor_file, type = "nested_doc")
-dim(single_vendor_parsed)
+single_vendor_parsed <- read_tweets(single_vendor_file)
+nrow(single_vendor_parsed)
 ```
 
-That's `r scales::comma(nrow(single_vendor_parsed))` tweets, but about how long does that take?
+How long does that take?
 
 ```{r}
 single_vendor_time <- microbenchmark::microbenchmark(
-  "1.6" = read_tweets(single_vendor_file, type = "nested_doc"),
+  "1.6" = read_tweets(single_vendor_file),
   times = 3
 )
 single_vendor_time
@@ -146,13 +158,12 @@ single_vendor_time
 
 ### Bulk Processing
 
-While maybe not "big" data, handling millions of lines of JSON spread across dozens of files in R isn't exactly a picnic. To handle this situation, the current implementation uses `furrr::future_map()` to process each file in parallel before collapsing the resulting data frames via `data.table::rbindlist()`.
+While maybe not "big" data, handling millions of lines of JSON spread across dozens of files in R isn't exactly a picnic. To handle this situation, the current implementation uses `future.apply::future_lapply()` (if available) to process each file in parallel before collapsing the resulting data frames via `data.table::rbindlist()`.
 
 `all_vendor_files` consists of 6 Gb (47 Gb uncompressed) spread across 30 files, which we can still process using `tweetio::read_tweets()`.
 
 ```{r}
-bulk_parsed <- read_tweets(all_vendor_files, type = "nested_doc",
-                           .progress = FALSE)
+bulk_parsed <- read_tweets_bulk(all_vendor_files)
 dim(bulk_parsed)
 ```
 
@@ -161,8 +172,7 @@ How long does that take?
 
 ```{r}
 bulk_time <- microbenchmark::microbenchmark(
-  "47" = read_tweets(all_vendor_files, type = "nested_doc",
-                           .progress = FALSE),
+  "47" = read_tweets_bulk(all_vendor_files),
   times = 1
 )
 bulk_time
@@ -202,5 +212,5 @@ Until Rtools 4.0 hits (or the [`simdjson`](https://github.com/lemire/simdjson) l
 
 Major inspiration from [{`ndjson`}](https://gitlab.com/hrbrmstr/ndjson) was taken, including its use of [`Gzstream`](https://www.cs.unc.edu/Research/compgeom/gzstream/).
 
-Parallel processing of multiple files is (currently) handled by [`{future}`](https://cran.r-project.org/web/packages/future/index.html) and [`{furrr}`](https://davisvaughan.github.io/furrr/), if available.
+Parallel processing of multiple files is (currently) handled by [`{future}`](https://cran.r-project.org/web/packages/future/index.html) and [`{future.apply}`]((https://cran.r-project.org/web/packages/future.apply/index.html), if available.
 
