@@ -130,46 +130,47 @@
     <p>Read tweets into a data frame</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_tweets</span>(<span class='no'>file_path</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"normal"</span>, <span class='st'>"nested_doc"</span>), <span class='kw'>.furrr</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>.progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.strategy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>read_tweets</span>(<span class='no'>file_path</span>, <span class='no'>...</span>)
+
+<span class='fu'>read_tweets_bulk</span>(<span class='no'>file_paths</span>, <span class='kw'>in_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.strategy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>file_path</th>
-      <td><p>Path(s) to tweet files.</p></td>
-    </tr>
-    <tr>
-      <th>type</th>
-      <td><p>Either <code>"normal"</code> (default) for unnested data or <code>"nested_doc"</code> if the data
-are nested inside a JSON element named <code>"doc"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>.furrr</th>
-      <td><p>If <code>file_path</code> contains multiple files, whether to use <code>{furrr}</code>
-to process the files in parallel.</p></td>
-    </tr>
-    <tr>
-      <th>.progress</th>
-      <td><p>Default: <code>TRUE</code>. <code>TRUE</code> or <code>FALSE</code> value passed to <code><a href='https://rdrr.io/pkg/furrr/man/future_map.html'>furrr::future_map()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>.strategy</th>
-      <td><p>Default: <code>NULL</code>. Argument passed to <code><a href='https://rdrr.io/pkg/future/man/plan.html'>future::plan()</a></code>.</p></td>
+      <td><p>Path to tweet files.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Other arguments passed to <code><a href='https://rdrr.io/pkg/future/man/plan.html'>future::plan()</a></code>.</p></td>
+      <td><p>Arguments passed to or from other methods.</p></td>
+    </tr>
+    <tr>
+      <th>file_paths</th>
+      <td><p>Paths to multiple tweet files.</p></td>
+    </tr>
+    <tr>
+      <th>in_parallel</th>
+      <td><p>Default: <code>TRUE</code>. Whether to use <code><a href='https://rdrr.io/pkg/future.apply/man/future_lapply.html'>future.apply::future_lapply()</a></code>
+to process the files in parallel. Ignored if <code>{future}</code> or <code>{future.apply}</code> are not installed.</p></td>
+    </tr>
+    <tr>
+      <th>.strategy</th>
+      <td><p>Default: <code>NULL</code>. argument passed to <code><a href='https://rdrr.io/pkg/future/man/plan.html'>future::plan()</a></code>'s <code>strategy</code> parameter.
+If <code>NULL</code>, <code><a href='https://rdrr.io/pkg/future/man/multiprocess.html'>future::multiprocess</a></code> is used. Ignored if <code>{future}</code> or <code>{future.apply}</code> are not installed.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>data.table</code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
     </ul>
 
     <h2>Author</h2>

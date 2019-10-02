@@ -158,9 +158,9 @@ single_vendor_time
 
 ### Bulk Processing
 
-While maybe not "big" data, handling millions of lines of JSON spread across dozens of files in R isn't exactly a picnic. To handle this situation, the current implementation uses `future.apply::future_lapply()` (if available) to process each file in parallel before collapsing the resulting data frames via `data.table::rbindlist()`.
+While maybe not "big" data, handling millions of lines of JSON spread across dozens of files in R isn't exactly a picnic, but `read_tweets_bulk()` attempts to make this as easy as possible. The current implementation uses `future.apply::future_lapply()` (if available) to process each file in parallel before collapsing the resulting data frames via `data.table::rbindlist()`.
 
-`all_vendor_files` consists of 6 Gb (47 Gb uncompressed) spread across 30 files, which we can still process using `tweetio::read_tweets()`.
+`all_vendor_files` consists of 6 Gb (47 Gb uncompressed) spread across 30 files.
 
 ```{r}
 bulk_parsed <- read_tweets_bulk(all_vendor_files)
