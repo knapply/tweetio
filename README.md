@@ -90,28 +90,28 @@ small_rtweet_stream <- read_tweets(temp_file)
 dplyr::glimpse(small_rtweet_stream)
 ```
 
-    #> Rows: 362
+    #> Rows: 597
     #> Columns: 71
-    #> $ user_id                 <chr> "594234016", "1138555968273489920", "1...
-    #> $ status_id               <chr> "1179209099667529728", "11792090996549...
-    #> $ created_at              <chr> "Wed Oct 02 01:38:52 +0000 2019", "Wed...
-    #> $ screen_name             <chr> "jim_tellez", "ViniciusdeJesu7", "Gett...
-    #> $ text                    <chr> "RT @NBCSBulls: For all the kids out t...
+    #> $ user_id                 <chr> "1870065254", "16282076", "10815177205...
+    #> $ status_id               <chr> "1179424758171148290", "11794247581837...
+    #> $ created_at              <dttm> 2019-10-02 15:55:49, 2019-10-02 15:55...
+    #> $ screen_name             <chr> "mashu7676", "ellebil", "may_chan_bot"...
+    #> $ text                    <chr> "<U+3046><U+3061><U+304D><U+306A><U+3088><U+301C><U+3063><U+3066><U+53CB><U+9054><U+306B><U+30AA><U+30B9><U+30B9><U+30E1><U+3067><U+304D><U+308B><U+3088><U+3046><U+306A><U+533B><U+9662><U+306B><U+3057><U+305F><U+3044><U+306E><U+306B><U+3001><U+60A3><U+8005><U+3055><U+3093><U+306E><U+6E80><U+8DB3>...
     #> $ source                  <chr> "<a href=\"http://twitter.com/download...
-    #> $ reply_to_status_id      <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, "1...
-    #> $ reply_to_user_id        <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, "1...
-    #> $ reply_to_screen_name    <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, "s...
+    #> $ reply_to_status_id      <chr> NA, NA, NA, "1179424148885516291", NA,...
+    #> $ reply_to_user_id        <chr> NA, NA, NA, "3901745792", NA, NA, NA, ...
+    #> $ reply_to_screen_name    <chr> NA, NA, NA, "Zynapsed", NA, NA, NA, "c...
     #> $ is_quote                <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, FAL...
     #> $ is_retweeted            <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, FAL...
-    #> $ hashtags                <list> [<>, <>, <>, <>, <>, "HBDMingEr4Saint...
+    #> $ hashtags                <list> [<>, <>, <>, <>, <>, <>, <>, <>, <>, ...
     #> $ urls_expanded_url       <list> [<>, <>, <>, <>, <>, <>, <>, <>, <>, ...
-    #> $ media_expanded_url      <list> [<>, "https://twitter.com/ViniciusdeJ...
-    #> $ mentions_user_id        <list> ["423540866", <>, "105491374377405235...
-    #> $ mentions_screen_name    <list> ["NBCSBulls", <>, "hozuki_app", <>, "...
-    #> $ lang                    <chr> "en", "pt", "ja", "es", "und", "th", "...
+    #> $ media_expanded_url      <list> [<>, <>, <>, <>, <>, <>, <>, <>, <>, ...
+    #> $ mentions_user_id        <list> [<>, <>, <>, "3901745792", "855349830...
+    #> $ mentions_screen_name    <list> [<>, <>, <>, "Zynapsed", "veautaefulk...
+    #> $ lang                    <chr> "ja", "de", "ja", "ht", "en", "fr", "e...
     #> $ quoted_status_id        <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ quoted_text             <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
-    #> $ quoted_created_at       <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+    #> $ quoted_created_at       <dttm> NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
     #> $ quoted_source           <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ quoted_favorite_count   <int> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ quoted_retweet_count    <int> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
@@ -124,21 +124,21 @@ dplyr::glimpse(small_rtweet_stream)
     #> $ quoted_location         <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ quoted_description      <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ quoted_verified         <lgl> TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TR...
-    #> $ retweet_status_id       <chr> "1179184219416858624", NA, "1178582869...
-    #> $ retweet_text            <chr> "For all the kids out there, come meet...
-    #> $ retweet_created_at      <chr> "Wed Oct 02 00:00:00 +0000 2019", NA, ...
-    #> $ retweet_source          <chr> "<a href=\"https://about.twitter.com/p...
-    #> $ retweet_favorite_count  <int> 57, NA, 1358, NA, 1, 3, NA, NA, NA, NA...
-    #> $ retweet_retweet_count   <int> 11, NA, 334, NA, 1, 5, NA, NA, NA, NA,...
-    #> $ retweet_user_id         <chr> "423540866", NA, "1054913743774052352"...
-    #> $ retweet_screen_name     <chr> "NBCSBulls", NA, "hozuki_app", NA, "An...
-    #> $ retweet_name            <chr> "Bulls Talk", NA, "<U+30A2><U+30D7><U+30EA><U+300E><U+9B3C><U+706F><U+306E><U+51B7><U+5FB9>~<U+5730><U+7344><U+306E><U+30D1><U+30BA><U+30EB><U+3082><U+541B><U+6B21>...
-    #> $ retweet_followers_count <int> 22596, NA, 42949, NA, 118, 291, NA, NA...
-    #> $ retweet_friends_count   <int> 22596, NA, 42949, NA, 118, 291, NA, NA...
-    #> $ retweet_statuses_count  <int> 25505, NA, 314, NA, 2565, 7298, NA, NA...
-    #> $ retweet_location        <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
-    #> $ retweet_description     <chr> "Home for all 82 Bulls games", NA, "<U+30A2><U+30D7>...
-    #> $ retweet_verified        <lgl> TRUE, TRUE, FALSE, TRUE, FALSE, FALSE,...
+    #> $ retweet_status_id       <chr> NA, NA, NA, NA, "1179348614105178114",...
+    #> $ retweet_text            <chr> NA, NA, NA, NA, "\U0001f428 What lyric...
+    #> $ retweet_created_at      <dttm> NA, NA, NA, NA, 2019-10-02 10:53:15, ...
+    #> $ retweet_source          <chr> NA, NA, NA, NA, "<a href=\"http://twit...
+    #> $ retweet_favorite_count  <int> NA, NA, NA, NA, 3250, 1, NA, NA, 159, ...
+    #> $ retweet_retweet_count   <int> NA, NA, NA, NA, 1383, 1, NA, NA, 332, ...
+    #> $ retweet_user_id         <chr> NA, NA, NA, NA, "855349830121431040", ...
+    #> $ retweet_screen_name     <chr> NA, NA, NA, NA, "veautaefulkook", "Ang...
+    #> $ retweet_name            <chr> NA, NA, NA, NA, "<U+D0DC> <U+2661> <U+AD6D>", "Roxane", NA,...
+    #> $ retweet_followers_count <int> NA, NA, NA, NA, 41845, 11, NA, NA, 1, ...
+    #> $ retweet_friends_count   <int> NA, NA, NA, NA, 41845, 11, NA, NA, 1, ...
+    #> $ retweet_statuses_count  <int> NA, NA, NA, NA, 15464, 449, NA, NA, 95...
+    #> $ retweet_location        <chr> NA, NA, NA, NA, "\U0001f49c", "Hell", ...
+    #> $ retweet_description     <chr> NA, NA, NA, NA, "<U+6B63><U+6CF0> <U+2027> taekook fan acco...
+    #> $ retweet_verified        <lgl> TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, ...
     #> $ place_url               <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ place_name              <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ place_full_name         <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
@@ -146,22 +146,22 @@ dplyr::glimpse(small_rtweet_stream)
     #> $ country                 <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ country_code            <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ bbox_coords             <list> [<>, <>, <>, <>, <>, <>, <>, <>, <>, ...
-    #> $ name                    <chr> "Jim Téllez", "Vinicius de Jesus", "H*...
-    #> $ location                <chr> "CIUDAD DE CAGADAS ", NA, NA, NA, NA, ...
-    #> $ description             <chr> "GOATFuckers INC. 666 \U0001f918\U0001...
-    #> $ url                     <chr> NA, NA, NA, "https://instagram.com/mir...
+    #> $ name                    <chr> "(<U+275B><U+20D8><U+0F1A><U+275C><U+20D8><U+20D8>)<U+308B><U+3063>", "\U0001f47bAlice Schwarz...
+    #> $ location                <chr> "<U+308A><U+3093><U+3054><U+770C><U+306E><U+3086><U+30FC><U+307D><U+5439><U+304D>", "A small town in Germany...
+    #> $ description             <chr> "<U+9022><U+5742><U+58EE><U+4E94><U+304C><U+4E16><U+754C>", "Liest gerne Tiernamen rück...
+    #> $ url                     <chr> NA, NA, "http://github.com/taichanne30...
     #> $ protected               <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, FAL...
-    #> $ followers_count         <int> 161, 0, 1, 245, 160, 57, 1008, 125, 12...
-    #> $ friends_count           <int> 98, 12, 6, 280, 58, 84, 1408, 668, 129...
-    #> $ listed_count            <int> 6, 0, 0, 1, 2, 0, 65, 9, 1, 3, 12, 16,...
-    #> $ statuses_count          <int> 17430, 5, 133, 28109, 57983, 1285, 409...
-    #> $ favourites_count        <int> 385, 5, 265, 9153, 52200, 930, 520, 23...
-    #> $ account_created_at      <chr> "Wed May 30 02:38:00 +0000 2012", "Tue...
+    #> $ followers_count         <int> 292, 3688, 349, 94, 58, 4251, 61, 701,...
+    #> $ friends_count           <int> 314, 804, 381, 283, 200, 440, 90, 986,...
+    #> $ listed_count            <int> 1, 145, 2, 1, 0, 68, 0, 6, 1, 1, 0, 16...
+    #> $ statuses_count          <int> 19513, 80288, 50860, 2326, 34763, 6906...
+    #> $ favourites_count        <int> 7468, 44286, 117, 22663, 19752, 33664,...
+    #> $ account_created_at      <dttm> 2013-09-16 03:10:42, 2008-09-14 11:34...
     #> $ verified                <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, FAL...
     #> $ account_lang            <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ profile_banner_url      <chr> "https://pbs.twimg.com/profile_banners...
     #> $ profile_image_url       <chr> "http://pbs.twimg.com/profile_images/1...
-    #> $ timestamp_ms            <chr> "1569980332663", "1569980332660", "156...
+    #> $ timestamp_ms            <dttm> 2019-10-02 15:55:49, 2019-10-02 15:55...
     #> $ contributors_enabled    <lgl> TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TR...
 
 ### Scaling Up
@@ -171,25 +171,69 @@ larger file obtained using `rtweet::stream_tweets()` that has been
 compressed to an 18 Mb .gz file (153 Mb uncompressed).
 
 ``` r
-big_rtweet_stream <- read_tweets("inst/example-data/api-stream.json.gz")
-nrow(big_rtweet_stream)
+rtweet_stream_path <- "inst/example-data/api-stream.json.gz"
+big_rtweet_stream <- read_tweets(rtweet_stream_path)
+
+tibble::as_tibble(big_rtweet_stream)
 ```
 
-    #> [1] 22760
+    #> # A tibble: 22,760 x 71
+    #>    user_id status_id created_at          screen_name text  source
+    #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr> 
+    #>  1 807195~ 11780078~ 2019-09-28 18:05:23 ykaoi0327   "RT ~ "<a h~
+    #>  2 114393~ 11780078~ 2019-09-28 18:05:23 yowasugi723 "@Di~ "<a h~
+    #>  3 247059~ 11780078~ 2019-09-28 18:05:23 itsauroras~ "RT ~ "<a h~
+    #>  4 822602~ 11780078~ 2019-09-28 18:05:23 Darrell894~ RT @~ "<a h~
+    #>  5 797200~ 11780078~ 2019-09-28 18:05:23 NastyWoman~ @Bra~ "<a h~
+    #>  6 110779~ 11780078~ 2019-09-28 18:05:23 DeshaunAwe~ met ~ "<a h~
+    #>  7 110441~ 11780078~ 2019-09-28 18:05:23 diamondy_u  "RT ~ "<a h~
+    #>  8 359294~ 11780078~ 2019-09-28 18:05:23 piyakat28   "RT ~ "<a h~
+    #>  9 194250~ 11780078~ 2019-09-28 18:05:23 Stgo_centro RT @~ "<a h~
+    #> 10 116013~ 11780078~ 2019-09-28 18:05:23 119lonwi_y~ RT @~ "<a h~
+    #> # ... with 22,750 more rows, and 65 more variables:
+    #> #   reply_to_status_id <chr>, reply_to_user_id <chr>,
+    #> #   reply_to_screen_name <chr>, is_quote <lgl>, is_retweeted <lgl>,
+    #> #   hashtags <list>, urls_expanded_url <list>, media_expanded_url <list>,
+    #> #   mentions_user_id <list>, mentions_screen_name <list>, lang <chr>,
+    #> #   quoted_status_id <chr>, quoted_text <chr>, quoted_created_at <dttm>,
+    #> #   quoted_source <chr>, quoted_favorite_count <int>,
+    #> #   quoted_retweet_count <int>, quoted_user_id <chr>,
+    #> #   quoted_screen_name <chr>, quoted_name <chr>,
+    #> #   quoted_followers_count <int>, quoted_friends_count <int>,
+    #> #   quoted_statuses_count <int>, quoted_location <chr>,
+    #> #   quoted_description <chr>, quoted_verified <lgl>,
+    #> #   retweet_status_id <chr>, retweet_text <chr>,
+    #> #   retweet_created_at <dttm>, retweet_source <chr>,
+    #> #   retweet_favorite_count <int>, retweet_retweet_count <int>,
+    #> #   retweet_user_id <chr>, retweet_screen_name <chr>, retweet_name <chr>,
+    #> #   retweet_followers_count <int>, retweet_friends_count <int>,
+    #> #   retweet_statuses_count <int>, retweet_location <chr>,
+    #> #   retweet_description <chr>, retweet_verified <lgl>, place_url <chr>,
+    #> #   place_name <chr>, place_full_name <chr>, place_type <chr>,
+    #> #   country <chr>, country_code <chr>, bbox_coords <list>, name <chr>,
+    #> #   location <chr>, description <chr>, url <chr>, protected <lgl>,
+    #> #   followers_count <int>, friends_count <int>, listed_count <int>,
+    #> #   statuses_count <int>, favourites_count <int>,
+    #> #   account_created_at <dttm>, verified <lgl>, account_lang <chr>,
+    #> #   profile_banner_url <chr>, profile_image_url <chr>,
+    #> #   timestamp_ms <dttm>, contributors_enabled <lgl>
 
 How long does that take?
 
 ``` r
-big_rtweet_time <- microbenchmark::microbenchmark(
-  ".153" = read_tweets("inst/example-data/api-stream.json.gz"),
+library(microbenchmark)
+
+big_rtweet_time <- microbenchmark(
+  rtweet_stream = read_tweets(rtweet_stream_path),
   times = 3
 )
+
 big_rtweet_time
 ```
 
     #> Unit: seconds
-    #>  expr      min       lq     mean   median       uq      max neval
-    #>  .153 2.091286 2.153652 2.207426 2.216018 2.265496 2.314974     3
+    #>           expr      min       lq     mean   median      uq      max neval
+    #>  rtweet_stream 2.585367 2.711411 2.765936 2.837454 2.85622 2.874986     3
 
 ### Vendor Data
 
@@ -210,83 +254,141 @@ This has three unfortunate consequences:
 `{tweetio}` solves this by parsing everything at the C++ level, but only
 returning the actual tweet data to R.
 
-``` r
-single_vendor_parsed <- read_tweets(single_vendor_file)
-nrow(single_vendor_parsed)
-```
-
-    #> [1] 94139
-
-How long does that take?
+    #> [1] "173 Mb"
 
 ``` r
-single_vendor_time <- microbenchmark::microbenchmark(
-  "1.6" = read_tweets(single_vendor_file),
-  times = 3
+single_vendor_time <- microbenchmark(
+
+  single_vendor_parsed <- read_tweets(single_vendor_file) # ********************
+  
+  , times = 1
 )
+
 single_vendor_time
 ```
 
     #> Unit: seconds
-    #>  expr      min      lq     mean   median       uq      max neval
-    #>   1.6 18.14802 18.2819 18.34454 18.41577 18.44281 18.46984     3
+    #>                                                     expr     min      lq
+    #>  single_vendor_parsed <- read_tweets(single_vendor_file) 22.7855 22.7855
+    #>     mean  median      uq     max neval
+    #>  22.7855 22.7855 22.7855 22.7855     1
 
 ### Bulk Processing
 
 While maybe not “big” data, handling millions of lines of JSON spread
-across dozens of files in R isn’t exactly a picnic. To handle this
-situation, the current implementation uses
-`future.apply::future_lapply()` (if available) to process each file in
-parallel before collapsing the resulting data frames via
-`data.table::rbindlist()`.
+across dozens of files in R isn’t exactly a picnic, but
+`read_tweets_bulk()` attempts to make this as easy as possible.
 
-`all_vendor_files` consists of 6 Gb (47 Gb uncompressed) spread across
-30 files, which we can still process using `tweetio::read_tweets()`.
+We can run `read_tweets_bulk()` either sequentially or in parallel. By
+setting `in_parallel=` to `FALSE`, it will always run sequentially,
+processing each file one at a time with `lapply()` before collapsing the
+resulting data frames via `data.table::rbindlist()`.
 
 ``` r
-bulk_parsed <- read_tweets_bulk(all_vendor_files)
-dim(bulk_parsed)
+sequential_bulk_files <- all_vendor_files[1:4]
+sequential_bulk_file_size <- sum(sapply(sequential_bulk_files, file.size))
+
+number_bytes(sequential_bulk_file_size)
 ```
 
-    #> [1] 2626381      71
-
-How long does that take?
+    #> [1] "701 Mb"
 
 ``` r
-bulk_time <- microbenchmark::microbenchmark(
-  "47" = read_tweets_bulk(all_vendor_files),
-  times = 1
+sequential_bulk_time <- microbenchmark(
+  
+  sequential_bulk_parsed <- read_tweets_bulk(sequential_bulk_files, # **********
+                                             in_parallel = FALSE)   # **********
+  
+  , times = 1
 )
-bulk_time
+
+sequential_bulk_time
 ```
 
     #> Unit: seconds
-    #>  expr     min      lq    mean  median      uq     max neval
-    #>    47 126.458 126.458 126.458 126.458 126.458 126.458     1
+    #>                                                                                         expr
+    #>  sequential_bulk_parsed <- read_tweets_bulk(sequential_bulk_files,      in_parallel = FALSE)
+    #>       min       lq     mean   median       uq      max neval
+    #>  93.25238 93.25238 93.25238 93.25238 93.25238 93.25238     1
+
+If `in_parallel=` is set to `TRUE` (the default) *and* `{future}` and
+`{future.apply}` are available, `read_tweets_bulk()` can be run in
+parallel via `future.apply::future_lapply()`.
+
+``` r
+parallel_bulk_file_size <- sum(sapply(all_vendor_files, file.size))
+
+number_bytes(parallel_bulk_file_size)
+```
+
+    #> [1] "2 Gb"
+
+``` r
+parallel_bulk_time <- microbenchmark(
+  
+  read_tweets_bulk(all_vendor_files) # *****************************************
+  
+  , times = 1
+)
+
+parallel_bulk_time
+```
+
+    #> Unit: seconds
+    #>                                expr      min       lq     mean   median
+    #>  read_tweets_bulk(all_vendor_files) 151.2653 151.2653 151.2653 151.2653
+    #>        uq      max neval
+    #>  151.2653 151.2653     1
 
 ## Benchmarks
 
 ``` r
-res <- do.call(rbind, list(big_rtweet_time, single_vendor_time, bulk_time))
+res <- microbenchmark(
+  read_tweets(all_vendor_files[[1]]),
+  read_tweets(all_vendor_files[[2]]),
+  read_tweets(all_vendor_files[[3]]),
+  read_tweets(all_vendor_files[[4]]),
+  read_tweets(all_vendor_files[[5]]),
+  read_tweets(all_vendor_files[[6]]),
+  read_tweets(all_vendor_files[[7]]),
+  read_tweets(all_vendor_files[[8]]),
+  read_tweets(all_vendor_files[[9]]),
+  read_tweets(all_vendor_files[[10]]),
+  read_tweets(all_vendor_files[[11]]),
+  read_tweets(all_vendor_files[[12]]),
+  read_tweets(all_vendor_files[[13]]),
+  read_tweets(all_vendor_files[[14]]),
+  read_tweets(all_vendor_files[[15]]),
+  
+  times = 3
+)
 
-library(dplyr)
-library(ggplot2)
+library(tidyverse)
 
-res %>%
-  mutate(file_size = paste(expr, "Gb"),
-         time = time / 1e+09,
-         `parallel?` = expr == "47") %>%
+bench_marks <- res %>% 
+  as_tibble() %>% 
+  mutate(file_size = expr %>% 
+           str_extract("(?<=\\().*(?=\\)$)") %>% 
+           map_chr(~ eval(parse(text = .x))) %>% 
+           file.size()
+           ) %>% 
+  mutate(time = time / 1e9)
+
+bench_marks %>% 
   ggplot(aes(x = file_size, y = time,
-             color = file_size, size = as.numeric(expr), shape = `parallel?`)) +
+             color = factor(file_size), size = file_size)) +
   ggbeeswarm::geom_quasirandom() +
   guides(color = FALSE, size = FALSE) +
-  labs(x = "Size (uncompressed)", y = "seconds") +
+  labs(x = ".jsonl.gz File Size", y = "seconds") +
+  scale_x_continuous(
+    labels = function(.x) number_bytes(.x, symbol = "Mb", big.mark = ",")
+  ) +
   coord_flip() +
   theme_minimal(base_size = 14, base_family = "serif") +
   theme(legend.position = "bottom")
 ```
 
-<img src="man/figures/unnamed-chunk-12-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/unnamed-chunk-13-1.png" style="display: block; margin: auto;" />
 
 Until Rtools 4.0 hits (or the
 [`simdjson`](https://github.com/lemire/simdjson) library decides to
@@ -308,9 +410,3 @@ and **R’s secret weapon**:
 Major inspiration from [{`ndjson`}](https://gitlab.com/hrbrmstr/ndjson)
 was taken, including its use of
 [`Gzstream`](https://www.cs.unc.edu/Research/compgeom/gzstream/).
-
-Parallel processing of multiple files is (currently) handled by
-[`{future}`](https://cran.r-project.org/web/packages/future/index.html)
-and
-\[`{future.apply}`\]((<https://cran.r-project.org/web/packages/future.apply/index.html>),
-if available.

@@ -104,17 +104,22 @@ dplyr::glimpse(small_rtweet_stream)
 In reality, we're more interested in handling larger data sets. Here's a larger file obtained using `rtweet::stream_tweets()` that has been compressed to an 18 Mb .gz file (153 Mb uncompressed).
 
 ```{r}
-big_rtweet_stream <- read_tweets("inst/example-data/api-stream.json.gz")
-nrow(big_rtweet_stream)
+rtweet_stream_path <- "inst/example-data/api-stream.json.gz"
+big_rtweet_stream <- read_tweets(rtweet_stream_path)
+
+tibble::as_tibble(big_rtweet_stream)
 ```
 
 How long does that take?
 
 ```{r}
-big_rtweet_time <- microbenchmark::microbenchmark(
-  ".153" = read_tweets("inst/example-data/api-stream.json.gz"),
+library(microbenchmark)
+
+big_rtweet_time <- microbenchmark(
+  rtweet_stream = read_tweets(rtweet_stream_path),
   times = 3
 )
+
 big_rtweet_time
 ```
 
@@ -133,69 +138,120 @@ This has three unfortunate consequences:
 
 ```{r, echo=FALSE}
 path_to_vendor_data <- readRDS("path_to_vendor_data.rds")
-all_vendor_files <- dir(path_to_vendor_data, pattern = "\\.jsonl\\.gz$", full.names = TRUE)
+all_vendor_files <- dir(path_to_vendor_data, 
+                        pattern = "-full-\\d{4}\\.jsonl\\.gz$", 
+                        full.names = TRUE)
 
-# 173 Mb, 1.6 Gb uncompressed
-single_vendor_file <- all_vendor_files[[1L]] 
+single_vendor_file <- all_vendor_files[[1L]]
+single_vendor_file_size <- file.size(single_vendor_file)
+
+library(scales)
+number_bytes(single_vendor_file_size)
 ```
 
 
 ```{r}
-single_vendor_parsed <- read_tweets(single_vendor_file)
-nrow(single_vendor_parsed)
-```
+single_vendor_time <- microbenchmark(
 
-How long does that take?
-
-```{r}
-single_vendor_time <- microbenchmark::microbenchmark(
-  "1.6" = read_tweets(single_vendor_file),
-  times = 3
+  single_vendor_parsed <- read_tweets(single_vendor_file) # ********************
+  
+  , times = 1
 )
+
 single_vendor_time
 ```
 
 
 ### Bulk Processing
 
-While maybe not "big" data, handling millions of lines of JSON spread across dozens of files in R isn't exactly a picnic, but `read_tweets_bulk()` attempts to make this as easy as possible. The current implementation uses `future.apply::future_lapply()` (if available) to process each file in parallel before collapsing the resulting data frames via `data.table::rbindlist()`.
+While maybe not "big" data, handling millions of lines of JSON spread across dozens of files in R isn't exactly a picnic, but `read_tweets_bulk()` attempts to make this as easy as possible.
 
-`all_vendor_files` consists of 6 Gb (47 Gb uncompressed) spread across 30 files.
+We can run `read_tweets_bulk()` either sequentially or in parallel. By setting `in_parallel=` to `FALSE`, it will always run sequentially, processing each file one at a time with `lapply()` before collapsing the resulting data frames via `data.table::rbindlist()`.
+
 
 ```{r}
-bulk_parsed <- read_tweets_bulk(all_vendor_files)
-dim(bulk_parsed)
+sequential_bulk_files <- all_vendor_files[1:4]
+sequential_bulk_file_size <- sum(sapply(sequential_bulk_files, file.size))
+
+number_bytes(sequential_bulk_file_size)
+```
+
+```{r}
+sequential_bulk_time <- microbenchmark(
+  
+  sequential_bulk_parsed <- read_tweets_bulk(sequential_bulk_files, # **********
+                                             in_parallel = FALSE)   # **********
+  
+  , times = 1
+)
+
+sequential_bulk_time
 ```
 
 
-How long does that take?
+If `in_parallel=` is set to `TRUE` (the default) _and_ `{future}` and `{future.apply}` are available, `read_tweets_bulk()` can be run in parallel via `future.apply::future_lapply()`.
 
 ```{r}
-bulk_time <- microbenchmark::microbenchmark(
-  "47" = read_tweets_bulk(all_vendor_files),
-  times = 1
+parallel_bulk_file_size <- sum(sapply(all_vendor_files, file.size))
+
+number_bytes(parallel_bulk_file_size)
+```
+
+```{r}
+parallel_bulk_time <- microbenchmark(
+  
+  read_tweets_bulk(all_vendor_files) # *****************************************
+  
+  , times = 1
 )
-bulk_time
+
+parallel_bulk_time
 ```
 
 
 ## Benchmarks
 
 ```{r}
-res <- do.call(rbind, list(big_rtweet_time, single_vendor_time, bulk_time))
+res <- microbenchmark(
+  read_tweets(all_vendor_files[[1]]),
+  read_tweets(all_vendor_files[[2]]),
+  read_tweets(all_vendor_files[[3]]),
+  read_tweets(all_vendor_files[[4]]),
+  read_tweets(all_vendor_files[[5]]),
+  read_tweets(all_vendor_files[[6]]),
+  read_tweets(all_vendor_files[[7]]),
+  read_tweets(all_vendor_files[[8]]),
+  read_tweets(all_vendor_files[[9]]),
+  read_tweets(all_vendor_files[[10]]),
+  read_tweets(all_vendor_files[[11]]),
+  read_tweets(all_vendor_files[[12]]),
+  read_tweets(all_vendor_files[[13]]),
+  read_tweets(all_vendor_files[[14]]),
+  read_tweets(all_vendor_files[[15]]),
+  
+  times = 3
+)
 
-library(dplyr)
-library(ggplot2)
+library(tidyverse)
 
-res %>%
-  mutate(file_size = paste(expr, "Gb"),
-         time = time / 1e+09,
-         `parallel?` = expr == "47") %>%
+bench_marks <- res %>% 
+  as_tibble() %>% 
+  mutate(file_size = expr %>% 
+           str_extract("(?<=\\().*(?=\\)$)") %>% 
+           map_chr(~ eval(parse(text = .x))) %>% 
+           file.size()
+           ) %>% 
+  mutate(time = time / 1e9)
+
+bench_marks %>% 
   ggplot(aes(x = file_size, y = time,
-             color = file_size, size = as.numeric(expr), shape = `parallel?`)) +
+             color = factor(file_size), size = file_size)) +
   ggbeeswarm::geom_quasirandom() +
   guides(color = FALSE, size = FALSE) +
-  labs(x = "Size (uncompressed)", y = "seconds") +
+  labs(x = ".jsonl.gz File Size", y = "seconds") +
+  scale_x_continuous(
+    labels = function(.x) number_bytes(.x, symbol = "Mb", big.mark = ",")
+  ) +
   coord_flip() +
   theme_minimal(base_size = 14, base_family = "serif") +
   theme(legend.position = "bottom")
@@ -211,6 +267,3 @@ Until Rtools 4.0 hits (or the [`simdjson`](https://github.com/lemire/simdjson) l
 `{tweetio}` uses a combination of C++ via [`{Rcpp}`](http://www.rcpp.org/), the [`rapidjson`](http://rapidjson.org/) C++ library (made available by [`{rapidjsonr}`](https://cran.r-project.org/web/packages/rapidjsonr/index.html)), and __R's secret weapon__: [`{data.table}`](https://rdatatable.gitlab.io/data.table/).
 
 Major inspiration from [{`ndjson`}](https://gitlab.com/hrbrmstr/ndjson) was taken, including its use of [`Gzstream`](https://www.cs.unc.edu/Research/compgeom/gzstream/).
-
-Parallel processing of multiple files is (currently) handled by [`{future}`](https://cran.r-project.org/web/packages/future/index.html) and [`{future.apply}`]((https://cran.r-project.org/web/packages/future.apply/index.html), if available.
-
