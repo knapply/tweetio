@@ -36,7 +36,7 @@ knitr::opts_chunk$set(
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/knapply/tweetio?branch=master&svg=true)](https://ci.appveyor.com/project/knapply/tweetio)
 [![Travis-CI Build Status](https://travis-ci.org/knapply/tweetio.svg?branch=master)](https://travis-ci.org/knapply/tweetio)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Depends](https://img.shields.io/badge/Depends-GNU_R>=3.5-blue.svg)](https://www.r-project.org/)
+[![Depends](https://img.shields.io/badge/Depends-GNU_R>=3.3-blue.svg)](https://www.r-project.org/)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](https://github.com/knapply/tweetio)
 [![HitCount](http://hits.dwyl.io/knapply/tweetio.svg)](http://hits.dwyl.io/knapply/tweetio)
 <!-- badges: end -->
@@ -244,8 +244,7 @@ bench_marks <- res %>%
   mutate(time = time / 1e9)
 
 bench_marks %>% 
-  ggplot(aes(x = file_size, y = time,
-             color = factor(file_size), size = file_size)) +
+  ggplot(aes(x = file_size, y = time, color = factor(file_size))) +
   ggbeeswarm::geom_quasirandom() +
   guides(color = FALSE, size = FALSE) +
   labs(x = ".jsonl.gz File Size", y = "seconds") +
