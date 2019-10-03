@@ -3,6 +3,6 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles: []
 urls:
-  reference: https://knapply.github.io/homophily/reference
-  article: https://knapply.github.io/homophily/articles
+  reference: https://knapply.github.io/tweetio/reference
+  article: https://knapply.github.io/tweetio/articles
 
