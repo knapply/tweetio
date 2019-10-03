@@ -72,7 +72,7 @@ You probably want to follow the page's advice and select the recommended version
 <!-- <img src="inst/www/rtools-path-checkbox.jpg" width="300" /> -->
 
 ```{r, echo=FALSE}
-knitr::include_graphics("inst/www/rtools-path-checkbox.jpg")
+knitr::include_graphics("https://raw.githubusercontent.com/knapply/tweetio/master/rtools-path-checkbox.jpg")
 ```
 
 <br>

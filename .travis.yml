@@ -2,11 +2,12 @@
 #   https://docs.travis-ci.com/user/languages/r/
 #   https://github.com/craigcitro/r-travis/wiki/Porting-to-native-R-support-in-Travis
 
-language: R
+language: r
+
 cache: packages
+
 os:
   - linux
-  - osx
 
 jobs:
   include:
