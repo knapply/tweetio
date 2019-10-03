@@ -2,11 +2,20 @@
 #   https://docs.travis-ci.com/user/languages/r/
 #   https://github.com/craigcitro/r-travis/wiki/Porting-to-native-R-support-in-Travis
 
-language: R
+language: r
+
 cache: packages
+
 os:
   - linux
   - osx
+  
+# data.table installation helper
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install llvm &&
+    export PATH="/usr/local/opt/llvm/bin:$PATH" &&
+    export LDFLAGS="-L/usr/local/opt/llvm/lib" &&
+    export CFLAGS="-I/usr/local/opt/llvm/include"; fi
 
 jobs:
   include:

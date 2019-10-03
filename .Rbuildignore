@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^\.vscode$
 ^path_to_vendor_data\.rds$
+^data-dump-path\.rds$
 ^README.Rmd$
 ^data-raw$
 ^man-roxygen$
@@ -11,4 +12,4 @@
 ^.travis.yml$
 ^codecov\.yml$
 ^appveyor\.yml$
-
+^rtools-path-checkbox\.jpg$

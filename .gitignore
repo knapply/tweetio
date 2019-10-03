@@ -4,5 +4,6 @@
 .Ruserdata
 .vscode
 path_to_vendor_data.rds
+data-dump-path.rds
 src-i386
 src-x64
