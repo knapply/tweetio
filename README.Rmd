@@ -52,13 +52,35 @@ __The [`{rtweet}`](https://rtweet.info/) package spoils R users _rotten_... in t
 2. It's more efficient to analyze than a key-value format following the raw data.
 3. It'd be a waste not to maximize compatibiltiy with tools built specifically around `{rtweet}`'s data frames.
 
-> ___You__ bring the data, `{tweetio}` gets them into R._
+> ___You__ bring the tweets, `{tweetio}` gets them into R._
 
 `{tweetio}` focuses on one thing: __going from raw tweets to `{rtweet}`-style data frames (or other useful structures) as quickly and efficiently as possible__. Whether the data came from the Twitter API, a database dump, or some other source, `{tweetio}`'s job is to get them into R.
 
 ## Installation
 
-You'll need a C++ compiler. If you're using Windows, that means [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
+You'll need a C++ compiler. You can check if you're ready to go by running the following code:
+
+```{r}
+# install.packages("pkgbuild")
+pkgbuild::check_build_tools()
+```
+
+If you don't have a compiler and you're using Windows, you'll need [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
+
+You probably want to follow the page's advice and select the recommended version, which is currently Rtools35.exe. When you're installing Rtools, you need to make sure you check the box stating “Add rtools to system PATH”. It looks something like this:
+
+<!-- <img src="inst/www/rtools-path-checkbox.jpg" width="300" /> -->
+
+```{r, echo=FALSE}
+knitr::include_graphics("inst/www/rtools-path-checkbox.jpg")
+```
+
+<br>
+
+I have needed to reboot every computer on which I've installed Rtools before I could compile an R package.
+
+Once you're done, you can install `{tweetio}`.
+
 
 ```{r, eval=FALSE}
 # install.packages("remotes")
@@ -101,14 +123,22 @@ dplyr::glimpse(small_rtweet_stream)
 
 ### Scaling Up
 
-In reality, we're more interested in handling larger data sets. Here's a larger file obtained using `rtweet::stream_tweets()` that has been compressed to an 18 Mb .gz file (153 Mb uncompressed).
+We're more interested in handling much larger data sets, like this one that was also obtained using `rtweet::stream_tweets()`. The file has been compressed to an 18 Mb .gz file (153 Mb uncompressed).
+
+Currently, `{rtweet}` may fail parsing streams because the data returned may not be valid JSON.
+
+```{r, error=TRUE}
+rtweet_stream_path <- "inst/example-data/api-stream.json.gz"
+
+rtweet::parse_stream(rtweet_stream_path)
+```
+
+This is unfortunate because I originally wanted to compare benchmarks since `{tweetio}` can handle these situations.
 
 ```{r}
-rtweet_stream_path <- "inst/example-data/api-stream.json.gz"
 big_rtweet_stream <- read_tweets(rtweet_stream_path)
-
-tibble::as_tibble(big_rtweet_stream)
 ```
+
 
 How long does that take?
 
@@ -116,7 +146,7 @@ How long does that take?
 library(microbenchmark)
 
 big_rtweet_time <- microbenchmark(
-  rtweet_stream = read_tweets(rtweet_stream_path),
+  read_tweets(rtweet_stream_path),
   times = 3
 )
 
@@ -124,136 +154,221 @@ big_rtweet_time
 ```
 
 
+
+
 ### Data Dumps
 
-People seem to love storing social media data in Elasticsearch databases, meaning that the data collected from APIs is stored inside a nested JSON object named `"doc"`. `"doc"` is typically embedded in a ton of system metadata, most of which you probably don't care about.
+Using Elasticsearch seems to be the most common practice for handling social media data at scale, but it's (unfortunately) possible that you'll need to work with data dumps.
+
+The data collected from APIs are stored inside a nested JSON object named `"doc"`. `"doc"` is typically embedded in a ton of system metadata, most of which you probably don't care about. 
+
+I've encountered two flavors of these schema:
+
+1. .jsonl: line-delimited JSON (which is nearly the same as NDJSON).
+2. .json: the complete contents of an Elasticsearch index, which is a JSON array.
+
+The .jsonl structure looks something like this:
+
+```{r, eval=FALSE, echo=FALSE}
+es_jsonl <- readLines("inst/example-data/elasticsearch-dump-example.jsonl")
+
+cat(paste0(es_jsonl, collapse = "\n"))
+```
+
+```json
+{"system_metadata_you_dont_care_about":"blahblahblah","more_metadata1":"blahblahblah","more_metadata2":"blahblahblah","more_metadata3":"blahblahblah","more_metadata4":"blahblahblah","more_metadata5":"blahblahblah","doc":{"text":"********************HERE'S THE DATA YOU ACTUALLY WANT********************","id":92108498098018010401,"id_str":"92108498098018010401"},"more_metadata6":"blahblahblah","more_metadata7":"blahblahblah","more_metadata8":"blahblahblah","more_metadata9":"blahblahblah","more_metadata10":"blahblahblah"}
+{"system_metadata_you_dont_care_about":"blahblahblah","more_metadata1":"blahblahblah","more_metadata2":"blahblahblah","more_metadata3":"blahblahblah","more_metadata4":"blahblahblah","more_metadata5":"blahblahblah","doc":{"text":"********************HERE'S THE DATA YOU ACTUALLY WANT********************","id":92108498098018010401,"id_str":"92108498098018010401"},"more_metadata6":"blahblahblah","more_metadata7":"blahblahblah","more_metadata8":"blahblahblah","more_metadata9":"blahblahblah","more_metadata10":"blahblahblah"}
+{"system_metadata_you_dont_care_about":"blahblahblah","more_metadata1":"blahblahblah","more_metadata2":"blahblahblah","more_metadata3":"blahblahblah","more_metadata4":"blahblahblah","more_metadata5":"blahblahblah","doc":{"text":"********************HERE'S THE DATA YOU ACTUALLY WANT********************","id":92108498098018010401,"id_str":"92108498098018010401"},"more_metadata6":"blahblahblah","more_metadata7":"blahblahblah","more_metadata8":"blahblahblah","more_metadata9":"blahblahblah","more_metadata10":"blahblahblah"}
+```
+
+Each line contains a single JSON object resembling the following:
+
+```{r, echo=FALSE, eval=FALSE}
+jsonlite::prettify(es_jsonl[[1]])
+```
+
+```json
+{
+    "system_metadata_you_dont_care_about": "blahblahblah",
+    "more_metadata1": "blahblahblah",
+    "more_metadata2": "blahblahblah",
+    "more_metadata3": "blahblahblah",
+    "more_metadata4": "blahblahblah",
+    "more_metadata5": "blahblahblah",
+    "doc": {
+        "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
+        "id": 92108498098018010401,
+        "id_str": "92108498098018010401"
+    },
+    "more_metadata6": "blahblahblah",
+    "more_metadata7": "blahblahblah",
+    "more_metadata8": "blahblahblah",
+    "more_metadata9": "blahblahblah",
+    "more_metadata10": "blahblahblah"
+}
+```
+
+The .json structure looks something like this:
+
+
+```{r, echo=FALSE, eval=FALSE}
+es_json <- readr::read_file("inst/example-data/elasticsearch-dump-example.json")
+jsonlite::prettify(es_json)
+```
+
+```json
+[
+    {
+        "_id": "e5daf1467d2438e31b11b44a82cbd7f5758ba5a1f1d3ecbcc6e1fc04dc9c7c4d-3016858092318",
+        "_index": "org-77f135f331153568ab7eb0e4c24623a7-default-3769a33b9e88598e38317591e2ee31c3-default-030009",
+        "_score": null,
+        "_source": {
+            "system_metadata_you_dont_care_about": "blahblahblah",
+            "more_metadata1": "blahblahblah",
+            "doc": {
+                "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
+                "id": 92108498098018010401,
+                "id_str": "92108498098018010401"
+            },
+            "more_metadata6": "blahblahblah",
+            "more_metadata7": "blahblahblah",
+            "more_metadata8": "blahblahblah",
+            "more_metadata9": "blahblahblah",
+            "more_metadata10": "blahblahblah"
+        }
+    }
+]
+```
 
 This has three unfortunate consequences:
 
-1. Packages that were purpose-built to work directly with the Twitter API aren't going to play along with your data.
+1. Packages that were purpose-built to work directly with `{rtweet}`'s data frames can't play along with your data.
 2. You're going to waste most of your time (and memory) getting data into R that you're not going to use.
 3. The data are _very_ tedious to restructure in R (lists of lists of lists of lists of lists...).
 
 `{tweetio}` solves this by parsing everything at the C++ level, but only returning the actual tweet data to R.
 
+
 ```{r, echo=FALSE}
-data_dump_path <- readRDS("data-dump-path.rds")
-all_data_dumps <- dir(data_dump_path, pattern = "-full-\\d{4}\\.jsonl\\.gz$", 
-                      full.names = TRUE)
-
-single_data_dump <- all_data_dumps[[1L]]
-single_data_dump_size <- file.size(single_data_dump)
-
-library(scales)
-number_bytes(single_data_dump_size)
+data_dump <- readRDS("data-dump-path.rds")
 ```
 
+Finally, here's a benchmark for reading a `r scales::number_bytes(file.size(data_dump))` JSON array data dump.
 
-```{r}
-single_data_dump_time <- microbenchmark(
-
-  single_data_dump_parsed <- read_tweets(single_data_dump) # ********************
-  
-  , times = 1
-)
-
-single_data_dump_time
-```
-
-
-### Bulk Processing
-
-While maybe not "big" data, handling millions of lines of JSON spread across dozens of files in R isn't exactly a picnic, but `read_tweets_bulk()` attempts to make this as easy as possible.
-
-We can run `read_tweets_bulk()` either sequentially or in parallel. By setting `in_parallel=` to `FALSE`, it will always run sequentially, processing each file one at a time with `lapply()` before collapsing the resulting data frames via `data.table::rbindlist()`.
-
-
-```{r}
-sequential_bulk_files <- all_data_dumps[1:4]
-sequential_bulk_file_size <- sum(sapply(sequential_bulk_files, file.size))
-
-number_bytes(sequential_bulk_file_size)
-```
-
-```{r}
-sequential_bulk_time <- microbenchmark(
-  
-  sequential_bulk_parsed <- read_tweets_bulk(sequential_bulk_files, # **********
-                                             in_parallel = FALSE)   # **********
-  
-  , times = 1
-)
-
-sequential_bulk_time
-```
-
-
-If `in_parallel=` is set to `TRUE` (the default) _and_ `{future}` and `{future.apply}` are available, `read_tweets_bulk()` can be run in parallel via `future.apply::future_lapply()`.
-
-```{r}
-parallel_bulk_file_size <- sum(sapply(all_data_dumps, file.size))
-
-number_bytes(parallel_bulk_file_size)
-```
-
-```{r}
-parallel_bulk_time <- microbenchmark(
-  
-  read_tweets_bulk(all_data_dumps) # *****************************************
-  
-  , times = 1
-)
-
-parallel_bulk_time
-```
-
-
-## Benchmarks
 
 ```{r}
 res <- microbenchmark(
-  read_tweets(all_data_dumps[[1]]),
-  read_tweets(all_data_dumps[[2]]),
-  read_tweets(all_data_dumps[[3]]),
-  read_tweets(all_data_dumps[[4]]),
-  read_tweets(all_data_dumps[[5]]),
-  read_tweets(all_data_dumps[[6]]),
-  read_tweets(all_data_dumps[[7]]),
-  read_tweets(all_data_dumps[[8]]),
-  read_tweets(all_data_dumps[[9]]),
-  read_tweets(all_data_dumps[[10]]),
-  read_tweets(all_data_dumps[[11]]),
-  read_tweets(all_data_dumps[[12]]),
-  read_tweets(all_data_dumps[[13]]),
-  read_tweets(all_data_dumps[[14]]),
-  read_tweets(all_data_dumps[[15]]),
+
+  read_tweets(data_dump) # *****************************************************
   
-  times = 3
+  , times = 5
 )
 
-library(tidyverse)
-
-bench_marks <- res %>% 
-  as_tibble() %>% 
-  mutate(file_size = expr %>% 
-           str_extract("(?<=\\().*(?=\\)$)") %>% 
-           map_chr(~ eval(parse(text = .x))) %>% 
-           file.size()
-           ) %>% 
-  mutate(time = time / 1e9)
-
-bench_marks %>% 
-  ggplot(aes(x = file_size, y = time, color = factor(file_size))) +
-  ggbeeswarm::geom_quasirandom() +
-  guides(color = FALSE, size = FALSE) +
-  labs(x = ".jsonl.gz File Size", y = "seconds") +
-  scale_x_continuous(
-    labels = function(.x) number_bytes(.x, symbol = "Mb", big.mark = ",")
-  ) +
-  coord_flip() +
-  theme_minimal(base_size = 14, base_family = "serif") +
-  theme(legend.position = "bottom")
+res
 ```
+
+
+<!-- ### Bulk Processing -->
+
+<!-- While maybe not "big" data, handling millions of lines of JSON spread across dozens of files in R isn't exactly a picnic, but `read_tweets_bulk()` attempts to make this as easy as possible. -->
+
+<!-- We can run `read_tweets_bulk()` either sequentially or in parallel. By setting `in_parallel=` to `FALSE`, it will always run sequentially, processing each file one at a time with `lapply()` before collapsing the resulting data frames via `data.table::rbindlist()`. -->
+
+
+<!-- ```{r} -->
+<!-- sequential_bulk_files <- all_data_dumps[1:4] -->
+<!-- sequential_bulk_file_size <- sum(sapply(sequential_bulk_files, file.size)) -->
+
+<!-- number_bytes(sequential_bulk_file_size) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- sequential_bulk_time <- microbenchmark( -->
+
+<!--   sequential_bulk_parsed <- read_tweets_bulk(sequential_bulk_files, # ********** -->
+<!--                                              in_parallel = FALSE)   # ********** -->
+
+<!--   , times = 1 -->
+<!-- ) -->
+
+<!-- sequential_bulk_time -->
+<!-- ``` -->
+
+
+<!-- If `in_parallel=` is set to `TRUE` (the default) _and_ `{future}` and `{future.apply}` are available, `read_tweets_bulk()` can be run in parallel via `future.apply::future_lapply()`. -->
+
+<!-- ```{r} -->
+<!-- parallel_bulk_file_size <- sum(sapply(all_data_dumps, file.size)) -->
+
+<!-- number_bytes(parallel_bulk_file_size) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- parallel_bulk_time <- microbenchmark( -->
+
+<!--   read_tweets_bulk(all_data_dumps) # ***************************************** -->
+
+<!--   , times = 1 -->
+<!-- ) -->
+
+<!-- parallel_bulk_time -->
+<!-- ``` -->
+
+
+<!-- ## Benchmarks -->
+
+<!-- ```{r} -->
+<!-- res <- microbenchmark( -->
+<!--   read_tweets(rtweet_stream_path), -->
+<!--   read_tweets(all_data_dumps[[1]]), -->
+<!--   read_tweets(all_data_dumps[[2]]), -->
+<!--   read_tweets(all_data_dumps[[3]]), -->
+<!--   read_tweets(all_data_dumps[[4]]), -->
+<!--   read_tweets(all_data_dumps[[5]]), -->
+<!--   read_tweets(all_data_dumps[[6]]), -->
+<!--   read_tweets(all_data_dumps[[7]]), -->
+<!--   read_tweets(all_data_dumps[[8]]), -->
+<!--   read_tweets(all_data_dumps[[9]]), -->
+<!--   read_tweets(all_data_dumps[[10]]), -->
+<!--   read_tweets(all_data_dumps[[11]]), -->
+<!--   read_tweets(all_data_dumps[[12]]), -->
+<!--   read_tweets(all_data_dumps[[13]]), -->
+<!--   read_tweets(all_data_dumps[[14]]), -->
+<!--   read_tweets(all_data_dumps[[15]]), -->
+
+<!--   times = 3 -->
+<!-- ) -->
+
+<!-- library(tidyverse) -->
+
+<!-- bench_marks <- res %>%  -->
+<!--   as_tibble() %>%  -->
+<!--   filter(expr != "read_tweets(rtweet_stream_path)") %>%  -->
+<!--   mutate(file_size = expr %>%  -->
+<!--            str_extract("(?<=\\().*(?=\\)$)") %>%  -->
+<!--            map_chr(~ eval(parse(text = .x))) %>%  -->
+<!--            file.size() -->
+<!--            ) %>%  -->
+<!--   mutate(time = time / 1e9) -->
+
+<!-- bench_marks %>% -->
+<!--   ggplot(aes(x = file_size, y = time, fill = as_factor(file_size))) + -->
+<!--   stat_ydensity(adjust = 10) + -->
+<!--   # geom_line() + -->
+
+<!--   # ggbeeswarm::geom_beeswarm() + -->
+<!--   # scale_y_log10() + -->
+<!--   # scale_x_log10() + -->
+<!--   guides(fill = FALSE, size = FALSE) + -->
+<!--   labs(x = "File Size", y = "seconds") + -->
+<!--   scale_x_continuous( -->
+<!--     labels = function(.x) number_bytes(.x, symbol = "Mb", big.mark = ",") -->
+<!--     # breaks = unique(bench_marks$time) -->
+<!--   ) + -->
+<!--   coord_flip() + -->
+<!--   theme_minimal(base_size = 14, base_family = "serif") + -->
+<!--   theme(legend.position = "bottom") -->
+<!-- ``` -->
 
 
 Until Rtools 4.0 hits (or the [`simdjson`](https://github.com/lemire/simdjson) library decides to [relax its C++17 requirement](https://github.com/lemire/simdjson/issues/307)), I'm not sure how we can go much faster while maintaining cross-platform compatibility. That said, if C++ is your mother tongue (and you see room for optimization), please don't hesitate to contribute.
