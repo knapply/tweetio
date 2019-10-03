@@ -31,4 +31,20 @@ test_that("detecting data type works", {
     nrow(read_tweets(temp_file)),
     0
   )
+  
+  
+  nested_doc <- '[{"junk":[],"doc":{"kind":"test"}},{"junk":[],"doc":{"kind":"test"}}]'
+  write(nested_doc, temp_file)
+  expect_equal(
+    nrow(read_tweets(temp_file)),
+    0
+  )
+  
+  nested_doc <- '{"junk":[],"doc":{"kind":"test"}}.'
+  write(nested_doc, temp_file)
+  expect_error(
+    nrow(read_tweets(temp_file)),
+    "parsing error"
+  )
+  
 })
