@@ -9,7 +9,7 @@ Authors@R:
 Description: 
     `{tweetio}`'s goal is to go from raw tweets to `{rtweet}`-style data frames 
     as fast as possible, whether or not the data came from the Twitter API, a 
-    third-party vendor, or some other library.
+    database dump, or some other library.
 License: GPL-3 + file LICENSE
 Depends: R (>= 3.3)
 SystemRequirements: zlib, C++11
