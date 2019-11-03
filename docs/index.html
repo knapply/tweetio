@@ -14,7 +14,7 @@
 <meta property="og:description" content="
     `{tweetio}`'s goal is to go from raw tweets to `{rtweet}`-style data frames 
     as fast as possible, whether or not the data came from the Twitter API, a 
-    third-party vendor, or some other library.">
+    database dump, or some other library.">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tweetio</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2</span>
       </span>
     </div>
 
@@ -89,6 +89,48 @@
 <!-- badges: start -->
 
 </div>
+<div id="progress" class="section level1">
+<h1 class="hasAnchor">
+<a href="#progress" class="anchor"></a>Progress</h1>
+<div id="supported-data-inputs" class="section level3">
+<h3 class="hasAnchor">
+<a href="#supported-data-inputs" class="anchor"></a>Supported Data Inputs</h3>
+<ul>
+<li>
+<input type="checkbox" disabled checked>
+Twitter API streams: .json, .json.gz</li>
+<li>
+<input type="checkbox" disabled checked>
+API to Elasticsearch data dump (JSON Array): .json, .json.gz</li>
+<li>
+<input type="checkbox" disabled checked>
+API to Elasticsearch data dump (line-delimited JSON): .jsonl, .jsonl.gz</li>
+</ul>
+</div>
+<div id="supported-data-outputs" class="section level3">
+<h3 class="hasAnchor">
+<a href="#supported-data-outputs" class="anchor"></a>Supported Data Outputs</h3>
+<ul>
+<li>
+<input type="checkbox" disabled checked>
+.graphml, currently available in <a href="https://knapply.github.io/tweetgraph/"><code>{tweetgraph}</code></a>
+</li>
+<li>
+<input type="checkbox" disabled>
+CSV (will likely be CSVY once <code>{data.table}</code>’s <code>fread(yaml = TRUE)</code> feature stabilizes)</li>
+</ul>
+</div>
+<div id="extras" class="section level3">
+<h3 class="hasAnchor">
+<a href="#extras" class="anchor"></a>Extras</h3>
+<ul>
+<li>
+<input type="checkbox" disabled checked>
+Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_sf()</a></code>
+</li>
+</ul>
+</div>
+</div>
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
@@ -102,56 +144,27 @@
 <blockquote>
 <p><em><strong>You</strong> bring the tweets, <code>{tweetio}</code> gets them into R.</em></p>
 </blockquote>
-<p><code>{tweetio}</code> focuses on one thing: <strong>going from raw tweets to <code>{rtweet}</code>-style data frames (or other useful structures) as quickly and efficiently as possible</strong>. Whether the data came from the Twitter API, a database dump, or some other source, <code>{tweetio}</code>’s job is to get them into R.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<p><code>{tweetio}</code> (mainly) focuses on one thing: <strong>going from raw tweets to <code>{rtweet}</code>-style data frames (or other useful structures) as quickly and efficiently as possible</strong>. Whether the data came from the Twitter API, a database dump, or some other source, <code>{tweetio}</code>’s job is to get them into R.</p>
+</div>
+<div id="installation" class="section level1">
+<h1 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h1>
 <p>You’ll need a C++ compiler. You can check if you’re ready to go by running the following code:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># install.packages("pkgbuild")</span></a>
 <a class="sourceLine" id="cb1-2" title="2">pkgbuild<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/pkgbuild/man/has_build_tools.html">check_build_tools</a></span>()</a></code></pre></div>
-<p>If you don’t have a compiler and you’re using Windows, you’ll need <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a>.</p>
-<p>You probably want to follow the page’s advice and select the recommended version, which is currently Rtools35.exe. When you’re installing Rtools, you need to make sure you check the box stating “Add rtools to system PATH”. It looks something like this:</p>
-<!-- <img src="inst/www/rtools-path-checkbox.jpg" width="300" /> -->
-<p><img src="https://raw.githubusercontent.com/knapply/tweetio/master/rtools-path-checkbox.jpg" style="display: block; margin: auto;"></p>
-<p><br></p>
+<p>If you’re using Windows, you’ll need <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a>.</p>
+<p>You probably want to follow the page’s advice and select the recommended version, which is currently Rtools35.exe. When you’re installing Rtools, you need to make sure you check the box stating “Add rtools to system PATH”.</p>
 <p>I have needed to reboot every computer on which I’ve installed Rtools before I could compile an R package.</p>
 <p>Once you’re done, you can install <code>{tweetio}</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># install.packages("remotes")</span></a>
 <a class="sourceLine" id="cb2-2" title="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"knapply/tweetio"</span>)</a></code></pre></div>
 </div>
-<div id="supported-data-inputs" class="section level2">
+<div id="usage" class="section level1">
+<h1 class="hasAnchor">
+<a href="#usage" class="anchor"></a>Usage</h1>
+<div id="simple-example" class="section level2">
 <h2 class="hasAnchor">
-<a href="#supported-data-inputs" class="anchor"></a>Supported Data Inputs</h2>
-<ul>
-<li>
-<input type="checkbox" disabled checked>
-Twitter API streams: .json, .json.gz</li>
-<li>
-<input type="checkbox" disabled checked>
-API to Elasticsearch data dump (JSON Array): .json, .json.gz</li>
-<li>
-<input type="checkbox" disabled checked>
-API to Elasticsearch data dump (line-delimited JSON): .jsonl, .jsonl.gz</li>
-</ul>
-</div>
-<div id="supported-data-outputs" class="section level2">
-<h2 class="hasAnchor">
-<a href="#supported-data-outputs" class="anchor"></a>Supported Data Outputs</h2>
-<ul>
-<li>
-<input type="checkbox" disabled>
-CSV</li>
-<li>
-<input type="checkbox" disabled>
-.graphml via <a href="https://knapply.github.io/tweetgraph/"><code>{tweetgraph}</code></a> integration</li>
-</ul>
-</div>
-<div id="usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
-<div id="simple-example" class="section level3">
-<h3 class="hasAnchor">
-<a href="#simple-example" class="anchor"></a>Simple Example</h3>
+<a href="#simple-example" class="anchor"></a>Simple Example</h2>
 <p>First, we’ll save a stream of tweets using <code><a href="https://rdrr.io/pkg/rtweet/man/stream_tweets.html">rtweet::stream_tweets()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">temp_file &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(<span class="dt">fileext =</span> <span class="st">".json"</span>)</a>
 <a class="sourceLine" id="cb3-2" title="2">rtweet<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rtweet/man/stream_tweets.html">stream_tweets</a></span>(<span class="dt">timeout =</span> <span class="dv">15</span>, <span class="dt">parse =</span> <span class="ot">FALSE</span>, <span class="dt">file_name =</span> temp_file)</a></code></pre></div>
@@ -160,83 +173,85 @@ CSV</li>
 <a class="sourceLine" id="cb4-2" title="2"></a>
 <a class="sourceLine" id="cb4-3" title="3">small_rtweet_stream &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_tweets.html">read_tweets</a></span>(temp_file)</a>
 <a class="sourceLine" id="cb4-4" title="4">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(small_rtweet_stream)</a></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co">#&gt; Rows: 554</span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt; Columns: 71</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt; $ user_id                 &lt;chr&gt; "1143573668460548098", "11329778618185...</span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; $ status_id               &lt;chr&gt; "1179818162914676736", "11798181629146...</span></a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt; $ created_at              &lt;dttm&gt; 2019-10-03 17:59:04, 2019-10-03 17:59...</span></a>
-<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt; $ screen_name             &lt;chr&gt; "mkme_1201", "oh_zard", "hideringo5", ...</span></a>
-<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt; $ text                    &lt;chr&gt; "&lt;U+9244&gt;&lt;U+62F3&gt;&lt;U+306E&gt;&lt;U+30CE&gt;&lt;U+30D3&gt;&lt;U+306F&gt;&lt;U+3044&gt;&lt;U+3064&gt;&lt;U+898B&gt;&lt;U+3066&gt;&lt;U+3082&gt;&lt;U+30A8&gt;&lt;U+30EC&gt;&lt;U+30AB&gt;&lt;U+30B7&gt;&lt;U+306E&gt;&lt;U+30DF&gt;&lt;U+30E4&gt;&lt;U+30B8&gt;&lt;U+306B&gt;&lt;U+898B&gt;&lt;U+3048&gt;&lt;U+308B&gt;", "RT @kamich...</span></a>
-<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt; $ source                  &lt;chr&gt; "&lt;a href=\"https://about.twitter.com/p...</span></a>
-<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt; $ reply_to_status_id      &lt;chr&gt; NA, NA, NA, NA, "1179742129897127937",...</span></a>
-<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt; $ reply_to_user_id        &lt;chr&gt; NA, NA, NA, NA, "1046743792051605505",...</span></a>
-<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt; $ reply_to_screen_name    &lt;chr&gt; NA, NA, NA, NA, "Lien_important", "Ned...</span></a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co">#&gt; Observations: 561</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt; Variables: 73</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt; $ user_id                 &lt;chr&gt; "1588404090", "3187206246", "338056507...</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; $ status_id               &lt;chr&gt; "1190817297335640064", "11908172973439...</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt; $ created_at              &lt;dttm&gt; 2019-11-03 02:25:42, 2019-11-03 02:25...</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt; $ screen_name             &lt;chr&gt; "lllllllllllllt1", "Szgmr_Ren_C_bot", ...</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt; $ text                    &lt;chr&gt; "139", "&lt;U+53CD&gt;&lt;U+6B63&gt;&lt;U+4E0D&gt;&lt;U+7BA1&gt;&lt;U+600E&gt;&lt;U+9EBC&gt;&lt;U+8AAA&gt;&lt;U+90FD&gt;&lt;U+662F&gt;&lt;U+4F60&gt;&lt;U+8F38&gt;&lt;U+4E86&gt;", "@MiraCo_D &lt;U+30DF&gt;&lt;U+30E9&gt;&lt;U+30B3&gt;&lt;U+6C0F&gt;...</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt; $ source                  &lt;chr&gt; "&lt;a href=\"http://twittbot.net/\" rel=...</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt; $ reply_to_status_id      &lt;chr&gt; NA, NA, "1190814273695387648", NA, NA,...</span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt; $ reply_to_user_id        &lt;chr&gt; NA, NA, "973172241138462721", NA, NA, ...</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt; $ reply_to_screen_name    &lt;chr&gt; NA, NA, "MiraCo_D", NA, NA, NA, NA, NA...</span></a>
 <a class="sourceLine" id="cb5-12" title="12"><span class="co">#&gt; $ is_quote                &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FAL...</span></a>
 <a class="sourceLine" id="cb5-13" title="13"><span class="co">#&gt; $ is_retweeted            &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FAL...</span></a>
-<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt; $ hashtags                &lt;list&gt; [&lt;&gt;, "MusicBNK48", &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;...</span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt; $ hashtags                &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, ...</span></a>
 <a class="sourceLine" id="cb5-15" title="15"><span class="co">#&gt; $ urls_expanded_url       &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, ...</span></a>
-<a class="sourceLine" id="cb5-16" title="16"><span class="co">#&gt; $ media_expanded_url      &lt;list&gt; [&lt;&gt;, "https://twitter.com/kamicherpra...</span></a>
-<a class="sourceLine" id="cb5-17" title="17"><span class="co">#&gt; $ mentions_user_id        &lt;list&gt; [&lt;&gt;, "945170875745103875", &lt;"89008498...</span></a>
-<a class="sourceLine" id="cb5-18" title="18"><span class="co">#&gt; $ mentions_screen_name    &lt;list&gt; [&lt;&gt;, "kamicherprang", &lt;"yasagresnipe0...</span></a>
-<a class="sourceLine" id="cb5-19" title="19"><span class="co">#&gt; $ lang                    &lt;chr&gt; "ja", "th", "ja", "ja", "ja", "fa", "t...</span></a>
-<a class="sourceLine" id="cb5-20" title="20"><span class="co">#&gt; $ quoted_status_id        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-21" title="21"><span class="co">#&gt; $ quoted_text             &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-22" title="22"><span class="co">#&gt; $ quoted_created_at       &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, N...</span></a>
-<a class="sourceLine" id="cb5-23" title="23"><span class="co">#&gt; $ quoted_source           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-24" title="24"><span class="co">#&gt; $ quoted_favorite_count   &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-25" title="25"><span class="co">#&gt; $ quoted_retweet_count    &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-26" title="26"><span class="co">#&gt; $ quoted_user_id          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-27" title="27"><span class="co">#&gt; $ quoted_screen_name      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-28" title="28"><span class="co">#&gt; $ quoted_name             &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-29" title="29"><span class="co">#&gt; $ quoted_followers_count  &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-30" title="30"><span class="co">#&gt; $ quoted_friends_count    &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-31" title="31"><span class="co">#&gt; $ quoted_statuses_count   &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-32" title="32"><span class="co">#&gt; $ quoted_location         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-33" title="33"><span class="co">#&gt; $ quoted_description      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-34" title="34"><span class="co">#&gt; $ quoted_verified         &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TR...</span></a>
-<a class="sourceLine" id="cb5-35" title="35"><span class="co">#&gt; $ retweet_status_id       &lt;chr&gt; NA, "1179793217031557120", "1170885050...</span></a>
-<a class="sourceLine" id="cb5-36" title="36"><span class="co">#&gt; $ retweet_text            &lt;chr&gt; NA, "#MusicBNK48 &lt;U+0E1E&gt;&lt;U+0E48&gt;&lt;U+0E2D&gt;&lt;U+0E41&gt;&lt;U+0E21&gt;&lt;U+0E48&gt;&lt;U+0E1E&gt;&lt;U+0E35&gt;&lt;U+0E48&gt;&lt;U+0E19&gt;&lt;U+0E49&gt;&lt;U+0E2D&gt;&lt;U+0E07&gt;!!!! &lt;U+0E21&gt;&lt;U+0E32&gt;&lt;U+0E14&gt;...</span></a>
-<a class="sourceLine" id="cb5-37" title="37"><span class="co">#&gt; $ retweet_created_at      &lt;dttm&gt; NA, 2019-10-03 16:19:57, 2019-09-09 0...</span></a>
-<a class="sourceLine" id="cb5-38" title="38"><span class="co">#&gt; $ retweet_source          &lt;chr&gt; NA, "&lt;a href=\"http://twitter.com/down...</span></a>
-<a class="sourceLine" id="cb5-39" title="39"><span class="co">#&gt; $ retweet_favorite_count  &lt;int&gt; NA, 20, 276, NA, NA, NA, 244, 39989, N...</span></a>
-<a class="sourceLine" id="cb5-40" title="40"><span class="co">#&gt; $ retweet_retweet_count   &lt;int&gt; NA, 25, 36, NA, NA, NA, 966, 5077, NA,...</span></a>
-<a class="sourceLine" id="cb5-41" title="41"><span class="co">#&gt; $ retweet_user_id         &lt;chr&gt; NA, "945170875745103875", "89008498336...</span></a>
-<a class="sourceLine" id="cb5-42" title="42"><span class="co">#&gt; $ retweet_screen_name     &lt;chr&gt; NA, "kamicherprang", "yasagresnipe025"...</span></a>
-<a class="sourceLine" id="cb5-43" title="43"><span class="co">#&gt; $ retweet_name            &lt;chr&gt; NA, "Bask \U0001f340 #&lt;U+0E44&gt;&lt;U+0E2D&gt;&lt;U+0E19&gt;&lt;U+0E49&gt;&lt;U+0E2D&gt;&lt;U+0E07&gt;&lt;U+0E43&gt;&lt;U+0E08&gt;&lt;U+0E40&gt;&lt;U+0E22&gt;&lt;U+0E47&gt;&lt;U+0E19&gt;!", ...</span></a>
-<a class="sourceLine" id="cb5-44" title="44"><span class="co">#&gt; $ retweet_followers_count &lt;int&gt; NA, 323, 516, NA, NA, NA, 81768, 18455...</span></a>
-<a class="sourceLine" id="cb5-45" title="45"><span class="co">#&gt; $ retweet_friends_count   &lt;int&gt; NA, 323, 516, NA, NA, NA, 81768, 18455...</span></a>
-<a class="sourceLine" id="cb5-46" title="46"><span class="co">#&gt; $ retweet_statuses_count  &lt;int&gt; NA, 21408, 18788, NA, NA, NA, 62223, 2...</span></a>
-<a class="sourceLine" id="cb5-47" title="47"><span class="co">#&gt; $ retweet_location        &lt;chr&gt; NA, "&lt;U+0E1B&gt;&lt;U+0E23&gt;&lt;U+0E30&gt;&lt;U+0E40&gt;&lt;U+0E17&gt;&lt;U+0E28&gt;&lt;U+0E44&gt;&lt;U+0E17&gt;&lt;U+0E22&gt;", "&lt;U+65E5&gt;&lt;U+672C&gt; &lt;U+6771&gt;&lt;U+4EAC&gt;", NA, NA, NA, ...</span></a>
-<a class="sourceLine" id="cb5-48" title="48"><span class="co">#&gt; $ retweet_description     &lt;chr&gt; NA, "&lt;U+0E0A&gt;&lt;U+0E2D&gt;&lt;U+0E1A&gt;&lt;U+0E1F&gt;&lt;U+0E31&gt;&lt;U+0E07&gt;&lt;U+0E40&gt;&lt;U+0E1E&gt;&lt;U+0E25&gt;&lt;U+0E07&gt; &lt;U+0E1E&gt;&lt;U+0E2D&gt;&lt;U+0E46&gt;&lt;U+0E01&gt;&lt;U+0E31&gt;&lt;U+0E1A&gt;&lt;U+0E17&gt;&lt;U+0E35&gt;&lt;U+0E48&gt;&lt;U+0E0A&gt;&lt;U+0E2D&gt;&lt;U+0E1A&gt;&lt;U+0E04&gt;&lt;U+0E19&gt;&lt;U+0E19&gt;&lt;U+0E48&gt;&lt;U+0E32&gt;&lt;U+0E23&gt;&lt;U+0E31&gt;&lt;U+0E01&gt;\n...</span></a>
-<a class="sourceLine" id="cb5-49" title="49"><span class="co">#&gt; $ retweet_verified        &lt;lgl&gt; TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, ...</span></a>
-<a class="sourceLine" id="cb5-50" title="50"><span class="co">#&gt; $ place_url               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-51" title="51"><span class="co">#&gt; $ place_name              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-52" title="52"><span class="co">#&gt; $ place_full_name         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-53" title="53"><span class="co">#&gt; $ place_type              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-54" title="54"><span class="co">#&gt; $ country                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-55" title="55"><span class="co">#&gt; $ country_code            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-56" title="56"><span class="co">#&gt; $ bbox_coords             &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, ...</span></a>
-<a class="sourceLine" id="cb5-57" title="57"><span class="co">#&gt; $ name                    &lt;chr&gt; "&lt;U+30E2&gt;&lt;U+30AF&gt;&lt;U+30E1&gt;", "&lt;U+0E40&gt;&lt;U+0E0A&gt;&lt;U+0E2A&gt;&lt;U+0E40&gt;&lt;U+0E15&gt;&lt;U+0E2D&gt;&lt;U+0E23&gt;&lt;U+0E4C&gt;&lt;U+0E1C&gt;&lt;U+0E39&gt;&lt;U+0E49&gt;&lt;U+0E23&gt;&lt;U+0E48&gt;&lt;U+0E27&gt;&lt;U+0E07&gt;&lt;U+0E23&gt;&lt;U+0E31&gt;&lt;U+0E1A&gt;", "&lt;U+3072&gt;&lt;U+3067&gt;&lt;U+308A&gt;&lt;U+30FC&gt;&lt;U+306C&gt;", ...</span></a>
-<a class="sourceLine" id="cb5-58" title="58"><span class="co">#&gt; $ location                &lt;chr&gt; NA, NA, "shinjuku Tokyo", "&lt;U+4EAC&gt;&lt;U+90FD&gt;", NA, NA...</span></a>
-<a class="sourceLine" id="cb5-59" title="59"><span class="co">#&gt; $ description             &lt;chr&gt; "&lt;U+99AC&gt;&lt;U+9E7F&gt;&lt;U+3081&gt;&lt;U+3001&gt;&lt;U+3053&gt;&lt;U+3063&gt;&lt;U+3061&gt;&lt;U+304C&gt;&lt;U+672C&gt;&lt;U+7269&gt;&lt;U+3060&gt;!\n&lt;U+6210&gt;&lt;U+4EBA&gt;&lt;U+6E08&gt;&lt;U+307F&gt;&lt;U+5287&gt;&lt;U+3059&gt;&lt;U+308B&gt;&lt;U+30DE&gt;&lt;U+30F3&gt; &lt;U+6B4C&gt;&lt;U+3082&gt;&lt;U+597D&gt;&lt;U+304D&gt; \n&lt;U+306A&gt;&lt;U+304A&gt;&lt;U+5168&gt;&lt;U+3066&gt;&lt;U+81EA&gt;&lt;U+5DF1&gt;...</span></a>
-<a class="sourceLine" id="cb5-60" title="60"><span class="co">#&gt; $ url                     &lt;chr&gt; "https://love-letter.club/to/mkme_1201...</span></a>
-<a class="sourceLine" id="cb5-61" title="61"><span class="co">#&gt; $ protected               &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FAL...</span></a>
-<a class="sourceLine" id="cb5-62" title="62"><span class="co">#&gt; $ followers_count         &lt;int&gt; 91, 2, 227, 1078, 416, 467, 343, 113, ...</span></a>
-<a class="sourceLine" id="cb5-63" title="63"><span class="co">#&gt; $ friends_count           &lt;int&gt; 89, 19, 248, 1299, 865, 196, 119, 248,...</span></a>
-<a class="sourceLine" id="cb5-64" title="64"><span class="co">#&gt; $ listed_count            &lt;int&gt; 1, 0, 8, 0, 40, 7, 17, 0, 18, 0, 1, 0,...</span></a>
-<a class="sourceLine" id="cb5-65" title="65"><span class="co">#&gt; $ statuses_count          &lt;int&gt; 2274, 1823, 9513, 12781, 42639, 5561, ...</span></a>
-<a class="sourceLine" id="cb5-66" title="66"><span class="co">#&gt; $ favourites_count        &lt;int&gt; 1351, 2206, 4815, 4414, 33849, 18868, ...</span></a>
-<a class="sourceLine" id="cb5-67" title="67"><span class="co">#&gt; $ account_created_at      &lt;dttm&gt; 2019-06-25 17:36:23, 2019-05-27 11:52...</span></a>
-<a class="sourceLine" id="cb5-68" title="68"><span class="co">#&gt; $ verified                &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FAL...</span></a>
-<a class="sourceLine" id="cb5-69" title="69"><span class="co">#&gt; $ account_lang            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-70" title="70"><span class="co">#&gt; $ profile_banner_url      &lt;chr&gt; "https://pbs.twimg.com/profile_banners...</span></a>
-<a class="sourceLine" id="cb5-71" title="71"><span class="co">#&gt; $ profile_image_url       &lt;chr&gt; "http://pbs.twimg.com/profile_images/1...</span></a>
-<a class="sourceLine" id="cb5-72" title="72"><span class="co">#&gt; $ timestamp_ms            &lt;dttm&gt; 2019-10-03 17:59:04, 2019-10-03 17:59...</span></a>
-<a class="sourceLine" id="cb5-73" title="73"><span class="co">#&gt; $ contributors_enabled    &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TR...</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-16" title="16"><span class="co">#&gt; $ media_expanded_url      &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, "https://twitter.com/Dek...</span></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="co">#&gt; $ media_url               &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, "http://pbs.twimg.com/me...</span></a>
+<a class="sourceLine" id="cb5-18" title="18"><span class="co">#&gt; $ media_type              &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, "photo", &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;,...</span></a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="co">#&gt; $ mentions_user_id        &lt;list&gt; [&lt;&gt;, &lt;&gt;, "973172241138462721", "10724...</span></a>
+<a class="sourceLine" id="cb5-20" title="20"><span class="co">#&gt; $ mentions_screen_name    &lt;list&gt; [&lt;&gt;, &lt;&gt;, "MiraCo_D", "Dekopon_56", "M...</span></a>
+<a class="sourceLine" id="cb5-21" title="21"><span class="co">#&gt; $ lang                    &lt;chr&gt; "und", "zh", "ja", "ja", "in", "es", "...</span></a>
+<a class="sourceLine" id="cb5-22" title="22"><span class="co">#&gt; $ quoted_status_id        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-23" title="23"><span class="co">#&gt; $ quoted_text             &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-24" title="24"><span class="co">#&gt; $ quoted_created_at       &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, N...</span></a>
+<a class="sourceLine" id="cb5-25" title="25"><span class="co">#&gt; $ quoted_source           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-26" title="26"><span class="co">#&gt; $ quoted_favorite_count   &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-27" title="27"><span class="co">#&gt; $ quoted_retweet_count    &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-28" title="28"><span class="co">#&gt; $ quoted_user_id          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-29" title="29"><span class="co">#&gt; $ quoted_screen_name      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-30" title="30"><span class="co">#&gt; $ quoted_name             &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-31" title="31"><span class="co">#&gt; $ quoted_followers_count  &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-32" title="32"><span class="co">#&gt; $ quoted_friends_count    &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-33" title="33"><span class="co">#&gt; $ quoted_statuses_count   &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-34" title="34"><span class="co">#&gt; $ quoted_location         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-35" title="35"><span class="co">#&gt; $ quoted_description      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-36" title="36"><span class="co">#&gt; $ quoted_verified         &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TR...</span></a>
+<a class="sourceLine" id="cb5-37" title="37"><span class="co">#&gt; $ retweet_status_id       &lt;chr&gt; NA, NA, NA, "1172297824727257089", NA,...</span></a>
+<a class="sourceLine" id="cb5-38" title="38"><span class="co">#&gt; $ retweet_text            &lt;chr&gt; NA, NA, NA, "&lt;U+4FDD&gt;&lt;U+80B2&gt;&lt;U+58EB&gt;&lt;U+5B9F&gt;&lt;U+9332&gt; &lt;U+3067&gt;&lt;U+3053&gt;&lt;U+5148&gt;&lt;U+751F&gt;\n\n&lt;U+7B2C&gt;100&lt;U+8A71&gt; &lt;U+53EF&gt;&lt;U+611B&gt;&lt;U+3044&gt;&lt;U+3093&gt;&lt;U+3060&gt;...</span></a>
+<a class="sourceLine" id="cb5-39" title="39"><span class="co">#&gt; $ retweet_created_at      &lt;dttm&gt; NA, NA, NA, 2019-09-12 23:55:56, NA, ...</span></a>
+<a class="sourceLine" id="cb5-40" title="40"><span class="co">#&gt; $ retweet_source          &lt;chr&gt; NA, NA, NA, "&lt;a href=\"http://twitter....</span></a>
+<a class="sourceLine" id="cb5-41" title="41"><span class="co">#&gt; $ retweet_favorite_count  &lt;int&gt; NA, NA, NA, 81037, NA, NA, 270, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-42" title="42"><span class="co">#&gt; $ retweet_retweet_count   &lt;int&gt; NA, NA, NA, 14082, NA, NA, 296, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-43" title="43"><span class="co">#&gt; $ retweet_user_id         &lt;chr&gt; NA, NA, NA, "1072433147478913025", NA,...</span></a>
+<a class="sourceLine" id="cb5-44" title="44"><span class="co">#&gt; $ retweet_screen_name     &lt;chr&gt; NA, NA, NA, "Dekopon_56", NA, NA, "Poi...</span></a>
+<a class="sourceLine" id="cb5-45" title="45"><span class="co">#&gt; $ retweet_name            &lt;chr&gt; NA, NA, NA, "&lt;U+3067&gt;&lt;U+3053&gt;&lt;U+307D&gt;&lt;U+3093&gt;&lt;U+543E&gt;&lt;U+90CE&gt;@&lt;U+300C&gt;&lt;U+5B9F&gt;&lt;U+9332&gt; &lt;U+4FDD&gt;&lt;U+80B2&gt;&lt;U+58EB&gt;&lt;U+3067&gt;&lt;U+3053&gt;&lt;U+5148&gt;&lt;U+751F&gt;&lt;U+300D&gt; &lt;U+66F8&gt;&lt;U+7C4D&gt;&lt;U+8CA9&gt;&lt;U+58F2&gt;&lt;U+4E2D&gt;...</span></a>
+<a class="sourceLine" id="cb5-46" title="46"><span class="co">#&gt; $ retweet_followers_count &lt;int&gt; NA, NA, NA, 260909, NA, NA, 4273, NA, ...</span></a>
+<a class="sourceLine" id="cb5-47" title="47"><span class="co">#&gt; $ retweet_friends_count   &lt;int&gt; NA, NA, NA, 260909, NA, NA, 4273, NA, ...</span></a>
+<a class="sourceLine" id="cb5-48" title="48"><span class="co">#&gt; $ retweet_statuses_count  &lt;int&gt; NA, NA, NA, 2659, NA, NA, 101268, NA, ...</span></a>
+<a class="sourceLine" id="cb5-49" title="49"><span class="co">#&gt; $ retweet_location        &lt;chr&gt; NA, NA, NA, NA, NA, NA, "S&lt;U+5E02&gt;&lt;U+675C&gt;&lt;U+738B&gt;&lt;U+753A&gt;", NA, N...</span></a>
+<a class="sourceLine" id="cb5-50" title="50"><span class="co">#&gt; $ retweet_description     &lt;chr&gt; NA, NA, NA, "&lt;U+7D75&gt;&lt;U+3092&gt;&lt;U+63CF&gt;&lt;U+304F&gt;&lt;U+3053&gt;&lt;U+3068&gt;&lt;U+3068&gt;&lt;U+3001&gt;&lt;U+6F2B&gt;&lt;U+753B&gt;&lt;U+3001&gt;&lt;U+6B74&gt;&lt;U+53F2&gt;&lt;U+3001&gt;&lt;U+6620&gt;&lt;U+753B&gt;&lt;U+304C&gt;&lt;U+597D&gt;&lt;U+304D&gt;&lt;U+306A&gt;&lt;U+3086&gt;&lt;U+308B&gt;&lt;U+3086&gt;&lt;U+308B&gt;&lt;U+4EBA&gt;...</span></a>
+<a class="sourceLine" id="cb5-51" title="51"><span class="co">#&gt; $ retweet_verified        &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, F...</span></a>
+<a class="sourceLine" id="cb5-52" title="52"><span class="co">#&gt; $ place_url               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-53" title="53"><span class="co">#&gt; $ place_name              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-54" title="54"><span class="co">#&gt; $ place_full_name         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-55" title="55"><span class="co">#&gt; $ place_type              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-56" title="56"><span class="co">#&gt; $ country                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-57" title="57"><span class="co">#&gt; $ country_code            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-58" title="58"><span class="co">#&gt; $ bbox_coords             &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, ...</span></a>
+<a class="sourceLine" id="cb5-59" title="59"><span class="co">#&gt; $ name                    &lt;chr&gt; "&lt;U+3059&gt;&lt;U+3067&gt;&lt;U+308F&gt;&lt;U+306E&gt;", "&lt;U+96C0&gt;&lt;U+68EE&gt;&lt;U+84EE&gt;", "&lt;U+30D1&gt;&lt;U+30AA&gt;&lt;U+30FC&gt; 100%(&lt;U+4FEE&gt;&lt;U+884C&gt;&lt;U+306E&gt;&lt;U+8EAB&gt;)\U0001f9...</span></a>
+<a class="sourceLine" id="cb5-60" title="60"><span class="co">#&gt; $ location                &lt;chr&gt; NA, "FooFighter&lt;U+7E3D&gt;&lt;U+90E8&gt;", "&lt;U+5343&gt;&lt;U+8449&gt;&lt;U+770C&gt;", NA, "HIRING...</span></a>
+<a class="sourceLine" id="cb5-61" title="61"><span class="co">#&gt; $ description             &lt;chr&gt; "&lt;U+270C&gt;('&lt;U+03C9&gt;'&lt;U+270C&gt; )&lt;U+4E09&gt;&lt;U+270C&gt;('&lt;U+03C9&gt;')&lt;U+270C&gt;&lt;U+4E09&gt;( &lt;U+270C&gt;'&lt;U+03C9&gt;')&lt;U+270C&gt;&lt;U+697D&gt;&lt;U+3057&gt;&lt;U+3044&gt;!!", "&lt;U+300C&gt;&lt;U+5361&gt;&lt;U+7247&gt;...</span></a>
+<a class="sourceLine" id="cb5-62" title="62"><span class="co">#&gt; $ url                     &lt;chr&gt; "http://maimai.sega.jp/index.shtml", N...</span></a>
+<a class="sourceLine" id="cb5-63" title="63"><span class="co">#&gt; $ protected               &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FAL...</span></a>
+<a class="sourceLine" id="cb5-64" title="64"><span class="co">#&gt; $ followers_count         &lt;int&gt; 4, 1004, 269, 1199, 18112, 204, 180, 0...</span></a>
+<a class="sourceLine" id="cb5-65" title="65"><span class="co">#&gt; $ friends_count           &lt;int&gt; 2, 927, 283, 1538, 1564, 205, 368, 66,...</span></a>
+<a class="sourceLine" id="cb5-66" title="66"><span class="co">#&gt; $ listed_count            &lt;int&gt; 0, 1, 8, 67, 803, 0, 10, 0, 0, 10, 0, ...</span></a>
+<a class="sourceLine" id="cb5-67" title="67"><span class="co">#&gt; $ statuses_count          &lt;int&gt; 603972, 35459, 12316, 314537, 68178, 2...</span></a>
+<a class="sourceLine" id="cb5-68" title="68"><span class="co">#&gt; $ favourites_count        &lt;int&gt; 0, 1, 25470, 13883, 669, 7042, 91836, ...</span></a>
+<a class="sourceLine" id="cb5-69" title="69"><span class="co">#&gt; $ account_created_at      &lt;dttm&gt; 2013-07-12 12:55:42, 2015-05-07 03:44...</span></a>
+<a class="sourceLine" id="cb5-70" title="70"><span class="co">#&gt; $ verified                &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FAL...</span></a>
+<a class="sourceLine" id="cb5-71" title="71"><span class="co">#&gt; $ account_lang            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-72" title="72"><span class="co">#&gt; $ profile_banner_url      &lt;chr&gt; "https://pbs.twimg.com/profile_banners...</span></a>
+<a class="sourceLine" id="cb5-73" title="73"><span class="co">#&gt; $ profile_image_url       &lt;chr&gt; "http://pbs.twimg.com/profile_images/3...</span></a>
+<a class="sourceLine" id="cb5-74" title="74"><span class="co">#&gt; $ timestamp_ms            &lt;dttm&gt; 2019-11-03 02:25:42, 2019-11-03 02:25...</span></a>
+<a class="sourceLine" id="cb5-75" title="75"><span class="co">#&gt; $ contributors_enabled    &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TR...</span></a></code></pre></div>
 </div>
-<div id="scaling-up" class="section level3">
-<h3 class="hasAnchor">
-<a href="#scaling-up" class="anchor"></a>Scaling Up</h3>
+<div id="scaling-up" class="section level2">
+<h2 class="hasAnchor">
+<a href="#scaling-up" class="anchor"></a>Scaling Up</h2>
 <p>We’re more interested in handling much larger data sets, like this one that was also obtained using <code><a href="https://rdrr.io/pkg/rtweet/man/stream_tweets.html">rtweet::stream_tweets()</a></code>. The file has been compressed to an 18 Mb .gz file (153 Mb uncompressed).</p>
 <p>Currently, <code>{rtweet}</code> may fail parsing streams because the data returned may not be valid JSON.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">rtweet_stream_path &lt;-<span class="st"> "inst/example-data/api-stream.json.gz"</span></a>
@@ -258,13 +273,13 @@ CSV</li>
 <a class="sourceLine" id="cb9-8" title="8">big_rtweet_time</a></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co">#&gt; Unit: seconds</span></a>
 <a class="sourceLine" id="cb10-2" title="2"><span class="co">#&gt;                             expr      min       lq     mean   median</span></a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt;  read_tweets(rtweet_stream_path) 2.026529 2.105466 2.147357 2.184403</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt;  read_tweets(rtweet_stream_path) 2.734777 2.989928 3.139715 3.245078</span></a>
 <a class="sourceLine" id="cb10-4" title="4"><span class="co">#&gt;        uq     max neval</span></a>
-<a class="sourceLine" id="cb10-5" title="5"><span class="co">#&gt;  2.207772 2.23114     3</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co">#&gt;  3.342184 3.43929     3</span></a></code></pre></div>
 </div>
-<div id="data-dumps" class="section level3">
-<h3 class="hasAnchor">
-<a href="#data-dumps" class="anchor"></a>Data Dumps</h3>
+<div id="data-dumps" class="section level2">
+<h2 class="hasAnchor">
+<a href="#data-dumps" class="anchor"></a>Data Dumps</h2>
 <p>Using Elasticsearch seems to be the most common practice for handling social media data at scale, but it’s (unfortunately) possible that you’ll need to work with data dumps.</p>
 <p>The data collected from APIs are stored inside a nested JSON object named <code>"doc"</code>. <code>"doc"</code> is typically embedded in a ton of system metadata, most of which you probably don’t care about.</p>
 <p>I’ve encountered two flavors of these schema:</p>
@@ -295,7 +310,7 @@ CSV</li>
 <a class="sourceLine" id="cb12-16" title="16">    <span class="dt">"more_metadata9"</span><span class="fu">:</span> <span class="st">"blahblahblah"</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb12-17" title="17">    <span class="dt">"more_metadata10"</span><span class="fu">:</span> <span class="st">"blahblahblah"</span></a>
 <a class="sourceLine" id="cb12-18" title="18"><span class="fu">}</span></a></code></pre></div>
-<p>The .json structure looks something like this:</p>
+<p>And the .json structure looks something like this:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb13-1" title="1"><span class="ot">[</span></a>
 <a class="sourceLine" id="cb13-2" title="2">    <span class="fu">{</span></a>
 <a class="sourceLine" id="cb13-3" title="3">        <span class="dt">"_id"</span><span class="fu">:</span> <span class="st">"e5daf1467d2438e31b11b44a82cbd7f5758ba5a1f1d3ecbcc6e1fc04dc9c7c4d-3016858092318"</span><span class="fu">,</span></a>
@@ -309,14 +324,25 @@ CSV</li>
 <a class="sourceLine" id="cb13-11" title="11">                <span class="dt">"id"</span><span class="fu">:</span> <span class="dv">92108498098018010401</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb13-12" title="12">                <span class="dt">"id_str"</span><span class="fu">:</span> <span class="st">"92108498098018010401"</span></a>
 <a class="sourceLine" id="cb13-13" title="13">            <span class="fu">},</span></a>
-<a class="sourceLine" id="cb13-14" title="14">            <span class="dt">"more_metadata6"</span><span class="fu">:</span> <span class="st">"blahblahblah"</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb13-15" title="15">            <span class="dt">"more_metadata7"</span><span class="fu">:</span> <span class="st">"blahblahblah"</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb13-16" title="16">            <span class="dt">"more_metadata8"</span><span class="fu">:</span> <span class="st">"blahblahblah"</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb13-17" title="17">            <span class="dt">"more_metadata9"</span><span class="fu">:</span> <span class="st">"blahblahblah"</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb13-18" title="18">            <span class="dt">"more_metadata10"</span><span class="fu">:</span> <span class="st">"blahblahblah"</span></a>
-<a class="sourceLine" id="cb13-19" title="19">        <span class="fu">}</span></a>
-<a class="sourceLine" id="cb13-20" title="20">    <span class="fu">}</span></a>
-<a class="sourceLine" id="cb13-21" title="21"><span class="ot">]</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-14" title="14">            <span class="dt">"more_metadata6"</span><span class="fu">:</span> <span class="st">"blahblahblah"</span></a>
+<a class="sourceLine" id="cb13-15" title="15">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb13-16" title="16">    <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb13-17" title="17">    <span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-18" title="18">        <span class="dt">"_id"</span><span class="fu">:</span> <span class="st">"e5daf1467d2438e31b11b44a82cbd7f5758ba5a1f1d3ecbcc6e1fc04dc9c7c4d-3016858092318"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-19" title="19">        <span class="dt">"_index"</span><span class="fu">:</span> <span class="st">"org-77f135f331153568ab7eb0e4c24623a7-default-3769a33b9e88598e38317591e2ee31c3-default-030009"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-20" title="20">        <span class="dt">"_score"</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-21" title="21">        <span class="dt">"_source"</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-22" title="22">            <span class="dt">"system_metadata_you_dont_care_about"</span><span class="fu">:</span> <span class="st">"blahblahblah"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-23" title="23">            <span class="dt">"more_metadata1"</span><span class="fu">:</span> <span class="st">"blahblahblah"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-24" title="24">            <span class="dt">"doc"</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb13-25" title="25">                <span class="dt">"text"</span><span class="fu">:</span> <span class="st">"********************HERE'S THE DATA YOU ACTUALLY WANT********************"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-26" title="26">                <span class="dt">"id"</span><span class="fu">:</span> <span class="dv">92108498098018010401</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb13-27" title="27">                <span class="dt">"id_str"</span><span class="fu">:</span> <span class="st">"92108498098018010401"</span></a>
+<a class="sourceLine" id="cb13-28" title="28">            <span class="fu">},</span></a>
+<a class="sourceLine" id="cb13-29" title="29">            <span class="dt">"more_metadata6"</span><span class="fu">:</span> <span class="st">"blahblahblah"</span></a>
+<a class="sourceLine" id="cb13-30" title="30">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb13-31" title="31">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb13-32" title="32"><span class="ot">]</span></a></code></pre></div>
 <p>This has three unfortunate consequences:</p>
 <ol>
 <li>Packages that were purpose-built to work directly with <code>{rtweet}</code>’s data frames can’t play along with your data.</li>
@@ -324,105 +350,183 @@ CSV</li>
 <li>The data are <em>very</em> tedious to restructure in R (lists of lists of lists of lists of lists…).</li>
 </ol>
 <p><code>{tweetio}</code> solves this by parsing everything at the C++ level, but only returning the actual tweet data to R.</p>
-<p>Finally, here’s a benchmark for reading a 890 Mb JSON array data dump.</p>
+<p>Here’s a benchmark for reading a 890 Mb JSON array data dump.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">res &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(</a>
 <a class="sourceLine" id="cb14-2" title="2"></a>
 <a class="sourceLine" id="cb14-3" title="3">  <span class="kw"><a href="reference/read_tweets.html">read_tweets</a></span>(data_dump) <span class="co"># *****************************************************</span></a>
 <a class="sourceLine" id="cb14-4" title="4">  </a>
-<a class="sourceLine" id="cb14-5" title="5">  , <span class="dt">times =</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb14-5" title="5">  , <span class="dt">times =</span> <span class="dv">3</span></a>
 <a class="sourceLine" id="cb14-6" title="6">)</a>
 <a class="sourceLine" id="cb14-7" title="7"></a>
 <a class="sourceLine" id="cb14-8" title="8">res</a></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co">#&gt; Unit: seconds</span></a>
 <a class="sourceLine" id="cb15-2" title="2"><span class="co">#&gt;                    expr      min       lq     mean   median       uq</span></a>
-<a class="sourceLine" id="cb15-3" title="3"><span class="co">#&gt;  read_tweets(data_dump) 3.401571 3.425813 3.519921 3.508351 3.560598</span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="co">#&gt;  read_tweets(data_dump) 4.204468 4.418793 4.533511 4.633118 4.698032</span></a>
 <a class="sourceLine" id="cb15-4" title="4"><span class="co">#&gt;       max neval</span></a>
-<a class="sourceLine" id="cb15-5" title="5"><span class="co">#&gt;  3.703271     5</span></a></code></pre></div>
-<!-- ### Bulk Processing -->
-<!-- While maybe not "big" data, handling millions of lines of JSON spread across dozens of files in R isn't exactly a picnic, but `read_tweets_bulk()` attempts to make this as easy as possible. -->
-<!-- We can run `read_tweets_bulk()` either sequentially or in parallel. By setting `in_parallel=` to `FALSE`, it will always run sequentially, processing each file one at a time with `lapply()` before collapsing the resulting data frames via `data.table::rbindlist()`. -->
-<!-- ```{r} -->
-<!-- sequential_bulk_files <- all_data_dumps[1:4] -->
-<!-- sequential_bulk_file_size <- sum(sapply(sequential_bulk_files, file.size)) -->
-<!-- number_bytes(sequential_bulk_file_size) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- sequential_bulk_time <- microbenchmark( -->
-<!--   sequential_bulk_parsed <- read_tweets_bulk(sequential_bulk_files, # ********** -->
-<!--                                              in_parallel = FALSE)   # ********** -->
-<!--   , times = 1 -->
-<!-- ) -->
-<!-- sequential_bulk_time -->
-<!-- ``` -->
-<!-- If `in_parallel=` is set to `TRUE` (the default) _and_ `{future}` and `{future.apply}` are available, `read_tweets_bulk()` can be run in parallel via `future.apply::future_lapply()`. -->
-<!-- ```{r} -->
-<!-- parallel_bulk_file_size <- sum(sapply(all_data_dumps, file.size)) -->
-<!-- number_bytes(parallel_bulk_file_size) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- parallel_bulk_time <- microbenchmark( -->
-<!--   read_tweets_bulk(all_data_dumps) # ***************************************** -->
-<!--   , times = 1 -->
-<!-- ) -->
-<!-- parallel_bulk_time -->
-<!-- ``` -->
-<!-- ## Benchmarks -->
-<!-- ```{r} -->
-<!-- res <- microbenchmark( -->
-<!--   read_tweets(rtweet_stream_path), -->
-<!--   read_tweets(all_data_dumps[[1]]), -->
-<!--   read_tweets(all_data_dumps[[2]]), -->
-<!--   read_tweets(all_data_dumps[[3]]), -->
-<!--   read_tweets(all_data_dumps[[4]]), -->
-<!--   read_tweets(all_data_dumps[[5]]), -->
-<!--   read_tweets(all_data_dumps[[6]]), -->
-<!--   read_tweets(all_data_dumps[[7]]), -->
-<!--   read_tweets(all_data_dumps[[8]]), -->
-<!--   read_tweets(all_data_dumps[[9]]), -->
-<!--   read_tweets(all_data_dumps[[10]]), -->
-<!--   read_tweets(all_data_dumps[[11]]), -->
-<!--   read_tweets(all_data_dumps[[12]]), -->
-<!--   read_tweets(all_data_dumps[[13]]), -->
-<!--   read_tweets(all_data_dumps[[14]]), -->
-<!--   read_tweets(all_data_dumps[[15]]), -->
-<!--   times = 3 -->
-<!-- ) -->
-<!-- library(tidyverse) -->
-<!-- bench_marks <- res %>%  -->
-<!--   as_tibble() %>%  -->
-<!--   filter(expr != "read_tweets(rtweet_stream_path)") %>%  -->
-<!--   mutate(file_size = expr %>%  -->
-<!--            str_extract("(?<=\\().*(?=\\)$)") %>%  -->
-<!--            map_chr(~ eval(parse(text = .x))) %>%  -->
-<!--            file.size() -->
-<!--            ) %>%  -->
-<!--   mutate(time = time / 1e9) -->
-<!-- bench_marks %>% -->
-<!--   ggplot(aes(x = file_size, y = time, fill = as_factor(file_size))) + -->
-<!--   stat_ydensity(adjust = 10) + -->
-<!--   # geom_line() + -->
-<!--   # ggbeeswarm::geom_beeswarm() + -->
-<!--   # scale_y_log10() + -->
-<!--   # scale_x_log10() + -->
-<!--   guides(fill = FALSE, size = FALSE) + -->
-<!--   labs(x = "File Size", y = "seconds") + -->
-<!--   scale_x_continuous( -->
-<!--     labels = function(.x) number_bytes(.x, symbol = "Mb", big.mark = ",") -->
-<!--     # breaks = unique(bench_marks$time) -->
-<!--   ) + -->
-<!--   coord_flip() + -->
-<!--   theme_minimal(base_size = 14, base_family = "serif") + -->
-<!--   theme(legend.position = "bottom") -->
-<!-- ``` -->
+<a class="sourceLine" id="cb15-5" title="5"><span class="co">#&gt;  4.762947     3</span></a></code></pre></div>
+</div>
+</div>
+<div id="spatial-tweets" class="section level1">
+<h1 class="hasAnchor">
+<a href="#spatial-tweets" class="anchor"></a>Spatial Tweets</h1>
+<p>Tweet JSON contains an object called <code>"place"</code> that is set aside for location information. If present, it looks something like the following.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb16-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb16-2" title="2">    <span class="dt">"text"</span><span class="fu">:</span> <span class="st">"#rstats4lyfe"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb16-3" title="3">    <span class="dt">"place"</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb16-4" title="4">      <span class="dt">"id"</span><span class="fu">:</span> <span class="st">"00d546b224a6764d"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb16-5" title="5">      <span class="dt">"url"</span><span class="fu">:</span> <span class="st">"https://api.twitter.com/1.1/geo/id/blahblah.json"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb16-6" title="6">      <span class="dt">"place_type"</span><span class="fu">:</span> <span class="st">"city"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb16-7" title="7">      <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"General Pico"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb16-8" title="8">      <span class="dt">"full_name"</span><span class="fu">:</span> <span class="st">"General Pico, Argentina"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb16-9" title="9">      <span class="dt">"country_code"</span><span class="fu">:</span> <span class="st">"AR"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb16-10" title="10">      <span class="dt">"country"</span><span class="fu">:</span> <span class="st">"Argentina"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb16-11" title="11">      <span class="dt">"bounding_box"</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb16-12" title="12">          <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"Polygon"</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb16-13" title="13">          <span class="dt">"coordinates"</span><span class="fu">:</span> <span class="ot">[</span></a>
+<a class="sourceLine" id="cb16-14" title="14">              <span class="ot">[</span></a>
+<a class="sourceLine" id="cb16-15" title="15">                  <span class="ot">[</span></a>
+<a class="sourceLine" id="cb16-16" title="16">                      <span class="fl">-63.784544</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb16-17" title="17">                      <span class="fl">-35.689402</span></a>
+<a class="sourceLine" id="cb16-18" title="18">                  <span class="ot">],</span></a>
+<a class="sourceLine" id="cb16-19" title="19">                  <span class="ot">[</span></a>
+<a class="sourceLine" id="cb16-20" title="20">                      <span class="fl">-63.784544</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb16-21" title="21">                      <span class="fl">-35.641737</span></a>
+<a class="sourceLine" id="cb16-22" title="22">                  <span class="ot">],</span></a>
+<a class="sourceLine" id="cb16-23" title="23">                  <span class="ot">[</span></a>
+<a class="sourceLine" id="cb16-24" title="24">                      <span class="fl">-63.724717</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb16-25" title="25">                      <span class="fl">-35.641737</span></a>
+<a class="sourceLine" id="cb16-26" title="26">                  <span class="ot">],</span></a>
+<a class="sourceLine" id="cb16-27" title="27">                  <span class="ot">[</span></a>
+<a class="sourceLine" id="cb16-28" title="28">                      <span class="fl">-63.724717</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb16-29" title="29">                      <span class="fl">-35.689402</span></a>
+<a class="sourceLine" id="cb16-30" title="30">                  <span class="ot">]</span></a>
+<a class="sourceLine" id="cb16-31" title="31">              <span class="ot">]</span></a>
+<a class="sourceLine" id="cb16-32" title="32">          <span class="ot">]</span></a>
+<a class="sourceLine" id="cb16-33" title="33">      <span class="fu">},</span></a>
+<a class="sourceLine" id="cb16-34" title="34">      <span class="dt">"attributes"</span><span class="fu">:</span> <span class="fu">{}</span></a>
+<a class="sourceLine" id="cb16-35" title="35">    <span class="fu">}</span></a>
+<a class="sourceLine" id="cb16-36" title="36"><span class="fu">}</span></a></code></pre></div>
+<p>In <code>{rtweet}</code>-style data frames, this corresponds to the <code>bbox_coords</code> column.</p>
+<p>If you have <code>{sf}</code> installed, you can use <code><a href="reference/as_tweet_sf.html">as_tweet_sf()</a></code> to filter the tweets for those that contain valid coordinates and build their bounding box polygons.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">tweet_sf &lt;-<span class="st"> </span><span class="kw"><a href="reference/as_tweet_sf.html">as_tweet_sf</a></span>(big_rtweet_stream) </a>
+<a class="sourceLine" id="cb17-2" title="2"></a>
+<a class="sourceLine" id="cb17-3" title="3">tweet_sf[, <span class="st">"geometry"</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co">#&gt; Simple feature collection with 321 features and 0 fields</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="co">#&gt; geometry type:  POLYGON</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="co">#&gt; bbox:           xmin: -157.9505 ymin: -55.11686 xmax: 139.7527 ymax: 56.50253</span></a>
+<a class="sourceLine" id="cb18-5" title="5"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb18-6" title="6"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
+<a class="sourceLine" id="cb18-7" title="7"><span class="co">#&gt; First 10 features:</span></a>
+<a class="sourceLine" id="cb18-8" title="8"><span class="co">#&gt;                          geometry</span></a>
+<a class="sourceLine" id="cb18-9" title="9"><span class="co">#&gt; 1  POLYGON ((-97.51982 35.1532...</span></a>
+<a class="sourceLine" id="cb18-10" title="10"><span class="co">#&gt; 2  POLYGON ((8.665852 44.37908...</span></a>
+<a class="sourceLine" id="cb18-11" title="11"><span class="co">#&gt; 3  POLYGON ((-106.9506 31.1206...</span></a>
+<a class="sourceLine" id="cb18-12" title="12"><span class="co">#&gt; 4  POLYGON ((-63.39386 -41.035...</span></a>
+<a class="sourceLine" id="cb18-13" title="13"><span class="co">#&gt; 5  POLYGON ((30.42998 39.76794...</span></a>
+<a class="sourceLine" id="cb18-14" title="14"><span class="co">#&gt; 6  POLYGON ((-118.6684 33.7045...</span></a>
+<a class="sourceLine" id="cb18-15" title="15"><span class="co">#&gt; 7  POLYGON ((139.136 36.24259,...</span></a>
+<a class="sourceLine" id="cb18-16" title="16"><span class="co">#&gt; 8  POLYGON ((135.5633 34.68448...</span></a>
+<a class="sourceLine" id="cb18-17" title="17"><span class="co">#&gt; 9  POLYGON ((-119.0618 34.1268...</span></a>
+<a class="sourceLine" id="cb18-18" title="18"><span class="co">#&gt; 10 POLYGON ((-63.78454 -35.689...</span></a></code></pre></div>
+<p>From there, you can easily manipulate the data like any other <code>{sf}</code> object.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(leaflet)</a>
+<a class="sourceLine" id="cb19-2" title="2"></a>
+<a class="sourceLine" id="cb19-3" title="3">tweet_sf <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="st">  </span><span class="kw">leaflet</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-5" title="5"><span class="st">  </span><span class="kw">addTiles</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-6" title="6"><span class="st">  </span><span class="kw">addPolygons</span>()</a></code></pre></div>
+<p><img src="reference/figures/unnamed-chunk-15-1.png" style="display: block; margin: auto;"></p>
+<p>Note that <code>NULL</code> is returned in the event you don’t have any valid coordinates…</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw"><a href="reference/as_tweet_sf.html">as_tweet_sf</a></span>(big_rtweet_stream[<span class="dv">1</span>,])</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co">#&gt; NULL</span></a></code></pre></div>
+<p>… which maximizes flexibility in binding rows…</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1">sf_list &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(</a>
+<a class="sourceLine" id="cb22-2" title="2">  <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dv">1</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">100</span>, <span class="dv">101</span><span class="op">:</span><span class="dv">200</span>, <span class="dv">201</span><span class="op">:</span><span class="dv">300</span>, <span class="dv">301</span><span class="op">:</span><span class="dv">1000</span>, <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(big_rtweet_stream)),</a>
+<a class="sourceLine" id="cb22-3" title="3">  <span class="cf">function</span>(.x) <span class="kw"><a href="reference/as_tweet_sf.html">as_tweet_sf</a></span>(big_rtweet_stream[.x])</a>
+<a class="sourceLine" id="cb22-4" title="4">)</a>
+<a class="sourceLine" id="cb22-5" title="5"></a>
+<a class="sourceLine" id="cb22-6" title="6"><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(sf_list, <span class="st">`</span><span class="dt">[</span><span class="st">`</span>, <span class="st">"geometry"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="co">#&gt; NULL</span></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="co">#&gt; [[2]]</span></a>
+<a class="sourceLine" id="cb23-5" title="5"><span class="co">#&gt; Simple feature collection with 1 feature and 0 fields</span></a>
+<a class="sourceLine" id="cb23-6" title="6"><span class="co">#&gt; geometry type:  POLYGON</span></a>
+<a class="sourceLine" id="cb23-7" title="7"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb23-8" title="8"><span class="co">#&gt; bbox:           xmin: -97.51982 ymin: 35.15327 xmax: -97.37053 ymax: 35.29133</span></a>
+<a class="sourceLine" id="cb23-9" title="9"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb23-10" title="10"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
+<a class="sourceLine" id="cb23-11" title="11"><span class="co">#&gt;                         geometry</span></a>
+<a class="sourceLine" id="cb23-12" title="12"><span class="co">#&gt; 1 POLYGON ((-97.51982 35.1532...</span></a>
+<a class="sourceLine" id="cb23-13" title="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb23-14" title="14"><span class="co">#&gt; [[3]]</span></a>
+<a class="sourceLine" id="cb23-15" title="15"><span class="co">#&gt; Simple feature collection with 3 features and 0 fields</span></a>
+<a class="sourceLine" id="cb23-16" title="16"><span class="co">#&gt; geometry type:  POLYGON</span></a>
+<a class="sourceLine" id="cb23-17" title="17"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb23-18" title="18"><span class="co">#&gt; bbox:           xmin: -106.9506 ymin: -41.03501 xmax: 9.095838 ymax: 44.51992</span></a>
+<a class="sourceLine" id="cb23-19" title="19"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb23-20" title="20"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
+<a class="sourceLine" id="cb23-21" title="21"><span class="co">#&gt;                         geometry</span></a>
+<a class="sourceLine" id="cb23-22" title="22"><span class="co">#&gt; 1 POLYGON ((8.665852 44.37908...</span></a>
+<a class="sourceLine" id="cb23-23" title="23"><span class="co">#&gt; 2 POLYGON ((-106.9506 31.1206...</span></a>
+<a class="sourceLine" id="cb23-24" title="24"><span class="co">#&gt; 3 POLYGON ((-63.39386 -41.035...</span></a>
+<a class="sourceLine" id="cb23-25" title="25"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb23-26" title="26"><span class="co">#&gt; [[4]]</span></a>
+<a class="sourceLine" id="cb23-27" title="27"><span class="co">#&gt; NULL</span></a>
+<a class="sourceLine" id="cb23-28" title="28"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb23-29" title="29"><span class="co">#&gt; [[5]]</span></a>
+<a class="sourceLine" id="cb23-30" title="30"><span class="co">#&gt; Simple feature collection with 11 features and 0 fields</span></a>
+<a class="sourceLine" id="cb23-31" title="31"><span class="co">#&gt; geometry type:  POLYGON</span></a>
+<a class="sourceLine" id="cb23-32" title="32"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb23-33" title="33"><span class="co">#&gt; bbox:           xmin: -119.0618 ymin: -55.11686 xmax: 139.2828 ymax: 48.90215</span></a>
+<a class="sourceLine" id="cb23-34" title="34"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb23-35" title="35"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
+<a class="sourceLine" id="cb23-36" title="36"><span class="co">#&gt; First 10 features:</span></a>
+<a class="sourceLine" id="cb23-37" title="37"><span class="co">#&gt;                          geometry</span></a>
+<a class="sourceLine" id="cb23-38" title="38"><span class="co">#&gt; 1  POLYGON ((30.42998 39.76794...</span></a>
+<a class="sourceLine" id="cb23-39" title="39"><span class="co">#&gt; 2  POLYGON ((-118.6684 33.7045...</span></a>
+<a class="sourceLine" id="cb23-40" title="40"><span class="co">#&gt; 3  POLYGON ((139.136 36.24259,...</span></a>
+<a class="sourceLine" id="cb23-41" title="41"><span class="co">#&gt; 4  POLYGON ((135.5633 34.68448...</span></a>
+<a class="sourceLine" id="cb23-42" title="42"><span class="co">#&gt; 5  POLYGON ((-119.0618 34.1268...</span></a>
+<a class="sourceLine" id="cb23-43" title="43"><span class="co">#&gt; 6  POLYGON ((-63.78454 -35.689...</span></a>
+<a class="sourceLine" id="cb23-44" title="44"><span class="co">#&gt; 7  POLYGON ((2.224101 48.81552...</span></a>
+<a class="sourceLine" id="cb23-45" title="45"><span class="co">#&gt; 8  POLYGON ((135.5001 34.66076...</span></a>
+<a class="sourceLine" id="cb23-46" title="46"><span class="co">#&gt; 9  POLYGON ((-117.2825 32.5396...</span></a>
+<a class="sourceLine" id="cb23-47" title="47"><span class="co">#&gt; 10 POLYGON ((20.01429 41.85184...</span></a>
+<a class="sourceLine" id="cb23-48" title="48"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb23-49" title="49"><span class="co">#&gt; [[6]]</span></a>
+<a class="sourceLine" id="cb23-50" title="50"><span class="co">#&gt; NULL</span></a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(rbind, sf_list)[, <span class="st">"geometry"</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="co">#&gt; Simple feature collection with 15 features and 0 fields</span></a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="co">#&gt; geometry type:  POLYGON</span></a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb25-4" title="4"><span class="co">#&gt; bbox:           xmin: -119.0618 ymin: -55.11686 xmax: 139.2828 ymax: 48.90215</span></a>
+<a class="sourceLine" id="cb25-5" title="5"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb25-6" title="6"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
+<a class="sourceLine" id="cb25-7" title="7"><span class="co">#&gt; First 10 features:</span></a>
+<a class="sourceLine" id="cb25-8" title="8"><span class="co">#&gt;                          geometry</span></a>
+<a class="sourceLine" id="cb25-9" title="9"><span class="co">#&gt; 1  POLYGON ((-97.51982 35.1532...</span></a>
+<a class="sourceLine" id="cb25-10" title="10"><span class="co">#&gt; 2  POLYGON ((8.665852 44.37908...</span></a>
+<a class="sourceLine" id="cb25-11" title="11"><span class="co">#&gt; 3  POLYGON ((-106.9506 31.1206...</span></a>
+<a class="sourceLine" id="cb25-12" title="12"><span class="co">#&gt; 4  POLYGON ((-63.39386 -41.035...</span></a>
+<a class="sourceLine" id="cb25-13" title="13"><span class="co">#&gt; 5  POLYGON ((30.42998 39.76794...</span></a>
+<a class="sourceLine" id="cb25-14" title="14"><span class="co">#&gt; 6  POLYGON ((-118.6684 33.7045...</span></a>
+<a class="sourceLine" id="cb25-15" title="15"><span class="co">#&gt; 7  POLYGON ((139.136 36.24259,...</span></a>
+<a class="sourceLine" id="cb25-16" title="16"><span class="co">#&gt; 8  POLYGON ((135.5633 34.68448...</span></a>
+<a class="sourceLine" id="cb25-17" title="17"><span class="co">#&gt; 9  POLYGON ((-119.0618 34.1268...</span></a>
+<a class="sourceLine" id="cb25-18" title="18"><span class="co">#&gt; 10 POLYGON ((-63.78454 -35.689...</span></a></code></pre></div>
+</div>
+<div id="how-can-we-go-faster" class="section level1">
+<h1 class="hasAnchor">
+<a href="#how-can-we-go-faster" class="anchor"></a>How can we go faster?</h1>
 <p>Until Rtools 4.0 hits (or the <a href="https://github.com/lemire/simdjson"><code>simdjson</code></a> library decides to <a href="https://github.com/lemire/simdjson/issues/307">relax its C++17 requirement</a>), I’m not sure how we can go much faster while maintaining cross-platform compatibility. That said, if C++ is your mother tongue (and you see room for optimization), please don’t hesitate to contribute.</p>
 </div>
-</div>
-<div id="acknowledgements" class="section level2">
-<h2 class="hasAnchor">
-<a href="#acknowledgements" class="anchor"></a>Acknowledgements</h2>
+<div id="acknowledgements" class="section level1">
+<h1 class="hasAnchor">
+<a href="#acknowledgements" class="anchor"></a>Acknowledgements</h1>
 <p><code>{tweetio}</code> uses a combination of C++ via <a href="http://www.rcpp.org/"><code>{Rcpp}</code></a>, the <a href="http://rapidjson.org/"><code>rapidjson</code></a> C++ library (made available by <a href="https://cran.r-project.org/web/packages/rapidjsonr/index.html"><code>{rapidjsonr}</code></a>), and <strong>R’s secret weapon</strong>: <a href="https://rdatatable.gitlab.io/data.table/"><code>{data.table}</code></a>.</p>
 <p>Major inspiration from <a href="https://gitlab.com/hrbrmstr/ndjson">{<code>ndjson</code>}</a> was taken, including its use of <a href="https://www.cs.unc.edu/Research/compgeom/gzstream/"><code>Gzstream</code></a>.</p>
-</div>
 </div>
 
   </div>

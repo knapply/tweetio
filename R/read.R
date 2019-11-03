@@ -1,3 +1,5 @@
+#' @template author-bk
+#' 
 #' @importFrom data.table := as.data.table
 #' @importFrom utils unzip
 .read_tweets <- function(file_path, ...) {
@@ -44,6 +46,7 @@
 #' 
 #' @param file_path Path to tweet files.
 #' @param file_paths Paths to multiple tweet files.
+#' @param prep_bbox Whether to prepare the `bbox_coords` column for manipulation via `{sf}`.
 #' @param ... Arguments passed to or from other methods.
 #' 
 #' @return `data.table`
@@ -51,10 +54,10 @@
 #' @template author-bk
 #' 
 #' @export
-read_tweets <- function(file_path, ...) {
+read_tweets <- function(file_path, prep_bbox = TRUE, ...) {
   out <- .read_tweets(file_path, ...)
   
-  finalize_cols(out)
+  finalize_cols(out, prep_bbox = prep_bbox)
 }
 
 
@@ -68,14 +71,15 @@ read_tweets <- function(file_path, ...) {
 #' 
 #' @importFrom data.table rbindlist
 #' @export
-read_tweets_bulk <- function(file_paths, in_parallel = TRUE, .strategy = NULL, ...) {
+read_tweets_bulk <- function(file_paths, prep_bbox = TRUE,
+                             in_parallel = TRUE, .strategy = NULL, ...) {
   if (length(file_paths) == 1L) {
-    return(read_tweets(file_paths))
+    return(read_tweets(file_paths, prep_bbox = prep_bbox))
   }
   
-  use_future <- all(in_parallel,
-                    requireNamespace("future", quietly = TRUE),
-                    requireNamespace("future.apply", quietly = TRUE))
+  use_future <- in_parallel &&
+                  requireNamespace("future", quietly = TRUE) &&
+                  requireNamespace("future.apply", quietly = TRUE)
   
   if (use_future) {
     if (is.null(.strategy)) .strategy <- future::multiprocess
@@ -88,21 +92,26 @@ read_tweets_bulk <- function(file_paths, in_parallel = TRUE, .strategy = NULL, .
   
   out <- rbindlist(init)
   
-  finalize_cols(out)
+  finalize_cols(out, prep_bbox = prep_bbox)
 }
 
 
-finalize_cols <- function(x, ...) {
-  .SD <- NULL # silence R CMD Check NOTE
+#' @template author-bk
+finalize_cols <- function(x, prep_bbox = TRUE, ...) {
+  # silence R CMD Check NOTE
+  .SD <- NULL
+  bbox_coords <- NULL
+  ##########################
   
   chr_cols <- names(x)[vapply(x, is.character, FUN.VALUE = logical(1L))]
   
-  x[, (chr_cols) := lapply(.SD, function(.x) {
-    .x[.x == ""] <- NA_character_
-    .x
-  }), 
-  .SDcols = chr_cols]
-  
+  x[,
+    (chr_cols) := lapply(.SD, function(.x) {
+      .x[.x == ""] <- NA_character_
+      .x
+    }), 
+    .SDcols = chr_cols
+  ]
   
   possible_dttm_cols <- c("created_at", "account_created_at",
                           "retweet_created_at", "quoted_created_at",
@@ -113,6 +122,10 @@ finalize_cols <- function(x, ...) {
   if (length(dttm_cols)) {
     x[, (dttm_cols) := lapply(.SD, format_dttm),
         .SDcols = dttm_cols]
+  }
+  
+  if (prep_bbox) {
+    x[, bbox_coords := prep_bbox_(bbox_coords)]
   }
   
   x[]

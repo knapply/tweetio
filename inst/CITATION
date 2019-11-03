@@ -5,12 +5,12 @@ citEntry(
   title        = "tweetio: Really, Really, Ridiculously Fast Tweet Data",
   author       = as.person("Brendan Knapp"),
   year         = "2019",
-  note         = "R package version 0.1",
+  note         = "R package version 0.2",
   url          = "https://knapply.github.io/tweetio",
   key          = "tweetgraph-package",
   textVersion  = paste(
     "Knapp, B. G. (2019). tweetio: Really, Really, Ridiculously Fast Tweet Data",
-    "Data. R package version 0.1",
+    "Data. R package version 0.2",
     "Retrieved from https://knapply.github.io/tweetio"
   )
 )

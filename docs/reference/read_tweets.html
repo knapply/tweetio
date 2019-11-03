@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tweetio</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2</span>
       </span>
     </div>
 
@@ -130,9 +130,10 @@
     <p>Read tweets into a data frame</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_tweets</span>(<span class='no'>file_path</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>read_tweets</span>(<span class='no'>file_path</span>, <span class='kw'>prep_bbox</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
-<span class='fu'>read_tweets_bulk</span>(<span class='no'>file_paths</span>, <span class='kw'>in_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.strategy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>read_tweets_bulk</span>(<span class='no'>file_paths</span>, <span class='kw'>prep_bbox</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>in_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>.strategy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -140,6 +141,10 @@
     <tr>
       <th>file_path</th>
       <td><p>Path to tweet files.</p></td>
+    </tr>
+    <tr>
+      <th>prep_bbox</th>
+      <td><p>Whether to prepare the <code>bbox_coords</code> column for manipulation via <code>{sf}</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>

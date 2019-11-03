@@ -9,8 +9,9 @@
 #include <progress_bar.hpp>
 
 
-// returns "type" and # of lines in file
 std::pair<std::string, int> inspect_data(const std::string& file_path) {
+  // returns "type" and # of lines in file
+
   igzstream in_file;
   in_file.open( file_path.c_str() );
 
@@ -37,8 +38,6 @@ std::pair<std::string, int> inspect_data(const std::string& file_path) {
   }
 
 
-  // const rapidjson::Value& doc( parsed_json["doc"] );
-  // if ( doc.IsObject() ) {
   if ( parsed_json["doc"].IsObject() ) {
     type = "nested_doc";
   }
@@ -47,11 +46,10 @@ std::pair<std::string, int> inspect_data(const std::string& file_path) {
     return std::make_pair<std::string, int>("unknown", 0);
   }
 
-  i32 n_lines = 1; // already consumed a line
+  int n_lines = 1; // already consumed a line
   while ( std::getline(in_file, line_string) ) {
     n_lines++;
   }
-  
 
   in_file.close();
 
@@ -59,7 +57,7 @@ std::pair<std::string, int> inspect_data(const std::string& file_path) {
 }
 
 
-Rcpp::List read_tweets_nested_doc(const std::string& file_path, const i32& n_lines) {
+Rcpp::List read_tweets_nested_doc(const std::string& file_path, const int& n_lines) {
   Progress progress(n_lines, true);
 
   knapply::TweetDF res(n_lines);
@@ -71,10 +69,9 @@ Rcpp::List read_tweets_nested_doc(const std::string& file_path, const i32& n_lin
   
   rapidjson::Document parsed_json;
 
-  i32 i = 0;
+  int i = 0;
   while ( std::getline(in_file, line_string) ) {
     rapidjson::StringStream stream( line_string.c_str() );
-    
     parsed_json.ParseStream(stream);
     
     progress.increment();
@@ -94,7 +91,7 @@ Rcpp::List read_tweets_nested_doc(const std::string& file_path, const i32& n_lin
 }
 
 
-Rcpp::List read_tweets_normal(const std::string& file_path, const i32& n_lines) {
+Rcpp::List read_tweets_normal(const std::string& file_path, const int& n_lines) {
   Progress progress(n_lines, true);
 
   knapply::TweetDF res(n_lines);
@@ -103,7 +100,7 @@ Rcpp::List read_tweets_normal(const std::string& file_path, const i32& n_lines) 
   igzstream in_file;
   in_file.open(file_path.c_str());
 
-  i32 i = 0;
+  int i = 0;
   while ( std::getline(in_file, line_string) ) {
     rapidjson::StringStream stream( line_string.c_str() );
     rapidjson::Document parsed_json;
@@ -143,11 +140,11 @@ Rcpp::List read_tweets_big_array(const std::string& file_path) {
     Rcpp::stop("parsing error");
   }
 
-  i32 n( parsed_json.Size() );
+  const int n( parsed_json.Size() );
   knapply::TweetDF res(n);
   Progress progress(n, true);
 
-  i32 i = 0;
+  int i = 0;
   for ( auto& val : parsed_json.GetArray() ) {
     const rapidjson::Value& doc( val["_source"]["doc"] );
     
@@ -160,7 +157,6 @@ Rcpp::List read_tweets_big_array(const std::string& file_path) {
 
   return res.to_r(i);
 }
-
 
 
 
@@ -185,72 +181,46 @@ SEXP read_tweets_(const std::string& file_path) {
 }
 
 
-//fff [[Rcpp::export]]
-// void read_tweets_test(const std::string& file_path) {
-//   igzstream in_file;
-//   in_file.open( file_path.c_str() );
+// [[Rcpp::export]]
+Rcpp::List prep_bbox_(const Rcpp::List& bbox_coords) {
+  const int n( bbox_coords.length() );
 
-//   std::string line_text;
-//   std::string raw_text("[");
+  Rcpp::List out = Rcpp::List(n);
 
-//   while (std::getline(in_file, line_text)) {
-//     if (line_text.at(0) != '{' || line_text.at( line_text.size() - 1 ) != '}') {
-//       continue;
-//     }
-//     if (line_text.at( line_text.size() - 1 ) == '\n') {
-//       raw_text.pop_back();
-//     }
-//     raw_text += line_text + ",";
-//   }
-//   raw_text.pop_back();
-//   raw_text += "]";
+  vec_dbl current_in;
 
-//   // return raw_text;
-//   // raw_text.insert(raw_text.size(), "]");
+  const vec_chr current_out_class = vec_chr::create("XY", "POLYGON", "sfg");
+  constexpr int valid_length = 8;
 
-//   rapidjson::StringStream stream( raw_text.c_str() );
-//   rapidjson::Document parsed_json;
-//   rapidjson::ParseResult ok = parsed_json.ParseStream(stream);
+  for (int i = 0; i < n; ++i) {
+    current_in = bbox_coords[i];
+    if (Rcpp::na_omit(current_in).length() != valid_length) {
+      out[i] = vec_dbl(0);
+      continue;
+    }
 
-//   if (!ok) {
-//     Rcpp::stop("parsing error");
-//   }
+    Rcpp::NumericMatrix current_mat(5, 2);
 
-//   Rcpp::Rcout << parsed_json.Size() << std::endl;
-// }
+    current_mat[0] = current_in[0];
+    current_mat[1] = current_in[2];
+    current_mat[2] = current_in[4];
+    current_mat[3] = current_in[6];
+    current_mat[4] = current_in[0];
 
-// Rcpp::List read_tweets_big_array(const std::string& file_path) {
-//   FILE* in_file = fopen(file_path.c_str(), "rb");
-//   char read_buffer[1000000];
+    current_mat[5] = current_in[1];
+    current_mat[6] = current_in[3];
+    current_mat[7] = current_in[5];
+    current_mat[8] = current_in[7];
+    current_mat[9] = current_in[1];
 
-//   rapidjson::FileReadStream stream( in_file, read_buffer, sizeof(read_buffer) );
-//   rapidjson::Document parsed_json;
+    Rcpp::List current_out = Rcpp::List::create(current_mat);
+    current_out.attr("class") = current_out_class;
 
-//   rapidjson::ParseResult ok = parsed_json.ParseStream(stream);
-//   if (!ok) {
-//     fclose(in_file);
-//     Rcpp::stop("parsing error");
-//   }
+    out[i] = current_out;
+  }
 
-//   i32 n( parsed_json.Size() );
-//   knapply::TweetDF res(n);
-//   Progress progress(n, true);
-
-//   i32 i = 0;
-//   for ( auto& val : parsed_json.GetArray() ) {
-//     const rapidjson::Value& doc( val["_source"]["doc"] );
-
-//     if ( !doc["id_str"].IsString() ) {
-//       continue;
-//     }
-
-//     res.push(doc, i++);
-//   }
-
-//   fclose(in_file);
-
-//   return res.to_r(i);
-// }
+  return out;
+}
 
 
 /*** R

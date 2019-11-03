@@ -67,12 +67,41 @@ inline vec_dbl get_bbox(const rapidjson::Value& x) {
     return vec_dbl(0);
   }
 
+  auto bbox = x.GetArray();
+  auto corner1 = bbox[0].GetArray()[0].GetArray();
+  auto corner2 = bbox[0].GetArray()[1].GetArray();
+  auto corner3 = bbox[0].GetArray()[2].GetArray();
+  auto corner4 = bbox[0].GetArray()[3].GetArray();
+  // auto corner2 = bbox[1].GetArray();
+  // auto corner3 = bbox[2].GetArray();
+  // auto corner4 = bbox[3].GetArray();
+
   vec_dbl out = vec_dbl(8);
-  if (x.Size() != 0) {
-    for (i32 i = 0; i < 8; ++i) {
-      out[i] = x[i].GetDouble();
-    }
-  }
+  // out[0] = corner1[0].GetDouble();
+  // out[1] = corner1[1].GetDouble();
+
+  // out[2] = corner2[0].GetDouble();
+  // out[3] = corner2[1].GetDouble();
+
+  // out[4] = corner3[0].GetDouble();
+  // out[5] = corner3[1].GetDouble();
+
+  // out[6] = corner4[0].GetDouble();
+  // out[7] = corner4[1].GetDouble();
+  
+  out[0] = corner1[0].GetDouble();
+  out[1] = corner1[1].GetDouble();
+
+  out[2] = corner2[0].GetDouble();
+  out[3] = corner2[1].GetDouble();
+
+  out[4] = corner3[0].GetDouble();
+  out[5] = corner3[1].GetDouble();
+
+  out[6] = corner4[0].GetDouble();
+  out[7] = corner4[1].GetDouble();
+  
+
 
   return out;
 }
