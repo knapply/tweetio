@@ -1,6 +1,4 @@
 test_that("as_tweet_sf() works", {
-  options(warn = 2)
-  
   bbox_prepped <- read_tweets(system.file("example-data/api-stream.json.gz", 
                                           package = "tweetio"))
   
@@ -23,6 +21,5 @@ test_that("as_tweet_sf() works", {
   expect_null(
     as_tweet_sf(bbox_not_prepped[0, ])
   )
-  
-  options(warn = 0)
+
 })
