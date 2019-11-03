@@ -1,6 +1,6 @@
 Package: tweetio
 Title: Really, Really, Ridiculously Fast Tweet Data
-Version: 0.1
+Version: 0.2
 Authors@R: 
     person("Brendan", "Knapp", 
            email = "brendan.g.knapp@gmail.com", 
@@ -25,6 +25,7 @@ Suggests:
     future,
     future.apply,
     rtweet,
+    sf,
     testthat
 URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio
 BugReports: https://github.com/knapply/tweetio/issues

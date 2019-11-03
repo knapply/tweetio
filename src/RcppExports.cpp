@@ -16,9 +16,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// prep_bbox_
+Rcpp::List prep_bbox_(const Rcpp::List& bbox_coords);
+RcppExport SEXP _tweetio_prep_bbox_(SEXP bbox_coordsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type bbox_coords(bbox_coordsSEXP);
+    rcpp_result_gen = Rcpp::wrap(prep_bbox_(bbox_coords));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tweetio_read_tweets_", (DL_FUNC) &_tweetio_read_tweets_, 1},
+    {"_tweetio_prep_bbox_", (DL_FUNC) &_tweetio_prep_bbox_, 1},
     {NULL, NULL, 0}
 };
 

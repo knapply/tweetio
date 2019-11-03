@@ -22,6 +22,26 @@ bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](h
 [![HitCount](http://hits.dwyl.io/knapply/tweetio.svg)](http://hits.dwyl.io/knapply/tweetio)
 <!-- badges: end -->
 
+# Progress
+
+### Supported Data Inputs
+
+  - [x] Twitter API streams: .json, .json.gz
+  - [x] API to Elasticsearch data dump (JSON Array): .json, .json.gz
+  - [x] API to Elasticsearch data dump (line-delimited JSON): .jsonl,
+    .jsonl.gz
+
+### Supported Data Outputs
+
+  - [x] .graphml, currently available in
+    [`{tweetgraph}`](https://knapply.github.io/tweetgraph/)
+  - [ ] CSV (will likely be CSVY once `{data.table}`’s `fread(yaml =
+    TRUE)` feature stabilizes)
+
+### Extras
+
+  - [x] Spatial Tweets via `tweetio::as_tweet_sf()`
+
 # Introduction
 
 **The [`{rtweet}`](https://rtweet.info/) package spoils R users
@@ -41,13 +61,13 @@ attempts to emulate its data frame schema because…
 
 > ***You** bring the tweets, `{tweetio}` gets them into R.*
 
-`{tweetio}` focuses on one thing: **going from raw tweets to
+`{tweetio}` (mainly) focuses on one thing: **going from raw tweets to
 `{rtweet}`-style data frames (or other useful structures) as quickly and
 efficiently as possible**. Whether the data came from the Twitter API, a
 database dump, or some other source, `{tweetio}`’s job is to get them
 into R.
 
-## Installation
+# Installation
 
 You’ll need a C++ compiler. You can check if you’re ready to go by
 running the following code:
@@ -57,19 +77,13 @@ running the following code:
 pkgbuild::check_build_tools()
 ```
 
-If you don’t have a compiler and you’re using Windows, you’ll need
+If you’re using Windows, you’ll need
 [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 
 You probably want to follow the page’s advice and select the recommended
 version, which is currently Rtools35.exe. When you’re installing Rtools,
 you need to make sure you check the box stating “Add rtools to system
-PATH”. It looks something like this:
-
-<!-- <img src="inst/www/rtools-path-checkbox.jpg" width="300" /> -->
-
-<img src="https://raw.githubusercontent.com/knapply/tweetio/master/rtools-path-checkbox.jpg" style="display: block; margin: auto;" />
-
-<br>
+PATH”.
 
 I have needed to reboot every computer on which I’ve installed Rtools
 before I could compile an R package.
@@ -81,22 +95,9 @@ Once you’re done, you can install `{tweetio}`.
 remotes::install_github("knapply/tweetio")
 ```
 
-## Supported Data Inputs
+# Usage
 
-  - [x] Twitter API streams: .json, .json.gz
-  - [x] API to Elasticsearch data dump (JSON Array): .json, .json.gz
-  - [x] API to Elasticsearch data dump (line-delimited JSON): .jsonl,
-    .jsonl.gz
-
-## Supported Data Outputs
-
-  - [ ] CSV
-  - [ ] .graphml via
-    [`{tweetgraph}`](https://knapply.github.io/tweetgraph/) integration
-
-## Usage
-
-### Simple Example
+## Simple Example
 
 First, we’ll save a stream of tweets using `rtweet::stream_tweets()`.
 
@@ -115,25 +116,27 @@ small_rtweet_stream <- read_tweets(temp_file)
 dplyr::glimpse(small_rtweet_stream)
 ```
 
-    #> Rows: 554
-    #> Columns: 71
-    #> $ user_id                 <chr> "1143573668460548098", "11329778618185...
-    #> $ status_id               <chr> "1179818162914676736", "11798181629146...
-    #> $ created_at              <dttm> 2019-10-03 17:59:04, 2019-10-03 17:59...
-    #> $ screen_name             <chr> "mkme_1201", "oh_zard", "hideringo5", ...
-    #> $ text                    <chr> "<U+9244><U+62F3><U+306E><U+30CE><U+30D3><U+306F><U+3044><U+3064><U+898B><U+3066><U+3082><U+30A8><U+30EC><U+30AB><U+30B7><U+306E><U+30DF><U+30E4><U+30B8><U+306B><U+898B><U+3048><U+308B>", "RT @kamich...
-    #> $ source                  <chr> "<a href=\"https://about.twitter.com/p...
-    #> $ reply_to_status_id      <chr> NA, NA, NA, NA, "1179742129897127937",...
-    #> $ reply_to_user_id        <chr> NA, NA, NA, NA, "1046743792051605505",...
-    #> $ reply_to_screen_name    <chr> NA, NA, NA, NA, "Lien_important", "Ned...
+    #> Observations: 561
+    #> Variables: 73
+    #> $ user_id                 <chr> "1588404090", "3187206246", "338056507...
+    #> $ status_id               <chr> "1190817297335640064", "11908172973439...
+    #> $ created_at              <dttm> 2019-11-03 02:25:42, 2019-11-03 02:25...
+    #> $ screen_name             <chr> "lllllllllllllt1", "Szgmr_Ren_C_bot", ...
+    #> $ text                    <chr> "139", "<U+53CD><U+6B63><U+4E0D><U+7BA1><U+600E><U+9EBC><U+8AAA><U+90FD><U+662F><U+4F60><U+8F38><U+4E86>", "@MiraCo_D <U+30DF><U+30E9><U+30B3><U+6C0F>...
+    #> $ source                  <chr> "<a href=\"http://twittbot.net/\" rel=...
+    #> $ reply_to_status_id      <chr> NA, NA, "1190814273695387648", NA, NA,...
+    #> $ reply_to_user_id        <chr> NA, NA, "973172241138462721", NA, NA, ...
+    #> $ reply_to_screen_name    <chr> NA, NA, "MiraCo_D", NA, NA, NA, NA, NA...
     #> $ is_quote                <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, FAL...
     #> $ is_retweeted            <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, FAL...
-    #> $ hashtags                <list> [<>, "MusicBNK48", <>, <>, <>, <>, <>...
+    #> $ hashtags                <list> [<>, <>, <>, <>, <>, <>, <>, <>, <>, ...
     #> $ urls_expanded_url       <list> [<>, <>, <>, <>, <>, <>, <>, <>, <>, ...
-    #> $ media_expanded_url      <list> [<>, "https://twitter.com/kamicherpra...
-    #> $ mentions_user_id        <list> [<>, "945170875745103875", <"89008498...
-    #> $ mentions_screen_name    <list> [<>, "kamicherprang", <"yasagresnipe0...
-    #> $ lang                    <chr> "ja", "th", "ja", "ja", "ja", "fa", "t...
+    #> $ media_expanded_url      <list> [<>, <>, <>, "https://twitter.com/Dek...
+    #> $ media_url               <list> [<>, <>, <>, "http://pbs.twimg.com/me...
+    #> $ media_type              <list> [<>, <>, <>, "photo", <>, <>, <>, <>,...
+    #> $ mentions_user_id        <list> [<>, <>, "973172241138462721", "10724...
+    #> $ mentions_screen_name    <list> [<>, <>, "MiraCo_D", "Dekopon_56", "M...
+    #> $ lang                    <chr> "und", "zh", "ja", "ja", "in", "es", "...
     #> $ quoted_status_id        <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ quoted_text             <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ quoted_created_at       <dttm> NA, NA, NA, NA, NA, NA, NA, NA, NA, N...
@@ -149,21 +152,21 @@ dplyr::glimpse(small_rtweet_stream)
     #> $ quoted_location         <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ quoted_description      <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ quoted_verified         <lgl> TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TR...
-    #> $ retweet_status_id       <chr> NA, "1179793217031557120", "1170885050...
-    #> $ retweet_text            <chr> NA, "#MusicBNK48 <U+0E1E><U+0E48><U+0E2D><U+0E41><U+0E21><U+0E48><U+0E1E><U+0E35><U+0E48><U+0E19><U+0E49><U+0E2D><U+0E07>!!!! <U+0E21><U+0E32><U+0E14>...
-    #> $ retweet_created_at      <dttm> NA, 2019-10-03 16:19:57, 2019-09-09 0...
-    #> $ retweet_source          <chr> NA, "<a href=\"http://twitter.com/down...
-    #> $ retweet_favorite_count  <int> NA, 20, 276, NA, NA, NA, 244, 39989, N...
-    #> $ retweet_retweet_count   <int> NA, 25, 36, NA, NA, NA, 966, 5077, NA,...
-    #> $ retweet_user_id         <chr> NA, "945170875745103875", "89008498336...
-    #> $ retweet_screen_name     <chr> NA, "kamicherprang", "yasagresnipe025"...
-    #> $ retweet_name            <chr> NA, "Bask \U0001f340 #<U+0E44><U+0E2D><U+0E19><U+0E49><U+0E2D><U+0E07><U+0E43><U+0E08><U+0E40><U+0E22><U+0E47><U+0E19>!", ...
-    #> $ retweet_followers_count <int> NA, 323, 516, NA, NA, NA, 81768, 18455...
-    #> $ retweet_friends_count   <int> NA, 323, 516, NA, NA, NA, 81768, 18455...
-    #> $ retweet_statuses_count  <int> NA, 21408, 18788, NA, NA, NA, 62223, 2...
-    #> $ retweet_location        <chr> NA, "<U+0E1B><U+0E23><U+0E30><U+0E40><U+0E17><U+0E28><U+0E44><U+0E17><U+0E22>", "<U+65E5><U+672C> <U+6771><U+4EAC>", NA, NA, NA, ...
-    #> $ retweet_description     <chr> NA, "<U+0E0A><U+0E2D><U+0E1A><U+0E1F><U+0E31><U+0E07><U+0E40><U+0E1E><U+0E25><U+0E07> <U+0E1E><U+0E2D><U+0E46><U+0E01><U+0E31><U+0E1A><U+0E17><U+0E35><U+0E48><U+0E0A><U+0E2D><U+0E1A><U+0E04><U+0E19><U+0E19><U+0E48><U+0E32><U+0E23><U+0E31><U+0E01>\n...
-    #> $ retweet_verified        <lgl> TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, ...
+    #> $ retweet_status_id       <chr> NA, NA, NA, "1172297824727257089", NA,...
+    #> $ retweet_text            <chr> NA, NA, NA, "<U+4FDD><U+80B2><U+58EB><U+5B9F><U+9332> <U+3067><U+3053><U+5148><U+751F>\n\n<U+7B2C>100<U+8A71> <U+53EF><U+611B><U+3044><U+3093><U+3060>...
+    #> $ retweet_created_at      <dttm> NA, NA, NA, 2019-09-12 23:55:56, NA, ...
+    #> $ retweet_source          <chr> NA, NA, NA, "<a href=\"http://twitter....
+    #> $ retweet_favorite_count  <int> NA, NA, NA, 81037, NA, NA, 270, NA, NA...
+    #> $ retweet_retweet_count   <int> NA, NA, NA, 14082, NA, NA, 296, NA, NA...
+    #> $ retweet_user_id         <chr> NA, NA, NA, "1072433147478913025", NA,...
+    #> $ retweet_screen_name     <chr> NA, NA, NA, "Dekopon_56", NA, NA, "Poi...
+    #> $ retweet_name            <chr> NA, NA, NA, "<U+3067><U+3053><U+307D><U+3093><U+543E><U+90CE>@<U+300C><U+5B9F><U+9332> <U+4FDD><U+80B2><U+58EB><U+3067><U+3053><U+5148><U+751F><U+300D> <U+66F8><U+7C4D><U+8CA9><U+58F2><U+4E2D>...
+    #> $ retweet_followers_count <int> NA, NA, NA, 260909, NA, NA, 4273, NA, ...
+    #> $ retweet_friends_count   <int> NA, NA, NA, 260909, NA, NA, 4273, NA, ...
+    #> $ retweet_statuses_count  <int> NA, NA, NA, 2659, NA, NA, 101268, NA, ...
+    #> $ retweet_location        <chr> NA, NA, NA, NA, NA, NA, "S<U+5E02><U+675C><U+738B><U+753A>", NA, N...
+    #> $ retweet_description     <chr> NA, NA, NA, "<U+7D75><U+3092><U+63CF><U+304F><U+3053><U+3068><U+3068><U+3001><U+6F2B><U+753B><U+3001><U+6B74><U+53F2><U+3001><U+6620><U+753B><U+304C><U+597D><U+304D><U+306A><U+3086><U+308B><U+3086><U+308B><U+4EBA>...
+    #> $ retweet_verified        <lgl> TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, F...
     #> $ place_url               <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ place_name              <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ place_full_name         <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
@@ -171,25 +174,25 @@ dplyr::glimpse(small_rtweet_stream)
     #> $ country                 <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ country_code            <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ bbox_coords             <list> [<>, <>, <>, <>, <>, <>, <>, <>, <>, ...
-    #> $ name                    <chr> "<U+30E2><U+30AF><U+30E1>", "<U+0E40><U+0E0A><U+0E2A><U+0E40><U+0E15><U+0E2D><U+0E23><U+0E4C><U+0E1C><U+0E39><U+0E49><U+0E23><U+0E48><U+0E27><U+0E07><U+0E23><U+0E31><U+0E1A>", "<U+3072><U+3067><U+308A><U+30FC><U+306C>", ...
-    #> $ location                <chr> NA, NA, "shinjuku Tokyo", "<U+4EAC><U+90FD>", NA, NA...
-    #> $ description             <chr> "<U+99AC><U+9E7F><U+3081><U+3001><U+3053><U+3063><U+3061><U+304C><U+672C><U+7269><U+3060>!\n<U+6210><U+4EBA><U+6E08><U+307F><U+5287><U+3059><U+308B><U+30DE><U+30F3> <U+6B4C><U+3082><U+597D><U+304D> \n<U+306A><U+304A><U+5168><U+3066><U+81EA><U+5DF1>...
-    #> $ url                     <chr> "https://love-letter.club/to/mkme_1201...
+    #> $ name                    <chr> "<U+3059><U+3067><U+308F><U+306E>", "<U+96C0><U+68EE><U+84EE>", "<U+30D1><U+30AA><U+30FC> 100%(<U+4FEE><U+884C><U+306E><U+8EAB>)\U0001f9...
+    #> $ location                <chr> NA, "FooFighter<U+7E3D><U+90E8>", "<U+5343><U+8449><U+770C>", NA, "HIRING...
+    #> $ description             <chr> "<U+270C>('<U+03C9>'<U+270C> )<U+4E09><U+270C>('<U+03C9>')<U+270C><U+4E09>( <U+270C>'<U+03C9>')<U+270C><U+697D><U+3057><U+3044>!!", "<U+300C><U+5361><U+7247>...
+    #> $ url                     <chr> "http://maimai.sega.jp/index.shtml", N...
     #> $ protected               <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, FAL...
-    #> $ followers_count         <int> 91, 2, 227, 1078, 416, 467, 343, 113, ...
-    #> $ friends_count           <int> 89, 19, 248, 1299, 865, 196, 119, 248,...
-    #> $ listed_count            <int> 1, 0, 8, 0, 40, 7, 17, 0, 18, 0, 1, 0,...
-    #> $ statuses_count          <int> 2274, 1823, 9513, 12781, 42639, 5561, ...
-    #> $ favourites_count        <int> 1351, 2206, 4815, 4414, 33849, 18868, ...
-    #> $ account_created_at      <dttm> 2019-06-25 17:36:23, 2019-05-27 11:52...
+    #> $ followers_count         <int> 4, 1004, 269, 1199, 18112, 204, 180, 0...
+    #> $ friends_count           <int> 2, 927, 283, 1538, 1564, 205, 368, 66,...
+    #> $ listed_count            <int> 0, 1, 8, 67, 803, 0, 10, 0, 0, 10, 0, ...
+    #> $ statuses_count          <int> 603972, 35459, 12316, 314537, 68178, 2...
+    #> $ favourites_count        <int> 0, 1, 25470, 13883, 669, 7042, 91836, ...
+    #> $ account_created_at      <dttm> 2013-07-12 12:55:42, 2015-05-07 03:44...
     #> $ verified                <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, FAL...
     #> $ account_lang            <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
     #> $ profile_banner_url      <chr> "https://pbs.twimg.com/profile_banners...
-    #> $ profile_image_url       <chr> "http://pbs.twimg.com/profile_images/1...
-    #> $ timestamp_ms            <dttm> 2019-10-03 17:59:04, 2019-10-03 17:59...
+    #> $ profile_image_url       <chr> "http://pbs.twimg.com/profile_images/3...
+    #> $ timestamp_ms            <dttm> 2019-11-03 02:25:42, 2019-11-03 02:25...
     #> $ contributors_enabled    <lgl> TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TR...
 
-### Scaling Up
+## Scaling Up
 
 We’re more interested in handling much larger data sets, like this one
 that was also obtained using `rtweet::stream_tweets()`. The file has
@@ -230,11 +233,11 @@ big_rtweet_time
 
     #> Unit: seconds
     #>                             expr      min       lq     mean   median
-    #>  read_tweets(rtweet_stream_path) 2.026529 2.105466 2.147357 2.184403
+    #>  read_tweets(rtweet_stream_path) 2.734777 2.989928 3.139715 3.245078
     #>        uq     max neval
-    #>  2.207772 2.23114     3
+    #>  3.342184 3.43929     3
 
-### Data Dumps
+## Data Dumps
 
 Using Elasticsearch seems to be the most common practice for handling
 social media data at scale, but it’s (unfortunately) possible that
@@ -281,7 +284,7 @@ Each line contains a single JSON object resembling the following:
 }
 ```
 
-The .json structure looks something like this:
+And the .json structure looks something like this:
 
 ``` json
 [
@@ -297,11 +300,22 @@ The .json structure looks something like this:
                 "id": 92108498098018010401,
                 "id_str": "92108498098018010401"
             },
-            "more_metadata6": "blahblahblah",
-            "more_metadata7": "blahblahblah",
-            "more_metadata8": "blahblahblah",
-            "more_metadata9": "blahblahblah",
-            "more_metadata10": "blahblahblah"
+            "more_metadata6": "blahblahblah"
+        }
+    },
+    {
+        "_id": "e5daf1467d2438e31b11b44a82cbd7f5758ba5a1f1d3ecbcc6e1fc04dc9c7c4d-3016858092318",
+        "_index": "org-77f135f331153568ab7eb0e4c24623a7-default-3769a33b9e88598e38317591e2ee31c3-default-030009",
+        "_score": null,
+        "_source": {
+            "system_metadata_you_dont_care_about": "blahblahblah",
+            "more_metadata1": "blahblahblah",
+            "doc": {
+                "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
+                "id": 92108498098018010401,
+                "id_str": "92108498098018010401"
+            },
+            "more_metadata6": "blahblahblah"
         }
     }
 ]
@@ -319,14 +333,14 @@ This has three unfortunate consequences:
 `{tweetio}` solves this by parsing everything at the C++ level, but only
 returning the actual tweet data to R.
 
-Finally, here’s a benchmark for reading a 890 Mb JSON array data dump.
+Here’s a benchmark for reading a 890 Mb JSON array data dump.
 
 ``` r
 res <- microbenchmark(
 
   read_tweets(data_dump) # *****************************************************
   
-  , times = 5
+  , times = 3
 )
 
 res
@@ -334,161 +348,195 @@ res
 
     #> Unit: seconds
     #>                    expr      min       lq     mean   median       uq
-    #>  read_tweets(data_dump) 3.401571 3.425813 3.519921 3.508351 3.560598
+    #>  read_tweets(data_dump) 4.204468 4.418793 4.533511 4.633118 4.698032
     #>       max neval
-    #>  3.703271     5
-
-<!-- ### Bulk Processing -->
-
-<!-- While maybe not "big" data, handling millions of lines of JSON spread across dozens of files in R isn't exactly a picnic, but `read_tweets_bulk()` attempts to make this as easy as possible. -->
-
-<!-- We can run `read_tweets_bulk()` either sequentially or in parallel. By setting `in_parallel=` to `FALSE`, it will always run sequentially, processing each file one at a time with `lapply()` before collapsing the resulting data frames via `data.table::rbindlist()`. -->
-
-<!-- ```{r} -->
-
-<!-- sequential_bulk_files <- all_data_dumps[1:4] -->
-
-<!-- sequential_bulk_file_size <- sum(sapply(sequential_bulk_files, file.size)) -->
-
-<!-- number_bytes(sequential_bulk_file_size) -->
-
-<!-- ``` -->
-
-<!-- ```{r} -->
-
-<!-- sequential_bulk_time <- microbenchmark( -->
-
-<!--   sequential_bulk_parsed <- read_tweets_bulk(sequential_bulk_files, # ********** -->
-
-<!--                                              in_parallel = FALSE)   # ********** -->
-
-<!--   , times = 1 -->
-
-<!-- ) -->
-
-<!-- sequential_bulk_time -->
-
-<!-- ``` -->
-
-<!-- If `in_parallel=` is set to `TRUE` (the default) _and_ `{future}` and `{future.apply}` are available, `read_tweets_bulk()` can be run in parallel via `future.apply::future_lapply()`. -->
-
-<!-- ```{r} -->
-
-<!-- parallel_bulk_file_size <- sum(sapply(all_data_dumps, file.size)) -->
-
-<!-- number_bytes(parallel_bulk_file_size) -->
-
-<!-- ``` -->
-
-<!-- ```{r} -->
-
-<!-- parallel_bulk_time <- microbenchmark( -->
-
-<!--   read_tweets_bulk(all_data_dumps) # ***************************************** -->
-
-<!--   , times = 1 -->
-
-<!-- ) -->
-
-<!-- parallel_bulk_time -->
-
-<!-- ``` -->
-
-<!-- ## Benchmarks -->
-
-<!-- ```{r} -->
-
-<!-- res <- microbenchmark( -->
-
-<!--   read_tweets(rtweet_stream_path), -->
-
-<!--   read_tweets(all_data_dumps[[1]]), -->
-
-<!--   read_tweets(all_data_dumps[[2]]), -->
-
-<!--   read_tweets(all_data_dumps[[3]]), -->
-
-<!--   read_tweets(all_data_dumps[[4]]), -->
-
-<!--   read_tweets(all_data_dumps[[5]]), -->
-
-<!--   read_tweets(all_data_dumps[[6]]), -->
-
-<!--   read_tweets(all_data_dumps[[7]]), -->
-
-<!--   read_tweets(all_data_dumps[[8]]), -->
-
-<!--   read_tweets(all_data_dumps[[9]]), -->
-
-<!--   read_tweets(all_data_dumps[[10]]), -->
-
-<!--   read_tweets(all_data_dumps[[11]]), -->
-
-<!--   read_tweets(all_data_dumps[[12]]), -->
-
-<!--   read_tweets(all_data_dumps[[13]]), -->
-
-<!--   read_tweets(all_data_dumps[[14]]), -->
-
-<!--   read_tweets(all_data_dumps[[15]]), -->
-
-<!--   times = 3 -->
-
-<!-- ) -->
-
-<!-- library(tidyverse) -->
-
-<!-- bench_marks <- res %>%  -->
-
-<!--   as_tibble() %>%  -->
-
-<!--   filter(expr != "read_tweets(rtweet_stream_path)") %>%  -->
-
-<!--   mutate(file_size = expr %>%  -->
-
-<!--            str_extract("(?<=\\().*(?=\\)$)") %>%  -->
-
-<!--            map_chr(~ eval(parse(text = .x))) %>%  -->
-
-<!--            file.size() -->
-
-<!--            ) %>%  -->
-
-<!--   mutate(time = time / 1e9) -->
-
-<!-- bench_marks %>% -->
-
-<!--   ggplot(aes(x = file_size, y = time, fill = as_factor(file_size))) + -->
-
-<!--   stat_ydensity(adjust = 10) + -->
-
-<!--   # geom_line() + -->
-
-<!--   # ggbeeswarm::geom_beeswarm() + -->
-
-<!--   # scale_y_log10() + -->
-
-<!--   # scale_x_log10() + -->
-
-<!--   guides(fill = FALSE, size = FALSE) + -->
-
-<!--   labs(x = "File Size", y = "seconds") + -->
-
-<!--   scale_x_continuous( -->
-
-<!--     labels = function(.x) number_bytes(.x, symbol = "Mb", big.mark = ",") -->
-
-<!--     # breaks = unique(bench_marks$time) -->
-
-<!--   ) + -->
-
-<!--   coord_flip() + -->
-
-<!--   theme_minimal(base_size = 14, base_family = "serif") + -->
-
-<!--   theme(legend.position = "bottom") -->
-
-<!-- ``` -->
+    #>  4.762947     3
+
+# Spatial Tweets
+
+Tweet JSON contains an object called `"place"` that is set aside for
+location information. If present, it looks something like the following.
+
+``` json
+{
+    "text": "#rstats4lyfe",
+    "place": {
+      "id": "00d546b224a6764d",
+      "url": "https://api.twitter.com/1.1/geo/id/blahblah.json",
+      "place_type": "city",
+      "name": "General Pico",
+      "full_name": "General Pico, Argentina",
+      "country_code": "AR",
+      "country": "Argentina",
+      "bounding_box": {
+          "type": "Polygon",
+          "coordinates": [
+              [
+                  [
+                      -63.784544,
+                      -35.689402
+                  ],
+                  [
+                      -63.784544,
+                      -35.641737
+                  ],
+                  [
+                      -63.724717,
+                      -35.641737
+                  ],
+                  [
+                      -63.724717,
+                      -35.689402
+                  ]
+              ]
+          ]
+      },
+      "attributes": {}
+    }
+}
+```
+
+In `{rtweet}`-style data frames, this corresponds to the `bbox_coords`
+column.
+
+If you have `{sf}` installed, you can use `as_tweet_sf()` to filter the
+tweets for those that contain valid coordinates and build their bounding
+box polygons.
+
+``` r
+tweet_sf <- as_tweet_sf(big_rtweet_stream) 
+
+tweet_sf[, "geometry"]
+```
+
+    #> Simple feature collection with 321 features and 0 fields
+    #> geometry type:  POLYGON
+    #> dimension:      XY
+    #> bbox:           xmin: -157.9505 ymin: -55.11686 xmax: 139.7527 ymax: 56.50253
+    #> epsg (SRID):    4326
+    #> proj4string:    +proj=longlat +datum=WGS84 +no_defs
+    #> First 10 features:
+    #>                          geometry
+    #> 1  POLYGON ((-97.51982 35.1532...
+    #> 2  POLYGON ((8.665852 44.37908...
+    #> 3  POLYGON ((-106.9506 31.1206...
+    #> 4  POLYGON ((-63.39386 -41.035...
+    #> 5  POLYGON ((30.42998 39.76794...
+    #> 6  POLYGON ((-118.6684 33.7045...
+    #> 7  POLYGON ((139.136 36.24259,...
+    #> 8  POLYGON ((135.5633 34.68448...
+    #> 9  POLYGON ((-119.0618 34.1268...
+    #> 10 POLYGON ((-63.78454 -35.689...
+
+From there, you can easily manipulate the data like any other `{sf}`
+object.
+
+``` r
+library(leaflet)
+
+tweet_sf %>% 
+  leaflet() %>% 
+  addTiles() %>% 
+  addPolygons()
+```
+
+<img src="man/figures/unnamed-chunk-15-1.png" style="display: block; margin: auto;" />
+
+Note that `NULL` is returned in the event you don’t have any valid
+coordinates…
+
+``` r
+as_tweet_sf(big_rtweet_stream[1,])
+```
+
+    #> NULL
+
+… which maximizes flexibility in binding rows…
+
+``` r
+sf_list <- lapply(
+  list(1, 2:100, 101:200, 201:300, 301:1000, nrow(big_rtweet_stream)),
+  function(.x) as_tweet_sf(big_rtweet_stream[.x])
+)
+
+lapply(sf_list, `[`, "geometry")
+```
+
+    #> [[1]]
+    #> NULL
+    #> 
+    #> [[2]]
+    #> Simple feature collection with 1 feature and 0 fields
+    #> geometry type:  POLYGON
+    #> dimension:      XY
+    #> bbox:           xmin: -97.51982 ymin: 35.15327 xmax: -97.37053 ymax: 35.29133
+    #> epsg (SRID):    4326
+    #> proj4string:    +proj=longlat +datum=WGS84 +no_defs
+    #>                         geometry
+    #> 1 POLYGON ((-97.51982 35.1532...
+    #> 
+    #> [[3]]
+    #> Simple feature collection with 3 features and 0 fields
+    #> geometry type:  POLYGON
+    #> dimension:      XY
+    #> bbox:           xmin: -106.9506 ymin: -41.03501 xmax: 9.095838 ymax: 44.51992
+    #> epsg (SRID):    4326
+    #> proj4string:    +proj=longlat +datum=WGS84 +no_defs
+    #>                         geometry
+    #> 1 POLYGON ((8.665852 44.37908...
+    #> 2 POLYGON ((-106.9506 31.1206...
+    #> 3 POLYGON ((-63.39386 -41.035...
+    #> 
+    #> [[4]]
+    #> NULL
+    #> 
+    #> [[5]]
+    #> Simple feature collection with 11 features and 0 fields
+    #> geometry type:  POLYGON
+    #> dimension:      XY
+    #> bbox:           xmin: -119.0618 ymin: -55.11686 xmax: 139.2828 ymax: 48.90215
+    #> epsg (SRID):    4326
+    #> proj4string:    +proj=longlat +datum=WGS84 +no_defs
+    #> First 10 features:
+    #>                          geometry
+    #> 1  POLYGON ((30.42998 39.76794...
+    #> 2  POLYGON ((-118.6684 33.7045...
+    #> 3  POLYGON ((139.136 36.24259,...
+    #> 4  POLYGON ((135.5633 34.68448...
+    #> 5  POLYGON ((-119.0618 34.1268...
+    #> 6  POLYGON ((-63.78454 -35.689...
+    #> 7  POLYGON ((2.224101 48.81552...
+    #> 8  POLYGON ((135.5001 34.66076...
+    #> 9  POLYGON ((-117.2825 32.5396...
+    #> 10 POLYGON ((20.01429 41.85184...
+    #> 
+    #> [[6]]
+    #> NULL
+
+``` r
+do.call(rbind, sf_list)[, "geometry"]
+```
+
+    #> Simple feature collection with 15 features and 0 fields
+    #> geometry type:  POLYGON
+    #> dimension:      XY
+    #> bbox:           xmin: -119.0618 ymin: -55.11686 xmax: 139.2828 ymax: 48.90215
+    #> epsg (SRID):    4326
+    #> proj4string:    +proj=longlat +datum=WGS84 +no_defs
+    #> First 10 features:
+    #>                          geometry
+    #> 1  POLYGON ((-97.51982 35.1532...
+    #> 2  POLYGON ((8.665852 44.37908...
+    #> 3  POLYGON ((-106.9506 31.1206...
+    #> 4  POLYGON ((-63.39386 -41.035...
+    #> 5  POLYGON ((30.42998 39.76794...
+    #> 6  POLYGON ((-118.6684 33.7045...
+    #> 7  POLYGON ((139.136 36.24259,...
+    #> 8  POLYGON ((135.5633 34.68448...
+    #> 9  POLYGON ((-119.0618 34.1268...
+    #> 10 POLYGON ((-63.78454 -35.689...
+
+# How can we go faster?
 
 Until Rtools 4.0 hits (or the
 [`simdjson`](https://github.com/lemire/simdjson) library decides to
@@ -498,7 +546,7 @@ sure how we can go much faster while maintaining cross-platform
 compatibility. That said, if C++ is your mother tongue (and you see room
 for optimization), please don’t hesitate to contribute.
 
-## Acknowledgements
+# Acknowledgements
 
 `{tweetio}` uses a combination of C++ via
 [`{Rcpp}`](http://www.rcpp.org/), the

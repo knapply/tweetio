@@ -2,7 +2,8 @@ test_that("reading rtweet stream works", {
   target_schema <- list(
     user_id = "character",
     status_id = "character",
-    created_at = c("POSIXct","POSIXt"),
+    created_at = c("POSIXct",
+                   "POSIXt"),
     screen_name = "character",
     text = "character",
     source = "character",
@@ -14,6 +15,8 @@ test_that("reading rtweet stream works", {
     hashtags = "list",
     urls_expanded_url = "list",
     media_expanded_url = "list",
+    media_url = "list",
+    media_type = "list",
     mentions_user_id = "list",
     mentions_screen_name = "list",
     lang = "character",
@@ -34,7 +37,8 @@ test_that("reading rtweet stream works", {
     quoted_verified = "logical",
     retweet_status_id = "character",
     retweet_text = "character",
-    retweet_created_at = c("POSIXct","POSIXt"),
+    retweet_created_at = c("POSIXct",
+                           "POSIXt"),
     retweet_source = "character",
     retweet_favorite_count = "integer",
     retweet_retweet_count = "integer",
@@ -69,7 +73,8 @@ test_that("reading rtweet stream works", {
     account_lang = "character",
     profile_banner_url = "character",
     profile_image_url = "character",
-    timestamp_ms = c("POSIXct", "POSIXt"),
+    timestamp_ms = c("POSIXct",
+                     "POSIXt"),
     contributors_enabled = "logical"
   )
   

@@ -5,3 +5,7 @@ read_tweets_ <- function(file_path) {
     .Call(`_tweetio_read_tweets_`, file_path)
 }
 
+prep_bbox_ <- function(bbox_coords) {
+    .Call(`_tweetio_prep_bbox_`, bbox_coords)
+}
+

@@ -21,7 +21,11 @@ class TweetDF {
 
     Rcpp::List hashtags;
     Rcpp::List urls_expanded_url;
+
+    Rcpp::List media_url;
     Rcpp::List media_expanded_url;
+    Rcpp::List media_type;
+
     Rcpp::List mentions_user_id;
     Rcpp::List mentions_screen_name;
     
@@ -104,7 +108,12 @@ class TweetDF {
 
         this->hashtags                     = Rcpp::List( n_vals, vec_chr(0) );
         this->urls_expanded_url            = Rcpp::List( n_vals, vec_chr(0) );
+
         this->media_expanded_url           = Rcpp::List( n_vals, vec_chr(0) );
+        this->media_url                    = Rcpp::List( n_vals, vec_chr(0) );
+        this->media_expanded_url           = Rcpp::List( n_vals, vec_chr(0) );
+        this->media_type                   = Rcpp::List(n_vals, NA_STRING);
+
         this->mentions_user_id             = Rcpp::List( n_vals, vec_chr(0) );
         this->mentions_screen_name         = Rcpp::List( n_vals, vec_chr(0) );
 
@@ -186,7 +195,11 @@ class TweetDF {
 
         this->hashtags[i]                    = map_entities(x, "hashtags", "text");
         this->urls_expanded_url[i]           = map_entities(x, "urls", "expanded_url");
+
         this->media_expanded_url[i]          = map_entities(x, "media", "expanded_url");
+        this->media_url[i]                   = map_entities(x, "media", "media_url");
+        this->media_type[i]                  = map_entities(x, "media", "type");
+
         this->mentions_user_id[i]            = map_entities(x, "user_mentions", "id_str");
         this->mentions_screen_name[i]        = map_entities(x, "user_mentions", "screen_name");
 
@@ -283,7 +296,11 @@ class TweetDF {
         Rcpp::List entities = Rcpp::List::create(
             _["hashtags"]             = this->hashtags[seq_out],
             _["urls_expanded_url"]    = this->urls_expanded_url[seq_out],
+
             _["media_expanded_url"]   = this->media_expanded_url[seq_out],
+            _["media_url"]            = this->media_url[seq_out],
+            _["media_type"]           =  this->media_type[seq_out],
+
             _["mentions_user_id"]     = this->mentions_user_id[seq_out],
             _["mentions_screen_name"] = this->mentions_screen_name[seq_out]
         );
