@@ -31,14 +31,14 @@ as_tweet_sf <- function(tweet_df, ...) {
   }
 
   init <- tweet_df[
-    vapply(bbox_coords, function(.x) length(.x[!is.na(.x)]), integer(1L)) != 0L
+    vapply(bbox_coords, function(.x) length(.x[!is.na(.x)]) != 0L, logical(1L))
   ]
   
   if (nrow(init) == 0L) {
     return(NULL)
   }
 
-  if (inherits(init$bbox_coords[[1L]], c("XY", "POLYGON", "sfg"))) {
+  if (all(class(init$bbox_coords[[1L]]) == c("XY", "POLYGON", "sfg"))) {
     geometry <- sf::st_sfc(init[["bbox_coords"]])
   } else {
     geometry <- sf::st_sfc(prep_bbox_(init[["bbox_coords"]]))
@@ -47,7 +47,7 @@ as_tweet_sf <- function(tweet_df, ...) {
   out <- sf::st_sf(init, stringsAsFactors = FALSE, crs = 4326L,
                    geometry = geometry)
   
-  class(out) <- union("sf", original_class)
+  class(out) <- unique(c("sf", original_class))
   
   out
 }

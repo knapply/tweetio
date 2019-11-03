@@ -28,9 +28,14 @@ std::pair<std::string, int> inspect_data(const std::string& file_path) {
   rapidjson::StringStream stream( line_string.c_str() );
   rapidjson::ParseResult ok = parsed_json.ParseStream(stream);
 
-  if (!ok) {
-    in_file.close();
-    Rcpp::stop("parsing error");
+  if (!ok) { // try second line...
+    std::getline(in_file, line_string);
+    rapidjson::StringStream stream( line_string.c_str() );
+    rapidjson::ParseResult ok = parsed_json.ParseStream(stream);
+    if (!ok) {
+      in_file.close();
+      Rcpp::stop("parsing error");
+    }
   }
 
   if ( parsed_json["id_str"].IsString() || parsed_json["delete"]["status"]["id_str"].IsString() ) {

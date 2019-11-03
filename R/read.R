@@ -30,6 +30,8 @@
     file_path <- unzipped
   }
   
+  file_path <- path.expand(file_path)
+  
   init <- read_tweets_(file_path)
   
   res <- do.call(cbind.data.frame, list(unname(init), stringsAsFactors = FALSE))
