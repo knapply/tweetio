@@ -10,7 +10,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Really, Really, Ridiculously Fast Tweet Data">
+<script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
+<meta property="og:title" content="Really, Really, Ridiculously Fast Tweet Data">
 <meta property="og:description" content="
     `{tweetio}`'s goal is to go from raw tweets to `{rtweet}`-style data frames 
     as fast as possible, whether or not the data came from the Twitter API, a 
@@ -155,7 +156,7 @@ Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_
 <p>If you’re using Windows, you’ll need <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a>.</p>
 <p>You probably want to follow the page’s advice and select the recommended version, which is currently Rtools35.exe. When you’re installing Rtools, you need to make sure you check the box stating “Add rtools to system PATH”.</p>
 <p>I have needed to reboot every computer on which I’ve installed Rtools before I could compile an R package.</p>
-<p>Once you’re done, you can install <code>{tweetio}</code>.</p>
+<p>Once you’re done, reboot. Then you can install <code>{tweetio}</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># install.packages("remotes")</span></a>
 <a class="sourceLine" id="cb2-2" title="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"knapply/tweetio"</span>)</a></code></pre></div>
 </div>
@@ -173,27 +174,27 @@ Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_
 <a class="sourceLine" id="cb4-2" title="2"></a>
 <a class="sourceLine" id="cb4-3" title="3">small_rtweet_stream &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_tweets.html">read_tweets</a></span>(temp_file)</a>
 <a class="sourceLine" id="cb4-4" title="4">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(small_rtweet_stream)</a></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co">#&gt; Observations: 561</span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt; Variables: 73</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt; $ user_id                 &lt;chr&gt; "1588404090", "3187206246", "338056507...</span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; $ status_id               &lt;chr&gt; "1190817297335640064", "11908172973439...</span></a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt; $ created_at              &lt;dttm&gt; 2019-11-03 02:25:42, 2019-11-03 02:25...</span></a>
-<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt; $ screen_name             &lt;chr&gt; "lllllllllllllt1", "Szgmr_Ren_C_bot", ...</span></a>
-<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt; $ text                    &lt;chr&gt; "139", "&lt;U+53CD&gt;&lt;U+6B63&gt;&lt;U+4E0D&gt;&lt;U+7BA1&gt;&lt;U+600E&gt;&lt;U+9EBC&gt;&lt;U+8AAA&gt;&lt;U+90FD&gt;&lt;U+662F&gt;&lt;U+4F60&gt;&lt;U+8F38&gt;&lt;U+4E86&gt;", "@MiraCo_D &lt;U+30DF&gt;&lt;U+30E9&gt;&lt;U+30B3&gt;&lt;U+6C0F&gt;...</span></a>
-<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt; $ source                  &lt;chr&gt; "&lt;a href=\"http://twittbot.net/\" rel=...</span></a>
-<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt; $ reply_to_status_id      &lt;chr&gt; NA, NA, "1190814273695387648", NA, NA,...</span></a>
-<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt; $ reply_to_user_id        &lt;chr&gt; NA, NA, "973172241138462721", NA, NA, ...</span></a>
-<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt; $ reply_to_screen_name    &lt;chr&gt; NA, NA, "MiraCo_D", NA, NA, NA, NA, NA...</span></a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co">#&gt; Observations: 460</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt; Variables: 87</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt; $ user_id                 &lt;chr&gt; "1187260058515603456", "2946355818", "...</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; $ status_id               &lt;chr&gt; "1193259594451042304", "11932595944216...</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt; $ created_at              &lt;dttm&gt; 2019-11-09 20:10:31, 2019-11-09 20:10...</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt; $ screen_name             &lt;chr&gt; "bbot5forever", "eangnunchaya", "casar...</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt; $ text                    &lt;chr&gt; "Bigbang is the best runningman guest....</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt; $ source                  &lt;chr&gt; "&lt;a href=\"http://twitter.com/download...</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt; $ reply_to_status_id      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt; $ reply_to_user_id        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt; $ reply_to_screen_name    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
 <a class="sourceLine" id="cb5-12" title="12"><span class="co">#&gt; $ is_quote                &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FAL...</span></a>
 <a class="sourceLine" id="cb5-13" title="13"><span class="co">#&gt; $ is_retweeted            &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FAL...</span></a>
-<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt; $ hashtags                &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, ...</span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt; $ hashtags                &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;"URGENTE", "Bol...</span></a>
 <a class="sourceLine" id="cb5-15" title="15"><span class="co">#&gt; $ urls_expanded_url       &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, ...</span></a>
-<a class="sourceLine" id="cb5-16" title="16"><span class="co">#&gt; $ media_expanded_url      &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, "https://twitter.com/Dek...</span></a>
-<a class="sourceLine" id="cb5-17" title="17"><span class="co">#&gt; $ media_url               &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, "http://pbs.twimg.com/me...</span></a>
-<a class="sourceLine" id="cb5-18" title="18"><span class="co">#&gt; $ media_type              &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, "photo", &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;,...</span></a>
-<a class="sourceLine" id="cb5-19" title="19"><span class="co">#&gt; $ mentions_user_id        &lt;list&gt; [&lt;&gt;, &lt;&gt;, "973172241138462721", "10724...</span></a>
-<a class="sourceLine" id="cb5-20" title="20"><span class="co">#&gt; $ mentions_screen_name    &lt;list&gt; [&lt;&gt;, &lt;&gt;, "MiraCo_D", "Dekopon_56", "M...</span></a>
-<a class="sourceLine" id="cb5-21" title="21"><span class="co">#&gt; $ lang                    &lt;chr&gt; "und", "zh", "ja", "ja", "in", "es", "...</span></a>
+<a class="sourceLine" id="cb5-16" title="16"><span class="co">#&gt; $ media_expanded_url      &lt;list&gt; [&lt;&gt;, &lt;&gt;, "https://twitter.com/cdzonan...</span></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="co">#&gt; $ media_url               &lt;list&gt; [&lt;&gt;, &lt;&gt;, "http://pbs.twimg.com/media/...</span></a>
+<a class="sourceLine" id="cb5-18" title="18"><span class="co">#&gt; $ media_type              &lt;list&gt; [&lt;&gt;, &lt;&gt;, "photo", "photo", "photo", &lt;...</span></a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="co">#&gt; $ mentions_user_id        &lt;list&gt; [&lt;&gt;, "2274558024", &lt;"338255654", "110...</span></a>
+<a class="sourceLine" id="cb5-20" title="20"><span class="co">#&gt; $ mentions_screen_name    &lt;list&gt; [&lt;&gt;, "arielqueenss", &lt;"cdzonanorte", ...</span></a>
+<a class="sourceLine" id="cb5-21" title="21"><span class="co">#&gt; $ lang                    &lt;chr&gt; "en", "th", "es", "ru", "en", "es", "p...</span></a>
 <a class="sourceLine" id="cb5-22" title="22"><span class="co">#&gt; $ quoted_status_id        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
 <a class="sourceLine" id="cb5-23" title="23"><span class="co">#&gt; $ quoted_text             &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
 <a class="sourceLine" id="cb5-24" title="24"><span class="co">#&gt; $ quoted_created_at       &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, N...</span></a>
@@ -209,21 +210,21 @@ Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_
 <a class="sourceLine" id="cb5-34" title="34"><span class="co">#&gt; $ quoted_location         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
 <a class="sourceLine" id="cb5-35" title="35"><span class="co">#&gt; $ quoted_description      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
 <a class="sourceLine" id="cb5-36" title="36"><span class="co">#&gt; $ quoted_verified         &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TR...</span></a>
-<a class="sourceLine" id="cb5-37" title="37"><span class="co">#&gt; $ retweet_status_id       &lt;chr&gt; NA, NA, NA, "1172297824727257089", NA,...</span></a>
-<a class="sourceLine" id="cb5-38" title="38"><span class="co">#&gt; $ retweet_text            &lt;chr&gt; NA, NA, NA, "&lt;U+4FDD&gt;&lt;U+80B2&gt;&lt;U+58EB&gt;&lt;U+5B9F&gt;&lt;U+9332&gt; &lt;U+3067&gt;&lt;U+3053&gt;&lt;U+5148&gt;&lt;U+751F&gt;\n\n&lt;U+7B2C&gt;100&lt;U+8A71&gt; &lt;U+53EF&gt;&lt;U+611B&gt;&lt;U+3044&gt;&lt;U+3093&gt;&lt;U+3060&gt;...</span></a>
-<a class="sourceLine" id="cb5-39" title="39"><span class="co">#&gt; $ retweet_created_at      &lt;dttm&gt; NA, NA, NA, 2019-09-12 23:55:56, NA, ...</span></a>
-<a class="sourceLine" id="cb5-40" title="40"><span class="co">#&gt; $ retweet_source          &lt;chr&gt; NA, NA, NA, "&lt;a href=\"http://twitter....</span></a>
-<a class="sourceLine" id="cb5-41" title="41"><span class="co">#&gt; $ retweet_favorite_count  &lt;int&gt; NA, NA, NA, 81037, NA, NA, 270, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-42" title="42"><span class="co">#&gt; $ retweet_retweet_count   &lt;int&gt; NA, NA, NA, 14082, NA, NA, 296, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-43" title="43"><span class="co">#&gt; $ retweet_user_id         &lt;chr&gt; NA, NA, NA, "1072433147478913025", NA,...</span></a>
-<a class="sourceLine" id="cb5-44" title="44"><span class="co">#&gt; $ retweet_screen_name     &lt;chr&gt; NA, NA, NA, "Dekopon_56", NA, NA, "Poi...</span></a>
-<a class="sourceLine" id="cb5-45" title="45"><span class="co">#&gt; $ retweet_name            &lt;chr&gt; NA, NA, NA, "&lt;U+3067&gt;&lt;U+3053&gt;&lt;U+307D&gt;&lt;U+3093&gt;&lt;U+543E&gt;&lt;U+90CE&gt;@&lt;U+300C&gt;&lt;U+5B9F&gt;&lt;U+9332&gt; &lt;U+4FDD&gt;&lt;U+80B2&gt;&lt;U+58EB&gt;&lt;U+3067&gt;&lt;U+3053&gt;&lt;U+5148&gt;&lt;U+751F&gt;&lt;U+300D&gt; &lt;U+66F8&gt;&lt;U+7C4D&gt;&lt;U+8CA9&gt;&lt;U+58F2&gt;&lt;U+4E2D&gt;...</span></a>
-<a class="sourceLine" id="cb5-46" title="46"><span class="co">#&gt; $ retweet_followers_count &lt;int&gt; NA, NA, NA, 260909, NA, NA, 4273, NA, ...</span></a>
-<a class="sourceLine" id="cb5-47" title="47"><span class="co">#&gt; $ retweet_friends_count   &lt;int&gt; NA, NA, NA, 260909, NA, NA, 4273, NA, ...</span></a>
-<a class="sourceLine" id="cb5-48" title="48"><span class="co">#&gt; $ retweet_statuses_count  &lt;int&gt; NA, NA, NA, 2659, NA, NA, 101268, NA, ...</span></a>
-<a class="sourceLine" id="cb5-49" title="49"><span class="co">#&gt; $ retweet_location        &lt;chr&gt; NA, NA, NA, NA, NA, NA, "S&lt;U+5E02&gt;&lt;U+675C&gt;&lt;U+738B&gt;&lt;U+753A&gt;", NA, N...</span></a>
-<a class="sourceLine" id="cb5-50" title="50"><span class="co">#&gt; $ retweet_description     &lt;chr&gt; NA, NA, NA, "&lt;U+7D75&gt;&lt;U+3092&gt;&lt;U+63CF&gt;&lt;U+304F&gt;&lt;U+3053&gt;&lt;U+3068&gt;&lt;U+3068&gt;&lt;U+3001&gt;&lt;U+6F2B&gt;&lt;U+753B&gt;&lt;U+3001&gt;&lt;U+6B74&gt;&lt;U+53F2&gt;&lt;U+3001&gt;&lt;U+6620&gt;&lt;U+753B&gt;&lt;U+304C&gt;&lt;U+597D&gt;&lt;U+304D&gt;&lt;U+306A&gt;&lt;U+3086&gt;&lt;U+308B&gt;&lt;U+3086&gt;&lt;U+308B&gt;&lt;U+4EBA&gt;...</span></a>
-<a class="sourceLine" id="cb5-51" title="51"><span class="co">#&gt; $ retweet_verified        &lt;lgl&gt; TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, F...</span></a>
+<a class="sourceLine" id="cb5-37" title="37"><span class="co">#&gt; $ retweet_status_id       &lt;chr&gt; NA, "1193156780320120832", "1193181858...</span></a>
+<a class="sourceLine" id="cb5-38" title="38"><span class="co">#&gt; $ retweet_text            &lt;chr&gt; NA, "&lt;U+0E19&gt;&lt;U+0E35&gt;&lt;U+0E48&gt;&lt;U+0E04&gt;&lt;U+0E37&gt;&lt;U+0E2D&gt;&lt;U+0E20&gt;&lt;U+0E32&gt;&lt;U+0E1E&gt;&lt;U+0E2B&gt;&lt;U+0E19&gt;&lt;U+0E36&gt;&lt;U+0E48&gt;&lt;U+0E07&gt;&lt;U+0E43&gt;&lt;U+0E19&gt; Concept art &lt;U+0E41&gt;&lt;U+0E23&gt;&lt;U+0E01&gt;&lt;U+0E40&gt;...</span></a>
+<a class="sourceLine" id="cb5-39" title="39"><span class="co">#&gt; $ retweet_created_at      &lt;dttm&gt; NA, 2019-11-09 13:21:58, 2019-11-09 1...</span></a>
+<a class="sourceLine" id="cb5-40" title="40"><span class="co">#&gt; $ retweet_source          &lt;chr&gt; NA, "&lt;a href=\"http://twitter.com/down...</span></a>
+<a class="sourceLine" id="cb5-41" title="41"><span class="co">#&gt; $ retweet_favorite_count  &lt;int&gt; NA, 1599, 2, 7, 93, 56, 36149, 2, 9273...</span></a>
+<a class="sourceLine" id="cb5-42" title="42"><span class="co">#&gt; $ retweet_retweet_count   &lt;int&gt; NA, 4443, 2, 3, 39, 53, 10051, 26, 335...</span></a>
+<a class="sourceLine" id="cb5-43" title="43"><span class="co">#&gt; $ retweet_user_id         &lt;chr&gt; NA, "2274558024", "338255654", "102969...</span></a>
+<a class="sourceLine" id="cb5-44" title="44"><span class="co">#&gt; $ retweet_screen_name     &lt;chr&gt; NA, "arielqueenss", "cdzonanorte", "sh...</span></a>
+<a class="sourceLine" id="cb5-45" title="45"><span class="co">#&gt; $ retweet_name            &lt;chr&gt; NA, "— \U0001d4d0\U0001d4fb\U0001d4f2\...</span></a>
+<a class="sourceLine" id="cb5-46" title="46"><span class="co">#&gt; $ retweet_followers_count &lt;int&gt; NA, 22733, 988, 434, 7839, 4117, 16487...</span></a>
+<a class="sourceLine" id="cb5-47" title="47"><span class="co">#&gt; $ retweet_friends_count   &lt;int&gt; NA, 22733, 988, 434, 7839, 4117, 16487...</span></a>
+<a class="sourceLine" id="cb5-48" title="48"><span class="co">#&gt; $ retweet_statuses_count  &lt;int&gt; NA, 32565, 2357, 6267, 366, 249094, 60...</span></a>
+<a class="sourceLine" id="cb5-49" title="49"><span class="co">#&gt; $ retweet_location        &lt;chr&gt; NA, "&lt;U+0E01&gt;&lt;U+0E23&gt;&lt;U+0E38&gt;&lt;U+0E07&gt;&lt;U+0E40&gt;&lt;U+0E17&gt;&lt;U+0E1E&gt;&lt;U+0E21&gt;&lt;U+0E2B&gt;&lt;U+0E32&gt;&lt;U+0E19&gt;&lt;U+0E04&gt;&lt;U+0E23&gt;, &lt;U+0E1B&gt;&lt;U+0E23&gt;&lt;U+0E30&gt;&lt;U+0E40&gt;&lt;U+0E17&gt;&lt;U+0E28&gt;&lt;U+0E44&gt;&lt;U+0E17&gt;&lt;U+0E22&gt;", "Ávila...</span></a>
+<a class="sourceLine" id="cb5-50" title="50"><span class="co">#&gt; $ retweet_description     &lt;chr&gt; NA, "stan MARVEL &amp; DISNEY &amp; QUEEN &amp; BE...</span></a>
+<a class="sourceLine" id="cb5-51" title="51"><span class="co">#&gt; $ retweet_verified        &lt;lgl&gt; TRUE, FALSE, FALSE, FALSE, FALSE, FALS...</span></a>
 <a class="sourceLine" id="cb5-52" title="52"><span class="co">#&gt; $ place_url               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
 <a class="sourceLine" id="cb5-53" title="53"><span class="co">#&gt; $ place_name              &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
 <a class="sourceLine" id="cb5-54" title="54"><span class="co">#&gt; $ place_full_name         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
@@ -231,23 +232,37 @@ Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_
 <a class="sourceLine" id="cb5-56" title="56"><span class="co">#&gt; $ country                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
 <a class="sourceLine" id="cb5-57" title="57"><span class="co">#&gt; $ country_code            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
 <a class="sourceLine" id="cb5-58" title="58"><span class="co">#&gt; $ bbox_coords             &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, ...</span></a>
-<a class="sourceLine" id="cb5-59" title="59"><span class="co">#&gt; $ name                    &lt;chr&gt; "&lt;U+3059&gt;&lt;U+3067&gt;&lt;U+308F&gt;&lt;U+306E&gt;", "&lt;U+96C0&gt;&lt;U+68EE&gt;&lt;U+84EE&gt;", "&lt;U+30D1&gt;&lt;U+30AA&gt;&lt;U+30FC&gt; 100%(&lt;U+4FEE&gt;&lt;U+884C&gt;&lt;U+306E&gt;&lt;U+8EAB&gt;)\U0001f9...</span></a>
-<a class="sourceLine" id="cb5-60" title="60"><span class="co">#&gt; $ location                &lt;chr&gt; NA, "FooFighter&lt;U+7E3D&gt;&lt;U+90E8&gt;", "&lt;U+5343&gt;&lt;U+8449&gt;&lt;U+770C&gt;", NA, "HIRING...</span></a>
-<a class="sourceLine" id="cb5-61" title="61"><span class="co">#&gt; $ description             &lt;chr&gt; "&lt;U+270C&gt;('&lt;U+03C9&gt;'&lt;U+270C&gt; )&lt;U+4E09&gt;&lt;U+270C&gt;('&lt;U+03C9&gt;')&lt;U+270C&gt;&lt;U+4E09&gt;( &lt;U+270C&gt;'&lt;U+03C9&gt;')&lt;U+270C&gt;&lt;U+697D&gt;&lt;U+3057&gt;&lt;U+3044&gt;!!", "&lt;U+300C&gt;&lt;U+5361&gt;&lt;U+7247&gt;...</span></a>
-<a class="sourceLine" id="cb5-62" title="62"><span class="co">#&gt; $ url                     &lt;chr&gt; "http://maimai.sega.jp/index.shtml", N...</span></a>
-<a class="sourceLine" id="cb5-63" title="63"><span class="co">#&gt; $ protected               &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FAL...</span></a>
-<a class="sourceLine" id="cb5-64" title="64"><span class="co">#&gt; $ followers_count         &lt;int&gt; 4, 1004, 269, 1199, 18112, 204, 180, 0...</span></a>
-<a class="sourceLine" id="cb5-65" title="65"><span class="co">#&gt; $ friends_count           &lt;int&gt; 2, 927, 283, 1538, 1564, 205, 368, 66,...</span></a>
-<a class="sourceLine" id="cb5-66" title="66"><span class="co">#&gt; $ listed_count            &lt;int&gt; 0, 1, 8, 67, 803, 0, 10, 0, 0, 10, 0, ...</span></a>
-<a class="sourceLine" id="cb5-67" title="67"><span class="co">#&gt; $ statuses_count          &lt;int&gt; 603972, 35459, 12316, 314537, 68178, 2...</span></a>
-<a class="sourceLine" id="cb5-68" title="68"><span class="co">#&gt; $ favourites_count        &lt;int&gt; 0, 1, 25470, 13883, 669, 7042, 91836, ...</span></a>
-<a class="sourceLine" id="cb5-69" title="69"><span class="co">#&gt; $ account_created_at      &lt;dttm&gt; 2013-07-12 12:55:42, 2015-05-07 03:44...</span></a>
-<a class="sourceLine" id="cb5-70" title="70"><span class="co">#&gt; $ verified                &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FAL...</span></a>
-<a class="sourceLine" id="cb5-71" title="71"><span class="co">#&gt; $ account_lang            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
-<a class="sourceLine" id="cb5-72" title="72"><span class="co">#&gt; $ profile_banner_url      &lt;chr&gt; "https://pbs.twimg.com/profile_banners...</span></a>
-<a class="sourceLine" id="cb5-73" title="73"><span class="co">#&gt; $ profile_image_url       &lt;chr&gt; "http://pbs.twimg.com/profile_images/3...</span></a>
-<a class="sourceLine" id="cb5-74" title="74"><span class="co">#&gt; $ timestamp_ms            &lt;dttm&gt; 2019-11-03 02:25:42, 2019-11-03 02:25...</span></a>
-<a class="sourceLine" id="cb5-75" title="75"><span class="co">#&gt; $ contributors_enabled    &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TR...</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-59" title="59"><span class="co">#&gt; $ retweet_place_url       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-60" title="60"><span class="co">#&gt; $ retweet_place_name      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-61" title="61"><span class="co">#&gt; $ retweet_place_full_name &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-62" title="62"><span class="co">#&gt; $ retweet_place_type      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-63" title="63"><span class="co">#&gt; $ retweet_country         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-64" title="64"><span class="co">#&gt; $ retweet_country_code    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-65" title="65"><span class="co">#&gt; $ retweet_bbox_coords     &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, ...</span></a>
+<a class="sourceLine" id="cb5-66" title="66"><span class="co">#&gt; $ quoted_place_url        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-67" title="67"><span class="co">#&gt; $ quoted_place_name       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-68" title="68"><span class="co">#&gt; $ quoted_place_full_name  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-69" title="69"><span class="co">#&gt; $ quoted_place_type       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-70" title="70"><span class="co">#&gt; $ quoted_country          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-71" title="71"><span class="co">#&gt; $ quoted_country_code     &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-72" title="72"><span class="co">#&gt; $ quoted_bbox_coords      &lt;list&gt; [&lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, ...</span></a>
+<a class="sourceLine" id="cb5-73" title="73"><span class="co">#&gt; $ name                    &lt;chr&gt; "SunDae FINALLY \U0001f47c\U0001f3fb\U...</span></a>
+<a class="sourceLine" id="cb5-74" title="74"><span class="co">#&gt; $ location                &lt;chr&gt; NA, "&lt;U+0E2D&gt;.&lt;U+0E40&gt;&lt;U+0E21&gt;&lt;U+0E37&gt;&lt;U+0E2D&gt;&lt;U+0E07&gt;&lt;U+0E1E&gt;&lt;U+0E30&gt;&lt;U+0E40&gt;&lt;U+0E22&gt;&lt;U+0E32&gt;, &lt;U+0E08&gt;.&lt;U+0E1E&gt;&lt;U+0E30&gt;&lt;U+0E40&gt;&lt;U+0E22&gt;&lt;U+0E32&gt;", NA, "&lt;U+0432&gt; &lt;U+0433&gt;&lt;U+0440&gt;...</span></a>
+<a class="sourceLine" id="cb5-75" title="75"><span class="co">#&gt; $ description             &lt;chr&gt; "your clown wig is falling honey #D1 u...</span></a>
+<a class="sourceLine" id="cb5-76" title="76"><span class="co">#&gt; $ url                     &lt;chr&gt; NA, NA, NA, "https://ficbook.net/autho...</span></a>
+<a class="sourceLine" id="cb5-77" title="77"><span class="co">#&gt; $ protected               &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FAL...</span></a>
+<a class="sourceLine" id="cb5-78" title="78"><span class="co">#&gt; $ followers_count         &lt;int&gt; 20, 161, 44, 705, 8, 853, 149, 105029,...</span></a>
+<a class="sourceLine" id="cb5-79" title="79"><span class="co">#&gt; $ friends_count           &lt;int&gt; 91, 305, 112, 613, 499, 2568, 621, 637...</span></a>
+<a class="sourceLine" id="cb5-80" title="80"><span class="co">#&gt; $ listed_count            &lt;int&gt; 0, 1, 0, 11, 0, 9, 1, 156, 0, 1, 65, 0...</span></a>
+<a class="sourceLine" id="cb5-81" title="81"><span class="co">#&gt; $ statuses_count          &lt;int&gt; 1728, 70480, 618, 57420, 261, 71345, 2...</span></a>
+<a class="sourceLine" id="cb5-82" title="82"><span class="co">#&gt; $ favourites_count        &lt;int&gt; 231, 2847, 931, 125861, 2, 4047, 22457...</span></a>
+<a class="sourceLine" id="cb5-83" title="83"><span class="co">#&gt; $ account_created_at      &lt;dttm&gt; 2019-10-24 06:50:37, 2014-12-28 13:10...</span></a>
+<a class="sourceLine" id="cb5-84" title="84"><span class="co">#&gt; $ verified                &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FAL...</span></a>
+<a class="sourceLine" id="cb5-85" title="85"><span class="co">#&gt; $ account_lang            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</span></a>
+<a class="sourceLine" id="cb5-86" title="86"><span class="co">#&gt; $ profile_banner_url      &lt;chr&gt; "https://pbs.twimg.com/profile_banners...</span></a>
+<a class="sourceLine" id="cb5-87" title="87"><span class="co">#&gt; $ profile_image_url       &lt;chr&gt; "http://pbs.twimg.com/profile_images/1...</span></a>
+<a class="sourceLine" id="cb5-88" title="88"><span class="co">#&gt; $ timestamp_ms            &lt;dttm&gt; 2019-11-09 20:10:31, 2019-11-09 20:10...</span></a>
+<a class="sourceLine" id="cb5-89" title="89"><span class="co">#&gt; $ contributors_enabled    &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TR...</span></a></code></pre></div>
 </div>
 <div id="scaling-up" class="section level2">
 <h2 class="hasAnchor">
@@ -272,10 +287,10 @@ Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_
 <a class="sourceLine" id="cb9-7" title="7"></a>
 <a class="sourceLine" id="cb9-8" title="8">big_rtweet_time</a></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co">#&gt; Unit: seconds</span></a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="co">#&gt;                             expr      min       lq     mean   median</span></a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt;  read_tweets(rtweet_stream_path) 2.734777 2.989928 3.139715 3.245078</span></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="co">#&gt;        uq     max neval</span></a>
-<a class="sourceLine" id="cb10-5" title="5"><span class="co">#&gt;  3.342184 3.43929     3</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-2" title="2"><span class="co">#&gt;                             expr      min       lq    mean   median</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co">#&gt;  read_tweets(rtweet_stream_path) 2.919488 2.952622 3.01839 2.985756</span></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="co">#&gt;        uq      max neval</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co">#&gt;  3.067841 3.149925     3</span></a></code></pre></div>
 </div>
 <div id="data-dumps" class="section level2">
 <h2 class="hasAnchor">
@@ -361,9 +376,9 @@ Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_
 <a class="sourceLine" id="cb14-8" title="8">res</a></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co">#&gt; Unit: seconds</span></a>
 <a class="sourceLine" id="cb15-2" title="2"><span class="co">#&gt;                    expr      min       lq     mean   median       uq</span></a>
-<a class="sourceLine" id="cb15-3" title="3"><span class="co">#&gt;  read_tweets(data_dump) 4.204468 4.418793 4.533511 4.633118 4.698032</span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="co">#&gt;  read_tweets(data_dump) 4.771901 4.972242 5.171449 5.172584 5.371223</span></a>
 <a class="sourceLine" id="cb15-4" title="4"><span class="co">#&gt;       max neval</span></a>
-<a class="sourceLine" id="cb15-5" title="5"><span class="co">#&gt;  4.762947     3</span></a></code></pre></div>
+<a class="sourceLine" id="cb15-5" title="5"><span class="co">#&gt;  5.569862     3</span></a></code></pre></div>
 </div>
 </div>
 <div id="spatial-tweets" class="section level1">
@@ -408,7 +423,7 @@ Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_
 <a class="sourceLine" id="cb16-36" title="36"><span class="fu">}</span></a></code></pre></div>
 <p>In <code>{rtweet}</code>-style data frames, this corresponds to the <code>bbox_coords</code> column.</p>
 <p>If you have <code>{sf}</code> installed, you can use <code><a href="reference/as_tweet_sf.html">as_tweet_sf()</a></code> to filter the tweets for those that contain valid coordinates and build their bounding box polygons.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">tweet_sf &lt;-<span class="st"> </span><span class="kw"><a href="reference/as_tweet_sf.html">as_tweet_sf</a></span>(big_rtweet_stream) </a>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">tweet_sf &lt;-<span class="st"> </span><span class="kw"><a href="reference/as_tweet_sf.html">as_tweet_sf</a></span>(<span class="dt">tweet_df =</span> big_rtweet_stream) </a>
 <a class="sourceLine" id="cb17-2" title="2"></a>
 <a class="sourceLine" id="cb17-3" title="3">tweet_sf[, <span class="st">"geometry"</span>]</a></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co">#&gt; Simple feature collection with 321 features and 0 fields</span></a>
@@ -417,105 +432,115 @@ Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_
 <a class="sourceLine" id="cb18-4" title="4"><span class="co">#&gt; bbox:           xmin: -157.9505 ymin: -55.11686 xmax: 139.7527 ymax: 56.50253</span></a>
 <a class="sourceLine" id="cb18-5" title="5"><span class="co">#&gt; epsg (SRID):    4326</span></a>
 <a class="sourceLine" id="cb18-6" title="6"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
-<a class="sourceLine" id="cb18-7" title="7"><span class="co">#&gt; First 10 features:</span></a>
-<a class="sourceLine" id="cb18-8" title="8"><span class="co">#&gt;                          geometry</span></a>
-<a class="sourceLine" id="cb18-9" title="9"><span class="co">#&gt; 1  POLYGON ((-97.51982 35.1532...</span></a>
-<a class="sourceLine" id="cb18-10" title="10"><span class="co">#&gt; 2  POLYGON ((8.665852 44.37908...</span></a>
-<a class="sourceLine" id="cb18-11" title="11"><span class="co">#&gt; 3  POLYGON ((-106.9506 31.1206...</span></a>
-<a class="sourceLine" id="cb18-12" title="12"><span class="co">#&gt; 4  POLYGON ((-63.39386 -41.035...</span></a>
-<a class="sourceLine" id="cb18-13" title="13"><span class="co">#&gt; 5  POLYGON ((30.42998 39.76794...</span></a>
-<a class="sourceLine" id="cb18-14" title="14"><span class="co">#&gt; 6  POLYGON ((-118.6684 33.7045...</span></a>
-<a class="sourceLine" id="cb18-15" title="15"><span class="co">#&gt; 7  POLYGON ((139.136 36.24259,...</span></a>
-<a class="sourceLine" id="cb18-16" title="16"><span class="co">#&gt; 8  POLYGON ((135.5633 34.68448...</span></a>
-<a class="sourceLine" id="cb18-17" title="17"><span class="co">#&gt; 9  POLYGON ((-119.0618 34.1268...</span></a>
-<a class="sourceLine" id="cb18-18" title="18"><span class="co">#&gt; 10 POLYGON ((-63.78454 -35.689...</span></a></code></pre></div>
+<a class="sourceLine" id="cb18-7" title="7"><span class="co">#&gt; # A tibble: 321 x 1</span></a>
+<a class="sourceLine" id="cb18-8" title="8"><span class="co">#&gt;                                                                    geometry</span></a>
+<a class="sourceLine" id="cb18-9" title="9"><span class="co">#&gt;                                                               &lt;POLYGON [°]&gt;</span></a>
+<a class="sourceLine" id="cb18-10" title="10"><span class="co">#&gt;  1 ((-97.51982 35.15327, -97.51982 35.29133, -97.37053 35.29133, -97.37053~</span></a>
+<a class="sourceLine" id="cb18-11" title="11"><span class="co">#&gt;  2 ((8.665852 44.37908, 8.665852 44.51991, 9.095838 44.51991, 9.095838 44.~</span></a>
+<a class="sourceLine" id="cb18-12" title="12"><span class="co">#&gt;  3 ((-106.9506 31.12068, -106.9506 31.78387, -106.1854 31.78387, -106.1854~</span></a>
+<a class="sourceLine" id="cb18-13" title="13"><span class="co">#&gt;  4 ((-63.39386 -41.03501, -63.39386 -33.26014, -56.66584 -33.26014, -56.66~</span></a>
+<a class="sourceLine" id="cb18-14" title="14"><span class="co">#&gt;  5 ((30.42998 39.76794, 30.42998 39.80569, 30.55928 39.80569, 30.55928 39.~</span></a>
+<a class="sourceLine" id="cb18-15" title="15"><span class="co">#&gt;  6 ((-118.6684 33.70454, -118.6684 34.33704, -118.1554 34.33704, -118.1554~</span></a>
+<a class="sourceLine" id="cb18-16" title="16"><span class="co">#&gt;  7 ((139.136 36.24259, 139.136 36.4086, 139.2828 36.4086, 139.2828 36.2425~</span></a>
+<a class="sourceLine" id="cb18-17" title="17"><span class="co">#&gt;  8 ((135.5633 34.68448, 135.5633 34.7202, 135.6046 34.7202, 135.6046 34.68~</span></a>
+<a class="sourceLine" id="cb18-18" title="18"><span class="co">#&gt;  9 ((-119.0618 34.12687, -119.0618 34.25008, -118.776 34.25008, -118.776 3~</span></a>
+<a class="sourceLine" id="cb18-19" title="19"><span class="co">#&gt; 10 ((-63.78454 -35.6894, -63.78454 -35.64174, -63.72472 -35.64174, -63.724~</span></a>
+<a class="sourceLine" id="cb18-20" title="20"><span class="co">#&gt; # ... with 311 more rows</span></a></code></pre></div>
+<p>If <code>tibble_sf = TRUE</code> (the default) and <code>{tibble}</code> is installed, the returned <code>sf</code> object will carry the <code>tibble</code> class.</p>
+<p>There are currently three columns that can potentially hold bounding boxes:</p>
+<ol>
+<li><code>bbox_coords</code></li>
+<li><code>quoted_bbox_coords</code></li>
+<li><code>retweet_bbox_coords</code></li>
+</ol>
+<p>You can select which one to use to build your <code>sf</code> object by modifying the <code>geom_col=</code> parameter (default: <code>"bbox_coords"</code>)</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw"><a href="reference/as_tweet_sf.html">as_tweet_sf</a></span>(big_rtweet_stream, <span class="dt">geom_col =</span> <span class="st">"quoted_bbox_coords"</span></a>
+<a class="sourceLine" id="cb19-2" title="2">            )[, <span class="st">"geometry"</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co">#&gt; Simple feature collection with 76 features and 0 fields</span></a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="co">#&gt; geometry type:  POLYGON</span></a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb20-4" title="4"><span class="co">#&gt; bbox:           xmin: -122.2878 ymin: -34.99874 xmax: 100.632 ymax: 54.43848</span></a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
+<a class="sourceLine" id="cb20-7" title="7"><span class="co">#&gt; # A tibble: 76 x 1</span></a>
+<a class="sourceLine" id="cb20-8" title="8"><span class="co">#&gt;                                                                    geometry</span></a>
+<a class="sourceLine" id="cb20-9" title="9"><span class="co">#&gt;                                                               &lt;POLYGON [°]&gt;</span></a>
+<a class="sourceLine" id="cb20-10" title="10"><span class="co">#&gt;  1 ((2.665436 4.197406, 2.665436 13.88812, 14.67779 13.88812, 14.67779 4.1~</span></a>
+<a class="sourceLine" id="cb20-11" title="11"><span class="co">#&gt;  2 ((100.5864 13.99565, 100.5864 14.09199, 100.632 14.09199, 100.632 13.99~</span></a>
+<a class="sourceLine" id="cb20-12" title="12"><span class="co">#&gt;  3 ((0.010398 51.54382, 0.010398 51.62617, 0.147328 51.62617, 0.147328 51.~</span></a>
+<a class="sourceLine" id="cb20-13" title="13"><span class="co">#&gt;  4 ((-6.387438 53.29874, -6.387438 53.41106, -6.107805 53.41106, -6.107805~</span></a>
+<a class="sourceLine" id="cb20-14" title="14"><span class="co">#&gt;  5 ((-73.99148 -33.75105, -73.99148 5.27192, -32.37819 5.27192, -32.37819 ~</span></a>
+<a class="sourceLine" id="cb20-15" title="15"><span class="co">#&gt;  6 ((-89.57151 36.49713, -89.57151 39.14736, -81.96497 39.14736, -81.96497~</span></a>
+<a class="sourceLine" id="cb20-16" title="16"><span class="co">#&gt;  7 ((-87.03154 33.29557, -87.03154 33.45665, -86.89743 33.45665, -86.89743~</span></a>
+<a class="sourceLine" id="cb20-17" title="17"><span class="co">#&gt;  8 ((-90.13791 29.88957, -90.13791 30.07563, -89.88411 30.07563, -89.88411~</span></a>
+<a class="sourceLine" id="cb20-18" title="18"><span class="co">#&gt;  9 ((16.44759 -34.83425, 16.44759 -22.12472, 32.89229 -22.12472, 32.89229 ~</span></a>
+<a class="sourceLine" id="cb20-19" title="19"><span class="co">#&gt; 10 ((-122.2878 37.9688, -122.2878 37.9688, -122.2878 37.9688, -122.2878 37~</span></a>
+<a class="sourceLine" id="cb20-20" title="20"><span class="co">#&gt; # ... with 66 more rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="kw"><a href="reference/as_tweet_sf.html">as_tweet_sf</a></span>(big_rtweet_stream, <span class="dt">geom_col =</span> <span class="st">"retweet_bbox_coords"</span></a>
+<a class="sourceLine" id="cb21-2" title="2">            )[, <span class="st">"geometry"</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co">#&gt; Simple feature collection with 288 features and 0 fields</span></a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="co">#&gt; geometry type:  POLYGON</span></a>
+<a class="sourceLine" id="cb22-3" title="3"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="co">#&gt; bbox:           xmin: -124.7035 ymin: -54.64819 xmax: 171.1442 ymax: 63.99495</span></a>
+<a class="sourceLine" id="cb22-5" title="5"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb22-6" title="6"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
+<a class="sourceLine" id="cb22-7" title="7"><span class="co">#&gt; # A tibble: 288 x 1</span></a>
+<a class="sourceLine" id="cb22-8" title="8"><span class="co">#&gt;                                                                    geometry</span></a>
+<a class="sourceLine" id="cb22-9" title="9"><span class="co">#&gt;                                                               &lt;POLYGON [°]&gt;</span></a>
+<a class="sourceLine" id="cb22-10" title="10"><span class="co">#&gt;  1 ((-70.63769 -33.44997, -70.63769 -33.409, -70.58383 -33.409, -70.58383 ~</span></a>
+<a class="sourceLine" id="cb22-11" title="11"><span class="co">#&gt;  2 ((-80.51985 39.7198, -80.51985 42.51607, -74.68952 42.51607, -74.68952 ~</span></a>
+<a class="sourceLine" id="cb22-12" title="12"><span class="co">#&gt;  3 ((92.21025 6.760443, 92.21025 13.6849, 94.27577 13.6849, 94.27577 6.760~</span></a>
+<a class="sourceLine" id="cb22-13" title="13"><span class="co">#&gt;  4 ((0.010398 51.54382, 0.010398 51.62617, 0.147328 51.62617, 0.147328 51.~</span></a>
+<a class="sourceLine" id="cb22-14" title="14"><span class="co">#&gt;  5 ((46.3044 24.33207, 46.3044 25.11182, 47.06576 25.11182, 47.06576 24.33~</span></a>
+<a class="sourceLine" id="cb22-15" title="15"><span class="co">#&gt;  6 ((-115.3841 36.12946, -115.3841 36.33637, -115.0622 36.33637, -115.0622~</span></a>
+<a class="sourceLine" id="cb22-16" title="16"><span class="co">#&gt;  7 ((-82.66356 34.77603, -82.66356 34.89144, -82.47644 34.89144, -82.47644~</span></a>
+<a class="sourceLine" id="cb22-17" title="17"><span class="co">#&gt;  8 ((-122.7792 38.39678, -122.7792 38.50766, -122.573 38.50766, -122.573 3~</span></a>
+<a class="sourceLine" id="cb22-18" title="18"><span class="co">#&gt;  9 ((80.12507 26.17718, 80.12507 26.63457, 80.56706 26.63457, 80.56706 26.~</span></a>
+<a class="sourceLine" id="cb22-19" title="19"><span class="co">#&gt; 10 ((-46.56728 -23.81592, -46.56728 -23.60562, -46.27811 -23.60562, -46.27~</span></a>
+<a class="sourceLine" id="cb22-20" title="20"><span class="co">#&gt; # ... with 278 more rows</span></a></code></pre></div>
+<p>You can also build <em>all</em> the supported bounding boxes by setting <code>geom_col=</code> to <code>"all"</code>.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">all_bboxes &lt;-<span class="st"> </span><span class="kw"><a href="reference/as_tweet_sf.html">as_tweet_sf</a></span>(big_rtweet_stream, <span class="dt">geom_col =</span> <span class="st">"all"</span>)</a>
+<a class="sourceLine" id="cb23-2" title="2">all_bboxes[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"geometry"</span>, <span class="st">"which_geom"</span>)]</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="co">#&gt; Simple feature collection with 685 features and 1 field</span></a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="co">#&gt; geometry type:  POLYGON</span></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="co">#&gt; bbox:           xmin: -157.9505 ymin: -55.11686 xmax: 171.1442 ymax: 63.99495</span></a>
+<a class="sourceLine" id="cb24-5" title="5"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb24-6" title="6"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
+<a class="sourceLine" id="cb24-7" title="7"><span class="co">#&gt; # A tibble: 685 x 2</span></a>
+<a class="sourceLine" id="cb24-8" title="8"><span class="co">#&gt;                                                         geometry which_geom</span></a>
+<a class="sourceLine" id="cb24-9" title="9"><span class="co">#&gt;                                                    &lt;POLYGON [°]&gt; &lt;chr&gt;     </span></a>
+<a class="sourceLine" id="cb24-10" title="10"><span class="co">#&gt;  1 ((-97.51982 35.15327, -97.51982 35.29133, -97.37053 35.29133~ bbox_coor~</span></a>
+<a class="sourceLine" id="cb24-11" title="11"><span class="co">#&gt;  2 ((8.665852 44.37908, 8.665852 44.51991, 9.095838 44.51991, 9~ bbox_coor~</span></a>
+<a class="sourceLine" id="cb24-12" title="12"><span class="co">#&gt;  3 ((-106.9506 31.12068, -106.9506 31.78387, -106.1854 31.78387~ bbox_coor~</span></a>
+<a class="sourceLine" id="cb24-13" title="13"><span class="co">#&gt;  4 ((-63.39386 -41.03501, -63.39386 -33.26014, -56.66584 -33.26~ bbox_coor~</span></a>
+<a class="sourceLine" id="cb24-14" title="14"><span class="co">#&gt;  5 ((30.42998 39.76794, 30.42998 39.80569, 30.55928 39.80569, 3~ bbox_coor~</span></a>
+<a class="sourceLine" id="cb24-15" title="15"><span class="co">#&gt;  6 ((-118.6684 33.70454, -118.6684 34.33704, -118.1554 34.33704~ bbox_coor~</span></a>
+<a class="sourceLine" id="cb24-16" title="16"><span class="co">#&gt;  7 ((139.136 36.24259, 139.136 36.4086, 139.2828 36.4086, 139.2~ bbox_coor~</span></a>
+<a class="sourceLine" id="cb24-17" title="17"><span class="co">#&gt;  8 ((135.5633 34.68448, 135.5633 34.7202, 135.6046 34.7202, 135~ bbox_coor~</span></a>
+<a class="sourceLine" id="cb24-18" title="18"><span class="co">#&gt;  9 ((-119.0618 34.12687, -119.0618 34.25008, -118.776 34.25008,~ bbox_coor~</span></a>
+<a class="sourceLine" id="cb24-19" title="19"><span class="co">#&gt; 10 ((-63.78454 -35.6894, -63.78454 -35.64174, -63.72472 -35.641~ bbox_coor~</span></a>
+<a class="sourceLine" id="cb24-20" title="20"><span class="co">#&gt; # ... with 675 more rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(all_bboxes<span class="op">$</span>which_geom)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="co">#&gt; [1] "bbox_coords"         "quoted_bbox_coords"  "retweet_bbox_coords"</span></a></code></pre></div>
 <p>From there, you can easily manipulate the data like any other <code>{sf}</code> object.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(leaflet)</a>
-<a class="sourceLine" id="cb19-2" title="2"></a>
-<a class="sourceLine" id="cb19-3" title="3">tweet_sf <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-4" title="4"><span class="st">  </span><span class="kw">leaflet</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-5" title="5"><span class="st">  </span><span class="kw">addTiles</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-6" title="6"><span class="st">  </span><span class="kw">addPolygons</span>()</a></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-15-1.png" style="display: block; margin: auto;"></p>
-<p>Note that <code>NULL</code> is returned in the event you don’t have any valid coordinates…</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw"><a href="reference/as_tweet_sf.html">as_tweet_sf</a></span>(big_rtweet_stream[<span class="dv">1</span>,])</a></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co">#&gt; NULL</span></a></code></pre></div>
-<p>… which maximizes flexibility in binding rows…</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1">sf_list &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(</a>
-<a class="sourceLine" id="cb22-2" title="2">  <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dv">1</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">100</span>, <span class="dv">101</span><span class="op">:</span><span class="dv">200</span>, <span class="dv">201</span><span class="op">:</span><span class="dv">300</span>, <span class="dv">301</span><span class="op">:</span><span class="dv">1000</span>, <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(big_rtweet_stream)),</a>
-<a class="sourceLine" id="cb22-3" title="3">  <span class="cf">function</span>(.x) <span class="kw"><a href="reference/as_tweet_sf.html">as_tweet_sf</a></span>(big_rtweet_stream[.x])</a>
-<a class="sourceLine" id="cb22-4" title="4">)</a>
-<a class="sourceLine" id="cb22-5" title="5"></a>
-<a class="sourceLine" id="cb22-6" title="6"><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(sf_list, <span class="st">`</span><span class="dt">[</span><span class="st">`</span>, <span class="st">"geometry"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co">#&gt; [[1]]</span></a>
-<a class="sourceLine" id="cb23-2" title="2"><span class="co">#&gt; NULL</span></a>
-<a class="sourceLine" id="cb23-3" title="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb23-4" title="4"><span class="co">#&gt; [[2]]</span></a>
-<a class="sourceLine" id="cb23-5" title="5"><span class="co">#&gt; Simple feature collection with 1 feature and 0 fields</span></a>
-<a class="sourceLine" id="cb23-6" title="6"><span class="co">#&gt; geometry type:  POLYGON</span></a>
-<a class="sourceLine" id="cb23-7" title="7"><span class="co">#&gt; dimension:      XY</span></a>
-<a class="sourceLine" id="cb23-8" title="8"><span class="co">#&gt; bbox:           xmin: -97.51982 ymin: 35.15327 xmax: -97.37053 ymax: 35.29133</span></a>
-<a class="sourceLine" id="cb23-9" title="9"><span class="co">#&gt; epsg (SRID):    4326</span></a>
-<a class="sourceLine" id="cb23-10" title="10"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
-<a class="sourceLine" id="cb23-11" title="11"><span class="co">#&gt;                         geometry</span></a>
-<a class="sourceLine" id="cb23-12" title="12"><span class="co">#&gt; 1 POLYGON ((-97.51982 35.1532...</span></a>
-<a class="sourceLine" id="cb23-13" title="13"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb23-14" title="14"><span class="co">#&gt; [[3]]</span></a>
-<a class="sourceLine" id="cb23-15" title="15"><span class="co">#&gt; Simple feature collection with 3 features and 0 fields</span></a>
-<a class="sourceLine" id="cb23-16" title="16"><span class="co">#&gt; geometry type:  POLYGON</span></a>
-<a class="sourceLine" id="cb23-17" title="17"><span class="co">#&gt; dimension:      XY</span></a>
-<a class="sourceLine" id="cb23-18" title="18"><span class="co">#&gt; bbox:           xmin: -106.9506 ymin: -41.03501 xmax: 9.095838 ymax: 44.51992</span></a>
-<a class="sourceLine" id="cb23-19" title="19"><span class="co">#&gt; epsg (SRID):    4326</span></a>
-<a class="sourceLine" id="cb23-20" title="20"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
-<a class="sourceLine" id="cb23-21" title="21"><span class="co">#&gt;                         geometry</span></a>
-<a class="sourceLine" id="cb23-22" title="22"><span class="co">#&gt; 1 POLYGON ((8.665852 44.37908...</span></a>
-<a class="sourceLine" id="cb23-23" title="23"><span class="co">#&gt; 2 POLYGON ((-106.9506 31.1206...</span></a>
-<a class="sourceLine" id="cb23-24" title="24"><span class="co">#&gt; 3 POLYGON ((-63.39386 -41.035...</span></a>
-<a class="sourceLine" id="cb23-25" title="25"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb23-26" title="26"><span class="co">#&gt; [[4]]</span></a>
-<a class="sourceLine" id="cb23-27" title="27"><span class="co">#&gt; NULL</span></a>
-<a class="sourceLine" id="cb23-28" title="28"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb23-29" title="29"><span class="co">#&gt; [[5]]</span></a>
-<a class="sourceLine" id="cb23-30" title="30"><span class="co">#&gt; Simple feature collection with 11 features and 0 fields</span></a>
-<a class="sourceLine" id="cb23-31" title="31"><span class="co">#&gt; geometry type:  POLYGON</span></a>
-<a class="sourceLine" id="cb23-32" title="32"><span class="co">#&gt; dimension:      XY</span></a>
-<a class="sourceLine" id="cb23-33" title="33"><span class="co">#&gt; bbox:           xmin: -119.0618 ymin: -55.11686 xmax: 139.2828 ymax: 48.90215</span></a>
-<a class="sourceLine" id="cb23-34" title="34"><span class="co">#&gt; epsg (SRID):    4326</span></a>
-<a class="sourceLine" id="cb23-35" title="35"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
-<a class="sourceLine" id="cb23-36" title="36"><span class="co">#&gt; First 10 features:</span></a>
-<a class="sourceLine" id="cb23-37" title="37"><span class="co">#&gt;                          geometry</span></a>
-<a class="sourceLine" id="cb23-38" title="38"><span class="co">#&gt; 1  POLYGON ((30.42998 39.76794...</span></a>
-<a class="sourceLine" id="cb23-39" title="39"><span class="co">#&gt; 2  POLYGON ((-118.6684 33.7045...</span></a>
-<a class="sourceLine" id="cb23-40" title="40"><span class="co">#&gt; 3  POLYGON ((139.136 36.24259,...</span></a>
-<a class="sourceLine" id="cb23-41" title="41"><span class="co">#&gt; 4  POLYGON ((135.5633 34.68448...</span></a>
-<a class="sourceLine" id="cb23-42" title="42"><span class="co">#&gt; 5  POLYGON ((-119.0618 34.1268...</span></a>
-<a class="sourceLine" id="cb23-43" title="43"><span class="co">#&gt; 6  POLYGON ((-63.78454 -35.689...</span></a>
-<a class="sourceLine" id="cb23-44" title="44"><span class="co">#&gt; 7  POLYGON ((2.224101 48.81552...</span></a>
-<a class="sourceLine" id="cb23-45" title="45"><span class="co">#&gt; 8  POLYGON ((135.5001 34.66076...</span></a>
-<a class="sourceLine" id="cb23-46" title="46"><span class="co">#&gt; 9  POLYGON ((-117.2825 32.5396...</span></a>
-<a class="sourceLine" id="cb23-47" title="47"><span class="co">#&gt; 10 POLYGON ((20.01429 41.85184...</span></a>
-<a class="sourceLine" id="cb23-48" title="48"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb23-49" title="49"><span class="co">#&gt; [[6]]</span></a>
-<a class="sourceLine" id="cb23-50" title="50"><span class="co">#&gt; NULL</span></a></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(rbind, sf_list)[, <span class="st">"geometry"</span>]</a></code></pre></div>
-<div class="sourceCode" id="cb25"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="co">#&gt; Simple feature collection with 15 features and 0 fields</span></a>
-<a class="sourceLine" id="cb25-2" title="2"><span class="co">#&gt; geometry type:  POLYGON</span></a>
-<a class="sourceLine" id="cb25-3" title="3"><span class="co">#&gt; dimension:      XY</span></a>
-<a class="sourceLine" id="cb25-4" title="4"><span class="co">#&gt; bbox:           xmin: -119.0618 ymin: -55.11686 xmax: 139.2828 ymax: 48.90215</span></a>
-<a class="sourceLine" id="cb25-5" title="5"><span class="co">#&gt; epsg (SRID):    4326</span></a>
-<a class="sourceLine" id="cb25-6" title="6"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
-<a class="sourceLine" id="cb25-7" title="7"><span class="co">#&gt; First 10 features:</span></a>
-<a class="sourceLine" id="cb25-8" title="8"><span class="co">#&gt;                          geometry</span></a>
-<a class="sourceLine" id="cb25-9" title="9"><span class="co">#&gt; 1  POLYGON ((-97.51982 35.1532...</span></a>
-<a class="sourceLine" id="cb25-10" title="10"><span class="co">#&gt; 2  POLYGON ((8.665852 44.37908...</span></a>
-<a class="sourceLine" id="cb25-11" title="11"><span class="co">#&gt; 3  POLYGON ((-106.9506 31.1206...</span></a>
-<a class="sourceLine" id="cb25-12" title="12"><span class="co">#&gt; 4  POLYGON ((-63.39386 -41.035...</span></a>
-<a class="sourceLine" id="cb25-13" title="13"><span class="co">#&gt; 5  POLYGON ((30.42998 39.76794...</span></a>
-<a class="sourceLine" id="cb25-14" title="14"><span class="co">#&gt; 6  POLYGON ((-118.6684 33.7045...</span></a>
-<a class="sourceLine" id="cb25-15" title="15"><span class="co">#&gt; 7  POLYGON ((139.136 36.24259,...</span></a>
-<a class="sourceLine" id="cb25-16" title="16"><span class="co">#&gt; 8  POLYGON ((135.5633 34.68448...</span></a>
-<a class="sourceLine" id="cb25-17" title="17"><span class="co">#&gt; 9  POLYGON ((-119.0618 34.1268...</span></a>
-<a class="sourceLine" id="cb25-18" title="18"><span class="co">#&gt; 10 POLYGON ((-63.78454 -35.689...</span></a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(leaflet)</a>
+<a class="sourceLine" id="cb27-2" title="2"></a>
+<a class="sourceLine" id="cb27-3" title="3">tweet_sf <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb27-4" title="4"><span class="st">  </span><span class="kw">leaflet</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb27-5" title="5"><span class="st">  </span><span class="kw">addTiles</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb27-6" title="6"><span class="st">  </span><span class="kw">addPolygons</span>()</a></code></pre></div>
+<p><img src="reference/figures/unnamed-chunk-17-1.png" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb28-2" title="2"></a>
+<a class="sourceLine" id="cb28-3" title="3">world &lt;-<span class="st"> </span>rnaturalearth<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rnaturalearth/man/ne_countries.html">ne_countries</a></span>(<span class="dt">returnclass =</span> <span class="st">"sf"</span>)</a>
+<a class="sourceLine" id="cb28-4" title="4"></a>
+<a class="sourceLine" id="cb28-5" title="5">all_bboxes <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb28-6" title="6"><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb28-7" title="7"><span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">fill =</span> <span class="st">"white"</span>, <span class="dt">data =</span> world) <span class="op">+</span></a>
+<a class="sourceLine" id="cb28-8" title="8"><span class="st">  </span><span class="kw">geom_sf</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> which_geom), <span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb28-9" title="9"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>which_geom, <span class="dt">ncol =</span> <span class="dv">2</span>)</a></code></pre></div>
+<p><img src="reference/figures/unnamed-chunk-18-1.png" style="display: block; margin: auto;"></p>
 </div>
 <div id="how-can-we-go-faster" class="section level1">
 <h1 class="hasAnchor">
