@@ -1,6 +1,5 @@
 #include <rapidjson/document.h>
 
-
 namespace knapply {  // knapply
 
 inline Rcpp::String get_chr(const rapidjson::Value& x) {
@@ -113,41 +112,11 @@ inline Rcpp::List get_meta_results(const rapidjson::Value& x, const std::string&
   return Rcpp::List(out);
 }
 
-// inline Rcpp::String get_nested_meta_results(const rapidjson::Value& x, const std::string& outer_name, const std::string& inner_name, const bool is_metadata = false) {
-//   const auto& top_level = x[outer_name.c_str()];
-//   if (!top_level.IsArray() || top_level.GetArray().Size() == 0) {
-//     return NA_STRING;
-//   }
-  
-//   const auto& target = top_level[0].GetObject()["results"];
-//   if (!target.IsArray() || target.GetArray().Size() == 0) {
-//     return NA_STRING;
-//   }
 
-//   const auto& results_obj = target[0];
-//   if ( !results_obj.IsObject() ) {
-//     return NA_STRING;
-//   }
-
-//   if ( results_obj.FindMember( inner_name.c_str() ) == target.MemberEnd() ) {
-//     return NA_STRING;
-//   }
-
-//   if (!is_metadata) {
-//     const auto& res = results_obj[inner_name.c_str()];
-//     return get_chr(res);
-//   }
-
-//   if ( !results_obj["metadata"].IsObject() ) {
-//     return NA_STRING;
-//   }
-
-//   const auto& metadata = results_obj["metadata"].GetObject();
-//   return get_chr( metadata[ inner_name.c_str() ] );
-// }
-
-
-inline vec_chr get_nested_meta_results(const rapidjson::Value& x, const std::string& outer_name, const std::string& inner_name, const bool is_metadata = false, const bool na_rm = false) {
+inline vec_chr get_nested_meta_results(const rapidjson::Value& x, 
+                                       const std::string& outer_name, 
+                                       const std::string& inner_name, 
+                                       const bool is_metadata = false) {
   const auto default_val = vec_chr{NA_STRING};
 
   const auto& top_level = x[outer_name.c_str()];
@@ -200,100 +169,8 @@ inline vec_chr get_nested_meta_results(const rapidjson::Value& x, const std::str
     out[i] = get_chr( results_obj[inner_name.c_str()] );
   }
 
-  if (na_rm) {
-    return Rcpp::na_omit(out);
-  }
-
-  // if ( Rcpp::all(Rcpp::is_na(out)) ) {
-  //   // return vec_chr(0);
-  //   return default_val;
-  // }
-
   return out;
 }
-
-// inline SEXP get_extras(rapidjson::Value& x) {
-//   bool simplify = false;
-//   bool fill_na  = false;
-  
-//   return jsonify::api::from_json(x, simplify, fill_na);
-// }
-
-
-// inline Rcpp::String get_meta_rule_matcher(const rapidjson::Value& meta, const std::string& inner_name) {
-//   if (meta.FindMember("rule_matcher") == meta.MemberEnd()) {
-//     return NA_STRING;
-//   }
-
-//   if (!meta.FindMember("rule_matcher")->value.IsArray()) {
-//     return NA_STRING;
-//   }
-
-//   if (meta.FindMember("rule_matcher")->value.GetArray().Size() == 0) {
-//     return NA_STRING;
-//   }
-
-//   if (!meta.FindMember("rule_matcher")->value.GetArray()[0].IsObject()) {
-//     return NA_STRING;
-//   }
-
-//   const auto outer_results = meta.FindMember("rule_matcher")->value.GetArray()[0].GetObject();
-//   const auto results = outer_results.FindMember("results");
-//   if (results == outer_results.MemberEnd()) {
-//     return NA_STRING;
-//   }
-
-//   if (!results->value.IsArray()) {
-//     return NA_STRING;
-//   }
-
-//   const auto inner_results = results->value.GetArray();
-//   if (inner_results.Size() == 0) {
-//     return NA_STRING;
-//   }
-
-//   if (!inner_results[0].IsObject()) {
-//     return NA_STRING;
-//   }
-
-//   const auto res = inner_results[0].GetObject();
-//   if (res.FindMember(inner_name.c_str()) == res.MemberEnd()) {
-//     return NA_STRING;
-//   }
-
-//   return get_chr( res.FindMember( inner_name.c_str() )->value );
- 
-//   // if (results->value.IsNull()) {
-//     // return NA_STRING;
-//   // }
-
-//   // return get_chr(results->value[0]);
-
-//   // const auto outer_results = meta.FindMember("rule_matcher")->value.GetArray()[0].IsObject();
-//   // const auto results = outer_results.FindMember("results");
-//   // if (results == ) {
-//   //   return NA_STRING;
-//   // }
-
-//   // const auto outer = meta.FindMember("rule_matcher")->value.GetArray()[0].GetObject();
-//   // if (outer. )
-//   // const auto target = outer.FindMember(inner_name.c_str());
-//   // if (target == outer.MemberEnd()) {
-//   //   return NA_STRING;
-//   // }
-
-//   // return get_chr(
-//   //   target->value
-//   // );
-// }
-
-
-// // Rcpp::List get_extras(const rapidjson::Document& x) {
-// //   bool simplify(false);
-// //   bool fill_na(false);
-// //   return jsonify::from_json::json_to_sexp(x, simplify, fill_na, 0);
-// // }
-
 
 
 } // knapply

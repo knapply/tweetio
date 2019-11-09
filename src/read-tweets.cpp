@@ -9,21 +9,6 @@
 #include <progress_bar.hpp>
 
 
-// Rcpp::List bind_cols(Rcpp::List& tweets, Rcpp::List& metadata, const int max_rows) {
-//   const vec_chr tweet_names{"main", "entities", "meta", "quoted", "retweet", "geo1", "geo2", "other"};
-//   for (auto v : tweet_names) {
-//     tweets[0]-?
-//   }
-
-//   const vec_chr tweet_names{"main", "entities", "meta", "quoted", "retweet", "geo1", "geo2", "other"};
-//   return Rcpp::cbind(tweets["main"], tweets["entities"]);
-
-//   // Rcpp::DataFrame out;
-//   // for (int i = 0; i < tweets.length()) {
-//   //   for (int j = 0; j < tweets[j].s)
-//   // }
-//   // return Rcpp::cbind(tweets[0], tweets[1]);
-// }
 
 std::pair<std::string, int> inspect_data(const std::string& file_path) {
   // returns "type" and # of lines in file
@@ -79,42 +64,6 @@ std::pair<std::string, int> inspect_data(const std::string& file_path) {
 }
 
 
-// Rcpp::List read_tweets_nested_doc(const std::string& file_path, const int& n_lines) {
-//   Progress progress(n_lines, true);
-
-//   knapply::TweetDF res(n_lines);
-  
-//   std::string line_string;
-
-//   igzstream in_file;
-//   in_file.open( file_path.c_str() );
-  
-//   rapidjson::Document parsed_json;
-
-//   int i = 0;
-//   while ( std::getline(in_file, line_string) ) {
-//     rapidjson::StringStream stream( line_string.c_str() );
-//     parsed_json.ParseStream(stream);
-    
-//     progress.increment();
-    
-//     const rapidjson::Value& doc( parsed_json["doc"] );
-    
-//     if ( !doc["id_str"].IsString() ) {
-//       continue;
-//     }
-    
-//     res.push(doc, i++);
-//   }
-
-//   in_file.close();
-
-//   return res.to_r(i);
-// }
-
-
-
-
 Rcpp::List read_tweets_nested_doc(const std::string& file_path, const int& n_lines) {
   Progress progress(n_lines, true);
 
@@ -154,8 +103,6 @@ Rcpp::List read_tweets_nested_doc(const std::string& file_path, const int& n_lin
     _["tweets"] = tweets.to_r(i),
     _["metadata"] = metadata.to_r(i)
   );
-
-  // return bind_cols(tweets.to_r(i), traptor_meta.to_r(i));
 }
 
 
@@ -266,7 +213,7 @@ Rcpp::List prep_bbox_(const Rcpp::List& bbox_coords) {
 
   vec_dbl current_in;
 
-  const vec_chr current_out_class = vec_chr::create("XY", "POLYGON", "sfg");
+  const vec_chr current_out_class = vec_chr{"XY", "POLYGON", "sfg"};
   constexpr int valid_length = 8;
 
   for (int i = 0; i < n; ++i) {

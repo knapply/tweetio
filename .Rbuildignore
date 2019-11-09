@@ -13,3 +13,4 @@
 ^codecov\.yml$
 ^appveyor\.yml$
 ^rtools-path-checkbox\.jpg$
+^pkgdown$
