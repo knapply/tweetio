@@ -71,6 +71,22 @@ class TweetDF {
     vec_chr country_code;
     Rcpp::List bbox_coords;
 
+    vec_chr    retweet_place_url;
+    vec_chr    retweet_place_name;
+    vec_chr    retweet_place_full_name;
+    vec_chr    retweet_place_type;
+    vec_chr    retweet_country;
+    vec_chr    retweet_country_code;
+    Rcpp::List retweet_bbox_coords;
+
+    vec_chr    quoted_place_url;
+    vec_chr    quoted_place_name;
+    vec_chr    quoted_place_full_name;
+    vec_chr    quoted_place_type;
+    vec_chr    quoted_country;
+    vec_chr    quoted_country_code;
+    Rcpp::List quoted_bbox_coords;
+
     vec_chr status_url;
     vec_chr name;
     vec_chr location;
@@ -159,6 +175,23 @@ class TweetDF {
         this->country_code                 = vec_chr(n_vals, NA_STRING);
         this->bbox_coords                  = Rcpp::List( n_vals, vec_dbl(0) );
 
+        this->retweet_place_url            = vec_chr(n_vals, NA_STRING);
+        this->retweet_place_name           = vec_chr(n_vals, NA_STRING);
+        this->retweet_place_full_name      = vec_chr(n_vals, NA_STRING);
+        this->retweet_place_type           = vec_chr(n_vals, NA_STRING);
+        this->retweet_country              = vec_chr(n_vals, NA_STRING);
+        this->retweet_country_code         = vec_chr(n_vals, NA_STRING);
+        this->retweet_bbox_coords          = Rcpp::List( n_vals, vec_dbl(0) );
+
+        this->quoted_place_url            = vec_chr(n_vals, NA_STRING);
+        this->quoted_place_name           = vec_chr(n_vals, NA_STRING);
+        this->quoted_place_full_name      = vec_chr(n_vals, NA_STRING);
+        this->quoted_place_type           = vec_chr(n_vals, NA_STRING);
+        this->quoted_country              = vec_chr(n_vals, NA_STRING);
+        this->quoted_country_code         = vec_chr(n_vals, NA_STRING);
+        this->quoted_bbox_coords          = Rcpp::List( n_vals, vec_dbl(0) );
+
+
         // this->status_url                   = vec_chr(n_vals, NA_STRING);
         this->name                         = vec_chr(n_vals, NA_STRING);
         this->location                     = vec_chr(n_vals, NA_STRING);
@@ -245,6 +278,22 @@ class TweetDF {
         this->country_code[i]                = get_chr( x["place"]["country_code"] );
         this->bbox_coords[i]                 = get_bbox( x["place"]["bounding_box"]["coordinates"] );
 
+        this->retweet_place_url[i]          = get_chr( x["retweeted_status"]["place"]["url"] );
+        this->retweet_place_name[i]         = get_chr( x["retweeted_status"]["place"]["name"] );
+        this->retweet_place_full_name[i]    = get_chr( x["retweeted_status"]["place"]["full_name"] );
+        this->retweet_place_type[i]         = get_chr( x["retweeted_status"]["place"]["place_type"] );
+        this->retweet_country[i]            = get_chr( x["retweeted_status"]["place"]["country"] );
+        this->retweet_country_code[i]       = get_chr( x["retweeted_status"]["place"]["country_code"] );
+        this->retweet_bbox_coords[i]        = get_bbox( x["retweeted_status"]["place"]["bounding_box"]["coordinates"] );
+
+        this->quoted_place_url[i]           = get_chr( x["quoted_status"]["place"]["url"] );
+        this->quoted_place_name[i]          = get_chr( x["quoted_status"]["place"]["name"] );
+        this->quoted_place_full_name[i]     = get_chr( x["quoted_status"]["place"]["full_name"] );
+        this->quoted_place_type[i]          = get_chr( x["quoted_status"]["place"]["place_type"] );
+        this->quoted_country[i]             = get_chr( x["quoted_status"]["place"]["country"] );
+        this->quoted_country_code[i]        = get_chr( x["quoted_status"]["place"]["country_code"] );
+        this->quoted_bbox_coords[i]         = get_bbox( x["quoted_status"]["place"]["bounding_box"]["coordinates"] );
+
         // this->status_url                     = get_chr( x[""][""] );
         this->name[i]                        = get_chr( x["user"]["name"] );
         this->location[i]                    = get_chr( x["user"]["location"] );
@@ -299,7 +348,7 @@ class TweetDF {
 
             _["media_expanded_url"]   = this->media_expanded_url[seq_out],
             _["media_url"]            = this->media_url[seq_out],
-            _["media_type"]           =  this->media_type[seq_out],
+            _["media_type"]           = this->media_type[seq_out],
 
             _["mentions_user_id"]     = this->mentions_user_id[seq_out],
             _["mentions_screen_name"] = this->mentions_screen_name[seq_out]
@@ -357,7 +406,7 @@ class TweetDF {
         retweet.attr("row.names") = row_names;
 
 
-        Rcpp::List geo = Rcpp::List::create(
+        Rcpp::List geo1 = Rcpp::List::create(
             _["place_url"]                 = this->place_url[seq_out],
             _["place_name"]                = this->place_name[seq_out],
             _["place_full_name"]           = this->place_full_name[seq_out],
@@ -366,8 +415,27 @@ class TweetDF {
             _["country_code"]              = this->country_code[seq_out],
             _["bbox_coords"]               = this->bbox_coords[seq_out]
         );
-        geo.attr("class") = "data.frame";
-        geo.attr("row.names") = row_names;
+        geo1.attr("class") = "data.frame";
+        geo1.attr("row.names") = row_names;
+
+        Rcpp::List geo2 = Rcpp::List::create(
+            _["retweet_place_url"]         = this->retweet_place_url[seq_out],
+            _["retweet_place_name"]        = this->retweet_place_name[seq_out],
+            _["retweet_place_full_name"]   = this->retweet_place_full_name[seq_out],
+            _["retweet_place_type"]        = this->retweet_place_type[seq_out],
+            _["retweet_country"]           = this->retweet_country[seq_out],
+            _["retweet_country_code"]      = this->retweet_country_code[seq_out],
+            _["retweet_bbox_coords"]       = this->retweet_bbox_coords[seq_out],
+            _["quoted_place_url"]          = this->quoted_place_url[seq_out],
+            _["quoted_place_name"]         = this->quoted_place_name[seq_out],
+            _["quoted_place_full_name"]    = this->quoted_place_full_name[seq_out],
+            _["quoted_place_type"]         = this->quoted_place_type[seq_out],
+            _["quoted_country"]            = this->quoted_country[seq_out],
+            _["quoted_country_code"]       = this->quoted_country_code[seq_out],
+            _["quoted_bbox_coords"]        = this->quoted_bbox_coords[seq_out]
+        );
+        geo2.attr("class") = "data.frame";
+        geo2.attr("row.names") = row_names;
 
         Rcpp::List other = Rcpp::List::create(
             _["name"]                      = this->name[seq_out],
@@ -398,11 +466,151 @@ class TweetDF {
             _["meta"] = meta,
             _["quoted"] = quoted,
             _["retweet"] = retweet,
-            _["geo"] = geo,
+            _["geo1"] = geo1,
+            _["geo2"] = geo2,
             _["other"] = other
         );
     };
 
+};
+
+
+class TraptorMeta {
+    Rcpp::List images_results;
+    Rcpp::List links_results;
+    
+    Rcpp::List rule_type;
+    Rcpp::List rule_tag;
+    Rcpp::List description;
+    Rcpp::List value;
+    
+    Rcpp::List appid;
+    Rcpp::List campaign_id;
+    Rcpp::List campaign_title;
+    Rcpp::List project_id;
+    Rcpp::List project_title;
+
+    Rcpp::List complex_value;
+
+    public:
+    TraptorMeta() {};
+
+    TraptorMeta(const int n_vals) {
+        
+        this->links_results                      = Rcpp::List(n_vals, vec_chr(0));
+        this->images_results                     = Rcpp::List(n_vals, vec_chr(0));
+
+        this->rule_type                          = Rcpp::List(n_vals, vec_chr(0));
+        this->rule_tag                           = Rcpp::List(n_vals, vec_chr(0));
+        this->description                        = Rcpp::List(n_vals, vec_chr(0));
+        this->value                              = Rcpp::List(n_vals, vec_chr(0));
+        this->description                        = Rcpp::List(n_vals, vec_chr(0));
+
+        this->appid                              = Rcpp::List(n_vals, vec_chr(0));
+        this->campaign_id                        = Rcpp::List(n_vals, vec_chr(0));
+        this->campaign_title                     = Rcpp::List(n_vals, vec_chr(0));
+        this->project_id                         = Rcpp::List(n_vals, vec_chr(0));
+        this->project_title                      = Rcpp::List(n_vals, vec_chr(0));
+        
+        this->complex_value                      = Rcpp::List(n_vals, vec_chr(0));
+    };
+
+
+    void push(const rapidjson::Value& x, const int i) {
+        const rapidjson::Value& meta = x["meta"];
+        if (meta.Size() == 0) {
+            return;
+        }
+
+        this->images_results[i]                  = get_meta_results(meta, "images");
+        this->links_results[i]                   = get_meta_results(meta, "links");
+        
+        this->rule_type[i]                       = get_nested_meta_results(meta, "rule_matcher", "rule_type");
+        this->rule_tag[i]                        = get_nested_meta_results(meta, "rule_matcher", "rule_tag");
+        this->description[i]                     = get_nested_meta_results(meta, "rule_matcher", "description");
+
+        this->value[i]                           = get_nested_meta_results(meta, "rule_matcher", "value");
+
+        this->appid[i]                           = get_nested_meta_results(meta, "rule_matcher", "appid");
+        this->campaign_id[i]                     = get_nested_meta_results(meta, "rule_matcher", "campaign_id");
+        this->campaign_title[i]                  = get_nested_meta_results(meta, "rule_matcher", "campaign_title", true);
+        this->project_id[i]                      = get_nested_meta_results(meta, "rule_matcher", "project_id");
+        this->project_title[i]                   = get_nested_meta_results(meta, "rule_matcher", "project_title", true);
+
+        this->complex_value[i]                   = get_nested_meta_results(meta, "rule_matcher", "complex_value", true, false);
+        
+        
+    }
+
+
+     Rcpp::List to_r(const int max_length) {
+        using Rcpp::_;
+
+        vec_int seq_out(max_length);
+        vec_chr row_names(max_length);
+        for (int i = 0; i < max_length; ++i) {
+            seq_out[i] = i;
+            row_names[i] = Rcpp::String(i + 1);
+        }
+        
+        // Rcpp::List links = Rcpp::List::create(
+        //     _["links_results"]              = this->links_results[seq_out],
+        //     _["images_results"]             = this->images_results[seq_out]
+        // );
+
+        Rcpp::List out(max_length);
+        for (int i = 0; i < max_length; ++i) {
+            Rcpp::List out_row = Rcpp::List::create(
+                // _["ist_links_results"]             = this->links_results[i],
+                // _["ist_images_results"]            = this->images_results[i],
+
+                _["ist_rule_type"]                 = this->rule_type[i],
+                _["ist_rule_tag"]                  = this->rule_tag[i],
+                _["ist_rule_value"]                = this->value[i],
+                _["ist_description"]               = this->description[i],
+                
+                _["ist_appid"]                     = this->appid[i],
+                _["ist_campaign_id"]               = this->campaign_id[i],
+                _["ist_campaign_title"]            = this->campaign_title[i],
+                _["ist_project_id"]                = this->project_id[i],
+                _["ist_project_title"]             = this->project_title[i],
+
+                _["ist_complex_value"]             = this->complex_value[i]
+            );
+
+            vec_chr temp(this->rule_type[i]);
+            // int n_rows = rule_type.length();
+
+            out_row.attr("class")     = "data.frame";
+            out_row.attr("row.names") = Rcpp::seq_len( temp.length() );
+
+            out[i] = out_row;
+        }
+
+
+        // Rcpp::List out = Rcpp::List::create(
+        //     _["ist_links_results"]             = this->links_results[seq_out],
+        //     _["ist_images_results"]            = this->images_results[seq_out],
+
+        //     _["ist_rule_type"]                 = this->rule_type[seq_out],
+        //     _["ist_rule_tag"]                  = this->rule_tag[seq_out],
+        //     _["ist_rule_value"]                = this->value[seq_out],
+        //     _["ist_description"]               = this->description[seq_out],
+            
+        //     _["ist_appid"]                     = this->appid[seq_out],
+        //     _["ist_campaign_id"]               = this->campaign_id[seq_out],
+        //     _["ist_campaign_title"]            = this->campaign_title[seq_out],
+        //     _["ist_project_id"]                = this->project_id[seq_out],
+        //     _["ist_project_title"]             = this->project_title[seq_out],
+
+        //     _["ist_complex_value"]             = this->complex_value[seq_out]
+        // );
+
+        // out.attr("class")     = "data.frame";
+        // out.attr("row.names") = row_names;
+
+        return out;
+     };
 };
 
 

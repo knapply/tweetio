@@ -14,7 +14,9 @@ License: GPL-3 + file LICENSE
 Depends: R (>= 3.3)
 SystemRequirements: zlib, C++11
 LinkingTo: 
-    rapidjsonr, Rcpp, RcppProgress
+    rapidjsonr,
+    Rcpp, 
+    RcppProgress
 Imports:
     data.table,
     Rcpp
@@ -26,7 +28,8 @@ Suggests:
     future.apply,
     rtweet,
     sf,
-    testthat
+    testthat,
+    tibble
 URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio
 BugReports: https://github.com/knapply/tweetio/issues
 Encoding: UTF-8

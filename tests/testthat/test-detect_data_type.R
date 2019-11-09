@@ -59,3 +59,4 @@ test_that("detecting data type works", {
   )
   
 })
+

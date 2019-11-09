@@ -80,19 +80,19 @@ __The [`{rtweet}`](https://rtweet.info/) package spoils R users _rotten_... in t
 
 You'll need a C++ compiler. You can check if you're ready to go by running the following code:
 
-```{r}
+```{r, eval=FALSE}
 # install.packages("pkgbuild")
 pkgbuild::check_build_tools()
 ```
 
-If  you're using Windows, you'll need [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
+If you're using Windows, you'll need [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 
 You probably want to follow the page's advice and select the recommended version, which is currently Rtools35.exe. When you're installing Rtools, you need to make sure you check the box stating “Add rtools to system PATH”.
 
 
 I have needed to reboot every computer on which I've installed Rtools before I could compile an R package.
 
-Once you're done, you can install `{tweetio}`.
+Once you're done, reboot. Then you can install `{tweetio}`.
 
 
 ```{r, eval=FALSE}
@@ -330,10 +330,36 @@ If you have `{sf}` installed, you can use `as_tweet_sf()` to filter the tweets f
 
 
 ```{r}
-tweet_sf <- as_tweet_sf(big_rtweet_stream) 
+tweet_sf <- as_tweet_sf(tweet_df = big_rtweet_stream) 
 
 tweet_sf[, "geometry"]
 ```
+
+If `tibble_sf = TRUE` (the default) and `{tibble}` is installed, the returned `sf` object will carry the `tibble` class.
+
+There are currently three columns that can potentially hold bounding boxes:
+
+1. `bbox_coords`
+2. `quoted_bbox_coords`
+3. `retweet_bbox_coords`
+
+You can select which one to use to build your `sf` object by modifying the `geom_col=` parameter (default: `"bbox_coords"`)
+
+```{r}
+as_tweet_sf(big_rtweet_stream, geom_col = "quoted_bbox_coords"
+            )[, "geometry"]
+as_tweet_sf(big_rtweet_stream, geom_col = "retweet_bbox_coords"
+            )[, "geometry"]
+```
+
+You can also build _all_ the supported bounding boxes by setting `geom_col=` to `"all"`.
+
+```{r}
+all_bboxes <- as_tweet_sf(big_rtweet_stream, geom_col = "all")
+all_bboxes[, c("geometry", "which_geom")]
+unique(all_bboxes$which_geom)
+```
+
 
 From there, you can easily manipulate the data like any other `{sf}` object.
 
@@ -346,25 +372,16 @@ tweet_sf %>%
   addPolygons()
 ```
 
-Note that `NULL` is returned in the event you don't have any valid coordinates...
-
 ```{r}
-as_tweet_sf(big_rtweet_stream[1,])
-```
+library(ggplot2)
 
-... which maximizes flexibility in binding rows...
+world <- rnaturalearth::ne_countries(returnclass = "sf")
 
-```{r}
-sf_list <- lapply(
-  list(1, 2:100, 101:200, 201:300, 301:1000, nrow(big_rtweet_stream)),
-  function(.x) as_tweet_sf(big_rtweet_stream[.x])
-)
-
-lapply(sf_list, `[`, "geometry")
-```
-
-```{r}
-do.call(rbind, sf_list)[, "geometry"]
+all_bboxes %>% 
+  ggplot() +
+  geom_sf(fill = "white", data = world) +
+  geom_sf(aes(fill = which_geom), alpha = 0.5, show.legend = FALSE) +
+  facet_wrap(~ which_geom, ncol = 2)
 ```
 
 

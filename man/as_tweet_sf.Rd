@@ -4,10 +4,15 @@
 \alias{as_tweet_sf}
 \title{Build a \code{sf} Object of Tweets}
 \usage{
-as_tweet_sf(tweet_df, ...)
+as_tweet_sf(tweet_df, geom_col = c("bbox_coords", "quoted_bbox_coords",
+  "retweet_bbox_coords", "all"), tibble_sf = TRUE, ...)
 }
 \arguments{
 \item{tweet_df}{A data frame of tweets, as obtained by \code{{rtweet}} or \code{tweetio::read_tweets()}.}
+
+\item{geom_col}{Which column to use as the active \code{geometry} column in result.}
+
+\item{tibble_sf}{Whether to return a \code{tibble} \code{sf} data frame. Requires \code{{tibble}}.}
 
 \item{...}{Arguments passed to or from other methods.}
 }

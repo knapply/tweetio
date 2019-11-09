@@ -30,9 +30,20 @@
     file_path <- unzipped
   }
   
+  file_path <- path.expand(file_path)
+  
   init <- read_tweets_(file_path)
   
-  res <- do.call(cbind.data.frame, list(unname(init), stringsAsFactors = FALSE))
+  if ("metadata" %in% names(init)) {
+    res <- data.table::data.table(
+      do.call(cbind.data.frame, list(unname(init$tweets), stringsAsFactors = FALSE))
+    )
+    res[["ist_metadata"]] <- init[["metadata"]]  
+    
+  } else {
+    res <- do.call(cbind.data.frame, list(unname(init), stringsAsFactors = FALSE))
+
+  }
   
   out <- as.data.table(
     res[!is.na(res$status_id), ]
@@ -125,8 +136,15 @@ finalize_cols <- function(x, prep_bbox = TRUE, ...) {
   }
   
   if (prep_bbox) {
-    x[, bbox_coords := prep_bbox_(bbox_coords)]
+    possible_bbox_cols <- c("bbox_coords", "retweet_bbox_coords", "quoted_bbox_coords")
+    bbox_cols <- intersect(names(x), possible_bbox_cols)
+    if (length(bbox_cols)) {
+      x[, (bbox_cols) := lapply(.SD, prep_bbox_),
+          .SDcols = bbox_cols]
+    }
   }
+  
+  
   
   x[]
 }
