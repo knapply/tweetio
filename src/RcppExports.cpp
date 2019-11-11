@@ -27,10 +27,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// flatten_date_users_
+Rcpp::List flatten_date_users_(const Rcpp::DoubleVector& date, std::vector< std::vector <std::string> > user_id, std::vector< std::vector<std::string> > screen_name);
+RcppExport SEXP _tweetio_flatten_date_users_(SEXP dateSEXP, SEXP user_idSEXP, SEXP screen_nameSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type date(dateSEXP);
+    Rcpp::traits::input_parameter< std::vector< std::vector <std::string> > >::type user_id(user_idSEXP);
+    Rcpp::traits::input_parameter< std::vector< std::vector<std::string> > >::type screen_name(screen_nameSEXP);
+    rcpp_result_gen = Rcpp::wrap(flatten_date_users_(date, user_id, screen_name));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tweetio_read_tweets_", (DL_FUNC) &_tweetio_read_tweets_, 1},
     {"_tweetio_prep_bbox_", (DL_FUNC) &_tweetio_prep_bbox_, 1},
+    {"_tweetio_flatten_date_users_", (DL_FUNC) &_tweetio_flatten_date_users_, 3},
     {NULL, NULL, 0}
 };
 

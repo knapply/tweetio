@@ -208,12 +208,15 @@ SEXP read_tweets_(const std::string& file_path) {
 // [[Rcpp::export]]
 Rcpp::List prep_bbox_(const Rcpp::List& bbox_coords) {
   const int n( bbox_coords.length() );
+  const vec_chr current_out_class = vec_chr{"XY", "POLYGON", "sfg"};
+
+  vec_dbl test_coords = bbox_coords[0];
+  const bool col_major = test_coords[0] == test_coords[1];
 
   Rcpp::List out = Rcpp::List(n);
 
   vec_dbl current_in;
 
-  const vec_chr current_out_class = vec_chr{"XY", "POLYGON", "sfg"};
   constexpr int valid_length = 8;
 
   for (int i = 0; i < n; ++i) {
@@ -225,17 +228,35 @@ Rcpp::List prep_bbox_(const Rcpp::List& bbox_coords) {
 
     Rcpp::NumericMatrix current_mat(5, 2);
 
-    current_mat[0] = current_in[0];
-    current_mat[1] = current_in[2];
-    current_mat[2] = current_in[4];
-    current_mat[3] = current_in[6];
-    current_mat[4] = current_in[0];
+    if (col_major) {
+      current_mat[0] = current_in[0];
+      current_mat[1] = current_in[1];
+      current_mat[2] = current_in[2];
+      current_mat[3] = current_in[3];
+      current_mat[4] = current_in[0];
 
-    current_mat[5] = current_in[1];
-    current_mat[6] = current_in[3];
-    current_mat[7] = current_in[5];
-    current_mat[8] = current_in[7];
-    current_mat[9] = current_in[1];
+      current_mat[5] = current_in[4];
+      current_mat[6] = current_in[5];
+      current_mat[7] = current_in[6];
+      current_mat[8] = current_in[7];
+      current_mat[9] = current_in[4];
+
+    } else {
+      current_mat[0] = current_in[0];
+      current_mat[1] = current_in[2];
+      current_mat[2] = current_in[4];
+      current_mat[3] = current_in[6];
+      current_mat[4] = current_in[0];
+
+      current_mat[5] = current_in[1];
+      current_mat[6] = current_in[3];
+      current_mat[7] = current_in[5];
+      current_mat[8] = current_in[7];
+      current_mat[9] = current_in[1];
+
+    }
+
+ 
 
     Rcpp::List current_out = Rcpp::List::create(current_mat);
     current_out.attr("class") = current_out_class;
@@ -246,6 +267,53 @@ Rcpp::List prep_bbox_(const Rcpp::List& bbox_coords) {
   return out;
 }
 
+
+// [[Rcpp::export]]
+Rcpp::List flatten_date_users_(const Rcpp::DoubleVector& date, 
+                               std::vector< std::vector <std::string> > user_id, 
+                               std::vector< std::vector<std::string> > screen_name) {
+  const auto n(date.size());
+
+  auto out_n = 0; 
+  for (auto i = 0; i < n; ++i) {
+    for (auto v : user_id[i]) {
+      if (v != "NA") {
+        out_n++;
+      }
+    }
+  }
+
+  std::vector<double> out_date; 
+  out_date.reserve(out_n);
+  
+  std::vector<std::string> out_uid;
+  out_uid.reserve(out_n);
+
+  std::vector<std::string> out_sn;
+  out_sn.reserve(out_n);
+
+
+  for (auto i = 0; i < n; ++i) {
+    for (auto j = 0; j < user_id[i].size(); ++j) {
+      if (user_id[i][j] != "NA") {
+        out_date.push_back( date[i] );
+        out_uid.push_back( user_id[i][j] );
+        out_sn.push_back( screen_name[i][j] );
+      }
+    }
+  }
+
+  using Rcpp::_;
+  Rcpp::List out = Rcpp::List::create(
+    _["created_at"] = out_date,
+    _["user_id"] = out_uid,
+    _["screen_name"] = out_sn
+  );
+  out.attr("row.names") = Rcpp::seq_len(out_n);
+  out.attr("class") = "data.frame";
+
+  return out;
+}
 
 /*** R
 

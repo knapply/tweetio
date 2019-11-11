@@ -36,7 +36,7 @@ inline vec_chr map_entities(const rapidjson::Value& x, const std::string& entity
   const int reg_n = x["entities"][ entity.c_str() ].Size();
 
   if (ext_n == 0 && reg_n == 0) {
-    return vec_chr(0);
+    return vec_chr{NA_STRING};
   }
 
   if (ext_n != 0) {

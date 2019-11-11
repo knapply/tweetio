@@ -21,5 +21,17 @@ test_that("as_tweet_sf() works", {
   expect_null(
     as_tweet_sf(bbox_not_prepped[0, ])
   )
+  
+  expect_s3_class(
+    as_tweet_sf(bbox_not_prepped, geom_col = "quoted_bbox_coords"),
+    "sf"
+  )
+  expect_error(
+    as_tweet_sf(bbox_not_prepped, geom_col = "bad col")
+  )
+  expect_s3_class(
+    as_tweet_sf(as.data.frame(bbox_not_prepped), geom_col = "all"),
+    "sf"
+  )
 
 })
