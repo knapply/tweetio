@@ -13,7 +13,7 @@ editor_options:
 
 <!-- README.Rmd generates README.md. -->
 
-```{r, echo = FALSE}
+```{r, echo=FALSE}
 knitr::opts_chunk$set(
   # collapse = TRUE,
   fig.align = "center",

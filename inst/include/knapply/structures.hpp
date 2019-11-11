@@ -476,8 +476,8 @@ class TweetDF {
 
 
 class TraptorMeta {
-    Rcpp::List images_results;
-    Rcpp::List links_results;
+    // Rcpp::List images_results;
+    // Rcpp::List links_results;
     
     Rcpp::List rule_type;
     Rcpp::List rule_tag;
@@ -497,8 +497,8 @@ class TraptorMeta {
 
     TraptorMeta(const int n_vals) {
         
-        this->links_results                      = Rcpp::List(n_vals, vec_chr(0));
-        this->images_results                     = Rcpp::List(n_vals, vec_chr(0));
+        // this->links_results                      = Rcpp::List(n_vals, vec_chr(0));
+        // this->images_results                     = Rcpp::List(n_vals, vec_chr(0));
 
         this->rule_type                          = Rcpp::List(n_vals, vec_chr(0));
         this->rule_tag                           = Rcpp::List(n_vals, vec_chr(0));
@@ -522,8 +522,8 @@ class TraptorMeta {
             return;
         }
 
-        this->images_results[i]                  = get_meta_results(meta, "images");
-        this->links_results[i]                   = get_meta_results(meta, "links");
+        // this->images_results[i]                  = get_meta_results(meta, "images");
+        // this->links_results[i]                   = get_meta_results(meta, "links");
         
         this->rule_type[i]                       = get_nested_meta_results(meta, "rule_matcher", "rule_type");
         this->rule_tag[i]                        = get_nested_meta_results(meta, "rule_matcher", "rule_tag");
@@ -537,7 +537,7 @@ class TraptorMeta {
         this->project_id[i]                      = get_nested_meta_results(meta, "rule_matcher", "project_id");
         this->project_title[i]                   = get_nested_meta_results(meta, "rule_matcher", "project_title", true);
 
-        this->complex_value[i]                   = get_nested_meta_results(meta, "rule_matcher", "complex_value", true, false);
+        this->complex_value[i]                   = get_nested_meta_results(meta, "rule_matcher", "complex_value", true);
         
         
     }
@@ -579,35 +579,12 @@ class TraptorMeta {
             );
 
             vec_chr temp(this->rule_type[i]);
-            // int n_rows = rule_type.length();
 
             out_row.attr("class")     = "data.frame";
             out_row.attr("row.names") = Rcpp::seq_len( temp.length() );
 
             out[i] = out_row;
         }
-
-
-        // Rcpp::List out = Rcpp::List::create(
-        //     _["ist_links_results"]             = this->links_results[seq_out],
-        //     _["ist_images_results"]            = this->images_results[seq_out],
-
-        //     _["ist_rule_type"]                 = this->rule_type[seq_out],
-        //     _["ist_rule_tag"]                  = this->rule_tag[seq_out],
-        //     _["ist_rule_value"]                = this->value[seq_out],
-        //     _["ist_description"]               = this->description[seq_out],
-            
-        //     _["ist_appid"]                     = this->appid[seq_out],
-        //     _["ist_campaign_id"]               = this->campaign_id[seq_out],
-        //     _["ist_campaign_title"]            = this->campaign_title[seq_out],
-        //     _["ist_project_id"]                = this->project_id[seq_out],
-        //     _["ist_project_title"]             = this->project_title[seq_out],
-
-        //     _["ist_complex_value"]             = this->complex_value[seq_out]
-        // );
-
-        // out.attr("class")     = "data.frame";
-        // out.attr("row.names") = row_names;
 
         return out;
      };

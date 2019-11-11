@@ -67,6 +67,9 @@
 #' @export
 read_tweets <- function(file_path, prep_bbox = TRUE, ...) {
   out <- .read_tweets(file_path, ...)
+  if (nrow(out) == 0L) {
+    return(out)
+  }
   
   finalize_cols(out, prep_bbox = prep_bbox)
 }

@@ -9,21 +9,6 @@
 #include <progress_bar.hpp>
 
 
-// Rcpp::List bind_cols(Rcpp::List& tweets, Rcpp::List& metadata, const int max_rows) {
-//   const vec_chr tweet_names{"main", "entities", "meta", "quoted", "retweet", "geo1", "geo2", "other"};
-//   for (auto v : tweet_names) {
-//     tweets[0]-?
-//   }
-
-//   const vec_chr tweet_names{"main", "entities", "meta", "quoted", "retweet", "geo1", "geo2", "other"};
-//   return Rcpp::cbind(tweets["main"], tweets["entities"]);
-
-//   // Rcpp::DataFrame out;
-//   // for (int i = 0; i < tweets.length()) {
-//   //   for (int j = 0; j < tweets[j].s)
-//   // }
-//   // return Rcpp::cbind(tweets[0], tweets[1]);
-// }
 
 std::pair<std::string, int> inspect_data(const std::string& file_path) {
   // returns "type" and # of lines in file
@@ -79,42 +64,6 @@ std::pair<std::string, int> inspect_data(const std::string& file_path) {
 }
 
 
-// Rcpp::List read_tweets_nested_doc(const std::string& file_path, const int& n_lines) {
-//   Progress progress(n_lines, true);
-
-//   knapply::TweetDF res(n_lines);
-  
-//   std::string line_string;
-
-//   igzstream in_file;
-//   in_file.open( file_path.c_str() );
-  
-//   rapidjson::Document parsed_json;
-
-//   int i = 0;
-//   while ( std::getline(in_file, line_string) ) {
-//     rapidjson::StringStream stream( line_string.c_str() );
-//     parsed_json.ParseStream(stream);
-    
-//     progress.increment();
-    
-//     const rapidjson::Value& doc( parsed_json["doc"] );
-    
-//     if ( !doc["id_str"].IsString() ) {
-//       continue;
-//     }
-    
-//     res.push(doc, i++);
-//   }
-
-//   in_file.close();
-
-//   return res.to_r(i);
-// }
-
-
-
-
 Rcpp::List read_tweets_nested_doc(const std::string& file_path, const int& n_lines) {
   Progress progress(n_lines, true);
 
@@ -154,8 +103,6 @@ Rcpp::List read_tweets_nested_doc(const std::string& file_path, const int& n_lin
     _["tweets"] = tweets.to_r(i),
     _["metadata"] = metadata.to_r(i)
   );
-
-  // return bind_cols(tweets.to_r(i), traptor_meta.to_r(i));
 }
 
 
@@ -261,12 +208,15 @@ SEXP read_tweets_(const std::string& file_path) {
 // [[Rcpp::export]]
 Rcpp::List prep_bbox_(const Rcpp::List& bbox_coords) {
   const int n( bbox_coords.length() );
+  const vec_chr current_out_class = vec_chr{"XY", "POLYGON", "sfg"};
+
+  vec_dbl test_coords = bbox_coords[0];
+  const bool col_major = test_coords[0] == test_coords[1];
 
   Rcpp::List out = Rcpp::List(n);
 
   vec_dbl current_in;
 
-  const vec_chr current_out_class = vec_chr::create("XY", "POLYGON", "sfg");
   constexpr int valid_length = 8;
 
   for (int i = 0; i < n; ++i) {
@@ -278,17 +228,35 @@ Rcpp::List prep_bbox_(const Rcpp::List& bbox_coords) {
 
     Rcpp::NumericMatrix current_mat(5, 2);
 
-    current_mat[0] = current_in[0];
-    current_mat[1] = current_in[2];
-    current_mat[2] = current_in[4];
-    current_mat[3] = current_in[6];
-    current_mat[4] = current_in[0];
+    if (col_major) {
+      current_mat[0] = current_in[0];
+      current_mat[1] = current_in[1];
+      current_mat[2] = current_in[2];
+      current_mat[3] = current_in[3];
+      current_mat[4] = current_in[0];
 
-    current_mat[5] = current_in[1];
-    current_mat[6] = current_in[3];
-    current_mat[7] = current_in[5];
-    current_mat[8] = current_in[7];
-    current_mat[9] = current_in[1];
+      current_mat[5] = current_in[4];
+      current_mat[6] = current_in[5];
+      current_mat[7] = current_in[6];
+      current_mat[8] = current_in[7];
+      current_mat[9] = current_in[4];
+
+    } else {
+      current_mat[0] = current_in[0];
+      current_mat[1] = current_in[2];
+      current_mat[2] = current_in[4];
+      current_mat[3] = current_in[6];
+      current_mat[4] = current_in[0];
+
+      current_mat[5] = current_in[1];
+      current_mat[6] = current_in[3];
+      current_mat[7] = current_in[5];
+      current_mat[8] = current_in[7];
+      current_mat[9] = current_in[1];
+
+    }
+
+ 
 
     Rcpp::List current_out = Rcpp::List::create(current_mat);
     current_out.attr("class") = current_out_class;
@@ -299,6 +267,53 @@ Rcpp::List prep_bbox_(const Rcpp::List& bbox_coords) {
   return out;
 }
 
+
+// [[Rcpp::export]]
+Rcpp::List flatten_date_users_(const Rcpp::DoubleVector& date, 
+                               std::vector< std::vector <std::string> > user_id, 
+                               std::vector< std::vector<std::string> > screen_name) {
+  const auto n(date.size());
+
+  auto out_n = 0; 
+  for (auto i = 0; i < n; ++i) {
+    for (auto v : user_id[i]) {
+      if (v != "NA") {
+        out_n++;
+      }
+    }
+  }
+
+  std::vector<double> out_date; 
+  out_date.reserve(out_n);
+  
+  std::vector<std::string> out_uid;
+  out_uid.reserve(out_n);
+
+  std::vector<std::string> out_sn;
+  out_sn.reserve(out_n);
+
+
+  for (auto i = 0; i < n; ++i) {
+    for (auto j = 0; j < user_id[i].size(); ++j) {
+      if (user_id[i][j] != "NA") {
+        out_date.push_back( date[i] );
+        out_uid.push_back( user_id[i][j] );
+        out_sn.push_back( screen_name[i][j] );
+      }
+    }
+  }
+
+  using Rcpp::_;
+  Rcpp::List out = Rcpp::List::create(
+    _["created_at"] = out_date,
+    _["user_id"] = out_uid,
+    _["screen_name"] = out_sn
+  );
+  out.attr("row.names") = Rcpp::seq_len(out_n);
+  out.attr("class") = "data.frame";
+
+  return out;
+}
 
 /*** R
 

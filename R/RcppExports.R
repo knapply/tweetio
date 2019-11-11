@@ -9,3 +9,7 @@ prep_bbox_ <- function(bbox_coords) {
     .Call(`_tweetio_prep_bbox_`, bbox_coords)
 }
 
+flatten_date_users_ <- function(date, user_id, screen_name) {
+    .Call(`_tweetio_flatten_date_users_`, date, user_id, screen_name)
+}
+
