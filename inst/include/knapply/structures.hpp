@@ -519,13 +519,14 @@ class TweetDF {
         columns[84]  = this->timestamp_ms[seq_out];
         columns[85]  = this->contributors_enabled[seq_out];
         
+
+        const int row_name_digits = max_length <= 10 ? 1 : max_length / 10;
         vec_chr row_names(max_length);
         for (int i = 0; i < max_length; ++i) {
-            char name[9];
+            char name[row_name_digits];
             sprintf(&(name[0]), "%d", i);
             row_names(i) = name;
         }
-
 
         columns.attr("names") = col_names;
         columns.attr("row.names") = row_names;
@@ -642,9 +643,11 @@ class TraptorMeta {
             );
 
             vec_chr length_tester(this->rule_type[i]);
-            vec_chr row_names( length_tester.length() );
-            for (int i = 0; i < length_tester.length(); ++i) {
-                char name[9];
+            const int n_rows = length_tester.length();
+            const int row_name_digits = n_rows <= 10 ? 1 : n_rows / 10;
+            vec_chr row_names(n_rows);
+            for (int i = 0; i < n_rows; ++i) {
+                char name[row_name_digits];
                 sprintf(&(name[0]), "%d", i);
                 row_names(i) = name;
             }
