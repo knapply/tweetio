@@ -173,5 +173,6 @@ inline vec_chr get_nested_meta_results(const rapidjson::Value& x,
 }
 
 
+
 } // knapply
 
