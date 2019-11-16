@@ -133,7 +133,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>as_tweet_sf</span>(<span class='no'>tweet_df</span>, <span class='kw'>geom_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bbox_coords"</span>, <span class='st'>"quoted_bbox_coords"</span>,
-  <span class='st'>"retweet_bbox_coords"</span>, <span class='st'>"all"</span>), <span class='kw'>tibble_sf</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+  <span class='st'>"retweet_bbox_coords"</span>, <span class='st'>"all"</span>), <span class='kw'>tibble_sf</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.geometry</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,6 +150,10 @@
     <tr>
       <th>tibble_sf</th>
       <td><p>Whether to return a <code>tibble</code> <code>sf</code> data frame. Requires <code>{tibble}</code>.</p></td>
+    </tr>
+    <tr>
+      <th>.geometry</th>
+      <td><p>Name of output's geometry column. Intended for internal use only.</p></td>
     </tr>
     <tr>
       <th>...</th>

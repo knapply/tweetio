@@ -5,19 +5,14 @@
 \alias{read_tweets_bulk}
 \title{Read tweets into a data frame}
 \usage{
-read_tweets(file_path, prep_bbox = TRUE, ...)
+read_tweets(file_path, ...)
 
-read_tweets_bulk(file_paths, prep_bbox = TRUE, in_parallel = TRUE,
-  .strategy = NULL, ...)
+read_tweets_bulk(file_path, in_parallel = TRUE, .strategy = NULL, ...)
 }
 \arguments{
-\item{file_path}{Path to tweet files.}
-
-\item{prep_bbox}{Whether to prepare the \code{bbox_coords} column for manipulation via \code{{sf}}.}
+\item{file_path}{Path(s) to tweet files.}
 
 \item{...}{Arguments passed to or from other methods.}
-
-\item{file_paths}{Paths to multiple tweet files.}
 
 \item{in_parallel}{Default: \code{TRUE}. Whether to use \code{future.apply::future_lapply()}
 to process the files in parallel. Ignored if \code{{future}} or \code{{future.apply}} are not installed.}

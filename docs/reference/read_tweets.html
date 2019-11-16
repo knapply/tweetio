@@ -132,29 +132,20 @@
     <p>Read tweets into a data frame</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_tweets</span>(<span class='no'>file_path</span>, <span class='kw'>prep_bbox</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>read_tweets</span>(<span class='no'>file_path</span>, <span class='no'>...</span>)
 
-<span class='fu'>read_tweets_bulk</span>(<span class='no'>file_paths</span>, <span class='kw'>prep_bbox</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>in_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>.strategy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>read_tweets_bulk</span>(<span class='no'>file_path</span>, <span class='kw'>in_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>.strategy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>file_path</th>
-      <td><p>Path to tweet files.</p></td>
-    </tr>
-    <tr>
-      <th>prep_bbox</th>
-      <td><p>Whether to prepare the <code>bbox_coords</code> column for manipulation via <code>{sf}</code>.</p></td>
+      <td><p>Path(s) to tweet files.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Arguments passed to or from other methods.</p></td>
-    </tr>
-    <tr>
-      <th>file_paths</th>
-      <td><p>Paths to multiple tweet files.</p></td>
     </tr>
     <tr>
       <th>in_parallel</th>

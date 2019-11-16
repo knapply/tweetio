@@ -1,10 +1,12 @@
+#include <vector>
 #include "typedefs.hpp"
-
 #include "json.hpp"
 
 namespace knapply { // knapply
 
 class TweetDF {
+    int current_index = 0;
+
     vec_chr user_id;
     vec_chr status_id;
     vec_chr created_at;
@@ -109,7 +111,11 @@ class TweetDF {
     public:
     TweetDF() {};
 
-    TweetDF(const i64 n_vals) {
+    int get_current_index() {
+        return this->current_index;
+    };
+
+    TweetDF(const int n_vals) {
         this->user_id                      = vec_chr(n_vals, NA_STRING);
         this->status_id                    = vec_chr(n_vals, NA_STRING);
         this->created_at                   = vec_chr(n_vals, NA_STRING);
@@ -191,8 +197,6 @@ class TweetDF {
         this->quoted_country_code         = vec_chr(n_vals, NA_STRING);
         this->quoted_bbox_coords          = Rcpp::List( n_vals, vec_dbl(0) );
 
-
-        // this->status_url                   = vec_chr(n_vals, NA_STRING);
         this->name                         = vec_chr(n_vals, NA_STRING);
         this->location                     = vec_chr(n_vals, NA_STRING);
         this->description                  = vec_chr(n_vals, NA_STRING);
@@ -213,263 +217,321 @@ class TweetDF {
 
     };
 
-    void push(const rapidjson::Value& x, i64 i) {
-        this->user_id[i]                     = get_chr( x["user"]["id_str"] );
-        this->status_id[i]                   = get_chr( x["id_str"] );
-        this->created_at[i]                  = get_chr( x["created_at"] );
-        this->screen_name[i]                 = get_chr( x["user"]["screen_name"] );
-        this->text[i]                        = get_chr_check( x["extended_tweet"]["full_text"], x["text"] );
-        this->source[i]                      = get_chr( x["source"] );
-        this->reply_to_status_id[i]          = get_chr( x["in_reply_to_status_id_str"] );
-        this->reply_to_user_id[i]            = get_chr( x["in_reply_to_user_id_str"] );
-        this->reply_to_screen_name[i]        = get_chr( x["in_reply_to_screen_name"] );
-        this->is_quote[i]                    = get_lgl( x["is_quote_status"] );
-        this->is_retweeted[i]                = get_lgl( x["retweeted"] );
+    void push(const rapidjson::Value& x) {
+        this->user_id[this->current_index]                     = get_chr( x["user"]["id_str"] );
+        this->status_id[this->current_index]                   = get_chr( x["id_str"] );
+        this->created_at[this->current_index]                  = get_chr( x["created_at"] );
+        this->screen_name[this->current_index]                 = get_chr( x["user"]["screen_name"] );
+        this->text[this->current_index]                        = get_chr_check( x["extended_tweet"]["full_text"], x["text"] );
+        this->source[this->current_index]                      = get_chr( x["source"] );
+        this->reply_to_status_id[this->current_index]          = get_chr( x["in_reply_to_status_id_str"] );
+        this->reply_to_user_id[this->current_index]            = get_chr( x["in_reply_to_user_id_str"] );
+        this->reply_to_screen_name[this->current_index]        = get_chr( x["in_reply_to_screen_name"] );
+        this->is_quote[this->current_index]                    = get_lgl( x["is_quote_status"] );
+        this->is_retweeted[this->current_index]                = get_lgl( x["retweeted"] );
 
-        this->hashtags[i]                    = map_entities(x, "hashtags", "text");
-        this->urls_expanded_url[i]           = map_entities(x, "urls", "expanded_url");
+        this->hashtags[this->current_index]                    = map_entities(x, "hashtags", "text");
+        this->urls_expanded_url[this->current_index]           = map_entities(x, "urls", "expanded_url");
 
-        this->media_expanded_url[i]          = map_entities(x, "media", "expanded_url");
-        this->media_url[i]                   = map_entities(x, "media", "media_url");
-        this->media_type[i]                  = map_entities(x, "media", "type");
+        this->media_expanded_url[this->current_index]          = map_entities(x, "media", "expanded_url");
+        this->media_url[this->current_index]                   = map_entities(x, "media", "media_url");
+        this->media_type[this->current_index]                  = map_entities(x, "media", "type");
 
-        this->mentions_user_id[i]            = map_entities(x, "user_mentions", "id_str");
-        this->mentions_screen_name[i]        = map_entities(x, "user_mentions", "screen_name");
+        this->mentions_user_id[this->current_index]            = map_entities(x, "user_mentions", "id_str");
+        this->mentions_screen_name[this->current_index]        = map_entities(x, "user_mentions", "screen_name");
 
-        this->lang[i]                        = get_chr( x["lang"] );
+        this->lang[this->current_index]                        = get_chr( x["lang"] );
 
-        this->quoted_status_id[i]            = get_chr( x["quoted_status_id_str"] );
-        this->quoted_text[i]                 = get_chr_check( x["quoted_status"]["extended_tweet"]["full_text"], x["quoted_status"]["text"] );
-        this->quoted_created_at[i]           = get_chr( x["quoted_status"]["created_at"] );
-        this->quoted_source[i]               = get_chr( x["quoted_status"]["source"] );
-        this->quoted_favorite_count[i]       = get_int( x["quoted_status"]["favorite_count"] );
-        this->quoted_retweet_count[i]        = get_int( x["quoted_status"]["retweet_count"] );
-        this->quoted_user_id[i]              = get_chr( x["quoted_status"]["user"]["id_str"] );
-        this->quoted_screen_name[i]          = get_chr( x["quoted_status"]["user"]["screen_name"] );
-        this->quoted_name[i]                 = get_chr( x["quoted_status"]["user"]["name"] );
-        this->quoted_followers_count[i]      = get_int( x["quoted_status"]["user"]["followers_count"] );
-        this->quoted_friends_count[i]        = get_int( x["quoted_status"]["user"]["friends_count"] );
-        this->quoted_statuses_count[i]       = get_int( x["quoted_status"]["user"]["statuses_count"] );
-        this->quoted_location[i]             = get_chr( x["quoted_status"]["user"]["location"] );
-        this->quoted_description[i]          = get_chr( x["quoted_status"]["user"]["description"] );
-        this->quoted_verified[i]             = get_lgl( x["quoted_status"]["user"]["verified"] );
+        this->quoted_status_id[this->current_index]            = get_chr( x["quoted_status_id_str"] );
+        this->quoted_text[this->current_index]                 = get_chr_check( x["quoted_status"]["extended_tweet"]["full_text"], x["quoted_status"]["text"] );
+        this->quoted_created_at[this->current_index]           = get_chr( x["quoted_status"]["created_at"] );
+        this->quoted_source[this->current_index]               = get_chr( x["quoted_status"]["source"] );
+        this->quoted_favorite_count[this->current_index]       = get_int( x["quoted_status"]["favorite_count"] );
+        this->quoted_retweet_count[this->current_index]        = get_int( x["quoted_status"]["retweet_count"] );
+        this->quoted_user_id[this->current_index]              = get_chr( x["quoted_status"]["user"]["id_str"] );
+        this->quoted_screen_name[this->current_index]          = get_chr( x["quoted_status"]["user"]["screen_name"] );
+        this->quoted_name[this->current_index]                 = get_chr( x["quoted_status"]["user"]["name"] );
+        this->quoted_followers_count[this->current_index]      = get_int( x["quoted_status"]["user"]["followers_count"] );
+        this->quoted_friends_count[this->current_index]        = get_int( x["quoted_status"]["user"]["friends_count"] );
+        this->quoted_statuses_count[this->current_index]       = get_int( x["quoted_status"]["user"]["statuses_count"] );
+        this->quoted_location[this->current_index]             = get_chr( x["quoted_status"]["user"]["location"] );
+        this->quoted_description[this->current_index]          = get_chr( x["quoted_status"]["user"]["description"] );
+        this->quoted_verified[this->current_index]             = get_lgl( x["quoted_status"]["user"]["verified"] );
 
-        this->retweet_status_id[i]           = get_chr( x["retweeted_status"]["id_str"] );
-        this->retweet_text[i]                = get_chr_check( x["retweeted_status"]["extended_tweet"]["full_text"], x["retweeted_status"]["text"] );
-        this->retweet_created_at[i]          = get_chr( x["retweeted_status"]["created_at"] );
-        this->retweet_source[i]              = get_chr( x["retweeted_status"]["source"] );
-        this->retweet_favorite_count[i]      = get_int( x["retweeted_status"]["favorite_count"] );
-        this->retweet_retweet_count[i]       = get_int( x["retweeted_status"]["retweet_count"] );
-        this->retweet_user_id[i]             = get_chr( x["retweeted_status"]["user"]["id_str"] );
-        this->retweet_screen_name[i]         = get_chr( x["retweeted_status"]["user"]["screen_name"] );
-        this->retweet_name[i]                = get_chr( x["retweeted_status"]["user"]["name"] );
-        this->retweet_followers_count[i]     = get_int( x["retweeted_status"]["user"]["followers_count"] );
-        this->retweet_friends_count[i]       = get_int( x["retweeted_status"]["user"]["followers_count"] );
-        this->retweet_statuses_count[i]      = get_int( x["retweeted_status"]["user"]["statuses_count"] );
-        this->retweet_location[i]            = get_chr( x["retweeted_status"]["user"]["location"] );
-        this->retweet_description[i]         = get_chr( x["retweeted_status"]["user"]["description"] );
-        this->retweet_verified[i]            = get_lgl( x["retweeted_status"]["user"]["verified"] );
+        this->retweet_status_id[this->current_index]           = get_chr( x["retweeted_status"]["id_str"] );
+        this->retweet_text[this->current_index]                = get_chr_check( x["retweeted_status"]["extended_tweet"]["full_text"], x["retweeted_status"]["text"] );
+        this->retweet_created_at[this->current_index]          = get_chr( x["retweeted_status"]["created_at"] );
+        this->retweet_source[this->current_index]              = get_chr( x["retweeted_status"]["source"] );
+        this->retweet_favorite_count[this->current_index]      = get_int( x["retweeted_status"]["favorite_count"] );
+        this->retweet_retweet_count[this->current_index]       = get_int( x["retweeted_status"]["retweet_count"] );
+        this->retweet_user_id[this->current_index]             = get_chr( x["retweeted_status"]["user"]["id_str"] );
+        this->retweet_screen_name[this->current_index]         = get_chr( x["retweeted_status"]["user"]["screen_name"] );
+        this->retweet_name[this->current_index]                = get_chr( x["retweeted_status"]["user"]["name"] );
+        this->retweet_followers_count[this->current_index]     = get_int( x["retweeted_status"]["user"]["followers_count"] );
+        this->retweet_friends_count[this->current_index]       = get_int( x["retweeted_status"]["user"]["followers_count"] );
+        this->retweet_statuses_count[this->current_index]      = get_int( x["retweeted_status"]["user"]["statuses_count"] );
+        this->retweet_location[this->current_index]            = get_chr( x["retweeted_status"]["user"]["location"] );
+        this->retweet_description[this->current_index]         = get_chr( x["retweeted_status"]["user"]["description"] );
+        this->retweet_verified[this->current_index]            = get_lgl( x["retweeted_status"]["user"]["verified"] );
 
-        this->place_url[i]                   = get_chr( x["place"]["url"] );
-        this->place_name[i]                  = get_chr( x["place"]["name"] );
-        this->place_full_name[i]             = get_chr( x["place"]["full_name"] );
-        this->place_type[i]                  = get_chr( x["place"]["place_type"] );
-        this->country[i]                     = get_chr( x["place"]["country"] );
-        this->country_code[i]                = get_chr( x["place"]["country_code"] );
-        this->bbox_coords[i]                 = get_bbox( x["place"]["bounding_box"]["coordinates"] );
+        this->place_url[this->current_index]                   = get_chr( x["place"]["url"] );
+        this->place_name[this->current_index]                  = get_chr( x["place"]["name"] );
+        this->place_full_name[this->current_index]             = get_chr( x["place"]["full_name"] );
+        this->place_type[this->current_index]                  = get_chr( x["place"]["place_type"] );
+        this->country[this->current_index]                     = get_chr( x["place"]["country"] );
+        this->country_code[this->current_index]                = get_chr( x["place"]["country_code"] );
+        this->bbox_coords[this->current_index]                 = get_bbox( x["place"]["bounding_box"]["coordinates"] );
 
-        this->retweet_place_url[i]          = get_chr( x["retweeted_status"]["place"]["url"] );
-        this->retweet_place_name[i]         = get_chr( x["retweeted_status"]["place"]["name"] );
-        this->retweet_place_full_name[i]    = get_chr( x["retweeted_status"]["place"]["full_name"] );
-        this->retweet_place_type[i]         = get_chr( x["retweeted_status"]["place"]["place_type"] );
-        this->retweet_country[i]            = get_chr( x["retweeted_status"]["place"]["country"] );
-        this->retweet_country_code[i]       = get_chr( x["retweeted_status"]["place"]["country_code"] );
-        this->retweet_bbox_coords[i]        = get_bbox( x["retweeted_status"]["place"]["bounding_box"]["coordinates"] );
+        this->retweet_place_url[this->current_index]          = get_chr( x["retweeted_status"]["place"]["url"] );
+        this->retweet_place_name[this->current_index]         = get_chr( x["retweeted_status"]["place"]["name"] );
+        this->retweet_place_full_name[this->current_index]    = get_chr( x["retweeted_status"]["place"]["full_name"] );
+        this->retweet_place_type[this->current_index]         = get_chr( x["retweeted_status"]["place"]["place_type"] );
+        this->retweet_country[this->current_index]            = get_chr( x["retweeted_status"]["place"]["country"] );
+        this->retweet_country_code[this->current_index]       = get_chr( x["retweeted_status"]["place"]["country_code"] );
+        this->retweet_bbox_coords[this->current_index]        = get_bbox( x["retweeted_status"]["place"]["bounding_box"]["coordinates"] );
 
-        this->quoted_place_url[i]           = get_chr( x["quoted_status"]["place"]["url"] );
-        this->quoted_place_name[i]          = get_chr( x["quoted_status"]["place"]["name"] );
-        this->quoted_place_full_name[i]     = get_chr( x["quoted_status"]["place"]["full_name"] );
-        this->quoted_place_type[i]          = get_chr( x["quoted_status"]["place"]["place_type"] );
-        this->quoted_country[i]             = get_chr( x["quoted_status"]["place"]["country"] );
-        this->quoted_country_code[i]        = get_chr( x["quoted_status"]["place"]["country_code"] );
-        this->quoted_bbox_coords[i]         = get_bbox( x["quoted_status"]["place"]["bounding_box"]["coordinates"] );
+        this->quoted_place_url[this->current_index]           = get_chr( x["quoted_status"]["place"]["url"] );
+        this->quoted_place_name[this->current_index]          = get_chr( x["quoted_status"]["place"]["name"] );
+        this->quoted_place_full_name[this->current_index]     = get_chr( x["quoted_status"]["place"]["full_name"] );
+        this->quoted_place_type[this->current_index]          = get_chr( x["quoted_status"]["place"]["place_type"] );
+        this->quoted_country[this->current_index]             = get_chr( x["quoted_status"]["place"]["country"] );
+        this->quoted_country_code[this->current_index]        = get_chr( x["quoted_status"]["place"]["country_code"] );
+        this->quoted_bbox_coords[this->current_index]         = get_bbox( x["quoted_status"]["place"]["bounding_box"]["coordinates"] );
 
-        // this->status_url                     = get_chr( x[""][""] );
-        this->name[i]                        = get_chr( x["user"]["name"] );
-        this->location[i]                    = get_chr( x["user"]["location"] );
-        this->description[i]                 = get_chr( x["user"]["description"] );
-        this->url[i]                         = get_chr( x["user"]["url"] );
-        this->protected_[i]                  = get_lgl( x["user"]["protected"] );
-        this->followers_count[i]             = get_int( x["user"]["followers_count"] );
-        this->friends_count[i]               = get_int( x["user"]["friends_count"] );
-        this->listed_count[i]                = get_int( x["user"]["listed_count"] );
-        this->statuses_count[i]              = get_int( x["user"]["statuses_count"] );
-        this->favourites_count[i]            = get_int( x["user"]["favourites_count"] );
-        this->account_created_at[i]          = get_chr( x["user"]["created_at"] );
-        this->verified[i]                    = get_lgl( x["user"]["verified"] );
-        this->account_lang[i]                = get_chr( x["user"]["lang"] );
-        this->profile_banner_url[i]          = get_chr( x["user"]["profile_banner_url"] );
-        this->profile_image_url[i]           = get_chr( x["user"]["profile_image_url"] );
-        this->timestamp_ms[i]                = get_chr( x["timestamp_ms"] );
-        this->contributors_enabled[i]        = get_lgl( x["user"]["countributors_enabled"] );
+        this->name[this->current_index]                        = get_chr( x["user"]["name"] );
+        this->location[this->current_index]                    = get_chr( x["user"]["location"] );
+        this->description[this->current_index]                 = get_chr( x["user"]["description"] );
+        this->url[this->current_index]                         = get_chr( x["user"]["url"] );
+        this->protected_[this->current_index]                  = get_lgl( x["user"]["protected"] );
+        this->followers_count[this->current_index]             = get_int( x["user"]["followers_count"] );
+        this->friends_count[this->current_index]               = get_int( x["user"]["friends_count"] );
+        this->listed_count[this->current_index]                = get_int( x["user"]["listed_count"] );
+        this->statuses_count[this->current_index]              = get_int( x["user"]["statuses_count"] );
+        this->favourites_count[this->current_index]            = get_int( x["user"]["favourites_count"] );
+        this->account_created_at[this->current_index]          = get_chr( x["user"]["created_at"] );
+        this->verified[this->current_index]                    = get_lgl( x["user"]["verified"] );
+        this->account_lang[this->current_index]                = get_chr( x["user"]["lang"] );
+        this->profile_banner_url[this->current_index]          = get_chr( x["user"]["profile_banner_url"] );
+        this->profile_image_url[this->current_index]           = get_chr( x["user"]["profile_image_url"] );
+        this->timestamp_ms[this->current_index]                = get_chr( x["timestamp_ms"] );
+        this->contributors_enabled[this->current_index]        = get_lgl( x["user"]["countributors_enabled"] );
+
+
+
+        this->current_index++;
     };
 
-
-    Rcpp::List to_r(const i32& max_length) {
-        using Rcpp::_;
+    Rcpp::List to_r() {
+        const auto max_length = this->current_index;
 
         vec_int seq_out(max_length);
-        vec_chr row_names(max_length);
-        for (i32 i = 0; i < seq_out.size(); ++i) {
-            seq_out[i] = i;
-            row_names[i] = Rcpp::String(i + 1);
-        }
+        std::iota( std::begin(seq_out), std::end(seq_out), 0);
+
+        constexpr int n_cols = 86;
+
+        vec_chr col_names{
+            "user_id", 
+            "status_id", 
+            "created_at", 
+            "screen_name", 
+            "text",
+            "source", 
+            "reply_to_status_id", 
+            "reply_to_user_id", 
+            "reply_to_screen_name", 
+            "is_quote", 
+            "is_retweeted",
+
+            "hashtags",
+            "urls_expanded_url",
+            "media_expanded_url",
+            "media_url",
+            "media_type",
+            "mentions_user_id",
+            "mentions_screen_name",
+
+            "quoted_status_id",
+            "quoted_text",
+            "quoted_created_at",
+            "quoted_source",
+            "quoted_favorite_count",
+            "quoted_retweet_count",
+            "quoted_user_id",
+            "quoted_screen_name",
+            "quoted_name",
+            "quoted_followers_count",
+            "quoted_friends_count",
+            "quoted_statuses_count",
+            "quoted_location",
+            "quoted_description",
+            "quoted_verified",
+
+            "retweet_status_id",
+            "retweet_text",
+            "retweet_created_at",
+            "retweet_source",
+            "retweet_favorite_count",
+            "retweet_retweet_count",
+            "retweet_user_id",
+            "retweet_screen_name",
+            "retweet_name",
+            "retweet_followers_count",
+            "retweet_friends_count",
+            "retweet_statuses_count",
+            "retweet_location",
+            "retweet_description",
+            "retweet_verified",
+
+            "place_url",
+            "place_name",
+            "place_full_name",
+            "place_type",
+            "country",
+            "country_code",
+            "bbox_coords",
+
+            "retweet_place_url",
+            "retweet_place_name",
+            "retweet_place_full_name",
+            "retweet_place_type",
+            "retweet_country",
+            "retweet_country_code",
+            "retweet_bbox_coords",
+            "quoted_place_url",
+            "quoted_place_name",
+            "quoted_place_full_name",
+            "quoted_place_type",
+            "quoted_country",
+            "quoted_country_code",
+            "quoted_bbox_coords",
+
+            "name",
+            "location",
+            "description",
+            "url",
+            "protected",
+            "followers_count",
+            "friends_count",
+            "listed_count",
+            "statuses_count",
+            "favourites_count",
+            "account_created_at",
+            "verified",
+            "account_lang",
+            "profile_banner_url",
+            "profile_image_url",
+            "timestamp_ms",
+            "contributors_enabled"
+        };
+
+        Rcpp::List columns(n_cols);
+        columns[0]   = this->user_id[seq_out];
+        columns[1]   = this->status_id[seq_out];
+        columns[2]   = this->created_at[seq_out];
+        columns[3]   = this->screen_name[seq_out];
+        columns[4]   = this->text[seq_out];
+
+        columns[5]   = this->source[seq_out];
+        columns[6]   = this->reply_to_status_id[seq_out];
+        columns[7]   = this->reply_to_user_id[seq_out];
+        columns[8]   = this->reply_to_screen_name[seq_out];
+        columns[9]   = this->is_quote[seq_out];
+        columns[10]  = this->is_retweeted[seq_out];
+
+        columns[11]  = this->hashtags[seq_out];
+        columns[12]  = this->urls_expanded_url[seq_out];
+        columns[13]  = this->media_expanded_url[seq_out];
+        columns[14]  = this->media_url[seq_out];
+        columns[15]  = this->media_type[seq_out];
+        columns[16]  = this->mentions_user_id[seq_out];
+        columns[17]  = this->mentions_screen_name[seq_out];
+
+        columns[18]  = this->quoted_status_id[seq_out];
+        columns[19]  = this->quoted_text[seq_out];
+        columns[20]  = this->quoted_created_at[seq_out];
+        columns[21]  = this->quoted_source[seq_out];
+        columns[22]  = this->quoted_favorite_count[seq_out];
+        columns[23]  = this->quoted_retweet_count[seq_out];
+        columns[24]  = this->quoted_user_id[seq_out];
+        columns[25]  = this->quoted_screen_name[seq_out];
+        columns[26]  = this->quoted_name[seq_out];
+        columns[27]  = this->quoted_followers_count[seq_out];
+        columns[28]  = this->quoted_friends_count[seq_out];
+        columns[29]  = this->quoted_statuses_count[seq_out];
+        columns[30]  = this->quoted_location[seq_out];
+        columns[31]  = this->quoted_description[seq_out];
+        columns[32]  = this->quoted_verified[seq_out];
+
+        columns[33]  = this->retweet_status_id[seq_out];
+        columns[34]  = this->retweet_text[seq_out];
+        columns[35]  = this->retweet_created_at[seq_out];
+        columns[36]  = this->retweet_source[seq_out];
+        columns[37]  = this->retweet_favorite_count[seq_out];
+        columns[38]  = this->retweet_retweet_count[seq_out];
+        columns[39]  = this->retweet_user_id[seq_out];
+        columns[40]  = this->retweet_screen_name[seq_out];
+        columns[41]  = this->retweet_name[seq_out];
+        columns[42]  = this->retweet_followers_count[seq_out];
+        columns[43]  = this->retweet_friends_count[seq_out];
+        columns[44]  = this->retweet_statuses_count[seq_out];
+        columns[45]  = this->retweet_location[seq_out];
+        columns[46]  = this->retweet_description[seq_out];
+        columns[47]  = this->retweet_verified[seq_out];
+
+        columns[48]  = this->place_url[seq_out];
+        columns[49]  = this->place_name[seq_out];
+        columns[50]  = this->place_full_name[seq_out];
+        columns[51]  = this->place_type[seq_out];
+        columns[52]  = this->country[seq_out];
+        columns[53]  = this->country_code[seq_out];
+        columns[54]  = this->bbox_coords[seq_out];
+
+        columns[55]  = this->retweet_place_url[seq_out];
+        columns[56]  = this->retweet_place_name[seq_out];
+        columns[57]  = this->retweet_place_full_name[seq_out];
+        columns[58]  = this->retweet_place_type[seq_out];
+        columns[59]  = this->retweet_country[seq_out];
+        columns[60]  = this->retweet_country_code[seq_out];
+        columns[61]  = this->retweet_bbox_coords[seq_out];
+        columns[62]  = this->quoted_place_url[seq_out];
+        columns[63]  = this->quoted_place_name[seq_out];
+        columns[64]  = this->quoted_place_full_name[seq_out];
+        columns[65]  = this->quoted_place_type[seq_out];
+        columns[66]  = this->quoted_country[seq_out];
+        columns[67]  = this->quoted_country_code[seq_out];
+        columns[68]  = this->quoted_bbox_coords[seq_out];
+
+        columns[69]  = this->name[seq_out];
+        columns[70]  = this->location[seq_out];
+        columns[71]  = this->description[seq_out];
+        columns[72]  = this->url[seq_out];
+        columns[73]  = this->protected_[seq_out];
+        columns[74]  = this->followers_count[seq_out];
+        columns[75]  = this->friends_count[seq_out];
+        columns[76]  = this->listed_count[seq_out];
+        columns[77]  = this->statuses_count[seq_out];
+        columns[78]  = this->favourites_count[seq_out];
+        columns[79]  = this->account_created_at[seq_out];
+        columns[80]  = this->verified[seq_out];
+        columns[81]  = this->account_lang[seq_out];
+        columns[82]  = this->profile_banner_url[seq_out];
+        columns[83]  = this->profile_image_url[seq_out];
+        columns[84]  = this->timestamp_ms[seq_out];
+        columns[85]  = this->contributors_enabled[seq_out];
         
-        Rcpp::List main = Rcpp::List::create(
-            _["user_id"]              = this->user_id[seq_out],
-            _["status_id"]            = this->status_id[seq_out],
-            _["created_at"]           = this->created_at[seq_out],
-            _["screen_name"]          = this->screen_name[seq_out],
-            _["text"]                 = this->text[seq_out],
-            _["source"]               = this->source[seq_out],
-            _["reply_to_status_id"]   = this->reply_to_status_id[seq_out],
-            _["reply_to_user_id"]     = this->reply_to_user_id[seq_out],
-            _["reply_to_screen_name"] = this->reply_to_screen_name[seq_out],
-            _["is_quote"]             = this->is_quote[seq_out],
-            _["is_retweeted"]         = this->is_retweeted[seq_out]
-        );
-        main.attr("class") = "data.frame";
-        main.attr("row.names") = row_names;
+        vec_chr row_names(max_length);
+        for (int i = 0; i < max_length; ++i) {
+            char name[5];
+            sprintf(&(name[0]), "%d", i);
+            row_names(i) = name;
+        }
 
 
-        Rcpp::List entities = Rcpp::List::create(
-            _["hashtags"]             = this->hashtags[seq_out],
-            _["urls_expanded_url"]    = this->urls_expanded_url[seq_out],
+        columns.attr("names") = col_names;
+        columns.attr("row.names") = row_names;
+        columns.attr("class") = "data.frame";
 
-            _["media_expanded_url"]   = this->media_expanded_url[seq_out],
-            _["media_url"]            = this->media_url[seq_out],
-            _["media_type"]           = this->media_type[seq_out],
-
-            _["mentions_user_id"]     = this->mentions_user_id[seq_out],
-            _["mentions_screen_name"] = this->mentions_screen_name[seq_out]
-        );
-        entities.attr("class") = "data.frame";
-        entities.attr("row.names") = row_names;
-
-
-        Rcpp::List meta = Rcpp::List::create(
-            _["lang"]                 = this->lang[seq_out]
-        );
-        meta.attr("class") = "data.frame";
-        meta.attr("row.names") = row_names;
-
-
-        Rcpp::List quoted = Rcpp::List::create(
-            _["quoted_status_id"]          = this->quoted_status_id[seq_out],
-            _["quoted_text"]               = this->quoted_text[seq_out],
-            _["quoted_created_at"]         = this->quoted_created_at[seq_out],
-            _["quoted_source"]             = this->quoted_source[seq_out],
-            _["quoted_favorite_count"]     = this->quoted_favorite_count[seq_out],
-            _["quoted_retweet_count"]      = this->quoted_retweet_count[seq_out],
-            _["quoted_user_id"]            = this->quoted_user_id[seq_out],
-            _["quoted_screen_name"]        = this->quoted_screen_name[seq_out],
-            _["quoted_name"]               = this->quoted_name[seq_out],
-            _["quoted_followers_count"]    = this->quoted_followers_count[seq_out],
-            _["quoted_friends_count"]      = this->quoted_friends_count[seq_out],
-            _["quoted_statuses_count"]     = this->quoted_statuses_count[seq_out],
-            _["quoted_location"]           = this->quoted_location[seq_out],
-            _["quoted_description"]        = this->quoted_description[seq_out],
-            _["quoted_verified"]           = this->quoted_verified[seq_out]
-        );
-        quoted.attr("class") = "data.frame";
-        quoted.attr("row.names") = row_names;
-
-
-        Rcpp::List retweet = Rcpp::List::create(
-            _["retweet_status_id"]         = this->retweet_status_id[seq_out],
-            _["retweet_text"]              = this->retweet_text[seq_out],
-            _["retweet_created_at"]        = this->retweet_created_at[seq_out],
-            _["retweet_source"]            = this->retweet_source[seq_out],
-            _["retweet_favorite_count"]    = this->retweet_favorite_count[seq_out],
-            _["retweet_retweet_count"]     = this->retweet_retweet_count[seq_out],
-            _["retweet_user_id"]           = this->retweet_user_id[seq_out],
-            _["retweet_screen_name"]       = this->retweet_screen_name[seq_out],
-            _["retweet_name"]              = this->retweet_name[seq_out],
-            _["retweet_followers_count"]   = this->retweet_followers_count[seq_out],
-            _["retweet_friends_count"]     = this->retweet_friends_count[seq_out],
-            _["retweet_statuses_count"]    = this->retweet_statuses_count[seq_out],
-            _["retweet_location"]          = this->retweet_location[seq_out],
-            _["retweet_description"]       = this->retweet_description[seq_out],
-            _["retweet_verified"]          = this->retweet_verified[seq_out]
-        );
-        retweet.attr("class") = "data.frame";
-        retweet.attr("row.names") = row_names;
-
-
-        Rcpp::List geo1 = Rcpp::List::create(
-            _["place_url"]                 = this->place_url[seq_out],
-            _["place_name"]                = this->place_name[seq_out],
-            _["place_full_name"]           = this->place_full_name[seq_out],
-            _["place_type"]                = this->place_type[seq_out],
-            _["country"]                   = this->country[seq_out],
-            _["country_code"]              = this->country_code[seq_out],
-            _["bbox_coords"]               = this->bbox_coords[seq_out]
-        );
-        geo1.attr("class") = "data.frame";
-        geo1.attr("row.names") = row_names;
-
-        Rcpp::List geo2 = Rcpp::List::create(
-            _["retweet_place_url"]         = this->retweet_place_url[seq_out],
-            _["retweet_place_name"]        = this->retweet_place_name[seq_out],
-            _["retweet_place_full_name"]   = this->retweet_place_full_name[seq_out],
-            _["retweet_place_type"]        = this->retweet_place_type[seq_out],
-            _["retweet_country"]           = this->retweet_country[seq_out],
-            _["retweet_country_code"]      = this->retweet_country_code[seq_out],
-            _["retweet_bbox_coords"]       = this->retweet_bbox_coords[seq_out],
-            _["quoted_place_url"]          = this->quoted_place_url[seq_out],
-            _["quoted_place_name"]         = this->quoted_place_name[seq_out],
-            _["quoted_place_full_name"]    = this->quoted_place_full_name[seq_out],
-            _["quoted_place_type"]         = this->quoted_place_type[seq_out],
-            _["quoted_country"]            = this->quoted_country[seq_out],
-            _["quoted_country_code"]       = this->quoted_country_code[seq_out],
-            _["quoted_bbox_coords"]        = this->quoted_bbox_coords[seq_out]
-        );
-        geo2.attr("class") = "data.frame";
-        geo2.attr("row.names") = row_names;
-
-        Rcpp::List other = Rcpp::List::create(
-            _["name"]                      = this->name[seq_out],
-            _["location"]                  = this->location[seq_out],
-            _["description"]               = this->description[seq_out],
-            _["url"]                       = this->url[seq_out],
-            _["protected"]                 = this->protected_[seq_out],
-            _["followers_count"]           = this->followers_count[seq_out],
-            _["friends_count"]             = this->friends_count[seq_out],
-            _["listed_count"]              = this->listed_count[seq_out],
-            _["statuses_count"]            = this->statuses_count[seq_out],
-            _["favourites_count"]          = this->favourites_count[seq_out],
-            _["account_created_at"]        = this->account_created_at[seq_out],
-            _["verified"]                  = this->verified[seq_out],
-            _["account_lang"]              = this->account_lang[seq_out],
-            _["profile_banner_url"]        = this->profile_banner_url[seq_out],
-            _["profile_image_url"]         = this->profile_image_url[seq_out],
-            _["timestamp_ms"]              = this->timestamp_ms[seq_out],
-            _["contributors_enabled"]      = this->contributors_enabled[seq_out]
-        );
-        other.attr("class") = "data.frame";
-        other.attr("row.names") = row_names;
-
-
-        return Rcpp::List::create(
-            _["main"] = main,
-            _["entities"] = entities,
-            _["meta"] = meta,
-            _["quoted"] = quoted,
-            _["retweet"] = retweet,
-            _["geo1"] = geo1,
-            _["geo2"] = geo2,
-            _["other"] = other
-        );
+        return columns;
     };
 
 };
@@ -478,6 +540,8 @@ class TweetDF {
 class TraptorMeta {
     // Rcpp::List images_results;
     // Rcpp::List links_results;
+
+    int current_index = 0;
     
     Rcpp::List rule_type;
     Rcpp::List rule_tag;
@@ -516,42 +580,41 @@ class TraptorMeta {
     };
 
 
-    void push(const rapidjson::Value& x, const int i) {
+    void push(const rapidjson::Value& x) {
         const rapidjson::Value& meta = x["meta"];
         if (meta.Size() == 0) {
             return;
         }
 
-        // this->images_results[i]                  = get_meta_results(meta, "images");
-        // this->links_results[i]                   = get_meta_results(meta, "links");
+        // this->images_results[this->current_index]                  = get_meta_results(meta, "images");
+        // this->links_results[this->current_index]                   = get_meta_results(meta, "links");
         
-        this->rule_type[i]                       = get_nested_meta_results(meta, "rule_matcher", "rule_type");
-        this->rule_tag[i]                        = get_nested_meta_results(meta, "rule_matcher", "rule_tag");
-        this->description[i]                     = get_nested_meta_results(meta, "rule_matcher", "description");
+        this->rule_type[this->current_index]                       = get_nested_meta_results(meta, "rule_matcher", "rule_type");
+        this->rule_tag[this->current_index]                        = get_nested_meta_results(meta, "rule_matcher", "rule_tag");
+        this->description[this->current_index]                     = get_nested_meta_results(meta, "rule_matcher", "description");
 
-        this->value[i]                           = get_nested_meta_results(meta, "rule_matcher", "value");
+        this->value[this->current_index]                           = get_nested_meta_results(meta, "rule_matcher", "value");
 
-        this->appid[i]                           = get_nested_meta_results(meta, "rule_matcher", "appid");
-        this->campaign_id[i]                     = get_nested_meta_results(meta, "rule_matcher", "campaign_id");
-        this->campaign_title[i]                  = get_nested_meta_results(meta, "rule_matcher", "campaign_title", true);
-        this->project_id[i]                      = get_nested_meta_results(meta, "rule_matcher", "project_id");
-        this->project_title[i]                   = get_nested_meta_results(meta, "rule_matcher", "project_title", true);
+        this->appid[this->current_index]                           = get_nested_meta_results(meta, "rule_matcher", "appid");
+        this->campaign_id[this->current_index]                     = get_nested_meta_results(meta, "rule_matcher", "campaign_id");
+        this->campaign_title[this->current_index]                  = get_nested_meta_results(meta, "rule_matcher", "campaign_title", true);
+        this->project_id[this->current_index]                      = get_nested_meta_results(meta, "rule_matcher", "project_id");
+        this->project_title[this->current_index]                   = get_nested_meta_results(meta, "rule_matcher", "project_title", true);
 
-        this->complex_value[i]                   = get_nested_meta_results(meta, "rule_matcher", "complex_value", true);
+        this->complex_value[this->current_index]                   = get_nested_meta_results(meta, "rule_matcher", "complex_value", true);
         
-        
+        this->current_index++;   
     }
 
 
-     Rcpp::List to_r(const int max_length) {
+     Rcpp::List to_r() {
         using Rcpp::_;
 
+        const auto max_length = this->current_index;
+
         vec_int seq_out(max_length);
-        vec_chr row_names(max_length);
-        for (int i = 0; i < max_length; ++i) {
-            seq_out[i] = i;
-            row_names[i] = Rcpp::String(i + 1);
-        }
+        std::iota( std::begin(seq_out), std::end(seq_out), 0);
+
         
         // Rcpp::List links = Rcpp::List::create(
         //     _["links_results"]              = this->links_results[seq_out],
@@ -561,27 +624,33 @@ class TraptorMeta {
         Rcpp::List out(max_length);
         for (int i = 0; i < max_length; ++i) {
             Rcpp::List out_row = Rcpp::List::create(
-                // _["ist_links_results"]             = this->links_results[i],
-                // _["ist_images_results"]            = this->images_results[i],
+                // _["ist_links_results"]             = this->links_results[this->current_index],
+                // _["ist_images_results"]            = this->images_results[this->current_index],
 
-                _["ist_rule_type"]                 = this->rule_type[i],
-                _["ist_rule_tag"]                  = this->rule_tag[i],
-                _["ist_rule_value"]                = this->value[i],
-                _["ist_description"]               = this->description[i],
-                
-                _["ist_appid"]                     = this->appid[i],
-                _["ist_campaign_id"]               = this->campaign_id[i],
-                _["ist_campaign_title"]            = this->campaign_title[i],
-                _["ist_project_id"]                = this->project_id[i],
-                _["ist_project_title"]             = this->project_title[i],
+                _["ist_rule_type"]                 = this->rule_type[this->current_index],
+                _["ist_rule_tag"]                  = this->rule_tag[this->current_index],
+                _["ist_rule_value"]                = this->value[this->current_index],
+                _["ist_description"]               = this->description[this->current_index],
 
-                _["ist_complex_value"]             = this->complex_value[i]
+                _["ist_appid"]                     = this->appid[this->current_index],
+                _["ist_campaign_id"]               = this->campaign_id[this->current_index],
+                _["ist_campaign_title"]            = this->campaign_title[this->current_index],
+                _["ist_project_id"]                = this->project_id[this->current_index],
+                _["ist_project_title"]             = this->project_title[this->current_index],
+
+                _["ist_complex_value"]             = this->complex_value[this->current_index]
             );
 
-            vec_chr temp(this->rule_type[i]);
+            vec_chr length_tester(this->rule_type[i]);
+            vec_chr row_names( length_tester.length() );
+            for (int i = 0; i < length_tester.length(); ++i) {
+                char name[5];
+                sprintf(&(name[0]), "%d", i);
+                row_names(i) = name;
+            }
 
             out_row.attr("class")     = "data.frame";
-            out_row.attr("row.names") = Rcpp::seq_len( temp.length() );
+            out_row.attr("row.names") = row_names;
 
             out[i] = out_row;
         }
