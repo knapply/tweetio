@@ -520,16 +520,16 @@ class TweetDF {
         columns[85]  = this->contributors_enabled[seq_out];
         
 
-        const int row_name_digits = max_length <= 10 ? 1 : max_length / 10;
-        vec_chr row_names(max_length);
-        for (int i = 0; i < max_length; ++i) {
-            char name[row_name_digits];
-            sprintf(&(name[0]), "%d", i);
-            row_names(i) = name;
-        }
+
+        // vec_chr row_names(max_length);
+        // for (int i = 0; i < max_length; ++i) {
+        //     char name[9];
+        //     sprintf(&(name[0]), "%d", i);
+        //     row_names(i) = name;
+        // }
 
         columns.attr("names") = col_names;
-        columns.attr("row.names") = row_names;
+        columns.attr("row.names") = seq_out;
         columns.attr("class") = "data.frame";
 
         return columns;
@@ -628,26 +628,26 @@ class TraptorMeta {
                 // _["ist_links_results"]             = this->links_results[this->current_index],
                 // _["ist_images_results"]            = this->images_results[this->current_index],
 
-                _["ist_rule_type"]                 = this->rule_type[this->current_index],
-                _["ist_rule_tag"]                  = this->rule_tag[this->current_index],
-                _["ist_rule_value"]                = this->value[this->current_index],
-                _["ist_description"]               = this->description[this->current_index],
+                _["ist_rule_type"]                 = this->rule_type[i],
+                _["ist_rule_tag"]                  = this->rule_tag[i],
+                _["ist_rule_value"]                = this->value[i],
+                _["ist_description"]               = this->description[i],
 
-                _["ist_appid"]                     = this->appid[this->current_index],
-                _["ist_campaign_id"]               = this->campaign_id[this->current_index],
-                _["ist_campaign_title"]            = this->campaign_title[this->current_index],
-                _["ist_project_id"]                = this->project_id[this->current_index],
-                _["ist_project_title"]             = this->project_title[this->current_index],
+                _["ist_appid"]                     = this->appid[i],
+                _["ist_campaign_id"]               = this->campaign_id[i],
+                _["ist_campaign_title"]            = this->campaign_title[i],
+                _["ist_project_id"]                = this->project_id[i],
+                _["ist_project_title"]             = this->project_title[i],
 
-                _["ist_complex_value"]             = this->complex_value[this->current_index]
+                _["ist_complex_value"]             = this->complex_value[i]
             );
 
             vec_chr length_tester(this->rule_type[i]);
             const int n_rows = length_tester.length();
-            const int row_name_digits = n_rows <= 10 ? 1 : n_rows / 10;
+            
             vec_chr row_names(n_rows);
             for (int i = 0; i < n_rows; ++i) {
-                char name[row_name_digits];
+                char name[3];
                 sprintf(&(name[0]), "%d", i);
                 row_names(i) = name;
             }
