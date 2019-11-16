@@ -521,7 +521,7 @@ class TweetDF {
         
         vec_chr row_names(max_length);
         for (int i = 0; i < max_length; ++i) {
-            char name[5];
+            char name[9];
             sprintf(&(name[0]), "%d", i);
             row_names(i) = name;
         }
@@ -644,7 +644,7 @@ class TraptorMeta {
             vec_chr length_tester(this->rule_type[i]);
             vec_chr row_names( length_tester.length() );
             for (int i = 0; i < length_tester.length(); ++i) {
-                char name[5];
+                char name[9];
                 sprintf(&(name[0]), "%d", i);
                 row_names(i) = name;
             }

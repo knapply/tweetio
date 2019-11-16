@@ -452,7 +452,7 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& fil
   knapply::TraptorMeta metadata( raw_json.size() );
   Progress progress(raw_json.size(), true);
 
-  for ( const auto& line : raw_json) {
+  for (const auto& line : raw_json) {
     progress.increment();
 
     rapidjson::Document parsed_json;
