@@ -55,7 +55,7 @@ test_that("detecting data type works", {
   write(nested_doc, temp_file)
   expect_error(
     nrow(read_tweets(temp_file)),
-    "parsing error"
+    "File does not contain any valid JSON."
   )
   
 })

@@ -1,4 +1,3 @@
-#' @importFrom data.table %chin%
 user_col_names <- function(tweet_df) {
   col_templates <- c(
     "user_id",
@@ -43,11 +42,11 @@ user_col_names <- function(tweet_df) {
 #' @importFrom data.table data.table is.data.table setcolorder setDT setnames
 build_user_df <- function(tweet_df, unique_users = TRUE, split = FALSE, ...) {
   # silence R CMD Check NOTE
-  ..x <- NULL
-  .SD <- NULL
-  user_id <- NULL
-  created_at <- NULL
-  timestamp_ms <- NULL
+  # ..x <- NULL
+  # .SD <- NULL
+  # user_id <- NULL
+  # created_at <- NULL
+  # timestamp_ms <- NULL
   ##########################
   
   if (!is.data.table(tweet_df)) {
@@ -60,43 +59,38 @@ build_user_df <- function(tweet_df, unique_users = TRUE, split = FALSE, ...) {
     split_users[c("main", "retweet", "quoted")], function(.x) {
       .x[!is.na(user_id)]
   })
-  
+
   split_users$mentions <- setDT(
-    flatten_date_users_(split_users$mentions$created_at,
-                        split_users$mentions$user_id,
-                        split_users$mentions$screen_name)
-  )[, created_at := as.POSIXct.numeric(created_at, origin = "1970-01-01")]
+    unnest_entities2_(
+      tracker = split_users$mentions$created_at,
+      source = split_users$mentions$user_id,
+      target = split_users$mentions$screen_name,
+      col_names = c("user_id", "screen_name", "created_at")
+    )
+  )
 
   out <- rbindlist(split_users, use.names = TRUE, fill = TRUE)
-  
+
   col_order <- c("user_id", setdiff(names(out), "user_id"))
   setcolorder(out, col_order)
   setnames(out, old = "created_at", new = "timestamp_ms")
-  
+
   if (unique_users && !split) {
     out <- out[
-      order(user_id, -timestamp_ms),
-      ][,
+      order(-timestamp_ms),
       lapply(.SD, function(x) {
-        if (is.atomic(x)) {
-          .subset2(x, which.min(is.na(x)))
-        } else {
-          .subset(
-            x, which.min(
-              vapply(.subset2(x, 1L), length, integer(1L)) != 0L
-            )
-          )
-        }
+        if (.N == 1L) x
+        else if (is.atomic(x)) .subset2(x, which.min(is.na(x)))                                           
+        else .subset(x, which.min( vapply(.subset2(x, 1L), length, integer(1L)) == 0L))
       }),
       by = user_id
-    ]
+    ][, timestamp_ms := as.POSIXct(timestamp_ms, origin = "1970-01-01")
+      ]
   }
-  
-  out[, timestamp_ms := as.POSIXct(timestamp_ms, origin = "1970-01-01")][]
-  
+
   if (split) {
     out <- split(out, by = "user_id")
   }
   
-  out
+  out[]
 }

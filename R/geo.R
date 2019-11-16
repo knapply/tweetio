@@ -79,16 +79,8 @@ as_tweet_sf <- function(tweet_df,
     init[[.geometry]] <- sf::st_sfc(prep_bbox_(init[[geom_col]]), crs = 4326L)
     
   }
-# 
-#   } else {
-#     init[[geom_col]] <- sf::st_sfc(lapply(init[[geom_col]], function(.x) {
-#       sf::st_cast(sf::st_multipoint(matrix(.x, ncol = 2)), "POLYGON")
-#       }), 
-#     crs = 4326L)
-#     
-#   }
   
-  out <- sf::st_sf(init, stringsAsFactors = FALSE)
+  out <- sf::st_wrap_dateline( sf::st_sf(init, stringsAsFactors = FALSE) )
   
   if (tibble_sf && requireNamespace("tibble", quietly = TRUE)) {
     out <- sf::st_as_sf(tibble::as_tibble(out))

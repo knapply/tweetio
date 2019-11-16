@@ -5,17 +5,6 @@
 
 using namespace Rcpp;
 
-// read_tweets_
-SEXP read_tweets_(const std::string& file_path);
-RcppExport SEXP _tweetio_read_tweets_(SEXP file_pathSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string& >::type file_path(file_pathSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_tweets_(file_path));
-    return rcpp_result_gen;
-END_RCPP
-}
 // prep_bbox_
 Rcpp::List prep_bbox_(const Rcpp::List& bbox_coords);
 RcppExport SEXP _tweetio_prep_bbox_(SEXP bbox_coordsSEXP) {
@@ -27,24 +16,52 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// flatten_date_users_
-Rcpp::List flatten_date_users_(const Rcpp::DoubleVector& date, std::vector< std::vector <std::string> > user_id, std::vector< std::vector<std::string> > screen_name);
-RcppExport SEXP _tweetio_flatten_date_users_(SEXP dateSEXP, SEXP user_idSEXP, SEXP screen_nameSEXP) {
+// unnest_entities_
+SEXP unnest_entities_(const SEXP& tracker, const Rcpp::CharacterVector& source, const Rcpp::List& target, const Rcpp::CharacterVector& col_names, const bool is_dttm);
+RcppExport SEXP _tweetio_unnest_entities_(SEXP trackerSEXP, SEXP sourceSEXP, SEXP targetSEXP, SEXP col_namesSEXP, SEXP is_dttmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::DoubleVector& >::type date(dateSEXP);
-    Rcpp::traits::input_parameter< std::vector< std::vector <std::string> > >::type user_id(user_idSEXP);
-    Rcpp::traits::input_parameter< std::vector< std::vector<std::string> > >::type screen_name(screen_nameSEXP);
-    rcpp_result_gen = Rcpp::wrap(flatten_date_users_(date, user_id, screen_name));
+    Rcpp::traits::input_parameter< const SEXP& >::type tracker(trackerSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::CharacterVector& >::type source(sourceSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type target(targetSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::CharacterVector& >::type col_names(col_namesSEXP);
+    Rcpp::traits::input_parameter< const bool >::type is_dttm(is_dttmSEXP);
+    rcpp_result_gen = Rcpp::wrap(unnest_entities_(tracker, source, target, col_names, is_dttm));
+    return rcpp_result_gen;
+END_RCPP
+}
+// unnest_entities2_
+SEXP unnest_entities2_(const SEXP& tracker, const Rcpp::List& source, const Rcpp::List& target, const Rcpp::CharacterVector& col_names);
+RcppExport SEXP _tweetio_unnest_entities2_(SEXP trackerSEXP, SEXP sourceSEXP, SEXP targetSEXP, SEXP col_namesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const SEXP& >::type tracker(trackerSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type source(sourceSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type target(targetSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::CharacterVector& >::type col_names(col_namesSEXP);
+    rcpp_result_gen = Rcpp::wrap(unnest_entities2_(tracker, source, target, col_names));
+    return rcpp_result_gen;
+END_RCPP
+}
+// read_tweets_impl
+Rcpp::List read_tweets_impl(const std::string& file_path);
+RcppExport SEXP _tweetio_read_tweets_impl(SEXP file_pathSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type file_path(file_pathSEXP);
+    rcpp_result_gen = Rcpp::wrap(read_tweets_impl(file_path));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_tweetio_read_tweets_", (DL_FUNC) &_tweetio_read_tweets_, 1},
     {"_tweetio_prep_bbox_", (DL_FUNC) &_tweetio_prep_bbox_, 1},
-    {"_tweetio_flatten_date_users_", (DL_FUNC) &_tweetio_flatten_date_users_, 3},
+    {"_tweetio_unnest_entities_", (DL_FUNC) &_tweetio_unnest_entities_, 5},
+    {"_tweetio_unnest_entities2_", (DL_FUNC) &_tweetio_unnest_entities2_, 4},
+    {"_tweetio_read_tweets_impl", (DL_FUNC) &_tweetio_read_tweets_impl, 1},
     {NULL, NULL, 0}
 };
 

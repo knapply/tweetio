@@ -30,6 +30,7 @@ knitr::opts_chunk$set(
 # `{tweetio}`
 
 <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/tweetio)](https://cran.r-project.org/package=tweetio)
 [![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![GitHub last commit](https://img.shields.io/github/last-commit/knapply/tweetio.svg)](https://github.com/knapply/tweetio/commits/master)
 [![Codecov test coverage](https://codecov.io/gh/knapply/tweetio/branch/master/graph/badge.svg)](https://codecov.io/gh/knapply/tweetio?branch=master)
@@ -332,7 +333,7 @@ If you have `{sf}` installed, you can use `as_tweet_sf()` to filter the tweets f
 ```{r}
 tweet_sf <- as_tweet_sf(tweet_df = big_rtweet_stream) 
 
-tweet_sf[, "geometry"]
+tweet_sf[, "bbox_coords"]
 ```
 
 If `tibble_sf = TRUE` (the default) and `{tibble}` is installed, the returned `sf` object will carry the `tibble` class.
@@ -347,9 +348,9 @@ You can select which one to use to build your `sf` object by modifying the `geom
 
 ```{r}
 as_tweet_sf(big_rtweet_stream, geom_col = "quoted_bbox_coords"
-            )[, "geometry"]
+            )[, "quoted_bbox_coords"]
 as_tweet_sf(big_rtweet_stream, geom_col = "retweet_bbox_coords"
-            )[, "geometry"]
+            )[, "retweet_bbox_coords"]
 ```
 
 You can also build _all_ the supported bounding boxes by setting `geom_col=` to `"all"`.
@@ -363,25 +364,22 @@ unique(all_bboxes$which_geom)
 
 From there, you can easily manipulate the data like any other `{sf}` object.
 
-```{r}
-library(leaflet)
 
-tweet_sf %>% 
-  leaflet() %>% 
-  addTiles() %>% 
-  addPolygons()
-```
-
-```{r}
+```{r, fig.width=12, fig.height=8}
 library(ggplot2)
 
 world <- rnaturalearth::ne_countries(returnclass = "sf")
+world <- world[world$continent != "Antarctica", ]
 
 all_bboxes %>% 
   ggplot() +
-  geom_sf(fill = "white", data = world) +
-  geom_sf(aes(fill = which_geom), alpha = 0.5, show.legend = FALSE) +
-  facet_wrap(~ which_geom, ncol = 2)
+  geom_sf(fill = "white", color = "lightgray", data = world) +
+  geom_sf(aes(fill = which_geom, color = which_geom), alpha = 0.15, size = 1, show.legend = TRUE) +
+  coord_sf(crs = 3857) +
+  scale_fill_viridis_d() +
+  scale_color_viridis_d() +
+  theme(legend.title = element_blank(), legend.position = "top",
+        panel.background = element_rect(fill = "#daf3ff"))
 ```
 
 
