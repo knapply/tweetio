@@ -232,6 +232,7 @@ Rcpp::List read_tweets_impl(const std::string& file_path) {
   return R_NilValue;
 }
 
+
 /*** R
 
 */
