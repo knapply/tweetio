@@ -69,7 +69,7 @@ jsonify_list_cols <- function(tweet_df) {
 
 #' @importFrom data.table fwrite
 #' 
-#' @export
+# @export
 write_tweet_csv <- function(tweet_df, file_path) {
   fwrite(jsonify_list_cols(tweet_df), file_path)
 }
