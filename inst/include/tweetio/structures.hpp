@@ -219,6 +219,7 @@ class TweetDF {
 
     };
 
+
     void push(const rapidjson::Value& x) {
         // this->status_id[this->current_index]  =   get_chr2(this->status_id[this->current_index], x["id_str"] );
         // this->user_id[this->current_index]  =   get_chr2(this->user_id[this->current_index], x["user"]["id_str"] );
@@ -325,7 +326,8 @@ class TweetDF {
 
 
         this->current_index++;
-    };
+    }; // push
+
 
     Rcpp::List to_r() {
         const auto max_length = this->current_index;
@@ -529,9 +531,9 @@ class TweetDF {
         finalize_df(columns, col_names, n_rows);
 
         return columns;
-    };
+    }; // TweetDF.to_r()
 
-};
+}; // TweetDF
 
 
 class PulseMeta {
@@ -602,8 +604,8 @@ class PulseMeta {
         this->complex_value[this->current_index]                   = get_nested_meta_results(meta, "rule_matcher", "complex_value", true);
         
         this->current_index++;   
-    }
-
+    } // PulseMeta.push()
+    
 
      Rcpp::List to_r() {
         using Rcpp::_;
@@ -663,8 +665,9 @@ class PulseMeta {
         }
 
         return out;
-     };
-};
+     }; // PulseMeta.to_r()
+
+}; // PulseMeta
 
 
 } // namespace tweetio
