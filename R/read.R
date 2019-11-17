@@ -186,10 +186,18 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   proto_tweet_df[
     , profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
   ]
+  source_cols <- intersect(
+    names(proto_tweet_df),
+    c("source", "retweet_source", "quoted_source")
+  )
+  # follow {rtweet}'s behavior
+  proto_tweet_df[
+    , (source_cols) := lapply(.SD, stringi::stri_extract_first_regex,
+                              '(?<=">).*?(?=</a>$)'),
+    .SDcols = source_cols
+  ]
+  
   
   .set_col_order(proto_tweet_df)[]
 }
-
-
-
 

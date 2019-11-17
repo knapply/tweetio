@@ -19,7 +19,8 @@ LinkingTo:
     RcppProgress
 Imports:
     data.table,
-    Rcpp
+    Rcpp,
+    stringi
 Suggests:
     covr,
     here,

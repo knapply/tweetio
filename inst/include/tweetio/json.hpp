@@ -6,7 +6,10 @@
 namespace tweetio {
 
 inline Rcpp::String get_chr(const rapidjson::Value& x) {
-  return x.IsString() ? Rcpp::String( x.GetString() ) : NA_STRING;
+  if ( x.IsString() ) {
+    return Rcpp::String( x.GetString() );
+  }
+  return NA_STRING;
 }
 
 // inline Rcpp::String get_chr2(const Rcpp::String& target, const rapidjson::Value& x) {
@@ -18,10 +21,10 @@ inline Rcpp::String get_chr(const rapidjson::Value& x) {
 // }
 
 inline Rcpp::String get_chr_check(const rapidjson::Value& a, const rapidjson::Value& b) {
-  if (a.IsString()) {
+  if (a.IsString() ) {
     return Rcpp::String( a.GetString() );
   }
-  if (b.IsString()) {
+  if ( b.IsString() ) {
     return Rcpp::String( b.GetString() );
   }
   return NA_STRING;
