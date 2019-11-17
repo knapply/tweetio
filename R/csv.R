@@ -58,6 +58,10 @@ peak_csv_col_classes <- function(file_path) {
 #' @importFrom data.table copy
 #' @importFrom jsonify to_json
 jsonify_list_cols <- function(tweet_df) {
+  # silence R CMD Check NOTE =============================================================
+  .SD <- NULL
+  # ======================================================================================
+
   out <- copy(tweet_df)
 
   list_cols <- names(out)[.map_lgl(out, is.list)]
@@ -79,6 +83,15 @@ write_tweet_csv <- function(tweet_df, file_path) {
 #' @importFrom jsonify from_json
 #' @importFrom stringi stri_detect_regex stri_replace_all_fixed
 read_tweet_csv <- function(file_path) {
+  # there doesn't seem to be a safe way to retain type information, even when explicitly
+  # providing classes to `colClasses` or via a YAML header (CSVY)...
+  # TODO is this worth doing in C++ (or even supporting?)
+  
+  # silence R CMD Check NOTE =============================================================
+  .SD <- NULL
+  metadata <- NULL
+  # ======================================================================================
+  
   col_classes <- peak_csv_col_classes(file_path)
   # TODO: note exactly which col_classes are totally ignored...
   out <- fread(file_path, colClasses = col_classes,

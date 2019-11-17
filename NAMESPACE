@@ -3,7 +3,6 @@
 export(as_tweet_sf)
 export(read_tweets)
 export(read_tweets_bulk)
-export(write_tweet_csv)
 importFrom(Rcpp,sourceCpp)
 importFrom(data.table,"%chin%")
 importFrom(data.table,":=")
