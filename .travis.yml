@@ -4,13 +4,20 @@
 
 
 language: r
-sudo: false
+sudo: required
 cache: packages
 
 warnings_are_errors: true
 
 os:
   - linux
+  - osx
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install llvm &&
+    export PATH="/usr/local/opt/llvm/bin:$PATH" &&
+    export LDFLAGS="-L/usr/local/opt/llvm/lib" &&
+    export CFLAGS="-I/usr/local/opt/llvm/include"; fi
 
 jobs:
   include:

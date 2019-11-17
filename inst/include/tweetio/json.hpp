@@ -1,10 +1,21 @@
+#ifndef TWEETIO_JSON_H
+#define TWEETIO_JSON_H
+
 #include <rapidjson/document.h>
 
-namespace knapply {  // knapply
+namespace tweetio {
 
 inline Rcpp::String get_chr(const rapidjson::Value& x) {
   return x.IsString() ? Rcpp::String( x.GetString() ) : NA_STRING;
 }
+
+// inline Rcpp::String get_chr2(const Rcpp::String& target, const rapidjson::Value& x) {
+//   if (x.IsString()) {
+//     return Rcpp::String( x.GetString() ) ;
+//   } else {
+//     return target;
+//   }
+// }
 
 inline Rcpp::String get_chr_check(const rapidjson::Value& a, const rapidjson::Value& b) {
   if (a.IsString()) {
@@ -174,5 +185,6 @@ inline vec_chr get_nested_meta_results(const rapidjson::Value& x,
 
 
 
-} // knapply
+} // namespace tweetio
 
+#endif

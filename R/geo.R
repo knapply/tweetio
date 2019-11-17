@@ -2,7 +2,6 @@
 #' 
 #' @param tweet_df A data frame of tweets, as obtained by `{rtweet}` or `tweetio::read_tweets()`.
 #' @param geom_col Which column to use as the active `geometry` column in result.
-#' @param tibble_sf Whether to return a `tibble` `sf` data frame. Requires `{tibble}`.
 #' @param .geometry Name of output's geometry column. Intended for internal use only. 
 #' @param ... Arguments passed to or from other methods.
 #' 
@@ -20,7 +19,6 @@
 as_tweet_sf <- function(tweet_df, 
                         geom_col = c("bbox_coords", "quoted_bbox_coords",
                                      "retweet_bbox_coords", "all"),
-                        tibble_sf = TRUE,
                         .geometry = NULL,
                         ...) {
   # silence R CMD Check NOTE
@@ -41,8 +39,8 @@ as_tweet_sf <- function(tweet_df,
     .geometry <- geom_col
   }
 
-  if (!inherits(tweet_df, "data.table")) {
-    tweet_df <- as.data.table(tweet_df)
+  if (!is.data.table(tweet_df)) {
+    tweet_df <- data.table(tweet_df)
   }
   
   if (geom_col == "all") {
@@ -50,7 +48,7 @@ as_tweet_sf <- function(tweet_df,
                             names(tweet_df))
   
     out <- lapply(valid_cols, function(.x) {
-      res <- as_tweet_sf(tweet_df, .x, tibble_sf = tibble_sf, .geometry = "geometry")
+      res <- as_tweet_sf(tweet_df, .x, .geometry = "geometry", ...)
       if (!is.null(res)) {
         res[["which_geom"]] <- .x
       }
@@ -63,10 +61,12 @@ as_tweet_sf <- function(tweet_df,
   if (!geom_col %chin% names(tweet_df)) {
     stop(geom_col, " is not a valid column in `tweet_df`.", call. = FALSE)
   }
+  
+  rows_to_keep <- vapply(tweet_df[[geom_col]],
+                         function(.x) length(.x[!is.na(.x)]) != 0L,
+                         logical(1L))
 
-  init <- tweet_df[
-    vapply(get(geom_col), function(.x) length(.x[!is.na(.x)]) != 0L, logical(1L)),
-  ]
+  init <- tweet_df[rows_to_keep, ]
 
   if (nrow(init) == 0L) {
     return(NULL)
@@ -80,12 +80,6 @@ as_tweet_sf <- function(tweet_df,
     
   }
   
-  out <- sf::st_wrap_dateline( sf::st_sf(init, stringsAsFactors = FALSE) )
-  
-  if (tibble_sf && requireNamespace("tibble", quietly = TRUE)) {
-    out <- sf::st_as_sf(tibble::as_tibble(out))
-  }
-  
-  out
+  sf::st_sf(init, stringsAsFactors = FALSE)
 }
 

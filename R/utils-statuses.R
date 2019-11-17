@@ -35,12 +35,13 @@ status_col_names <- function(tweet_df) {
 #' @importFrom data.table data.table is.data.table setcolorder setDT setnames
 build_status_df <- function(tweet_df, unique_statuses = TRUE, split = FALSE, ...) {
   # silence R CMD Check NOTE
-  # ..x <- NULL
-  # .SD <- NULL
-  # status_id <- NULL
-  # created_at <- NULL
-  # timestamp_ms <- NULL
-  ##########################
+  ..x <- NULL
+  .SD <- NULL
+  status_id <- NULL
+  created_at <- NULL
+  timestamp_ms <- NULL
+  .N <- NULL
+  #########################
   
   if (!is.data.table(tweet_df)) {
     tweet_df <- data.table(tweet_df)
