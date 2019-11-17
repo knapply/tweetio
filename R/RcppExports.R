@@ -5,15 +5,15 @@ prep_bbox_ <- function(bbox_coords) {
     .Call(`_tweetio_prep_bbox_`, bbox_coords)
 }
 
+read_tweets_impl <- function(file_path) {
+    .Call(`_tweetio_read_tweets_impl`, file_path)
+}
+
 unnest_entities_ <- function(tracker, source, target, col_names, is_dttm = TRUE) {
     .Call(`_tweetio_unnest_entities_`, tracker, source, target, col_names, is_dttm)
 }
 
 unnest_entities2_ <- function(tracker, source, target, col_names) {
     .Call(`_tweetio_unnest_entities2_`, tracker, source, target, col_names)
-}
-
-read_tweets_impl <- function(file_path) {
-    .Call(`_tweetio_read_tweets_impl`, file_path)
 }
 

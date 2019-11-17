@@ -4,7 +4,7 @@
 #' @importFrom utils unzip
 .read_tweets <- function(file_path, ...) {
   # silence R CMD Check NOTE =============================================================
-  ist_metadata <- NULL
+  metadata <- NULL
   # ======================================================================================
   
   stopifnot(is.character(file_path) && length(file_path) == 1L)
@@ -19,7 +19,7 @@
     temp_dir <- tempdir(check = TRUE)
     target_dir <- paste0(temp_dir, "/tweetio")
     dir.create(target_dir)
-    on.exit(unlink(target_dir, force = TRUE))
+    on.exit(unlink(target_dir, recursive = TRUE, force = TRUE))
 
     unzip(zipfile = file_path, exdir = target_dir)
     unzipped <- dir(target_dir, full.names = TRUE)
@@ -38,13 +38,13 @@
   
   init <- read_tweets_impl(file_path)
   
-  if (is.null(init$metadata)) {
-    return( setDT(init)[] )
+  if (attr(init, "has_metadata", exact = TRUE)) {
+    setDT(init$tweets
+          )[, metadata := init[["metadata"]]
+            ][]
+  } else {
+    setDT(init)[]
   }
-  
-  setDT(init$tweets
-        )[, ist_metadata := init[["metadata"]]
-          ][]
 }
 
 
@@ -62,6 +62,8 @@ read_tweets <- function(file_path, ...) {
   out <- .read_tweets(file_path, ...)
 
   .finalize_cols(out)[]
+
+  out
 }
 
 
@@ -143,6 +145,12 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   bbox_coords <- NULL
   is_retweet <- NULL
   retweet_status_id <- NULL
+  status_url <- NULL
+  profile_url <- NULL
+  profile_url2 <- NULL
+  screen_name <- NULL
+  status_id <- NULL
+  user_id <- NULL
   # ======================================================================================
   
   chr_cols <- names(proto_tweet_df
@@ -159,21 +167,24 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   # convert date-times to POSIXct
   possible_dttm_cols <- c("created_at", "account_created_at",
                           "retweet_created_at", "quoted_created_at",
-                          "timestamp", "timestamp_ms",
-                          "traptor_timestamp", "traptor_system_timestamp",
-                          "traptor_rule_date_added")
+                          "timestamp", "timestamp_ms")
   dttm_cols <- intersect(names(proto_tweet_df), possible_dttm_cols)
   if (length(dttm_cols)) {
     proto_tweet_df[, (dttm_cols) := lapply(.SD, format_dttm),
                    .SDcols = dttm_cols]
   }
   
-  # add `is_retweet*` column
   proto_tweet_df[, is_retweet := !is.na(retweet_status_id)]
-  
-  # add `status_url` column
   proto_tweet_df[
     , status_url := paste0("https://twitter.com/", screen_name, "/status/", status_id)
+  ]
+  # add `profile_url` column (this doesn't appear to be documented)
+  proto_tweet_df[
+    , profile_url := paste0("https://twitter.com/i/user/", user_id)
+  ]
+  # add `profile_url2` column (backup if `profile_url` is cut off)
+  proto_tweet_df[
+    , profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
   ]
   
   .set_col_order(proto_tweet_df)[]

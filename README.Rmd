@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
   warning = FALSE
 )
 
-# options(width = 400)
+options(width = 100)
 ```
 
 
@@ -62,36 +62,20 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-__The [`{rtweet}`](https://rtweet.info/) package spoils R users _rotten_... in the best possible way__. The behind-the-scenes data carpentry is so seamless that the user doesn't need to know anything about the horrors of Twitter data, which is pretty amazing. If you use `{rtweet}`, you owe Mike Kearney some serious gratitude/citations.
+`{tweetio}` (mainly) focuses on one thing: __going from raw tweets to `{rtweet}`-style data frames and other useful structures) as quickly as possible__. Whether the data came from the Twitter API, a database dump, or some other source, `{tweetio}`'s job is to get them into R.
 
-`{tweetio}` is __not__ a competitor to `{rtweet}`, but it definitely attempts to emulate its data frame schema because...
+`{tweetio}` is __not__ a competitor to `{rtweet}`; it is not interested in collecting Twitter data. That said, it definitely attempts to emulate its data frame schema because...
 
 1. It's incredibly easy to use.
 2. It's more efficient to analyze than a key-value format following the raw data.
 3. It'd be a waste not to maximize compatibiltiy with tools built specifically around `{rtweet}`'s data frames.
 
-> ___You__ bring the tweets, `{tweetio}` gets them into R._
-
-`{tweetio}` (mainly) focuses on one thing: __going from raw tweets to `{rtweet}`-style data frames (or other useful structures) as quickly and efficiently as possible__. Whether the data came from the Twitter API, a database dump, or some other source, `{tweetio}`'s job is to get them into R.
-
-
-
 
 # Installation
 
-You'll need a C++ compiler. You can check if you're ready to go by running the following code:
+You'll need a C++ compiler. If you're using Windows, you'll need [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 
-```{r, eval=FALSE}
-# install.packages("pkgbuild")
-pkgbuild::check_build_tools()
-```
-
-If you're using Windows, you'll need [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
-
-You probably want to follow the page's advice and select the recommended version, which is currently Rtools35.exe. When you're installing Rtools, you need to make sure you check the box stating “Add rtools to system PATH”.
-
-
-I have needed to reboot every computer on which I've installed Rtools before I could compile an R package.
+You probably want to follow the page's advice and select the recommended version, which is currently Rtools35.exe. When you're installing Rtools, you need to make sure you check the box stating “Add rtools to system PATH” and reboot when you're finished.
 
 Once you're done, reboot. Then you can install `{tweetio}`.
 
@@ -121,25 +105,30 @@ We can then pass the file path to `tweetio::read_tweets()` to efficiently parse 
 library(tweetio)
 
 small_rtweet_stream <- read_tweets(temp_file)
-dplyr::glimpse(small_rtweet_stream)
+
+tibble::as_tibble(small_rtweet_stream)
 ```
 
 ## Scaling Up
 
-We're more interested in handling much larger data sets, like this one that was also obtained using `rtweet::stream_tweets()`. The file has been compressed to an 18 Mb .gz file (153 Mb uncompressed).
+We're more interested in handling much larger data sets, like this one that was also obtained using `rtweet::stream_tweets()`. The JSON has been compressed to an 124 Mb .gz file (1.2 Gb uncompressed).
 
 Currently, `{rtweet}` may fail parsing streams because the data returned may not be valid JSON.
 
 ```{r, error=TRUE}
-rtweet_stream_path <- "inst/example-data/api-stream.json.gz"
+rtweet_stream_path <- "~/ufc-tweet-stream.json"
 
 rtweet::parse_stream(rtweet_stream_path)
 ```
 
-This is unfortunate because I originally wanted to compare benchmarks since `{tweetio}` can handle these situations.
+The only way around this is to read the entire file into memory and run some validation routine before parsing.
+
+Fortunately, `{tweetio}` can handle these situations by dropping invalid JSON on the fly.
 
 ```{r}
 big_rtweet_stream <- read_tweets(rtweet_stream_path)
+
+tibble::as_tibble(big_rtweet_stream)
 ```
 
 
@@ -167,8 +156,8 @@ The data collected from APIs are stored inside a nested JSON object named `"doc"
 
 I've encountered two flavors of these schema:
 
-1. .jsonl: line-delimited JSON (which is nearly the same as NDJSON).
-2. .json: the complete contents of an Elasticsearch index, which is a JSON array.
+1. .jsonl: newline-delimited JSON
+2. .json: the complete contents of a database dump packed in a JSON array
 
 The .jsonl structure looks something like this:
 
@@ -260,7 +249,7 @@ This has three unfortunate consequences:
 2. You're going to waste most of your time (and memory) getting data into R that you're not going to use.
 3. The data are _very_ tedious to restructure in R (lists of lists of lists of lists of lists...).
 
-`{tweetio}` solves this by parsing everything at the C++ level, but only returning the actual tweet data to R.
+`{tweetio}` solves this by parsing everything and building the data frames at the C++ level.
 
 
 ```{r, echo=FALSE}
@@ -336,7 +325,6 @@ tweet_sf <- as_tweet_sf(tweet_df = big_rtweet_stream)
 tweet_sf[, "bbox_coords"]
 ```
 
-If `tibble_sf = TRUE` (the default) and `{tibble}` is installed, the returned `sf` object will carry the `tibble` class.
 
 There are currently three columns that can potentially hold bounding boxes:
 
@@ -349,8 +337,6 @@ You can select which one to use to build your `sf` object by modifying the `geom
 ```{r}
 as_tweet_sf(big_rtweet_stream, geom_col = "quoted_bbox_coords"
             )[, "quoted_bbox_coords"]
-as_tweet_sf(big_rtweet_stream, geom_col = "retweet_bbox_coords"
-            )[, "retweet_bbox_coords"]
 ```
 
 You can also build _all_ the supported bounding boxes by setting `geom_col=` to `"all"`.
@@ -362,7 +348,7 @@ unique(all_bboxes$which_geom)
 ```
 
 
-From there, you can easily manipulate the data like any other `{sf}` object.
+From there, you can easily use the data like any other `{sf}` object.
 
 
 ```{r, fig.width=12, fig.height=8}
@@ -371,8 +357,7 @@ library(ggplot2)
 world <- rnaturalearth::ne_countries(returnclass = "sf")
 world <- world[world$continent != "Antarctica", ]
 
-all_bboxes %>% 
-  ggplot() +
+ggplot(all_bboxes) +
   geom_sf(fill = "white", color = "lightgray", data = world) +
   geom_sf(aes(fill = which_geom, color = which_geom), alpha = 0.15, size = 1, show.legend = TRUE) +
   coord_sf(crs = 3857) +
@@ -394,4 +379,4 @@ Until Rtools 4.0 hits (or the [`simdjson`](https://github.com/lemire/simdjson) l
 
 `{tweetio}` uses a combination of C++ via [`{Rcpp}`](http://www.rcpp.org/), the [`rapidjson`](http://rapidjson.org/) C++ library (made available by [`{rapidjsonr}`](https://cran.r-project.org/web/packages/rapidjsonr/index.html)), and __R's secret weapon__: [`{data.table}`](https://rdatatable.gitlab.io/data.table/).
 
-Major inspiration from [{`ndjson`}](https://gitlab.com/hrbrmstr/ndjson) was taken, including its use of [`Gzstream`](https://www.cs.unc.edu/Research/compgeom/gzstream/).
+Major inspiration from [{`ndjson`}](https://gitlab.com/hrbrmstr/ndjson) was taken, particularly its use of [`Gzstream`](https://www.cs.unc.edu/Research/compgeom/gzstream/).

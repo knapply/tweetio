@@ -1,8 +1,10 @@
-#include <vector>
-#include "typedefs.hpp"
-#include "json.hpp"
+#ifndef TWEETIO_STRUCTURES_H
+#define TWEETIO_STRUCTURES_H
 
-namespace knapply { // knapply
+// #include <vector>
+#include "main.hpp"
+
+namespace tweetio {
 
 class TweetDF {
     int current_index = 0;
@@ -217,7 +219,12 @@ class TweetDF {
 
     };
 
+
     void push(const rapidjson::Value& x) {
+        // this->status_id[this->current_index]  =   get_chr2(this->status_id[this->current_index], x["id_str"] );
+        // this->user_id[this->current_index]  =   get_chr2(this->user_id[this->current_index], x["user"]["id_str"] );
+        // this->created_at[this->current_index] = get_chr2(this->created_at[this->current_index], x["created_at"] );
+
         this->user_id[this->current_index]                     = get_chr( x["user"]["id_str"] );
         this->status_id[this->current_index]                   = get_chr( x["id_str"] );
         this->created_at[this->current_index]                  = get_chr( x["created_at"] );
@@ -319,15 +326,14 @@ class TweetDF {
 
 
         this->current_index++;
-    };
+    }; // push
+
 
     Rcpp::List to_r() {
         const auto max_length = this->current_index;
 
         vec_int seq_out(max_length);
         std::iota( std::begin(seq_out), std::end(seq_out), 0);
-
-        constexpr int n_cols = 86;
 
         vec_chr col_names{
             "user_id", 
@@ -424,6 +430,7 @@ class TweetDF {
             "contributors_enabled"
         };
 
+        constexpr int n_cols = 86;
         Rcpp::List columns(n_cols);
         columns[0]   = this->user_id[seq_out];
         columns[1]   = this->status_id[seq_out];
@@ -520,25 +527,16 @@ class TweetDF {
         columns[85]  = this->contributors_enabled[seq_out];
         
 
-
-        // vec_chr row_names(max_length);
-        // for (int i = 0; i < max_length; ++i) {
-        //     char name[9];
-        //     sprintf(&(name[0]), "%d", i);
-        //     row_names(i) = name;
-        // }
-
-        columns.attr("names") = col_names;
-        columns.attr("row.names") = seq_out;
-        columns.attr("class") = "data.frame";
+        const int n_rows = max_length;
+        finalize_df(columns, col_names, n_rows);
 
         return columns;
-    };
+    }; // TweetDF.to_r()
 
-};
+}; // TweetDF
 
 
-class TraptorMeta {
+class PulseMeta {
     // Rcpp::List images_results;
     // Rcpp::List links_results;
 
@@ -558,9 +556,9 @@ class TraptorMeta {
     Rcpp::List complex_value;
 
     public:
-    TraptorMeta() {};
+    PulseMeta() {};
 
-    TraptorMeta(const int n_vals) {
+    PulseMeta(const int n_vals) {
         
         // this->links_results                      = Rcpp::List(n_vals, vec_chr(0));
         // this->images_results                     = Rcpp::List(n_vals, vec_chr(0));
@@ -589,7 +587,8 @@ class TraptorMeta {
 
         // this->images_results[this->current_index]                  = get_meta_results(meta, "images");
         // this->links_results[this->current_index]                   = get_meta_results(meta, "links");
-        
+
+
         this->rule_type[this->current_index]                       = get_nested_meta_results(meta, "rule_matcher", "rule_type");
         this->rule_tag[this->current_index]                        = get_nested_meta_results(meta, "rule_matcher", "rule_tag");
         this->description[this->current_index]                     = get_nested_meta_results(meta, "rule_matcher", "description");
@@ -605,8 +604,8 @@ class TraptorMeta {
         this->complex_value[this->current_index]                   = get_nested_meta_results(meta, "rule_matcher", "complex_value", true);
         
         this->current_index++;   
-    }
-
+    } // PulseMeta.push()
+    
 
      Rcpp::List to_r() {
         using Rcpp::_;
@@ -622,45 +621,55 @@ class TraptorMeta {
         //     _["images_results"]             = this->images_results[seq_out]
         // );
 
+        const vec_chr col_names {
+            "ist_rule_type",
+            "ist_rule_tag",
+            "ist_rule_value",
+            "ist_description",
+            "ist_appid",
+            "ist_campaign_id",
+            "ist_campaign_title",
+            "ist_project_id",
+            "ist_project_title",
+            "ist_complex_value"
+        };
+
         Rcpp::List out(max_length);
+        
         for (int i = 0; i < max_length; ++i) {
-            Rcpp::List out_row = Rcpp::List::create(
-                // _["ist_links_results"]             = this->links_results[this->current_index],
-                // _["ist_images_results"]            = this->images_results[this->current_index],
+            Rcpp::List out_row(10);
 
-                _["ist_rule_type"]                 = this->rule_type[i],
-                _["ist_rule_tag"]                  = this->rule_tag[i],
-                _["ist_rule_value"]                = this->value[i],
-                _["ist_description"]               = this->description[i],
+            out_row[0] = this->rule_type[i];
+            out_row[1] = this->rule_tag[i];
+            out_row[2] = this->value[i];
+            out_row[3] = this->description[i];
+            
+            out_row[4] = this->appid[i];
+            out_row[5] = this->campaign_id[i];
+            out_row[6] = this->campaign_title[i];
+            out_row[7] = this->project_id[i];
+            out_row[8] = this->project_title[i];
+            
+            out_row[9] = this->complex_value[i];
 
-                _["ist_appid"]                     = this->appid[i],
-                _["ist_campaign_id"]               = this->campaign_id[i],
-                _["ist_campaign_title"]            = this->campaign_title[i],
-                _["ist_project_id"]                = this->project_id[i],
-                _["ist_project_title"]             = this->project_title[i],
 
-                _["ist_complex_value"]             = this->complex_value[i]
-            );
+            // out_row.attr("names") = col_names;
+
 
             vec_chr length_tester(this->rule_type[i]);
             const int n_rows = length_tester.length();
-            
-            vec_chr row_names(n_rows);
-            for (int i = 0; i < n_rows; ++i) {
-                char name[3];
-                sprintf(&(name[0]), "%d", i);
-                row_names(i) = name;
-            }
 
-            out_row.attr("class")     = "data.frame";
-            out_row.attr("row.names") = row_names;
+            finalize_df(out_row, col_names, n_rows);
 
             out[i] = out_row;
         }
 
         return out;
-     };
-};
+     }; // PulseMeta.to_r()
+
+}; // PulseMeta
 
 
-} // knapply
+} // namespace tweetio
+
+#endif
