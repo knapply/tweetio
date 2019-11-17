@@ -35,7 +35,7 @@ before_install:
     export PATH="/usr/local/opt/llvm/bin:$PATH" &&
     export LDFLAGS="-L/usr/local/opt/llvm/lib" &&
     export CFLAGS="-I/usr/local/opt/llvm/include"; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo ldconfig
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo ldconfig;
   - R -e 'install.packages("rgdal", repos="http://R-Forge.R-project.org")'
 
 after_success:
