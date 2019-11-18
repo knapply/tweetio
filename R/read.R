@@ -164,6 +164,10 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   #   }), 
   #   .SDcols = chr_cols
   # ]
+
+  # there are some occasional control characters that end up in the strings.
+  # AFAIK, they are always `\0`, which aren't allowed in XML files.
+  # To be on the safe side, all control characters are stripped here
   proto_tweet_df[
     , (chr_cols) := lapply(.SD, stri_replace_all_regex, "[[:cntrl:]]", ""),
     .SDcols = chr_cols
