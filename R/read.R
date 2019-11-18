@@ -138,7 +138,7 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   proto_tweet_df
 }
 
-
+#' @importFrom stringi stri_extract_first_regex stri_replace_all_regex
 .finalize_cols <- function(proto_tweet_df, ...) {
   # silence R CMD Check NOTE =============================================================
   .SD <- NULL
@@ -156,11 +156,16 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   chr_cols <- names(proto_tweet_df
                     )[vapply(proto_tweet_df, is.character, FUN.VALUE = logical(1L))]
   
-  proto_tweet_df[,
-    (chr_cols) := lapply(.SD, function(.x) {
-      .x[.x == ""] <- NA_character_
-      .x
-    }), 
+  # proto_tweet_df[,
+  #   (chr_cols) := lapply(.SD, function(.x) {
+  #     .x <- stri_replace_all_regex(.x, "[[:cntrl:]]", "")
+  #     .x[nchar(stri_replace_all_regex(.x, "\\s+", "")) == 0L] <- NA_character_
+  #     .x
+  #   }), 
+  #   .SDcols = chr_cols
+  # ]
+  proto_tweet_df[
+    , (chr_cols) := lapply(.SD, stri_replace_all_regex, "[[:cntrl:]]", ""),
     .SDcols = chr_cols
   ]
   
@@ -186,10 +191,18 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   proto_tweet_df[
     , profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
   ]
+  source_cols <- intersect(
+    names(proto_tweet_df),
+    c("source", "retweet_source", "quoted_source")
+  )
+  # follow {rtweet}'s behavior
+  proto_tweet_df[
+    , (source_cols) := lapply(.SD, stri_extract_first_regex,
+                              '(?<=">).*?(?=</a>$)'),
+    .SDcols = source_cols
+  ]
+  
   
   .set_col_order(proto_tweet_df)[]
 }
-
-
-
 

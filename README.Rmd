@@ -9,8 +9,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-
-
 <!-- README.Rmd generates README.md. -->
 
 ```{r, echo=FALSE}
@@ -28,6 +26,7 @@ options(width = 100)
 
 
 # `{tweetio}`
+
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/tweetio)](https://cran.r-project.org/package=tweetio)
@@ -49,12 +48,14 @@ options(width = 100)
 - [x] Twitter API streams: .json, .json.gz
 - [x] API to Elasticsearch data dump (JSON Array): .json, .json.gz
 - [x] API to Elasticsearch data dump (line-delimited JSON): .jsonl, .jsonl.gz
+- [x] CSV (if written via `tweetio::write_tweet_csv()`)
 
 
 ### Supported Data Outputs
 
-- [x] .graphml, currently available in [`{tweetgraph}`](https://knapply.github.io/tweetgraph/)
-- [ ] CSV (will likely be CSVY once `{data.table}`'s `fread(yaml = TRUE)` feature stabilizes)
+- [x] CSV
+- [x] Excel
+- [ ] .graphml (currently available in [`{tweetgraph}`](https://knapply.github.io/tweetgraph/))
 
 ### Extras
 - [x] Spatial Tweets via `tweetio::as_tweet_sf()`
@@ -111,164 +112,184 @@ tibble::as_tibble(small_rtweet_stream)
 
 ## Scaling Up
 
-We're more interested in handling much larger data sets, like this one that was also obtained using `rtweet::stream_tweets()`. The JSON has been compressed to an 124 Mb .gz file (1.2 Gb uncompressed).
+We're more interested in handling much larger data sets, but for demonstration we'll use a file of a reasonable size that was obtained using `rtweet::stream_tweets()`. 
 
-Currently, `{rtweet}` may fail parsing streams because the data returned may not be valid JSON.
+```{r}
+rtweet_stream_path <- system.file("example-data/api-stream.json.gz", package = "tweetio")
+
+scales::number_bytes(file.size(rtweet_stream_path))
+```
+
+Before compression, the file was about 153 Mb.
+
+Unfortunately, `rtweet::parse_stream()` may fail parsing streams because the data returned may not be valid JSON.
 
 ```{r, error=TRUE}
-rtweet_stream_path <- "~/ufc-tweet-stream.json"
-
 rtweet::parse_stream(rtweet_stream_path)
 ```
 
-The only way around this is to read the entire file into memory and run some validation routine before parsing.
-
-Fortunately, `{tweetio}` can handle these situations by dropping invalid JSON on the fly.
+The only way around this is to read the entire file into memory and run some validation routine before parsing, which looks something like this...
 
 ```{r}
-big_rtweet_stream <- read_tweets(rtweet_stream_path)
-
-tibble::as_tibble(big_rtweet_stream)
-```
-
-
-How long does that take?
-
-```{r}
-library(microbenchmark)
-
-big_rtweet_time <- microbenchmark(
-  read_tweets(rtweet_stream_path),
-  times = 3
-)
-
-big_rtweet_time
-```
-
-
-
-
-## Data Dumps
-
-Using Elasticsearch seems to be the most common practice for handling social media data at scale, but it's (unfortunately) possible that you'll need to work with data dumps.
-
-The data collected from APIs are stored inside a nested JSON object named `"doc"`. `"doc"` is typically embedded in a ton of system metadata, most of which you probably don't care about. 
-
-I've encountered two flavors of these schema:
-
-1. .jsonl: newline-delimited JSON
-2. .json: the complete contents of a database dump packed in a JSON array
-
-The .jsonl structure looks something like this:
-
-```{r, eval=FALSE, echo=FALSE}
-es_jsonl <- readLines("inst/example-data/elasticsearch-dump-example.jsonl")
-
-cat(paste0(es_jsonl, collapse = "\n"))
-```
-
-```json
-{"system_metadata_you_dont_care_about":"blahblahblah","more_metadata1":"blahblahblah","more_metadata2":"blahblahblah","more_metadata3":"blahblahblah","more_metadata4":"blahblahblah","more_metadata5":"blahblahblah","doc":{"text":"********************HERE'S THE DATA YOU ACTUALLY WANT********************","id":92108498098018010401,"id_str":"92108498098018010401"},"more_metadata6":"blahblahblah","more_metadata7":"blahblahblah","more_metadata8":"blahblahblah","more_metadata9":"blahblahblah","more_metadata10":"blahblahblah"}
-{"system_metadata_you_dont_care_about":"blahblahblah","more_metadata1":"blahblahblah","more_metadata2":"blahblahblah","more_metadata3":"blahblahblah","more_metadata4":"blahblahblah","more_metadata5":"blahblahblah","doc":{"text":"********************HERE'S THE DATA YOU ACTUALLY WANT********************","id":92108498098018010401,"id_str":"92108498098018010401"},"more_metadata6":"blahblahblah","more_metadata7":"blahblahblah","more_metadata8":"blahblahblah","more_metadata9":"blahblahblah","more_metadata10":"blahblahblah"}
-{"system_metadata_you_dont_care_about":"blahblahblah","more_metadata1":"blahblahblah","more_metadata2":"blahblahblah","more_metadata3":"blahblahblah","more_metadata4":"blahblahblah","more_metadata5":"blahblahblah","doc":{"text":"********************HERE'S THE DATA YOU ACTUALLY WANT********************","id":92108498098018010401,"id_str":"92108498098018010401"},"more_metadata6":"blahblahblah","more_metadata7":"blahblahblah","more_metadata8":"blahblahblah","more_metadata9":"blahblahblah","more_metadata10":"blahblahblah"}
-```
-
-Each line contains a single JSON object resembling the following:
-
-```{r, echo=FALSE, eval=FALSE}
-jsonlite::prettify(es_jsonl[[1]])
-```
-
-```json
-{
-    "system_metadata_you_dont_care_about": "blahblahblah",
-    "more_metadata1": "blahblahblah",
-    "more_metadata2": "blahblahblah",
-    "more_metadata3": "blahblahblah",
-    "more_metadata4": "blahblahblah",
-    "more_metadata5": "blahblahblah",
-    "doc": {
-        "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
-        "id": 92108498098018010401,
-        "id_str": "92108498098018010401"
-    },
-    "more_metadata6": "blahblahblah",
-    "more_metadata7": "blahblahblah",
-    "more_metadata8": "blahblahblah",
-    "more_metadata9": "blahblahblah",
-    "more_metadata10": "blahblahblah"
-}
-```
-
-And the .json structure looks something like this:
-
-
-```{r, echo=FALSE, eval=FALSE}
-es_json <- readr::read_file("inst/example-data/elasticsearch-dump-example.json")
-jsonlite::prettify(es_json)
-```
-
-```json
-[
-    {
-        "_id": "e5daf1467d2438e31b11b44a82cbd7f5758ba5a1f1d3ecbcc6e1fc04dc9c7c4d-3016858092318",
-        "_index": "org-77f135f331153568ab7eb0e4c24623a7-default-3769a33b9e88598e38317591e2ee31c3-default-030009",
-        "_score": null,
-        "_source": {
-            "system_metadata_you_dont_care_about": "blahblahblah",
-            "more_metadata1": "blahblahblah",
-            "doc": {
-                "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
-                "id": 92108498098018010401,
-                "id_str": "92108498098018010401"
-            },
-            "more_metadata6": "blahblahblah"
-        }
-    },
-    {
-        "_id": "e5daf1467d2438e31b11b44a82cbd7f5758ba5a1f1d3ecbcc6e1fc04dc9c7c4d-3016858092318",
-        "_index": "org-77f135f331153568ab7eb0e4c24623a7-default-3769a33b9e88598e38317591e2ee31c3-default-030009",
-        "_score": null,
-        "_source": {
-            "system_metadata_you_dont_care_about": "blahblahblah",
-            "more_metadata1": "blahblahblah",
-            "doc": {
-                "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
-                "id": 92108498098018010401,
-                "id_str": "92108498098018010401"
-            },
-            "more_metadata6": "blahblahblah"
-        }
-    }
-]
-```
-
-This has three unfortunate consequences:
-
-1. Packages that were purpose-built to work directly with `{rtweet}`'s data frames can't play along with your data.
-2. You're going to waste most of your time (and memory) getting data into R that you're not going to use.
-3. The data are _very_ tedious to restructure in R (lists of lists of lists of lists of lists...).
-
-`{tweetio}` solves this by parsing everything and building the data frames at the C++ level.
-
-
-```{r, echo=FALSE}
-data_dump <- readRDS("data-dump-path.rds")
-```
-
-Here's a benchmark for reading a `r scales::number_bytes(file.size(data_dump))` JSON array data dump.
-
-
-```{r}
-res <- microbenchmark(
-
-  read_tweets(data_dump) # *****************************************************
+rtweet_validate_and_parse <- function(source_file_path, target_file_path) {
+  raw_lines <- readLines(source_file_path)
+  valid_lines <- raw_lines[vapply(raw_lines, jsonify::validate_json, logical(1L))]
+  writeLines(valid_lines, target_file_path)
   
-  , times = 3
+  rtweet::parse_stream(target_file_path)
+}
+
+rtweet_stream_path2 <- tempfile(fileext = ".json")
+
+rtweet_validate_and_parse(source_file_path = rtweet_stream_path, 
+                          target_file_path = rtweet_stream_path2)
+```
+
+
+Fortunately, `{tweetio}` can handle these situations by validating the JSON before it gets anywhere near R.
+
+```{r}
+bench::mark(
+  read_tweets(rtweet_stream_path),
+  min_iterations = 3
+)[, 1:9]
+```
+
+
+Ignoring the time it takes to run the above `rtweet_validate_and_parse()` function for `rtweet::parse_stream()` to work, how much faster is `tweetio::read_tweets()`?
+
+```{r, out.width="100%"}
+bench_mark <- bench::mark(
+  rtweet = rtweet::parse_stream(rtweet_stream_path2),
+  tweetio = tweetio::read_tweets(rtweet_stream_path2),
+  check = FALSE,
+  min_iterations = 3,
+  filter_gc = FALSE
 )
 
-res
+bench_mark[, 1:9]
+
+plot(bench_mark)
 ```
+
+
+With bigger files, using `rtweet::parse_stream()` is no longer realistic, but that's where `tweetio::read_tweets()` can help.
+
+```{r}
+big_tweet_stream_path <- "~/ufc-tweet-stream.json.gz"
+scales::number_bytes(file.size(big_tweet_stream_path)) # 1.2 Gb before compression
+
+bench::mark(
+  big_tweet_df <- tweetio::read_tweets(big_tweet_stream_path)
+)[, 1:9]
+```
+
+
+
+<!-- ## Data Dumps -->
+
+<!-- Using Elasticsearch seems to be the most common practice for handling social media data at scale, but it's (unfortunately) possible that you'll need to work with data dumps. -->
+
+<!-- The data collected from APIs are stored inside a nested JSON object named `"doc"`. `"doc"` is typically embedded in a ton of system metadata, most of which you probably don't care about.  -->
+
+<!-- I've encountered two flavors of these schema: -->
+
+<!-- 1. .jsonl: newline-delimited JSON -->
+<!-- 2. .json: the complete contents of a database dump packed in a JSON array -->
+
+<!-- The .jsonl structure looks something like this: -->
+
+<!-- ```{r, eval=FALSE, echo=FALSE} -->
+<!-- es_jsonl <- readLines("inst/example-data/elasticsearch-dump-example.jsonl") -->
+
+<!-- cat(paste0(es_jsonl, collapse = "\n")) -->
+<!-- ``` -->
+
+<!-- ```json -->
+<!-- {"system_metadata_you_dont_care_about":"blahblahblah","more_metadata1":"blahblahblah","more_metadata2":"blahblahblah","more_metadata3":"blahblahblah","more_metadata4":"blahblahblah","more_metadata5":"blahblahblah","doc":{"text":"********************HERE'S THE DATA YOU ACTUALLY WANT********************","id":92108498098018010401,"id_str":"92108498098018010401"},"more_metadata6":"blahblahblah","more_metadata7":"blahblahblah","more_metadata8":"blahblahblah","more_metadata9":"blahblahblah","more_metadata10":"blahblahblah"} -->
+<!-- {"system_metadata_you_dont_care_about":"blahblahblah","more_metadata1":"blahblahblah","more_metadata2":"blahblahblah","more_metadata3":"blahblahblah","more_metadata4":"blahblahblah","more_metadata5":"blahblahblah","doc":{"text":"********************HERE'S THE DATA YOU ACTUALLY WANT********************","id":92108498098018010401,"id_str":"92108498098018010401"},"more_metadata6":"blahblahblah","more_metadata7":"blahblahblah","more_metadata8":"blahblahblah","more_metadata9":"blahblahblah","more_metadata10":"blahblahblah"} -->
+<!-- {"system_metadata_you_dont_care_about":"blahblahblah","more_metadata1":"blahblahblah","more_metadata2":"blahblahblah","more_metadata3":"blahblahblah","more_metadata4":"blahblahblah","more_metadata5":"blahblahblah","doc":{"text":"********************HERE'S THE DATA YOU ACTUALLY WANT********************","id":92108498098018010401,"id_str":"92108498098018010401"},"more_metadata6":"blahblahblah","more_metadata7":"blahblahblah","more_metadata8":"blahblahblah","more_metadata9":"blahblahblah","more_metadata10":"blahblahblah"} -->
+<!-- ``` -->
+
+<!-- Each line contains a single JSON object resembling the following: -->
+
+<!-- ```{r, echo=FALSE, eval=FALSE} -->
+<!-- jsonlite::prettify(es_jsonl[[1]]) -->
+<!-- ``` -->
+
+<!-- ```json -->
+<!-- { -->
+<!--     "system_metadata_you_dont_care_about": "blahblahblah", -->
+<!--     "more_metadata1": "blahblahblah", -->
+<!--     "more_metadata2": "blahblahblah", -->
+<!--     "more_metadata3": "blahblahblah", -->
+<!--     "more_metadata4": "blahblahblah", -->
+<!--     "more_metadata5": "blahblahblah", -->
+<!--     "doc": { -->
+<!--         "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************", -->
+<!--         "id": 92108498098018010401, -->
+<!--         "id_str": "92108498098018010401" -->
+<!--     }, -->
+<!--     "more_metadata6": "blahblahblah", -->
+<!--     "more_metadata7": "blahblahblah", -->
+<!--     "more_metadata8": "blahblahblah", -->
+<!--     "more_metadata9": "blahblahblah", -->
+<!--     "more_metadata10": "blahblahblah" -->
+<!-- } -->
+<!-- ``` -->
+
+<!-- And the .json structure looks something like this: -->
+
+
+<!-- ```{r, echo=FALSE, eval=FALSE} -->
+<!-- es_json <- readr::read_file("inst/example-data/elasticsearch-dump-example.json") -->
+<!-- jsonlite::prettify(es_json) -->
+<!-- ``` -->
+
+<!-- ```json -->
+<!-- [ -->
+<!--     { -->
+<!--         "_id": "e5daf1467d2438e31b11b44a82cbd7f5758ba5a1f1d3ecbcc6e1fc04dc9c7c4d-3016858092318", -->
+<!--         "_index": "org-77f135f331153568ab7eb0e4c24623a7-default-3769a33b9e88598e38317591e2ee31c3-default-030009", -->
+<!--         "_score": null, -->
+<!--         "_source": { -->
+<!--             "system_metadata_you_dont_care_about": "blahblahblah", -->
+<!--             "more_metadata1": "blahblahblah", -->
+<!--             "doc": { -->
+<!--                 "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************", -->
+<!--                 "id": 92108498098018010401, -->
+<!--                 "id_str": "92108498098018010401" -->
+<!--             }, -->
+<!--             "more_metadata6": "blahblahblah" -->
+<!--         } -->
+<!--     }, -->
+<!--     { -->
+<!--         "_id": "e5daf1467d2438e31b11b44a82cbd7f5758ba5a1f1d3ecbcc6e1fc04dc9c7c4d-3016858092318", -->
+<!--         "_index": "org-77f135f331153568ab7eb0e4c24623a7-default-3769a33b9e88598e38317591e2ee31c3-default-030009", -->
+<!--         "_score": null, -->
+<!--         "_source": { -->
+<!--             "system_metadata_you_dont_care_about": "blahblahblah", -->
+<!--             "more_metadata1": "blahblahblah", -->
+<!--             "doc": { -->
+<!--                 "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************", -->
+<!--                 "id": 92108498098018010401, -->
+<!--                 "id_str": "92108498098018010401" -->
+<!--             }, -->
+<!--             "more_metadata6": "blahblahblah" -->
+<!--         } -->
+<!--     } -->
+<!-- ] -->
+<!-- ``` -->
+
+<!-- This has three unfortunate consequences: -->
+
+<!-- 1. Packages that were purpose-built to work directly with `{rtweet}`'s data frames can't play along with your data. -->
+<!-- 2. You're going to waste most of your time (and memory) getting data into R that you're not going to use. -->
+<!-- 3. The data are _very_ tedious to restructure in R (lists of lists of lists of lists of lists...). -->
+
+<!-- `{tweetio}` solves this by parsing everything and building the data frames at the C++ level. -->
+
+
 
 # Spatial Tweets
 
@@ -320,7 +341,7 @@ If you have `{sf}` installed, you can use `as_tweet_sf()` to filter the tweets f
 
 
 ```{r}
-tweet_sf <- as_tweet_sf(tweet_df = big_rtweet_stream) 
+tweet_sf <- as_tweet_sf(tweet_df = big_tweet_df) 
 
 tweet_sf[, "bbox_coords"]
 ```
@@ -335,14 +356,14 @@ There are currently three columns that can potentially hold bounding boxes:
 You can select which one to use to build your `sf` object by modifying the `geom_col=` parameter (default: `"bbox_coords"`)
 
 ```{r}
-as_tweet_sf(big_rtweet_stream, geom_col = "quoted_bbox_coords"
+as_tweet_sf(big_tweet_df, geom_col = "quoted_bbox_coords"
             )[, "quoted_bbox_coords"]
 ```
 
 You can also build _all_ the supported bounding boxes by setting `geom_col=` to `"all"`.
 
 ```{r}
-all_bboxes <- as_tweet_sf(big_rtweet_stream, geom_col = "all")
+all_bboxes <- as_tweet_sf(big_tweet_df, geom_col = "all")
 all_bboxes[, c("geometry", "which_geom")]
 unique(all_bboxes$which_geom)
 ```
@@ -357,7 +378,9 @@ library(ggplot2)
 world <- rnaturalearth::ne_countries(returnclass = "sf")
 world <- world[world$continent != "Antarctica", ]
 
-ggplot(all_bboxes) +
+sf_for_gg <- sf::st_wrap_dateline(all_bboxes)
+
+ggplot(sf_for_gg) +
   geom_sf(fill = "white", color = "lightgray", data = world) +
   geom_sf(aes(fill = which_geom, color = which_geom), alpha = 0.15, size = 1, show.legend = TRUE) +
   coord_sf(crs = 3857) +
@@ -369,14 +392,14 @@ ggplot(all_bboxes) +
 
 
 
-# How can we go faster?
+# Can we go faster?
 
-Until Rtools 4.0 hits (or the [`simdjson`](https://github.com/lemire/simdjson) library decides to [relax its C++17 requirement](https://github.com/lemire/simdjson/issues/307)), I'm not sure how we can go much faster while maintaining cross-platform compatibility. That said, if C++ is your mother tongue (and you see room for optimization), please don't hesitate to contribute.
+Until Rtools 4.0 hits (or the [`simdjson`](https://github.com/lemire/simdjson) library decides to [relax its C++17 requirement](https://github.com/lemire/simdjson/issues/307)), I'm not sure how we can go much faster while maintaining cross-platform compatibility. That said, contibutions are welcome, especially if C++ is your mother tongue.
 
 
 
 # Acknowledgements
 
-`{tweetio}` uses a combination of C++ via [`{Rcpp}`](http://www.rcpp.org/), the [`rapidjson`](http://rapidjson.org/) C++ library (made available by [`{rapidjsonr}`](https://cran.r-project.org/web/packages/rapidjsonr/index.html)), and __R's secret weapon__: [`{data.table}`](https://rdatatable.gitlab.io/data.table/).
+`{tweetio}` uses a combination of C++ via [`{Rcpp}`](http://www.rcpp.org/), the [`rapidjson`](http://rapidjson.org/) C++ library (made available by [`{rapidjsonr}`](https://cran.r-project.org/web/packages/rapidjsonr/index.html)), [`{jsonify}`](https://cran.r-project.org/web/packages/jsonify/index.html)) for an R-level interface to `rapidjson`, [`{RcppProgress}`](https://cran.r-project.org/web/packages/RcppProgress/index.html)), and __R's secret weapon__: [`{data.table}`](https://rdatatable.gitlab.io/data.table/).
 
-Major inspiration from [{`ndjson`}](https://gitlab.com/hrbrmstr/ndjson) was taken, particularly its use of [`Gzstream`](https://www.cs.unc.edu/Research/compgeom/gzstream/).
+Major inspiration from [`{ndjson}`](https://gitlab.com/hrbrmstr/ndjson) was taken, particularly its use of [`Gzstream`](https://www.cs.unc.edu/Research/compgeom/gzstream/).

@@ -19,16 +19,22 @@ LinkingTo:
     RcppProgress
 Imports:
     data.table,
-    Rcpp
+    jsonify,
+    Rcpp,
+    stringi
 Suggests:
     covr,
     here,
     knitr,
     future,
     future.apply,
+    openxlsx,
     rtweet,
     sf,
     testthat
+Remotes: 
+    SymbolixAU/jsonify,
+    ycphs/openxlsx
 URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio
 BugReports: https://github.com/knapply/tweetio/issues
 Encoding: UTF-8
