@@ -138,7 +138,7 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   proto_tweet_df
 }
 
-
+#' @importFrom stringi stri_extract_first_regex stri_replace_all_regex
 .finalize_cols <- function(proto_tweet_df, ...) {
   # silence R CMD Check NOTE =============================================================
   .SD <- NULL
@@ -158,7 +158,8 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   
   proto_tweet_df[,
     (chr_cols) := lapply(.SD, function(.x) {
-      .x[.x == ""] <- NA_character_
+      .x <- stri_replace_all_regex(.x, "[[:cntrl:]]|", "")
+      .x[nchar(stri_replace_all_regex(.x, "\\s+", "")) == 0L] <- NA_character_
       .x
     }), 
     .SDcols = chr_cols
@@ -192,7 +193,7 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   )
   # follow {rtweet}'s behavior
   proto_tweet_df[
-    , (source_cols) := lapply(.SD, stringi::stri_extract_first_regex,
+    , (source_cols) := lapply(.SD, stri_extract_first_regex,
                               '(?<=">).*?(?=</a>$)'),
     .SDcols = source_cols
   ]

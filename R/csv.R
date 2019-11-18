@@ -7,10 +7,10 @@ list_col_names <- function(x) {
   intersect(names(x), potential_list_cols)
 }
 
-#' @importFrom stringi stri_split_fixed
-peak_csv_col_classes <- function(file_path) {
-  col_classes <- c(
-    user_id = "character", status_id = "character", screen_name = "character",
+spreadsheet_col_classes <- function(drop_names = FALSE) {
+  init <- c(
+    user_id = "character", status_id = "character", created_at = "character",
+    screen_name = "character",
     text = "character", source = "character", reply_to_status_id = "character",
     reply_to_user_id = "character", reply_to_screen_name = "character",
     is_quote = "logical", is_retweet = "logical", hashtags = "character",
@@ -18,14 +18,16 @@ peak_csv_col_classes <- function(file_path) {
     media_expanded_url = "character",
     media_type = "character", mentions_user_id = "character",
     mentions_screen_name = "character",
-    quoted_status_id = "character", quoted_text = "character", quoted_source = "character",
+    quoted_status_id = "character", quoted_text = "character", 
+    quoted_created_at = "character", quoted_source = "character",
     quoted_favorite_count = "integer", quoted_retweet_count = "integer",
     quoted_user_id = "character", quoted_screen_name = "character",
     quoted_name = "character", quoted_followers_count = "integer",
     quoted_friends_count = "integer", quoted_statuses_count = "integer",
     quoted_location = "character", quoted_description = "character",
     quoted_verified = "logical", retweet_status_id = "character",
-    retweet_text = "character", retweet_source = "character",
+    retweet_text = "character", retweet_created_at = "character",
+    retweet_source = "character",
     retweet_favorite_count = "integer",
     retweet_retweet_count = "integer", retweet_user_id = "character",
     retweet_screen_name = "character", retweet_name = "character",
@@ -48,10 +50,21 @@ peak_csv_col_classes <- function(file_path) {
     quoted_place_name = "character", quoted_place_full_name = "character",
     quoted_place_type = "character", quoted_country = "character",
     quoted_country_code = "character", quoted_bbox_coords = "character",
+    timestamp_ms = "character",
     contributors_enabled = "logical", metadata = "character", profile_url2 = "character"
   )
-  
+  if (drop_names) {
+    unname(init)
+  } else {
+    init
+  }
+}
+
+#' @importFrom stringi stri_split_fixed
+peak_csv_col_classes <- function(file_path) {
+  col_classes <- spreadsheet_col_classes()
   header_peak <- stri_split_fixed(readLines(file_path, n = 1), ",")[[1L]]
+
   col_classes[names(col_classes) %in% intersect(header_peak, names(col_classes))]
 }
 
@@ -79,12 +92,15 @@ write_tweet_csv <- function(tweet_df, file_path) {
 }
 
 
+
+
 #' @importFrom data.table fread
 #' @importFrom jsonify from_json
 #' @importFrom stringi stri_detect_regex stri_replace_all_fixed
 read_tweet_csv <- function(file_path) {
   # there doesn't seem to be a safe way to retain type information, even when explicitly
-  # providing classes to `colClasses` or via a YAML header (CSVY)...
+  # providing classes to `colClasses` or via a YAML header (CSVY)...It's ridiculously slow
+  # as most of the columns need to modified after the fact anyways.
   # TODO is this worth doing in C++ (or even supporting?)
   
   # silence R CMD Check NOTE =============================================================
@@ -146,8 +162,8 @@ read_tweet_csv <- function(file_path) {
       .SDcols = chr_list_cols
     ][]
   }
-  
-  
+
+
   dbl_list_cols <- intersect(
     names(out),
     c("bbox_coords", "retweet_bbox_coords", "quoted_bbox_coords")
@@ -158,12 +174,25 @@ read_tweet_csv <- function(file_path) {
       .SDcols = dbl_list_cols
     ][]
   }
-  
+
   if ("metadata" %in% names(out)) {
     out <- out[, metadata := lapply(metadata, lapply, as.character)]
   }
-  
+
   out[]
+}
+
+
+
+write_tweet_excel <- function(tweet_df, file_path) {
+  if (!requireNamespace("openxlsx", quietly = TRUE)) {
+    stop("{openxlsx} package is required for this functionality.", call. = FALSE)
+  }
+
+  openxlsx::write.xlsx(
+    x = jsonify_list_cols(tweet_df), file = file_path, 
+    colNames = TRUE, keepNA = TRUE
+  )
 }
 
 
