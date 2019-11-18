@@ -54,7 +54,8 @@ options(width = 100)
 ### Supported Data Outputs
 
 - [x] .graphml, currently available in [`{tweetgraph}`](https://knapply.github.io/tweetgraph/)
-- [ ] CSV (will likely be CSVY once `{data.table}`'s `fread(yaml = TRUE)` feature stabilizes)
+- [x] CSV
+- [x] Excel
 
 ### Extras
 - [x] Spatial Tweets via `tweetio::as_tweet_sf()`

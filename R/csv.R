@@ -7,6 +7,7 @@ list_col_names <- function(x) {
   intersect(names(x), potential_list_cols)
 }
 
+
 spreadsheet_col_classes <- function(drop_names = FALSE) {
   init <- c(
     user_id = "character", status_id = "character", created_at = "character",
@@ -60,6 +61,7 @@ spreadsheet_col_classes <- function(drop_names = FALSE) {
   }
 }
 
+
 #' @importFrom stringi stri_split_fixed
 peak_csv_col_classes <- function(file_path) {
   col_classes <- spreadsheet_col_classes()
@@ -67,6 +69,7 @@ peak_csv_col_classes <- function(file_path) {
 
   col_classes[names(col_classes) %in% intersect(header_peak, names(col_classes))]
 }
+
 
 #' @importFrom data.table copy
 #' @importFrom jsonify to_json
@@ -84,19 +87,48 @@ jsonify_list_cols <- function(tweet_df) {
       ]
 }
 
+
+#' Write Tweets to Spreadsheets
+#' 
+#' @template param-tweet_df
+#' @template param-file_path
+#' 
+#' @template author-bk
+#' 
 #' @importFrom data.table fwrite
 #' 
-# @export
+#' @export
 write_tweet_csv <- function(tweet_df, file_path) {
   fwrite(jsonify_list_cols(tweet_df), file_path)
 }
 
 
+#' @rdname write_tweet_csv
+#' 
+#' @export
+write_tweet_excel <- function(tweet_df, file_path) {
+  if (!requireNamespace("openxlsx", quietly = TRUE)) {
+    stop("{openxlsx} package is required for this functionality.", call. = FALSE)
+  }
+  
+  openxlsx::write.xlsx(
+    x = jsonify_list_cols(tweet_df), file = file_path, 
+    colNames = TRUE, keepNA = TRUE
+  )
+}
 
 
+#' Read Tweets from Spreadsheets
+#' 
+#' @template param-file_path
+#' 
+#' @template author-bk
+#' 
 #' @importFrom data.table fread
 #' @importFrom jsonify from_json
 #' @importFrom stringi stri_detect_regex stri_replace_all_fixed
+#' 
+#' @export
 read_tweet_csv <- function(file_path) {
   # there doesn't seem to be a safe way to retain type information, even when explicitly
   # providing classes to `colClasses` or via a YAML header (CSVY)...It's ridiculously slow
@@ -184,26 +216,3 @@ read_tweet_csv <- function(file_path) {
 
 
 
-write_tweet_excel <- function(tweet_df, file_path) {
-  if (!requireNamespace("openxlsx", quietly = TRUE)) {
-    stop("{openxlsx} package is required for this functionality.", call. = FALSE)
-  }
-
-  openxlsx::write.xlsx(
-    x = jsonify_list_cols(tweet_df), file = file_path, 
-    colNames = TRUE, keepNA = TRUE
-  )
-}
-
-
-# 
-# 
-# file_path <-  "~/test-csv.csv"
-# 
-# write_tweet_csv(res_pulse_zip, file_path)
-# test_read <- read_tweet_csv(file_path)
-# 
-# 
-# all.equal(test_read, res_pulse_zip,
-#           check.attributes = FALSE)
-#> [1] TRUE

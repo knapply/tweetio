@@ -1,9 +1,9 @@
 #' Build a `sf` Object of Tweets
 #' 
-#' @param tweet_df A data frame of tweets, as obtained by `{rtweet}` or `tweetio::read_tweets()`.
+#' @template param-tweet_df
 #' @param geom_col Which column to use as the active `geometry` column in result.
 #' @param .geometry Name of output's geometry column. Intended for internal use only. 
-#' @param ... Arguments passed to or from other methods.
+#' @template param-dots
 #' 
 #' @return `sf`
 #' 
