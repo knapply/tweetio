@@ -101,20 +101,20 @@ small_rtweet_stream <- read_tweets(temp_file)
 tibble::as_tibble(small_rtweet_stream)
 ```
 
-    #> # A tibble: 599 x 90
+    #> # A tibble: 523 x 90
     #>    user_id status_id created_at          screen_name text  source reply_to_status~ reply_to_user_id
     #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>           
-    #>  1 954058~ 11962617~ 2019-11-18 03:00:11 bmuukt_     <U+0E41><U+0E21><U+0E48><U+0E08>~  Twitt~ <NA>             <NA>            
-    #>  2 252410~ 11962617~ 2019-11-18 03:00:11 Biancaraaa  Imbi~ Twitt~ <NA>             <NA>            
-    #>  3 282568~ 11962617~ 2019-11-18 03:00:11 loran_moon  <U+4ECA><U+65E5><U+306E><U+663C>~ twitt~ <NA>             <NA>            
-    #>  4 917758~ 11962617~ 2019-11-18 03:00:11 _galaxy18   RT @~ Twitt~ <NA>             <NA>            
-    #>  5 108389~ 11962617~ 2019-11-18 03:00:11 kiiroimaim~ @min~ Twitt~ 119626158955013~ 962592071126155~
-    #>  6 105991~ 11962617~ 2019-11-18 03:00:11 gilloidbot  "\"(~ twitt~ <NA>             <NA>            
-    #>  7 481937~ 11962617~ 2019-11-18 03:00:11 otoma100HP  <U+3057><U+3087><U+3063><U+3061>~ Tweet~ <NA>             <NA>            
-    #>  8 984574~ 11962617~ 2019-11-18 03:00:11 zirah__     RT @~ Twitt~ <NA>             <NA>            
-    #>  9 119295~ 11962617~ 2019-11-18 03:00:11 NomNomKu    @edc~ Twitt~ 119621290997140~ 777931862       
-    #> 10 107273~ 11962617~ 2019-11-18 03:00:11 jyxdefsoul  <U+0E2D><U+0E48><U+0E30> ~  Twitt~ <NA>             <NA>            
-    #> # ... with 589 more rows, and 82 more variables: reply_to_screen_name <chr>, is_quote <lgl>,
+    #>  1 101952~ 11962668~ 2019-11-18 03:20:16 pontaro051~ <U+5360><U+3044><U+3068><U+304B>~ Twitt~ <NA>             <NA>            
+    #>  2 116264~ 11962668~ 2019-11-18 03:20:16 002Marine   "<U+522B><U+6765><U+79C1>~ Twitt~ <NA>             <NA>            
+    #>  3 252134~ 11962668~ 2019-11-18 03:20:16 yann_poke1~ @kag~ Twitt~ 119626250587972~ 950213158878064~
+    #>  4 108147~ 11962668~ 2019-11-18 03:20:16 alondddra1  "ska~ Twitt~ <NA>             <NA>            
+    #>  5 115616~ 11962668~ 2019-11-18 03:20:16 honoka2108~ "RT ~ Twitt~ <NA>             <NA>            
+    #>  6 111911~ 11962668~ 2019-11-18 03:20:16 S__yume__   <U+B77C><U+B514><U+C624> ~ Twitt~ <NA>             <NA>            
+    #>  7 197548~ 11962668~ 2019-11-18 03:20:16 alkhwzaai   RT @~ Twitt~ <NA>             <NA>            
+    #>  8 119143~ 11962668~ 2019-11-18 03:20:16 Willy_noje~ Magr~ Twitt~ <NA>             <NA>            
+    #>  9 119562~ 11962668~ 2019-11-18 03:20:16 sertakt840~ @der~ Twitt~ 119617016008590~ 819211783       
+    #> 10 243872~ 11962668~ 2019-11-18 03:20:16 kimmwaters4 RT @~ Twitt~ <NA>             <NA>            
+    #> # ... with 513 more rows, and 82 more variables: reply_to_screen_name <chr>, is_quote <lgl>,
     #> #   is_retweet <lgl>, hashtags <list>, urls_expanded_url <list>, media_url <list>,
     #> #   media_expanded_url <list>, media_type <list>, mentions_user_id <list>,
     #> #   mentions_screen_name <list>, quoted_status_id <chr>, quoted_text <chr>,
@@ -233,7 +233,7 @@ bench::mark(
     #> # A tibble: 1 x 6
     #>   expression                           min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>                      <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 read_tweets(rtweet_stream_path)    5.18s    5.31s     0.189     220MB    0.818
+    #> 1 read_tweets(rtweet_stream_path)    3.38s    3.45s     0.289     176MB     1.16
 
 Ignoring the time it takes to run the above
 `rtweet_validate_and_parse()` function for `rtweet::parse_stream()` to
@@ -254,14 +254,14 @@ bench_mark[, 1:9]
     #> # A tibble: 2 x 6
     #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 rtweet       26.61s   28.15s    0.0359     476MB    4.96 
-    #> 2 tweetio       4.43s    5.53s    0.193      174MB    0.644
+    #> 1 rtweet       25.69s    27.1s    0.0368     480MB    4.57 
+    #> 2 tweetio       2.83s    2.84s    0.349      135MB    0.931
 
 ``` r
 plot(bench_mark)
 ```
 
-<img src="man/figures/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/unnamed-chunk-9-1.png" width="100%" style="display: block; margin: auto;" />
 
 With bigger files, using `rtweet::parse_stream()` is no longer
 realistic, but that’s where `tweetio::read_tweets()` can help.
@@ -282,7 +282,7 @@ bench::mark(
     #> # A tibble: 1 x 6
     #>   expression                                                    min median `itr/sec` mem_alloc
     #>   <bch:expr>                                                  <bch> <bch:>     <dbl> <bch:byt>
-    #> 1 big_tweet_df <- tweetio::read_tweets(big_tweet_stream_path) 37.9s  37.9s    0.0264     863MB
+    #> 1 big_tweet_df <- tweetio::read_tweets(big_tweet_stream_path) 23.8s  23.8s    0.0420     640MB
     #> # ... with 1 more variable: `gc/sec` <dbl>
 
 <!-- ## Data Dumps -->
@@ -640,6 +640,6 @@ for an R-level interface to `rapidjson`,
 and **R’s secret weapon**:
 [`{data.table}`](https://rdatatable.gitlab.io/data.table/).
 
-Major inspiration from [{`ndjson`}](https://gitlab.com/hrbrmstr/ndjson)
+Major inspiration from [`{ndjson}`](https://gitlab.com/hrbrmstr/ndjson)
 was taken, particularly its use of
 [`Gzstream`](https://www.cs.unc.edu/Research/compgeom/gzstream/).

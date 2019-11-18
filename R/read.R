@@ -156,12 +156,16 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   chr_cols <- names(proto_tweet_df
                     )[vapply(proto_tweet_df, is.character, FUN.VALUE = logical(1L))]
   
-  proto_tweet_df[,
-    (chr_cols) := lapply(.SD, function(.x) {
-      .x <- stri_replace_all_regex(.x, "[[:cntrl:]]|", "")
-      .x[nchar(stri_replace_all_regex(.x, "\\s+", "")) == 0L] <- NA_character_
-      .x
-    }), 
+  # proto_tweet_df[,
+  #   (chr_cols) := lapply(.SD, function(.x) {
+  #     .x <- stri_replace_all_regex(.x, "[[:cntrl:]]", "")
+  #     .x[nchar(stri_replace_all_regex(.x, "\\s+", "")) == 0L] <- NA_character_
+  #     .x
+  #   }), 
+  #   .SDcols = chr_cols
+  # ]
+  proto_tweet_df[
+    , (chr_cols) := lapply(.SD, stri_replace_all_regex, "[[:cntrl:]]", ""),
     .SDcols = chr_cols
   ]
   
