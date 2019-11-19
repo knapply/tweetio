@@ -1,3 +1,19 @@
+// Copyright (C) 2019 Brendan Knapp
+// This file is part of tweetio
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include <tweetio.hpp>
 
 #include "gzstream.h"
@@ -5,6 +21,13 @@
 #include <progress.hpp>
 #include <progress_bar.hpp>
 
+#include "rapidjson/filereadstream.h"
+
+#ifdef _WIN32
+  #define FILE_MODE "rb"
+#else 
+  #define FILE_MODE "r"
+#endif
 
 typedef Rcpp::Vector<STRSXP> vec_chr;
 typedef Rcpp::Vector<LGLSXP> vec_lgl;
@@ -123,6 +146,10 @@ Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(const std::string& file_
 
 template<>
 Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path) {
+  // FILE* fp = fopen(file_path.c_str(), FILE_MODE);
+  // char readBuffer[65536];
+  // rapidjson::FileReadStream is( fp, readBuffer, sizeof(readBuffer) );
+
   std::ifstream in_file;
   in_file.open(file_path);
 
@@ -135,7 +162,7 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path)
 
   rapidjson::Document parsed_json;
   
-  rapidjson::ParseResult ok = parsed_json.Parse( content.c_str() );
+  rapidjson::ParseResult ok = parsed_json.Parse(content.c_str());
   if (!ok) {
     Rcpp::stop("parsing error");
   }
@@ -191,8 +218,8 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& fil
     progress.increment();
 
     rapidjson::Document parsed_json;
-    rapidjson::ParseResult ok = parsed_json.Parse( line.c_str() );
-    if (!ok || parsed_json.FindMember("id_str") == parsed_json.MemberEnd() ) {
+    parsed_json.Parse( line.c_str() );
+    if (parsed_json.FindMember("id_str") == parsed_json.MemberEnd() ) {
       continue;
     }
     

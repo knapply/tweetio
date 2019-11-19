@@ -1,3 +1,21 @@
+# // Copyright (C) 2019 Brendan Knapp
+# // This file is part of tweetio
+# // 
+# // This program is free software: you can redistribute it and/or modify
+# // it under the terms of the GNU General Public License as published by
+# // the Free Software Foundation, either version 3 of the License, or
+# // (at your option) any later version.
+# // 
+# // This program is distributed in the hope that it will be useful,
+# // but WITHOUT ANY WARRANTY; without even the implied warranty of
+# // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# // GNU General Public License for more details.
+# // 
+# // You should have received a copy of the GNU General Public License
+# // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+
 #' @template author-bk
 #' 
 #' @importFrom data.table := setDT
@@ -125,7 +143,9 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
     "coords_coords", "bbox_coords", "status_url", "name", "location", 
     "description", "url", "protected", "followers_count", "friends_count", 
     "listed_count", "statuses_count", "favourites_count", "account_created_at", 
-    "verified", "profile_url", "profile_expanded_url", "account_lang", 
+    "verified",
+    "profile_url", "profile_url2", # profile_url2 not in rtweet, but makes more sense here
+    "profile_expanded_url", "account_lang", 
     "profile_banner_url", "profile_background_url", "profile_image_url"
   )
 
@@ -153,58 +173,74 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   user_id <- NULL
   # ======================================================================================
   
-  chr_cols <- names(proto_tweet_df
-                    )[vapply(proto_tweet_df, is.character, FUN.VALUE = logical(1L))]
-  
-  # proto_tweet_df[,
-  #   (chr_cols) := lapply(.SD, function(.x) {
-  #     .x <- stri_replace_all_regex(.x, "[[:cntrl:]]", "")
-  #     .x[nchar(stri_replace_all_regex(.x, "\\s+", "")) == 0L] <- NA_character_
-  #     .x
-  #   }), 
-  #   .SDcols = chr_cols
-  # ]
-
-  # there are some occasional control characters that end up in the strings.
-  # AFAIK, they are always `\0`, which aren't allowed in XML files.
-  # To be on the safe side, all control characters are stripped here
-  proto_tweet_df[
-    , (chr_cols) := lapply(.SD, stri_replace_all_regex, "[[:cntrl:]]", ""),
-    .SDcols = chr_cols
-  ]
-  
   # convert date-times to POSIXct
   possible_dttm_cols <- c("created_at", "account_created_at",
-                          "retweet_created_at", "quoted_created_at",
-                          "timestamp", "timestamp_ms")
+                          "retweet_created_at", "quoted_created_at")
   dttm_cols <- intersect(names(proto_tweet_df), possible_dttm_cols)
   if (length(dttm_cols)) {
     proto_tweet_df[, (dttm_cols) := lapply(.SD, format_dttm),
                    .SDcols = dttm_cols]
   }
   
-  proto_tweet_df[, is_retweet := !is.na(retweet_status_id)]
-  proto_tweet_df[
-    , status_url := paste0("https://twitter.com/", screen_name, "/status/", status_id)
-  ]
-  # add `profile_url` column (this doesn't appear to be documented)
-  proto_tweet_df[
-    , profile_url := paste0("https://twitter.com/i/user/", user_id)
-  ]
-  # add `profile_url2` column (backup if `profile_url` is cut off)
-  proto_tweet_df[
-    , profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
-  ]
-  source_cols <- intersect(
-    names(proto_tweet_df),
-    c("source", "retweet_source", "quoted_source")
+  col_with_control_chars <- c(
+    "text", "quoted_text", "quoted_source", "quoted_name", "quoted_location",
+    "quoted_description", "retweet_text", "retweet_source", "retweet_location",
+    "retweet_description", "name", "location", "description"
   )
-  # follow {rtweet}'s behavior
-  proto_tweet_df[
-    , (source_cols) := lapply(.SD, stri_extract_first_regex,
-                              '(?<=">).*?(?=</a>$)'),
-    .SDcols = source_cols
-  ]
+
+  proto_tweet_df <- proto_tweet_df[
+    , (col_with_control_chars) := lapply(.SD, stri_replace_all_regex, "[[:cntrl:]]", ""),
+    .SDcols = col_with_control_chars
+    ][, is_retweet := !is.na(retweet_status_id)
+      ][, status_url := paste0("https://twitter.com/", screen_name, "/status/", status_id)
+        ][, profile_url := paste0("https://twitter.com/i/user/", user_id)
+          ][, profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
+            ]
+
+  # there are some occasional control characters that end up in the strings.
+  # AFAIK, they are always `\0`, which aren't allowed in XML files.
+  # To be on the safe side, all control characters are stripped here
+  # proto_tweet_df[
+  #   , (chr_cols) := lapply(.SD, stri_replace_all_fixed, "\\0", ""), # "[[:cntrl:]]", ""),
+  #   .SDcols = chr_cols
+  # ]
+  
+
+  
+  # proto_tweet_df <- proto_tweet_df[
+  #   , is_retweet := !is.na(retweet_status_id)
+  #   ][
+  #     , status_url := paste0("https://twitter.com/", screen_name, "/status/", status_id)
+  #   ][
+  #     , profile_url := paste0("https://twitter.com/i/user/", user_id)
+  #   ][
+  #     , profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
+  #   ]
+
+  # proto_tweet_df[
+    # , status_url := paste0("https://twitter.com/", screen_name, "/status/", status_id)
+  # ]
+  # add `profile_url` column (this doesn't appear to be documented)
+  # proto_tweet_df[
+    # , profile_url := paste0("https://twitter.com/i/user/", user_id)
+  # ]
+  # add `profile_url2` column (backup if `profile_url` is cut off)
+  # proto_tweet_df[
+    # , profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
+  # ]
+  
+  # follow {rtweet}'s behavior and strip HTML from `*_source`s
+  # source_cols <- intersect(
+  #   names(proto_tweet_df),
+  #   c("source", "retweet_source", "quoted_source")
+  # )
+  # if (length(source_cols) > 0L) {
+  #   proto_tweet_df[
+  #     , (source_cols) := lapply(.SD, stri_extract_first_regex,
+  #                               '(?<=">).*?(?=</a>$)'),
+  #     .SDcols = source_cols
+  #   ]
+  # }
   
   
   .set_col_order(proto_tweet_df)[]

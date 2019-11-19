@@ -1,3 +1,20 @@
+// Copyright (C) 2019 Brendan Knapp
+// This file is part of tweetio
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
 #ifndef TWEETIO_STRUCTURES_H
 #define TWEETIO_STRUCTURES_H
 
@@ -9,6 +26,34 @@ namespace tweetio {
 class TweetDF {
     int current_index = 0;
 
+    vec_int quoted_favorite_count;
+    vec_int quoted_retweet_count;
+    vec_int quoted_followers_count;
+    vec_int quoted_friends_count;
+    vec_int quoted_statuses_count;
+
+    vec_int retweet_followers_count;
+    vec_int retweet_friends_count;
+    vec_int retweet_statuses_count;
+    vec_int retweet_favorite_count;
+    vec_int retweet_retweet_count;
+
+    vec_int followers_count;
+    vec_int friends_count;
+    vec_int listed_count;
+    vec_int statuses_count;
+    vec_int favourites_count;
+
+    vec_lgl is_quote;
+    vec_lgl is_retweeted;
+
+    vec_lgl retweet_verified;
+
+    vec_lgl quoted_verified;
+    vec_lgl protected_;                           // `protected` is a C++ reserved keyword
+    vec_lgl verified;
+    vec_lgl contributors_enabled;
+
     vec_chr user_id;
     vec_chr status_id;
     vec_chr created_at;
@@ -19,53 +64,9 @@ class TweetDF {
     vec_chr reply_to_status_id;
     vec_chr reply_to_user_id;
     vec_chr reply_to_screen_name;
-
-    vec_lgl is_quote;
-    vec_lgl is_retweeted;
-
-    Rcpp::List hashtags;
-    Rcpp::List urls_expanded_url;
-
-    Rcpp::List media_url;
-    Rcpp::List media_expanded_url;
-    Rcpp::List media_type;
-
-    Rcpp::List mentions_user_id;
-    Rcpp::List mentions_screen_name;
     
     vec_chr lang;
-
-    vec_chr quoted_status_id;
-    vec_chr quoted_text;
-    vec_chr quoted_created_at;
-    vec_chr quoted_source;
-    vec_int quoted_favorite_count;
-    vec_int quoted_retweet_count;
-    vec_chr quoted_user_id;
-    vec_chr quoted_screen_name;
-    vec_chr quoted_name;
-    vec_int quoted_followers_count;
-    vec_int quoted_friends_count;
-    vec_int quoted_statuses_count;
-    vec_chr quoted_location;
-    vec_chr quoted_description;
-    vec_lgl quoted_verified;
-
     vec_chr retweet_status_id;
-    vec_chr retweet_text;
-    vec_chr retweet_created_at;
-    vec_chr retweet_source;
-    vec_int retweet_favorite_count;
-    vec_int retweet_retweet_count;
-    vec_chr retweet_user_id;
-    vec_chr retweet_screen_name;
-    vec_chr retweet_name;
-    vec_int retweet_followers_count;
-    vec_int retweet_friends_count;
-    vec_int retweet_statuses_count;
-    vec_chr retweet_location;
-    vec_chr retweet_description;
-    vec_lgl retweet_verified;
 
     vec_chr place_url;
     vec_chr place_name;
@@ -73,49 +74,69 @@ class TweetDF {
     vec_chr place_type;
     vec_chr country;
     vec_chr country_code;
-    Rcpp::List bbox_coords;
 
-    vec_chr    retweet_place_url;
-    vec_chr    retweet_place_name;
-    vec_chr    retweet_place_full_name;
-    vec_chr    retweet_place_type;
-    vec_chr    retweet_country;
-    vec_chr    retweet_country_code;
-    Rcpp::List retweet_bbox_coords;
+    vec_chr retweet_text;
+    vec_chr retweet_created_at;
+    vec_chr retweet_source;
+    vec_chr retweet_user_id;
+    vec_chr retweet_screen_name;
+    vec_chr retweet_name;
+    vec_chr retweet_location;
+    vec_chr retweet_description;
+    vec_chr retweet_place_url;
+    vec_chr retweet_place_name;
+    vec_chr retweet_place_full_name;
+    vec_chr retweet_place_type;
+    vec_chr retweet_country;
+    vec_chr retweet_country_code;
 
-    vec_chr    quoted_place_url;
-    vec_chr    quoted_place_name;
-    vec_chr    quoted_place_full_name;
-    vec_chr    quoted_place_type;
-    vec_chr    quoted_country;
-    vec_chr    quoted_country_code;
-    Rcpp::List quoted_bbox_coords;
+    vec_chr quoted_status_id;
+    vec_chr quoted_text;
+    vec_chr quoted_created_at;
+    vec_chr quoted_source;
+    vec_chr quoted_user_id;
+    vec_chr quoted_screen_name;
+    vec_chr quoted_name;
+    vec_chr quoted_location;
+    vec_chr quoted_description;
+    vec_chr quoted_place_url;
+    vec_chr quoted_place_name;
+    vec_chr quoted_place_full_name;
+    vec_chr quoted_place_type;
+    vec_chr quoted_country;
+    vec_chr quoted_country_code;
 
-    vec_chr status_url;
     vec_chr name;
     vec_chr location;
     vec_chr description;
     vec_chr url;
-    vec_lgl protected_;                           // `protected` is a C++ reserved keyword
-    vec_int followers_count;
-    vec_int friends_count;
-    vec_int listed_count;
-    vec_int statuses_count;
-    vec_int favourites_count;
     vec_chr account_created_at;
-    vec_lgl verified;
     vec_chr account_lang;
     vec_chr profile_banner_url;
     vec_chr profile_image_url;
-    vec_chr timestamp_ms;
-    vec_lgl contributors_enabled;
+    vec_dbl timestamp_ms;
+
+    Rcpp::List hashtags;
+    Rcpp::List urls_expanded_url;
+    Rcpp::List media_url;
+    Rcpp::List media_expanded_url;
+    Rcpp::List media_type;
+    Rcpp::List mentions_user_id;
+    Rcpp::List mentions_screen_name;
+    Rcpp::List bbox_coords;
+    Rcpp::List quoted_bbox_coords;
+    Rcpp::List retweet_bbox_coords;
+
+
 
     public:
-    TweetDF() {};
+    // TweetDF() {};
+    ~TweetDF() {};
 
     int get_current_index() {
         return this->current_index;
     };
+
 
     TweetDF(const int n_vals) {
         this->user_id                      = vec_chr(n_vals, NA_STRING);
@@ -214,7 +235,7 @@ class TweetDF {
         this->account_lang                 = vec_chr(n_vals, NA_STRING);
         this->profile_banner_url           = vec_chr(n_vals, NA_STRING);
         this->profile_image_url            = vec_chr(n_vals, NA_STRING);
-        this->timestamp_ms                 = vec_chr(n_vals, NA_STRING);
+        this->timestamp_ms                 = vec_dbl(n_vals, NA_REAL);
         this->contributors_enabled         = vec_lgl(n_vals, NA_LOGICAL);
 
     };
@@ -320,7 +341,7 @@ class TweetDF {
         this->account_lang[this->current_index]                = get_chr( x["user"]["lang"] );
         this->profile_banner_url[this->current_index]          = get_chr( x["user"]["profile_banner_url"] );
         this->profile_image_url[this->current_index]           = get_chr( x["user"]["profile_image_url"] );
-        this->timestamp_ms[this->current_index]                = get_chr( x["timestamp_ms"] );
+        this->timestamp_ms[this->current_index]                = get_timestamp_ms( x["timestamp_ms"] );
         this->contributors_enabled[this->current_index]        = get_lgl( x["user"]["countributors_enabled"] );
 
 
@@ -438,7 +459,7 @@ class TweetDF {
         columns[3]   = this->screen_name[seq_out];
         columns[4]   = this->text[seq_out];
 
-        columns[5]   = this->source[seq_out];
+        columns[5]   = extract_source( this->source[seq_out] );
         columns[6]   = this->reply_to_status_id[seq_out];
         columns[7]   = this->reply_to_user_id[seq_out];
         columns[8]   = this->reply_to_screen_name[seq_out];
@@ -481,8 +502,8 @@ class TweetDF {
         columns[42]  = this->retweet_followers_count[seq_out];
         columns[43]  = this->retweet_friends_count[seq_out];
         columns[44]  = this->retweet_statuses_count[seq_out];
-        columns[45]  = this->retweet_location[seq_out];
-        columns[46]  = this->retweet_description[seq_out];
+        columns[45]  = strip_controls( this->retweet_location[seq_out] );
+        columns[46]  = strip_controls( this->retweet_description[seq_out] );
         columns[47]  = this->retweet_verified[seq_out];
 
         columns[48]  = this->place_url[seq_out];
@@ -500,6 +521,7 @@ class TweetDF {
         columns[59]  = this->retweet_country[seq_out];
         columns[60]  = this->retweet_country_code[seq_out];
         columns[61]  = this->retweet_bbox_coords[seq_out];
+
         columns[62]  = this->quoted_place_url[seq_out];
         columns[63]  = this->quoted_place_name[seq_out];
         columns[64]  = this->quoted_place_full_name[seq_out];
@@ -508,9 +530,9 @@ class TweetDF {
         columns[67]  = this->quoted_country_code[seq_out];
         columns[68]  = this->quoted_bbox_coords[seq_out];
 
-        columns[69]  = this->name[seq_out];
-        columns[70]  = this->location[seq_out];
-        columns[71]  = this->description[seq_out];
+        columns[69]  = strip_controls( this->name[seq_out] );
+        columns[70]  = strip_controls( this->location[seq_out] );
+        columns[71]  = strip_controls( this->description[seq_out] );
         columns[72]  = this->url[seq_out];
         columns[73]  = this->protected_[seq_out];
         columns[74]  = this->followers_count[seq_out];
@@ -523,7 +545,13 @@ class TweetDF {
         columns[81]  = this->account_lang[seq_out];
         columns[82]  = this->profile_banner_url[seq_out];
         columns[83]  = this->profile_image_url[seq_out];
-        columns[84]  = this->timestamp_ms[seq_out];
+
+        this->timestamp_ms.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        this->timestamp_ms.attr("tzone") = "UTC";
+
+        columns[84]  = this->timestamp_ms[seq_out]; 
+
+
         columns[85]  = this->contributors_enabled[seq_out];
         
 
@@ -556,7 +584,7 @@ class PulseMeta {
     Rcpp::List complex_value;
 
     public:
-    PulseMeta() {};
+    // PulseMeta() {};
 
     PulseMeta(const int n_vals) {
         
@@ -655,10 +683,8 @@ class PulseMeta {
 
             // out_row.attr("names") = col_names;
 
-
             vec_chr length_tester(this->rule_type[i]);
             const int n_rows = length_tester.length();
-
             finalize_df(out_row, col_names, n_rows);
 
             out[i] = out_row;

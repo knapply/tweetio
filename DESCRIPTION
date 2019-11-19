@@ -7,16 +7,18 @@ Authors@R:
            role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3284-4972"))
 Description: 
-    `{tweetio}`'s goal is to go from raw tweets to `{rtweet}`-style data frames 
-    as fast as possible, whether or not the data came from the Twitter API, a 
-    database dump, or some other library.
+    `{tweetio}`'s primary goal is to read raw tweets into data frames as fast as possible,
+    whether the data came directly from the Twitter API, a database dump, or from
+    `{rtweet}` or another package. It also provides routines to transform tweet data into 
+    useful structures and write the data to useful file formats.
 License: GPL-3 + file LICENSE
 Depends: R (>= 3.3)
 SystemRequirements: zlib, C++11
-LinkingTo: 
+LinkingTo:
     rapidjsonr,
     Rcpp, 
-    RcppProgress
+    RcppProgress,
+    stringi
 Imports:
     data.table,
     jsonify,
