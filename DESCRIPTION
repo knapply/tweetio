@@ -15,8 +15,9 @@ License: GPL-3 + file LICENSE
 Depends: R (>= 3.3)
 SystemRequirements: zlib, C++11
 LinkingTo:
+    BH,
     rapidjsonr,
-    Rcpp, 
+    Rcpp,
     RcppProgress
 Imports:
     data.table,

@@ -26,6 +26,15 @@ typedef Rcpp::Vector<STRSXP>  vec_chr;
 typedef Rcpp::Vector<LGLSXP>  vec_lgl;
 typedef Rcpp::Vector<INTSXP>  vec_int;
 
+typedef std::vector<std::string> vec_str;
+typedef std::vector<double> vec_dbl2;
+typedef std::vector<int> vec_int2;
+typedef std::vector<bool> vec_bool;
+typedef std::vector< std::vector<double> > list_dbl;
+typedef std::vector< std::vector<std::string> > list_str; 
+
+constexpr double na_dbl(2.22507385850720138309e-308L);
+
 } // namespace tweetio
 
 #endif

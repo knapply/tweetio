@@ -5,6 +5,10 @@ prep_bbox_ <- function(bbox_coords) {
     .Call(`_tweetio_prep_bbox_`, bbox_coords)
 }
 
+fast_read <- function(file_path) {
+    .Call(`_tweetio_fast_read`, file_path)
+}
+
 read_tweets_impl <- function(file_path) {
     .Call(`_tweetio_read_tweets_impl`, file_path)
 }

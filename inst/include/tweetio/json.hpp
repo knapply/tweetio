@@ -41,6 +41,9 @@ inline Rcpp::String get_chr(const rapidjson::Value& x) {
   return NA_STRING;
 }
 
+
+
+
 inline double get_timestamp_ms(const rapidjson::Value& x) {
   if ( !x.IsString() ) {
     return NA_REAL;
@@ -67,6 +70,8 @@ inline Rcpp::String get_chr_check(const rapidjson::Value& a, const rapidjson::Va
   }
   return NA_STRING;
 }
+
+
 
 
 inline int get_int(const rapidjson::Value& x) {
@@ -118,6 +123,9 @@ inline vec_chr map_entities(const rapidjson::Value& x, const std::string& entity
 
   return out;
 }
+
+
+
 
 
 inline vec_dbl get_bbox(const rapidjson::Value& x) {
@@ -233,6 +241,122 @@ inline vec_chr get_nested_meta_results(const rapidjson::Value& x,
   return out;
 }
 
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+inline std::string finalize_str(const rapidjson::Value& x) {
+  std::string res = x.GetString();
+    // std::remove(std::begin(res), std::end(res), '\0');
+
+  if (res.find_first_not_of(' ') != std::string::npos) {
+    return res;
+  }
+
+  return "";
+}
+
+inline std::string get_str(const rapidjson::Value& x) {
+  if ( x.IsString() ) {
+    return finalize_str(x);
+  }
+  
+  return "";
+}
+
+
+
+
+
+
+
+
+
+inline std::string get_str_check(const rapidjson::Value& a, const rapidjson::Value& b) {
+  if (a.IsString() ) {
+    return finalize_str(a);
+  }
+  if ( b.IsString() ) {
+    return finalize_str(b);
+  }
+  return "";
+}
+
+
+
+
+
+
+
+inline std::vector<std::string> map_entities2(const rapidjson::Value& x, const std::string& entity, const std::string& inner_name) {
+  const int ext_n = x["extended_tweet"]["entities"][ entity.c_str() ].Size();
+  const int reg_n = x["entities"][ entity.c_str() ].Size();
+
+  if (ext_n == 0 && reg_n == 0) {
+    return std::vector<std::string>{""};
+  }
+
+  if (ext_n != 0) {
+    const rapidjson::Value& entities = x["extended_tweet"]["entities"][ entity.c_str() ];
+    std::vector<std::string> out(ext_n);
+    for (int i = 0; i < ext_n; ++i) {
+      out[i] = get_str( entities[i][ inner_name.c_str() ] );
+    }
+
+    return out;
+  } 
+  
+  const rapidjson::Value& entities = x["entities"][ entity.c_str() ];
+  std::vector<std::string> out(reg_n);
+  for (int i = 0; i < reg_n; ++i) {
+    out[i] = get_str( entities[i][ inner_name.c_str() ] );
+  }
+
+  return out;
+}
+
+
+
+
+
+inline bool get_bool(const rapidjson::Value& x) {
+  if ( x.IsBool() ) {
+    return x.GetBool();
+  }
+  return false;
+}
+
+
+inline std::vector<double> get_bbox2(const rapidjson::Value& x) {
+  if (x.Size() == 0) {
+    return std::vector<double>{na_dbl};
+  }
+
+  const auto bbox = x.GetArray();
+  std::vector<double> out(8);
+
+  out[0] = bbox[0].GetArray()[0].GetArray()[0].GetDouble();
+  out[1] = bbox[0].GetArray()[0].GetArray()[1].GetDouble();
+
+  out[2] = bbox[0].GetArray()[1].GetArray()[0].GetDouble();
+  out[3] = bbox[0].GetArray()[1].GetArray()[1].GetDouble();
+
+  out[4] = bbox[0].GetArray()[2].GetArray()[0].GetDouble();
+  out[5] = bbox[0].GetArray()[2].GetArray()[1].GetDouble();
+
+  out[6] = bbox[0].GetArray()[3].GetArray()[0].GetDouble();
+  out[7] = bbox[0].GetArray()[3].GetArray()[1].GetDouble();
+
+
+  return out;
+}
 
 
 } // namespace tweetio

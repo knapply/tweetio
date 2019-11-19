@@ -22,12 +22,12 @@
 #include <progress_bar.hpp>
 
 #include "rapidjson/filereadstream.h"
+#include <rapidjson/istreamwrapper.h>
 
-#ifdef _WIN32
-  #define FILE_MODE "rb"
-#else 
-  #define FILE_MODE "r"
-#endif
+#include <boost/algorithm/string.hpp>
+
+#include <omp.h>
+
 
 typedef Rcpp::Vector<STRSXP> vec_chr;
 typedef Rcpp::Vector<LGLSXP> vec_lgl;
@@ -235,6 +235,89 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& fil
 }
 
 
+
+
+
+// [[Rcpp::export]]
+Rcpp::List fast_read(const std::string& file_path) {
+  igzstream in_file;
+  in_file.open( file_path.c_str() );
+
+  std::string content( std::istreambuf_iterator<char>{in_file}, 
+                       std::istreambuf_iterator<char>() );
+
+  constexpr auto new_line = '\n';
+
+  std::vector<std::string> raw_lines;
+  boost::split(raw_lines, content, [](char c) { return c == new_line; } );
+
+  const int n_lines = raw_lines.size();
+
+  std::vector<const rapidjson::Value&> docs(n_lines);
+  // docs.reserve(n_lines);
+  // for (auto v : docs) {
+    // v = new rapidjson::Value;
+  // }
+
+  tweetio::TweetDF2 tweets(n_lines);
+  // tweetio::PulseMeta metadata(n_lines);
+
+  // std::vector<std::string> text(n_lines);
+  // vec_chr text(n_lines);
+
+
+  Progress progress(n_lines, true);
+  
+  omp_set_num_threads( 15 );
+
+#pragma omp parallel for
+  for (int i = 0; i < n_lines; ++i) {
+    progress.increment();
+    
+    rapidjson::Document parsed_json;
+    parsed_json.Parse( raw_lines[i].c_str() );
+    const rapidjson::Value& val = parsed_json;
+    docs[i] = val;
+    // docs[i].Parse( raw_lines[i].c_str() );
+
+    // if ( parsed_json["doc"].FindMember("id_str") == parsed_json["doc"].MemberEnd() ) {
+    //   continue;
+    // }
+    
+    // tweets.push( parsed_json["doc"], i);
+
+  }
+
+  // vec_chr text2(n_lines, NA_STRING);
+  // for (int i = 0; i < n_lines; ++i) {
+  //   if ( text[i] != "") {
+  //     text2[i] = Rcpp::String( text[i] );
+  //   }
+  // }
+
+
+  // using Rcpp::_;
+  // Rcpp::List out = Rcpp::List::create(
+  //   _["text"] = text2
+  //   // _["metadata"] = metadata.to_r()
+  // );  
+
+  // out.attr("has_metadata") = true;
+
+  return tweets.to_r(n_lines);
+}
+
+
+  // rapidjson::Document parsed_json;
+  // rapidjson::StringStream stream( content.c_str() );
+  // while ( !parsed_json.ParseStream<rapidjson::kParseStopWhenDoneFlag>(stream).HasParseError() ) {
+  //   progress.increment();
+  //   tweets.push( parsed_json["doc"] );
+  // }
+  // // int i = 0;
+  // for (auto& line_string : raw_lines)
+
+
 // [[Rcpp::export]]
 Rcpp::List read_tweets_impl(const std::string& file_path) {
   const TweetFileType file_type = detect_file_type(file_path);
@@ -242,6 +325,7 @@ Rcpp::List read_tweets_impl(const std::string& file_path) {
   switch (file_type) {
     case TweetFileType::pulse_nested_doc:
       return read_tweets<TweetFileType::pulse_nested_doc>(file_path);
+      // return fast_read(file_path);
 
     case TweetFileType::pulse_array:
       return read_tweets<TweetFileType::pulse_array>(file_path);
@@ -258,8 +342,6 @@ Rcpp::List read_tweets_impl(const std::string& file_path) {
   Rcpp::warning("Unknown data type`.");
   return R_NilValue;
 }
-
-
 /*** R
 
 */

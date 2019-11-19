@@ -16,6 +16,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// fast_read
+Rcpp::List fast_read(const std::string& file_path);
+RcppExport SEXP _tweetio_fast_read(SEXP file_pathSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type file_path(file_pathSEXP);
+    rcpp_result_gen = Rcpp::wrap(fast_read(file_path));
+    return rcpp_result_gen;
+END_RCPP
+}
 // read_tweets_impl
 Rcpp::List read_tweets_impl(const std::string& file_path);
 RcppExport SEXP _tweetio_read_tweets_impl(SEXP file_pathSEXP) {
@@ -59,6 +70,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tweetio_prep_bbox_", (DL_FUNC) &_tweetio_prep_bbox_, 1},
+    {"_tweetio_fast_read", (DL_FUNC) &_tweetio_fast_read, 1},
     {"_tweetio_read_tweets_impl", (DL_FUNC) &_tweetio_read_tweets_impl, 1},
     {"_tweetio_unnest_entities_", (DL_FUNC) &_tweetio_unnest_entities_, 5},
     {"_tweetio_unnest_entities2_", (DL_FUNC) &_tweetio_unnest_entities2_, 4},
