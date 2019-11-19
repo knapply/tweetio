@@ -457,7 +457,7 @@ class TweetDF {
         columns[1]   = this->status_id[seq_out];
         columns[2]   = this->created_at[seq_out];
         columns[3]   = this->screen_name[seq_out];
-        columns[4]   = strip_controls( this->text[seq_out] );
+        columns[4]   = this->text[seq_out];
 
         columns[5]   = extract_source( this->source[seq_out] );
         columns[6]   = this->reply_to_status_id[seq_out];
@@ -475,25 +475,25 @@ class TweetDF {
         columns[17]  = this->mentions_screen_name[seq_out];
 
         columns[18]  = this->quoted_status_id[seq_out];
-        columns[19]  = strip_controls( this->quoted_text[seq_out] );
+        columns[19]  = this->quoted_text[seq_out];
         columns[20]  = this->quoted_created_at[seq_out];
-        columns[21]  = extract_source( this->quoted_source[seq_out] );
+        columns[21]  = this->quoted_source[seq_out];
         columns[22]  = this->quoted_favorite_count[seq_out];
         columns[23]  = this->quoted_retweet_count[seq_out];
         columns[24]  = this->quoted_user_id[seq_out];
         columns[25]  = this->quoted_screen_name[seq_out];
-        columns[26]  = strip_controls( this->quoted_name[seq_out] );
+        columns[26]  = this->quoted_name[seq_out];
         columns[27]  = this->quoted_followers_count[seq_out];
         columns[28]  = this->quoted_friends_count[seq_out];
         columns[29]  = this->quoted_statuses_count[seq_out];
-        columns[30]  = strip_controls( this->quoted_location[seq_out] );
-        columns[31]  = strip_controls( this->quoted_description[seq_out] );
+        columns[30]  = this->quoted_location[seq_out];
+        columns[31]  = this->quoted_description[seq_out];
         columns[32]  = this->quoted_verified[seq_out];
 
         columns[33]  = this->retweet_status_id[seq_out];
-        columns[34]  = strip_controls( this->retweet_text[seq_out] );
+        columns[34]  = this->retweet_text[seq_out];
         columns[35]  = this->retweet_created_at[seq_out];
-        columns[36]  = extract_source( this->retweet_source[seq_out] );
+        columns[36]  = this->retweet_source[seq_out];
         columns[37]  = this->retweet_favorite_count[seq_out];
         columns[38]  = this->retweet_retweet_count[seq_out];
         columns[39]  = this->retweet_user_id[seq_out];

@@ -21,11 +21,6 @@
 
 #include <stringi.cpp>
 
-#include <boost/date_time.hpp>
-#include <boost/date_time/local_time_adjustor.hpp>
-#include <boost/date_time/c_local_time_adjustor.hpp>
-#include <boost/lexical_cast.hpp>
-
 
 namespace tweetio {
 
@@ -143,63 +138,6 @@ vec_chr extract_source(vec_chr x) {
   return stri_extract_first_regex(
     x, vec_chr("(?<=>).*?(?=</a>$)")
   );
-}
-
-
-
-// adapted from https://gallery.rcpp.org/articles/parsing-datetimes/
-namespace bt = boost::posix_time;
-
-const std::locale tweet_dttm_formats[] = {
-  std::locale(std::locale::classic(), new bt::time_input_facet("%a %b %d %T %z %Y")),
-  std::locale(std::locale::classic(), new bt::time_input_facet("%a %b %d %H:%M:%S %z %Y")),
-  std::locale(std::locale::classic(), new bt::time_input_facet("%a, %d %b %Y %H:%M:%S +0000")),
-  std::locale(std::locale::classic(), new bt::time_input_facet("%a %b %d %H:%M:%S +0000 %Y")),
-  std::locale(std::locale::classic(), new bt::time_input_facet("%Y-%m-%dT%H:%M:%OS+00:00")),
-  std::locale(std::locale::classic(), new bt::time_input_facet("%Y-%m-%d %H:%M:%S")),
-  std::locale(std::locale::classic(), new bt::time_input_facet("%a %b %d %T %z %Y"))
-};
-
-constexpr int nformats = sizeof(tweet_dttm_formats) / sizeof(tweet_dttm_formats[0]);
-
-
-double parse_dttm(const Rcpp::String s) {
-  bt::ptime pt, ptbase;
-
-  for (int i=0; pt == ptbase && i < nformats; ++i) {
-    std::istringstream is(s);
-    is.imbue( tweet_dttm_formats[i] );
-    is >> pt;
-  }
-
-  if (pt == ptbase) {
-    return NAN;
-  } 
-
-  const bt::ptime timet_start( boost::gregorian::date(1970, 1, 1) );
-  bt::time_duration tdiff = pt - timet_start;
-        
-  return tdiff.total_microseconds() / 1.0e6;
-}
-
-
-Rcpp::NumericVector toPOSIXct(const vec_chr& sv) {
-  int n = sv.size();
-  Rcpp::NumericVector pv(n);
-  pv.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
-  pv.attr("tzone") = "UTC";
-    
-  for (int i = 0; i < n; ++i) {
-    if (sv[i].get() == NA_STRING) {
-      pv[i] = NA_REAL;
-      continue;
-    }
-
-    std::string s = boost::lexical_cast<std::string>(sv[i]);
-    pv[i] = parse_dttm(s);
-  }
-
-  return pv;
 }
 
 

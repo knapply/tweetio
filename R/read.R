@@ -182,20 +182,20 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
                    .SDcols = dttm_cols]
   }
   
-  # chr_cols <- setdiff(
-  #   names(proto_tweet_df)[.map_lgl(proto_tweet_df, is.character)],
-  #   c("status_id", "quoted_status_id", "retweet_status_id", "reply_to_status_id",
-  #     "user_id",   "quoted_user_id",   "retweet_user_id",   "reply_to_user_id")
-  # )
-  
-  # proto_tweet_df[,
-  #   (chr_cols) := lapply(.SD, function(.x) {
-  #     .x <- stri_replace_all_regex(.x, "[[:cntrl:]]", "")
-  #     .x[nchar(stri_replace_all_regex(.x, "\\s+", "")) == 0L] <- NA_character_
-  #     .x
-  #   }), 
-  #   .SDcols = chr_cols
-  # ]
+  col_with_control_chars <- c(
+    "text", "quoted_text", "quoted_source", "quoted_name", "quoted_location",
+    "quoted_description", "retweet_text", "retweet_source", "retweet_location",
+    "retweet_description", "name", "location", "description"
+  )
+
+  proto_tweet_df <- proto_tweet_df[
+    , (col_with_control_chars) := lapply(.SD, stri_replace_all_regex, "[[:cntrl:]]", ""),
+    .SDcols = col_with_control_chars
+    ][, is_retweet := !is.na(retweet_status_id)
+      ][, status_url := paste0("https://twitter.com/", screen_name, "/status/", status_id)
+        ][, profile_url := paste0("https://twitter.com/i/user/", user_id)
+          ][, profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
+            ]
 
   # there are some occasional control characters that end up in the strings.
   # AFAIK, they are always `\0`, which aren't allowed in XML files.
@@ -207,15 +207,15 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   
 
   
-  proto_tweet_df <- proto_tweet_df[
-    , is_retweet := !is.na(retweet_status_id)
-    ][
-      , status_url := paste0("https://twitter.com/", screen_name, "/status/", status_id)
-    ][
-      , profile_url := paste0("https://twitter.com/i/user/", user_id)
-    ][
-      , profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
-    ]
+  # proto_tweet_df <- proto_tweet_df[
+  #   , is_retweet := !is.na(retweet_status_id)
+  #   ][
+  #     , status_url := paste0("https://twitter.com/", screen_name, "/status/", status_id)
+  #   ][
+  #     , profile_url := paste0("https://twitter.com/i/user/", user_id)
+  #   ][
+  #     , profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
+  #   ]
 
   # proto_tweet_df[
     # , status_url := paste0("https://twitter.com/", screen_name, "/status/", status_id)
