@@ -17,8 +17,7 @@ SystemRequirements: zlib, C++11
 LinkingTo:
     rapidjsonr,
     Rcpp, 
-    RcppProgress,
-    stringi
+    RcppProgress
 Imports:
     data.table,
     jsonify,

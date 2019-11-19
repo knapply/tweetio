@@ -18,10 +18,6 @@
 #ifndef TWEETIO_UTILS_H
 #define TWEETIO_UTILS_H
 
-
-#include <stringi.cpp>
-
-
 namespace tweetio {
 
 template<typename stream_T>
@@ -127,18 +123,18 @@ void finalize_df(Rcpp::List& x, const vec_chr& col_names, const int& n_rows) {
 }
 
 
-vec_chr strip_controls(vec_chr x) {
-  return stri_replace_all_regex(
-    x, vec_chr("[[:cntrl:]]"), vec_chr("")
-  );
-}
+// vec_chr strip_controls(vec_chr x) {
+//   return stri_replace_all_regex(
+//     x, vec_chr("[[:cntrl:]]"), vec_chr("")
+//   );
+// }
 
 
-vec_chr extract_source(vec_chr x) {
-  return stri_extract_first_regex(
-    x, vec_chr("(?<=>).*?(?=</a>$)")
-  );
-}
+// vec_chr extract_source(vec_chr x) {
+//   return stri_extract_first_regex(
+//     x, vec_chr("(?<=>).*?(?=</a>$)")
+//   );
+// }
 
 
 } // namesapce tweetio
