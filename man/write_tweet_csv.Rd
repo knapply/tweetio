@@ -5,17 +5,27 @@
 \alias{write_tweet_excel}
 \title{Write Tweets to Spreadsheets}
 \usage{
-write_tweet_csv(tweet_df, file_path)
+write_tweet_csv(tweet_df, file_path, ...)
 
-write_tweet_excel(tweet_df, file_path)
+write_tweet_excel(tweet_df, file_path, asTable = TRUE, ...)
 }
 \arguments{
 \item{tweet_df}{A data frame of tweets, as obtained by \code{{rtweet}} or \code{tweetio::read_tweets()}.}
 
 \item{file_path}{File path to which to write or from which to read.}
+
+\item{...}{Arguments passed to or from other methods.}
+
+\item{asTable}{\code{<logical>}, default: \code{TRUE}. Argument passed to \code{openxlsx::write.xlsx()}'s
+\code{asTable} parameter.}
 }
 \description{
 Write Tweets to Spreadsheets
+}
+\seealso{
+\code{\link[data.table:fread]{data.table::fread()}}
+
+\code{\link[openxlsx:write.xlsx]{openxlsx::write.xlsx()}}
 }
 \author{
 Brendan Knapp \email{brendan.g.knapp@gmail.com}

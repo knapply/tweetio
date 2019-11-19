@@ -5,12 +5,33 @@
 
 namespace tweetio {
 
+inline Rcpp::String finalize_chr(const rapidjson::Value& x) {
+  std::string res = x.GetString();
+    // std::remove(std::begin(res), std::end(res), '\0');
+
+  if (res.find_first_not_of(' ') != std::string::npos) {
+    Rcpp::String out( res.c_str() );
+    return out;
+  }
+
+  return NA_STRING;
+}
+
 inline Rcpp::String get_chr(const rapidjson::Value& x) {
   if ( x.IsString() ) {
-    return Rcpp::String( x.GetString() );
+    return finalize_chr(x);
   }
   return NA_STRING;
 }
+
+inline double get_timestamp_ms(const rapidjson::Value& x) {
+  if ( !x.IsString() ) {
+    return NA_REAL;
+  }
+  auto init = x.GetString();
+  return std::atof(init) / 1000;
+}
+
 
 // inline Rcpp::String get_chr2(const Rcpp::String& target, const rapidjson::Value& x) {
 //   if (x.IsString()) {
@@ -22,26 +43,35 @@ inline Rcpp::String get_chr(const rapidjson::Value& x) {
 
 inline Rcpp::String get_chr_check(const rapidjson::Value& a, const rapidjson::Value& b) {
   if (a.IsString() ) {
-    return Rcpp::String( a.GetString() );
+    return finalize_chr(a);
   }
   if ( b.IsString() ) {
-    return Rcpp::String( b.GetString() );
+    return finalize_chr(b);
   }
   return NA_STRING;
 }
 
 
 inline int get_int(const rapidjson::Value& x) {
-  return x.IsInt() ? x.GetInt() : NA_INTEGER;
+  if ( x.IsInt() ) {
+    return x.GetInt();
+  }
+  return NA_INTEGER;
 }
 
 inline double get_dbl(const rapidjson::Value& x) {
-  return x.IsNumber() ? x.GetDouble() : NA_REAL;
+  if ( x.IsNumber() ) {
+    return x.GetDouble();
+  }
+  return NA_REAL;
 }
 
 
 inline bool get_lgl(const rapidjson::Value& x) {
-  return x.IsBool() ? x.GetBool() : NA_LOGICAL;
+  if ( x.IsBool() ) {
+    return x.GetBool();
+  }
+  return NA_LOGICAL;
 }
 
 

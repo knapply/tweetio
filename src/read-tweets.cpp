@@ -5,6 +5,13 @@
 #include <progress.hpp>
 #include <progress_bar.hpp>
 
+#include "rapidjson/filereadstream.h"
+
+#ifdef _WIN32
+  #define FILE_MODE "rb"
+#else 
+  #define FILE_MODE "r"
+#endif
 
 typedef Rcpp::Vector<STRSXP> vec_chr;
 typedef Rcpp::Vector<LGLSXP> vec_lgl;
@@ -123,6 +130,10 @@ Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(const std::string& file_
 
 template<>
 Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path) {
+  // FILE* fp = fopen(file_path.c_str(), FILE_MODE);
+  // char readBuffer[65536];
+  // rapidjson::FileReadStream is( fp, readBuffer, sizeof(readBuffer) );
+
   std::ifstream in_file;
   in_file.open(file_path);
 
@@ -135,7 +146,7 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path)
 
   rapidjson::Document parsed_json;
   
-  rapidjson::ParseResult ok = parsed_json.Parse( content.c_str() );
+  rapidjson::ParseResult ok = parsed_json.Parse(content.c_str());
   if (!ok) {
     Rcpp::stop("parsing error");
   }
@@ -191,8 +202,8 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& fil
     progress.increment();
 
     rapidjson::Document parsed_json;
-    rapidjson::ParseResult ok = parsed_json.Parse( line.c_str() );
-    if (!ok || parsed_json.FindMember("id_str") == parsed_json.MemberEnd() ) {
+    parsed_json.Parse( line.c_str() );
+    if (parsed_json.FindMember("id_str") == parsed_json.MemberEnd() ) {
       continue;
     }
     

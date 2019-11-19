@@ -92,28 +92,43 @@ jsonify_list_cols <- function(tweet_df) {
 #' 
 #' @template param-tweet_df
 #' @template param-file_path
+#' @template param-dots 
 #' 
 #' @template author-bk
+#' 
+#' @seealso [data.table::fread()]
 #' 
 #' @importFrom data.table fwrite
 #' 
 #' @export
-write_tweet_csv <- function(tweet_df, file_path) {
-  fwrite(jsonify_list_cols(tweet_df), file_path)
+write_tweet_csv <- function(tweet_df, file_path, ...) {
+  fwrite(
+    x = jsonify_list_cols(tweet_df), 
+    file = file_path,
+    ...
+  )
 }
 
 
 #' @rdname write_tweet_csv
 #' 
+#' @param asTable `<logical>`, default: `TRUE`. Argument passed to `openxlsx::write.xlsx()`'s
+#' `asTable` parameter.
+#' 
+#' @seealso [openxlsx::write.xlsx()]
+#' 
 #' @export
-write_tweet_excel <- function(tweet_df, file_path) {
+write_tweet_excel <- function(tweet_df, file_path, asTable = TRUE, ...) {
   if (!requireNamespace("openxlsx", quietly = TRUE)) {
     stop("{openxlsx} package is required for this functionality.", call. = FALSE)
   }
   
   openxlsx::write.xlsx(
-    x = jsonify_list_cols(tweet_df), file = file_path, 
-    colNames = TRUE, keepNA = TRUE
+    x = jsonify_list_cols(tweet_df),
+    file = file_path, 
+    colNames = TRUE, 
+    asTable = asTable, 
+    ...
   )
 }
 
@@ -128,12 +143,13 @@ write_tweet_excel <- function(tweet_df, file_path) {
 #' @importFrom jsonify from_json
 #' @importFrom stringi stri_detect_regex stri_replace_all_fixed
 #' 
-#' @export
+# @export
 read_tweet_csv <- function(file_path) {
   # there doesn't seem to be a safe way to retain type information, even when explicitly
   # providing classes to `colClasses` or via a YAML header (CSVY)...It's ridiculously slow
   # as most of the columns need to modified after the fact anyways.
-  # TODO is this worth doing in C++ (or even supporting?)
+  # TODO is this worth doing in C++ (or even supporting?) 
+  # Leaving as internal function to enable testing for now.
   
   # silence R CMD Check NOTE =============================================================
   .SD <- NULL
