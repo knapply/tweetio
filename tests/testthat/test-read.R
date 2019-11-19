@@ -30,7 +30,8 @@ test_that("reading rtweet stream works", {
     protected = "logical", followers_count = "integer", friends_count = "integer", 
     listed_count = "integer", statuses_count = "integer", favourites_count = "integer", 
     account_created_at = c("POSIXct", "POSIXt"), verified = "logical", 
-    profile_url = "character", account_lang = "character", profile_banner_url = "character", 
+    profile_url = "character", profile_url2 = "character", account_lang = "character",
+    profile_banner_url = "character", 
     profile_image_url = "character", is_retweeted = "logical", 
     retweet_place_url = "character", retweet_place_name = "character", 
     retweet_place_full_name = "character", retweet_place_type = "character", 
@@ -39,8 +40,7 @@ test_that("reading rtweet stream works", {
     quoted_place_name = "character", quoted_place_full_name = "character", 
     quoted_place_type = "character", quoted_country = "character", 
     quoted_country_code = "character", quoted_bbox_coords = "list", 
-    timestamp_ms = c("POSIXct", "POSIXt"), contributors_enabled = "logical", 
-    profile_url2 = "character"
+    timestamp_ms = c("POSIXct", "POSIXt"), contributors_enabled = "logical"
   )
   
   
