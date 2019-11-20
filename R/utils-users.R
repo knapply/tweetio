@@ -1,5 +1,5 @@
 # // Copyright (C) 2019 Brendan Knapp
-# // This file is part of tweetio
+# // This file is part of tweetio.
 # // 
 # // This program is free software: you can redistribute it and/or modify
 # // it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
 # // 
 # // You should have received a copy of the GNU General Public License
 # // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 
 user_col_names <- function(tweet_df) {
   col_templates <- c(
@@ -47,7 +46,7 @@ user_col_names <- function(tweet_df) {
     quoted = paste0("quoted_", col_templates),
     mentions = paste0("mentions_", col_templates)
   )
-
+  
   out <- lapply(with_context, function(.x) {
     c("created_at", intersect(.x, names(tweet_df)))
   })
@@ -59,7 +58,7 @@ user_col_names <- function(tweet_df) {
 #' @importFrom data.table data.table is.data.table setcolorder setDT setnames
 build_user_df <- function(tweet_df, unique_users = TRUE, split = FALSE, ...) {
   # silence R CMD Check NOTE
-  ..x <- NULL
+  ..col <- NULL
   .SD <- NULL
   user_id <- NULL
   created_at <- NULL
@@ -71,28 +70,28 @@ build_user_df <- function(tweet_df, unique_users = TRUE, split = FALSE, ...) {
     tweet_df <- data.table(tweet_df)
   }
   split_users <- lapply(user_col_names(tweet_df), 
-                        function(x) standardize_cols(tweet_df[, ..x])
+                        function(.x) standardize_cols(tweet_df[, .x, with = FALSE])
   )
   split_users[c("main", "retweet", "quoted")] <- lapply(
     split_users[c("main", "retweet", "quoted")], function(.x) {
       .x[!is.na(user_id)]
-  })
-
+    })
+  
   split_users$mentions <- setDT(
-    unnest_entities2_(
+    unnest_entities2_impl(
       tracker = split_users$mentions$created_at,
       source = split_users$mentions$user_id,
       target = split_users$mentions$screen_name,
       col_names = c("user_id", "screen_name", "created_at")
     )
   )
-
+  
   out <- rbindlist(split_users, use.names = TRUE, fill = TRUE)
-
+  
   col_order <- c("user_id", setdiff(names(out), "user_id"))
   setcolorder(out, col_order)
   setnames(out, old = "created_at", new = "timestamp_ms")
-
+  
   if (unique_users && !split) {
     out <- out[
       order(-timestamp_ms),
@@ -101,11 +100,11 @@ build_user_df <- function(tweet_df, unique_users = TRUE, split = FALSE, ...) {
         else if (is.atomic(x)) .subset2(x, which.min(is.na(x)))                                           
         else .subset(x, which.min( vapply(.subset2(x, 1L), length, integer(1L)) == 0L))
       }),
-      by = user_id
-    ][, timestamp_ms := as.POSIXct(timestamp_ms, origin = "1970-01-01")
-      ]
+      keyby = user_id
+    ][, timestamp_ms := .as_posixct(timestamp_ms)
+      ][order(timestamp_ms)]
   }
-
+  
   if (split) {
     out <- split(out, by = "user_id")
   }

@@ -27,9 +27,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// unnest_entities_
-SEXP unnest_entities_(const SEXP& tracker, const Rcpp::CharacterVector& source, const Rcpp::List& target, const Rcpp::CharacterVector& col_names, const bool is_dttm);
-RcppExport SEXP _tweetio_unnest_entities_(SEXP trackerSEXP, SEXP sourceSEXP, SEXP targetSEXP, SEXP col_namesSEXP, SEXP is_dttmSEXP) {
+// unnest_entities_impl
+SEXP unnest_entities_impl(const SEXP& tracker, const Rcpp::CharacterVector& source, const Rcpp::List& target, const Rcpp::CharacterVector& col_names);
+RcppExport SEXP _tweetio_unnest_entities_impl(SEXP trackerSEXP, SEXP sourceSEXP, SEXP targetSEXP, SEXP col_namesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -37,14 +37,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::CharacterVector& >::type source(sourceSEXP);
     Rcpp::traits::input_parameter< const Rcpp::List& >::type target(targetSEXP);
     Rcpp::traits::input_parameter< const Rcpp::CharacterVector& >::type col_names(col_namesSEXP);
-    Rcpp::traits::input_parameter< const bool >::type is_dttm(is_dttmSEXP);
-    rcpp_result_gen = Rcpp::wrap(unnest_entities_(tracker, source, target, col_names, is_dttm));
+    rcpp_result_gen = Rcpp::wrap(unnest_entities_impl(tracker, source, target, col_names));
     return rcpp_result_gen;
 END_RCPP
 }
-// unnest_entities2_
-SEXP unnest_entities2_(const SEXP& tracker, const Rcpp::List& source, const Rcpp::List& target, const Rcpp::CharacterVector& col_names);
-RcppExport SEXP _tweetio_unnest_entities2_(SEXP trackerSEXP, SEXP sourceSEXP, SEXP targetSEXP, SEXP col_namesSEXP) {
+// unnest_entities2_impl
+SEXP unnest_entities2_impl(const SEXP& tracker, const Rcpp::List& source, const Rcpp::List& target, const Rcpp::CharacterVector& col_names);
+RcppExport SEXP _tweetio_unnest_entities2_impl(SEXP trackerSEXP, SEXP sourceSEXP, SEXP targetSEXP, SEXP col_namesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -52,7 +51,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::List& >::type source(sourceSEXP);
     Rcpp::traits::input_parameter< const Rcpp::List& >::type target(targetSEXP);
     Rcpp::traits::input_parameter< const Rcpp::CharacterVector& >::type col_names(col_namesSEXP);
-    rcpp_result_gen = Rcpp::wrap(unnest_entities2_(tracker, source, target, col_names));
+    rcpp_result_gen = Rcpp::wrap(unnest_entities2_impl(tracker, source, target, col_names));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -60,8 +59,8 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_tweetio_prep_bbox_", (DL_FUNC) &_tweetio_prep_bbox_, 1},
     {"_tweetio_read_tweets_impl", (DL_FUNC) &_tweetio_read_tweets_impl, 1},
-    {"_tweetio_unnest_entities_", (DL_FUNC) &_tweetio_unnest_entities_, 5},
-    {"_tweetio_unnest_entities2_", (DL_FUNC) &_tweetio_unnest_entities2_, 4},
+    {"_tweetio_unnest_entities_impl", (DL_FUNC) &_tweetio_unnest_entities_impl, 4},
+    {"_tweetio_unnest_entities2_impl", (DL_FUNC) &_tweetio_unnest_entities2_impl, 4},
     {NULL, NULL, 0}
 };
 

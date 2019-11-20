@@ -9,11 +9,11 @@ read_tweets_impl <- function(file_path) {
     .Call(`_tweetio_read_tweets_impl`, file_path)
 }
 
-unnest_entities_ <- function(tracker, source, target, col_names, is_dttm = TRUE) {
-    .Call(`_tweetio_unnest_entities_`, tracker, source, target, col_names, is_dttm)
+unnest_entities_impl <- function(tracker, source, target, col_names) {
+    .Call(`_tweetio_unnest_entities_impl`, tracker, source, target, col_names)
 }
 
-unnest_entities2_ <- function(tracker, source, target, col_names) {
-    .Call(`_tweetio_unnest_entities2_`, tracker, source, target, col_names)
+unnest_entities2_impl <- function(tracker, source, target, col_names) {
+    .Call(`_tweetio_unnest_entities2_impl`, tracker, source, target, col_names)
 }
 

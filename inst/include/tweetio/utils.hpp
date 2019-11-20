@@ -1,5 +1,5 @@
 // Copyright (C) 2019 Brendan Knapp
-// This file is part of tweetio
+// This file is part of tweetio.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 namespace tweetio {
 
 template<typename stream_T>
-std::size_t count_lines(const std::string& file_path) {
+size_t count_lines(const std::string& file_path) {
   stream_T in_file;
   in_file.open( file_path.c_str() );
   
@@ -119,7 +119,7 @@ void finalize_df(Rcpp::List& x, const vec_chr& col_names, const int& n_rows) {
 
   x.attr("names") = col_names;
   x.attr("row.names") = row_names;
-  x.attr("class") = vec_chr{"data.frame"};
+  x.attr("class") = "data.frame";
 }
 
 

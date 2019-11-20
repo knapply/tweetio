@@ -1,5 +1,5 @@
 # // Copyright (C) 2019 Brendan Knapp
-# // This file is part of tweetio
+# // This file is part of tweetio.
 # // 
 # // This program is free software: you can redistribute it and/or modify
 # // it under the terms of the GNU General Public License as published by
@@ -15,6 +15,80 @@
 # // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
+.as_posixct <- function(x, .tz = "UTC", .class = c("POSIXct", "POSIXt")) {
+  structure(x, class = .class, tzone = .tz)
+}
+
+.map_template <- function(.x, .f, .template, ...) {
+  vapply(.x, .f, .template, ...)
+}
+
+.map_chr <- function(.x, .f, ...) {
+  .map_template(.x, .f, character(1L), ...)
+}
+.map_lgl <- function(.x, .f, ...) {
+  .map_template(.x, .f, logical(1L), ...)
+}
+
+
+.map_if <- function(.x, .p, .f, ...) {
+  targets <- .map_lgl(.x, .p)
+  .x[targets] <- lapply(.x[targets], .f, ...)
+  .x
+}
+
+.keep <- function(.x, .f, ...) {
+  .x[.map_lgl(.x, .f, ...)]
+}
+.discard <- function(.x, .f, ...) {
+  .x[!.map_lgl(.x, .f, ...)]
+}
+
+
+.keep2 <- function(.x, .y, .f, ...) {
+  .x[.map_lgl(.y, .f, ...)]
+}
+.discard2 <- function(.x, .y, .f, ...) {
+  .x[!.map_lgl(.y, .f, ...)]
+}
+
+.compact <- function(.x) {
+  Filter(length, .x)
+}
+
+.match_col_names <- function(.x, .p, ...) {
+  .keep2(names(.x), .x, .p, ...)
+}
+
+
+.is_atomic_with_non_nas <- function(x) {
+  is.atomic(x) && any(!is.na(x))
+}
+
+.set_names <- function(.x, .nm = .x) {
+  `names<-`(.x, .nm)
+}
+
+.is_empty <- function(.x) {
+  length(.x) == 0L 
+}
+
+#' @importFrom data.table copy
+#' @importFrom jsonify to_json
+jsonify_list_cols <- function(df, copy = TRUE) {
+  # silence R CMD Check NOTE =============================================================
+  .SD <- NULL
+  # ======================================================================================
+  if (copy) {
+    df <- copy(df)
+  }
+  
+  list_cols <- .match_col_names(df, is.list)
+  
+  df[, (list_cols) := lapply(.SD, .map_chr, to_json),
+     .SDcols = list_cols
+  ]
+}
 
 #' @importFrom data.table setnames
 standardize_cols <- function(df) {
@@ -25,18 +99,7 @@ standardize_cols <- function(df) {
   )[]
 }
 
-.map_chr <- function(.x, .f, ...) {
-  vapply(X = .x, FUN = .f, FUN.VALUE = character(1L), ...)
-}
 
-.map_lgl <- function(.x, .f, ...) {
-  vapply(X = .x, FUN = .f, FUN.VALUE = logical(1L), ...)
-}
 
-.keep <- function(.x, .f, ...) {
-  .x[.map_lgl(.x, .f, ...)]
-}
 
-.discard <- function(.x, .f, ...) {
-  .x[!.map_lgl(.x, .f, ...)]
-}
+
