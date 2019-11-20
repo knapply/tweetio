@@ -39,12 +39,22 @@ write_graphml <- function(g, file_path, na_numbers_as = -1,
            call. = FALSE)
     }
   }
+  
+  proto_net <-.igraph_as_data_frame(g)
+  # return(proto_net)
+  
+  
 
   edge_attrs_to_delete <- intersect(
     c("contributors_enabled", "account_lang",
-      grep("^(quoted|reply_to|retweet)", igraph::edge_attr_names(g), value = TRUE)),
-    igraph::edge_attr_names(g)
+      grep("^(quoted|reply_to|retweet)", names(proto_net$edges), value = TRUE)),
+    names(proto_net$edges)
   )
+  
+  proto_net$edges[, (edge_attrs_to_delete) := NULL]
+  # return(proto_net$edges)
+  
+  # return(edge_attrs_to_delete)
   for (i in seq_along(edge_attrs_to_delete)) {
     g <- igraph::delete_edge_attr(g, name = edge_attrs_to_delete[[i]])
   }

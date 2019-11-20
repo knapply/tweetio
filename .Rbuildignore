@@ -14,3 +14,5 @@
 ^appveyor\.yml$
 ^rtools-path-checkbox\.jpg$
 ^pkgdown$
+^LICENSE\.md$
+^test\.graphml$
