@@ -1,5 +1,5 @@
 // Copyright (C) 2019 Brendan Knapp
-// This file is part of tweetio
+// This file is part of tweetio.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -459,7 +459,7 @@ class TweetDF {
         columns[3]   = this->screen_name[seq_out];
         columns[4]   = this->text[seq_out];
 
-        columns[5]   = extract_source( this->source[seq_out] );
+        columns[5]   = this->source[seq_out];
         columns[6]   = this->reply_to_status_id[seq_out];
         columns[7]   = this->reply_to_user_id[seq_out];
         columns[8]   = this->reply_to_screen_name[seq_out];
@@ -502,8 +502,8 @@ class TweetDF {
         columns[42]  = this->retweet_followers_count[seq_out];
         columns[43]  = this->retweet_friends_count[seq_out];
         columns[44]  = this->retweet_statuses_count[seq_out];
-        columns[45]  = strip_controls( this->retweet_location[seq_out] );
-        columns[46]  = strip_controls( this->retweet_description[seq_out] );
+        columns[45]  = this->retweet_location[seq_out];
+        columns[46]  = this->retweet_description[seq_out];
         columns[47]  = this->retweet_verified[seq_out];
 
         columns[48]  = this->place_url[seq_out];
@@ -530,9 +530,9 @@ class TweetDF {
         columns[67]  = this->quoted_country_code[seq_out];
         columns[68]  = this->quoted_bbox_coords[seq_out];
 
-        columns[69]  = strip_controls( this->name[seq_out] );
-        columns[70]  = strip_controls( this->location[seq_out] );
-        columns[71]  = strip_controls( this->description[seq_out] );
+        columns[69]  = this->name[seq_out];
+        columns[70]  = this->location[seq_out];
+        columns[71]  = this->description[seq_out];
         columns[72]  = this->url[seq_out];
         columns[73]  = this->protected_[seq_out];
         columns[74]  = this->followers_count[seq_out];

@@ -89,21 +89,7 @@ peak_csv_col_classes <- function(file_path) {
 }
 
 
-#' @importFrom data.table copy
-#' @importFrom jsonify to_json
-jsonify_list_cols <- function(tweet_df) {
-  # silence R CMD Check NOTE =============================================================
-  .SD <- NULL
-  # ======================================================================================
 
-  out <- copy(tweet_df)
-
-  list_cols <- names(out)[.map_lgl(out, is.list)]
-
-  out[, (list_cols) := lapply(.SD, .map_chr, to_json),
-      .SDcols = list_cols
-      ]
-}
 
 
 #' Write Tweets to Spreadsheets

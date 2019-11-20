@@ -1,5 +1,5 @@
 # // Copyright (C) 2019 Brendan Knapp
-# // This file is part of tweetio
+# // This file is part of tweetio.
 # // 
 # // This program is free software: you can redistribute it and/or modify
 # // it under the terms of the GNU General Public License as published by
@@ -230,17 +230,17 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   # ]
   
   # follow {rtweet}'s behavior and strip HTML from `*_source`s
-  # source_cols <- intersect(
-  #   names(proto_tweet_df),
-  #   c("source", "retweet_source", "quoted_source")
-  # )
-  # if (length(source_cols) > 0L) {
-  #   proto_tweet_df[
-  #     , (source_cols) := lapply(.SD, stri_extract_first_regex,
-  #                               '(?<=">).*?(?=</a>$)'),
-  #     .SDcols = source_cols
-  #   ]
-  # }
+  source_cols <- intersect(
+    names(proto_tweet_df),
+    c("source", "retweet_source", "quoted_source")
+  )
+  if (length(source_cols) > 0L) {
+    proto_tweet_df[
+      , (source_cols) := lapply(.SD, stri_extract_first_regex,
+                                '(?<=">).*?(?=</a>$)'),
+      .SDcols = source_cols
+    ]
+  }
   
   
   .set_col_order(proto_tweet_df)[]

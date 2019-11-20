@@ -14,7 +14,6 @@
 # // You should have received a copy of the GNU General Public License
 # // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 status_col_names <- function(tweet_df) {
   col_templates <- c(
     "status_id",
@@ -91,9 +90,9 @@ build_status_df <- function(tweet_df, unique_statuses = TRUE, split = FALSE, ...
       else if (is.atomic(x)) .subset2(x, which.min(is.na(x)))                                           
       else .subset(x, which.min( vapply(.subset2(x, 1L), length, integer(1L) ) == 0L))
     }),
-    by = status_id,
+    keyby = status_id,
     ][, timestamp_ms := as.POSIXct(timestamp_ms, origin = "1970-01-01")
-      ]
+      ][order(timestamp_ms)]
   
   out[]
 }

@@ -1,5 +1,5 @@
 // Copyright (C) 2019 Brendan Knapp
-// This file is part of tweetio
+// This file is part of tweetio.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,18 +21,18 @@ typedef Rcpp::Vector<LGLSXP> vec_lgl;
 typedef Rcpp::Vector<INTSXP> vec_int;
 typedef Rcpp::Vector<REALSXP> vec_dbl;
 
-template <typename T>
-SEXP unnest_entities_impl(const T& tracker,
-                                const Rcpp::CharacterVector& source,
-                                const Rcpp::List& target,
-                                const Rcpp::CharacterVector& col_names) {
+template <int RTYPE>
+SEXP unnest_entities(const Rcpp::Vector<RTYPE>& tracker,
+                     const vec_chr& source,
+                     const Rcpp::List& target,
+                     const vec_chr& col_names) {
  const R_xlen_t n = tracker.length(); 
-  R_xlen_t out_n = 0;
+ R_xlen_t out_n = 0;
 
   for (R_xlen_t i = 0; i < n; ++i) {
-    const vec_chr target_i = target[i];
+    vec_chr target_i = target[i];
 
-    for (int j = 0; j < target_i.length(); ++j) {
+    for (R_xlen_t j = 0; j < target_i.length(); ++j) {
       if (target_i[j].get() != NA_STRING) {
         out_n++;
       }
@@ -42,12 +42,14 @@ SEXP unnest_entities_impl(const T& tracker,
 
   vec_chr source2(out_n); 
   vec_chr target2(out_n); 
-  T tracker2(out_n);
+
+  Rcpp::Vector<RTYPE> tracker2(out_n);
   tracker2.attr("class") = tracker.attr("class");
+  tracker2.attr("tz") = tracker.attr("tzone");
 
   R_xlen_t k = 0;
   for (R_xlen_t i = 0; i < n; ++i) {
-    const vec_chr target_i = target[i];
+    vec_chr target_i = target[i];
 
     for (R_xlen_t j = 0; j < target_i.size(); ++j) {
 
@@ -78,17 +80,17 @@ SEXP unnest_entities_impl(const T& tracker,
 
 
 // [[Rcpp::export]]
-SEXP unnest_entities_(const SEXP& tracker,
-                      const Rcpp::CharacterVector& source,
-                      const Rcpp::List& target,
-                      const Rcpp::CharacterVector& col_names,
-                      const bool is_dttm = true) {
+SEXP unnest_entities_impl(const SEXP& tracker,
+                          const Rcpp::CharacterVector& source,
+                          const Rcpp::List& target,
+                          const Rcpp::CharacterVector& col_names) {
   switch ( TYPEOF(tracker) ) {
     case STRSXP:
-      return unnest_entities_impl<Rcpp::CharacterVector>(tracker, source, target, col_names);
+      return unnest_entities<STRSXP>(tracker, source, target, col_names);
     case REALSXP:
-      return unnest_entities_impl<Rcpp::NumericVector>(tracker, source, target, col_names);
+      return unnest_entities<REALSXP>(tracker, source, target, col_names);
   }
+
   return R_NilValue;
 }
 
@@ -98,11 +100,11 @@ SEXP unnest_entities_(const SEXP& tracker,
 
 
 
-template <typename T>
-SEXP unnest_entities2_impl(const T& tracker,
-                           const Rcpp::List& source,
-                           const Rcpp::List& target,
-                           const Rcpp::CharacterVector& col_names) {
+template <int RTYPE>
+SEXP unnest_entities2(const Rcpp::Vector<RTYPE>& tracker,
+                      const Rcpp::List& source,
+                      const Rcpp::List& target,
+                      const vec_chr& col_names) {
  const R_xlen_t n = tracker.length(); 
   R_xlen_t out_n = 0;
 
@@ -119,8 +121,9 @@ SEXP unnest_entities2_impl(const T& tracker,
 
   vec_chr source2(out_n); 
   vec_chr target2(out_n); 
-  T tracker2(out_n);
+  Rcpp::Vector<RTYPE> tracker2(out_n);
   tracker2.attr("class") = tracker.attr("class");
+  tracker2.attr("tz") = tracker.attr("tz");
 
   R_xlen_t k = 0;
   for (R_xlen_t i = 0; i < n; ++i) {
@@ -140,7 +143,7 @@ SEXP unnest_entities2_impl(const T& tracker,
 
   }
 
-  using Rcpp::_;
+  // using Rcpp::_;
   Rcpp::List out = Rcpp::List::create(
     source2,
     target2,
@@ -156,15 +159,15 @@ SEXP unnest_entities2_impl(const T& tracker,
 
 
 // [[Rcpp::export]]
-SEXP unnest_entities2_(const SEXP& tracker,
+SEXP unnest_entities2_impl(const SEXP& tracker,
                       const Rcpp::List& source,
                       const Rcpp::List& target,
                       const Rcpp::CharacterVector& col_names) {
   switch (TYPEOF(tracker)) {
     case STRSXP:
-      return unnest_entities2_impl<vec_chr>(tracker, source, target, col_names);
+      return unnest_entities2<STRSXP>(tracker, source, target, col_names);
     case REALSXP:
-      return unnest_entities2_impl<vec_dbl>(tracker, source, target, col_names);
+      return unnest_entities2<REALSXP>(tracker, source, target, col_names);
   }
   return R_NilValue;
 }

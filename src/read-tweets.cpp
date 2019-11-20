@@ -1,5 +1,5 @@
 // Copyright (C) 2019 Brendan Knapp
-// This file is part of tweetio
+// This file is part of tweetio.
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+
 #include <tweetio.hpp>
 
 #include "gzstream.h"
@@ -21,18 +22,10 @@
 #include <progress.hpp>
 #include <progress_bar.hpp>
 
-#include "rapidjson/filereadstream.h"
-
-#ifdef _WIN32
-  #define FILE_MODE "rb"
-#else 
-  #define FILE_MODE "r"
-#endif
-
-typedef Rcpp::Vector<STRSXP> vec_chr;
-typedef Rcpp::Vector<LGLSXP> vec_lgl;
-typedef Rcpp::Vector<INTSXP> vec_int;
-typedef Rcpp::Vector<REALSXP> vec_dbl;
+// typedef Rcpp::Vector<STRSXP> vec_chr;
+// typedef Rcpp::Vector<LGLSXP> vec_lgl;
+// typedef Rcpp::Vector<INTSXP> vec_int;
+// typedef Rcpp::Vector<REALSXP> vec_dbl;
 
 
 enum class TweetFileType: int8_t {
