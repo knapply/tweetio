@@ -132,9 +132,11 @@
     <p>Write Tweets to Spreadsheets</p>
     </div>
 
-    <pre class="usage"><span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>)
+    <pre class="usage"><span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='no'>...</span>)
 
-<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>)</pre>
+<span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+
+<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,14 +149,28 @@
       <th>file_path</th>
       <td><p>File path to which to write or from which to read.</p></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed to or from other methods.</p></td>
+    </tr>
+    <tr>
+      <th>asTable</th>
+      <td><p><code>&lt;logical&gt;</code>, default: <code>TRUE</code>. Argument passed to <code><a href='https://rdrr.io/pkg/openxlsx/man/write.xlsx.html'>openxlsx::write.xlsx()</a></code>'s
+<code>asTable</code> parameter.</p></td>
+    </tr>
     </table>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>data.table::fread()</a></code></p>
+<p><code><a href='https://rdrr.io/pkg/openxlsx/man/write.xlsx.html'>openxlsx::write.xlsx()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#see-also">See also</a></li>
     </ul>
 
     <h2>Author</h2>
