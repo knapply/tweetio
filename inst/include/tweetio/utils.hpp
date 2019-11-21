@@ -119,7 +119,7 @@ void finalize_df(Rcpp::List& x, const vec_chr& col_names, const int& n_rows) {
 
   x.attr("names") = col_names;
   x.attr("row.names") = row_names;
-  x.attr("class") = "data.frame";
+  x.attr("class") = vec_chr{"tbl_df", "tbl", "data.frame"};
 }
 
 

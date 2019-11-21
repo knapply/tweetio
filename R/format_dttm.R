@@ -20,9 +20,12 @@ format_dttm <- function(x, time_zone = "UTC", warn = TRUE) {
     warning("`x` already inherits from POSIXct.")
     return(x)
   }
-  out <- rep(as.POSIXct(NA, tz = time_zone,
-                        origin = structure(0, class = c("POSIXct", "POSIXt"))), 
-             length(x))
+  out <- structure(rep(NA_real_, length(x)),
+                   class = c("POSIXct", "POSIXt"),
+                   tzone = "UTC")
+    # rep(NA_real_, length(x) as.POSIXct(NA, tz = time_zone,
+                        # origin = structure(0, class = c("POSIXct", "POSIXt"))), 
+             # length(x))
   if (all(is.na(x))) {
     return(out)
   }

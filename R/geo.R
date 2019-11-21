@@ -17,13 +17,16 @@
 #' Build a `sf` Object of Tweets
 #' 
 #' @template param-tweet_df
-#' @param geom_col Which column to use as the active `geometry` column in result.
+#' @param geom_col Which column to use as the active `geometry` column in result:
+#' `"bbox_coords"`, `"quoted_bbox_coords"`,`"retweet_bbox_coords"`, or `"all"`.
+#' @template param-as_tibble
 #' @param .geometry Name of output's geometry column. Intended for internal use only. 
 #' @template param-dots
 #' 
 #' @return `sf`
 #' 
 #' @details 
+#' `geom_col` can be oneo
 #' `as_tweet_sf()` uses the `bbox_coords` to build `POLYGON`s. Rows without a valid 
 #' bounding box are discarded.
 #' 
@@ -34,7 +37,7 @@
 #' @export
 as_tweet_sf <- function(tweet_df, 
                         geom_col = c("bbox_coords", "quoted_bbox_coords",
-                                     "retweet_bbox_coords", "all"),
+                                     "retweet_bbox_coords", "all"), as_tibble = FALSE,
                         .geometry = NULL,
                         ...) {
   # silence R CMD Check NOTE
@@ -64,7 +67,7 @@ as_tweet_sf <- function(tweet_df,
                             names(tweet_df))
   
     out <- lapply(valid_cols, function(.x) {
-      res <- as_tweet_sf(tweet_df, .x, .geometry = "geometry", ...)
+      res <- as_tweet_sf(tweet_df, .x, as_tibble = as_tibble, .geometry = "geometry", ...)
       if (!is.null(res)) {
         res[["which_geom"]] <- .x
       }
@@ -96,6 +99,8 @@ as_tweet_sf <- function(tweet_df,
     
   }
   
-  sf::st_sf(init, stringsAsFactors = FALSE)
+  out <- sf::st_sf(init, stringsAsFactors = FALSE)
+  
+  .finalize_df(out, as_tibble = as_tibble)
 }
 

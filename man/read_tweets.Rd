@@ -5,19 +5,22 @@
 \alias{read_tweets_bulk}
 \title{Read tweets into a data frame}
 \usage{
-read_tweets(file_path, ...)
+read_tweets(file_path, as_tibble = TRUE, ...)
 
-read_tweets_bulk(file_path, in_parallel = TRUE, .strategy = NULL, ...)
+read_tweets_bulk(file_path, in_parallel = TRUE, strategy = NULL,
+  as_tibble = FALSE, ...)
 }
 \arguments{
 \item{file_path}{Path(s) to tweet files.}
+
+\item{as_tibble}{Whether a \code{<tibble>} data frame should be returned. Requires the \code{{tibble}} package.}
 
 \item{...}{Arguments passed to or from other methods.}
 
 \item{in_parallel}{Default: \code{TRUE}. Whether to use \code{future.apply::future_lapply()}
 to process the files in parallel. Ignored if \code{{future}} or \code{{future.apply}} are not installed.}
 
-\item{.strategy}{Default: \code{NULL}. argument passed to \code{future::plan()}'s \code{strategy} parameter.
+\item{strategy}{Default: \code{NULL}. argument passed to \code{future::plan()}'s \code{strategy} parameter.
 If \code{NULL}, \code{future::multiprocess} is used. Ignored if \code{{future}} or \code{{future.apply}} are not installed.}
 }
 \value{

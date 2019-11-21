@@ -546,7 +546,7 @@ class TweetDF {
         columns[82]  = this->profile_banner_url[seq_out];
         columns[83]  = this->profile_image_url[seq_out];
 
-        this->timestamp_ms.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+        this->timestamp_ms.attr("class") = Rcpp::CharacterVector{"POSIXct", "POSIXt"};
         this->timestamp_ms.attr("tzone") = "UTC";
 
         columns[84]  = this->timestamp_ms[seq_out]; 

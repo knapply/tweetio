@@ -2,10 +2,13 @@
 % Please edit documentation in R/csv.R
 \name{write_tweet_csv}
 \alias{write_tweet_csv}
+\alias{write_tweet_xlsx}
 \alias{write_tweet_excel}
 \title{Write Tweets to Spreadsheets}
 \usage{
 write_tweet_csv(tweet_df, file_path, ...)
+
+write_tweet_xlsx(tweet_df, file_path, asTable = TRUE, ...)
 
 write_tweet_excel(tweet_df, file_path, asTable = TRUE, ...)
 }
@@ -16,7 +19,7 @@ write_tweet_excel(tweet_df, file_path, asTable = TRUE, ...)
 
 \item{...}{Arguments passed to or from other methods.}
 
-\item{asTable}{\code{<logical>}, default: \code{TRUE}. Argument passed to \code{openxlsx::write.xlsx()}'s
+\item{asTable}{\code{<logical>}, default: \code{TRUE}. Argument passed to \code{\link[openxlsx:write.xlsx]{openxlsx::write.xlsx()}}'s
 \code{asTable} parameter.}
 }
 \description{

@@ -22,6 +22,7 @@ Imports:
     data.table,
     jsonify,
     Rcpp,
+    stats,
     stringi
 Suggests:
     covr,
@@ -33,7 +34,8 @@ Suggests:
     openxlsx,
     rtweet,
     sf,
-    testthat
+    testthat (>= 2.1.0),
+    tibble
 Remotes: 
     SymbolixAU/jsonify,
     ycphs/openxlsx
