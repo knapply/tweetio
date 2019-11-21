@@ -15,13 +15,11 @@
 # // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #' @importFrom data.table data.table rbindlist setcolorder setnames
-#' @importFrom stats na.omit
 as_sna_proto_net <- function(tweet_df, relations = c("mention" ,"retweet",
                                                      "reply_to", "quoted"),
                              as_tibble = FALSE,
                              ...) {
   # silence R CMD Check NOTE #############################################################
-  ..edge_cols <- NULL
   relation <- NULL
   ########################################################################################
   if (!.is_dt(tweet_df)) {
@@ -42,8 +40,7 @@ as_sna_proto_net <- function(tweet_df, relations = c("mention" ,"retweet",
   edge_by_status_type <- lapply(targets, function(x) {
     edge_cols <- c("user_id", x, "status_id")
 
-    res <- na.omit(tweet_df, cols = x
-                   )[, ..edge_cols]
+    res <- tweet_df[!is.na(get(x)), edge_cols, with = FALSE]
 
     setnames(res, c("from", "to", "status_id"))
 

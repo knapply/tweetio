@@ -50,7 +50,6 @@ status_col_names <- function(tweet_df) {
 }
 
 #' @importFrom data.table as.data.table setcolorder setDT setnames
-#' @importFrom stats na.omit
 build_status_df <- function(tweet_df, unique_statuses = TRUE, split = FALSE, ...) {
   # silence R CMD Check NOTE
   ..x <- NULL
@@ -67,8 +66,7 @@ build_status_df <- function(tweet_df, unique_statuses = TRUE, split = FALSE, ...
   
   split_statuses <- lapply(
     status_col_names(tweet_df),  
-    function(.x) na.omit(standardize_cols(tweet_df[, .x, with = FALSE]),
-                         cols = "status_id")
+    function(.x) standardize_cols(tweet_df[!is.na(status_id), .x, with = FALSE])
   )
   
   out <- rbindlist(split_statuses, use.names = TRUE, fill = TRUE)

@@ -14,7 +14,7 @@
 # // You should have received a copy of the GNU General Public License
 # // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#' Build a `sf` Object of Tweets
+#' Build an `sf` Object of Tweets
 #' 
 #' @template param-tweet_df
 #' @param geom_col Which column to use as the active `geometry` column in result:
@@ -23,14 +23,22 @@
 #' @param .geometry Name of output's geometry column. Intended for internal use only. 
 #' @template param-dots
 #' 
-#' @return `sf`
-#' 
-#' @details 
-#' `geom_col` can be oneo
-#' `as_tweet_sf()` uses the `bbox_coords` to build `POLYGON`s. Rows without a valid 
-#' bounding box are discarded.
+#' @return [sf::st_sf()] 
 #' 
 #' @template author-bk
+#' 
+#' @examples 
+#' path_to_tweet_file <- example_tweet_file()
+#' 
+#' tweet_df <- read_tweets(file_path = path_to_tweet_file)
+#' 
+#' bbox_coords <- as_tweet_sf(tweet_df)
+#' 
+#' rwtweet_bbox_cooords <- as_tweet_sf(tweet_df, geom_col = "retweet_bbox_coords")
+#' 
+#' tweet_sf <- as_tweet_sf(tweet_df, geom_col = "all", as_tibble = TRUE)
+#' 
+#' tweet_sf[, c("created_at", "text", "which_geom", "geometry")]
 #'
 #' @importFrom data.table %chin% data.table is.data.table
 #' 

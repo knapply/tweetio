@@ -28,12 +28,27 @@
 #' 
 #' @template author-bk
 #' 
-#' @seealso [data.table::fread()]
+#' @seealso [data.table::fwrite()]
+#' 
+#' @examples 
+#' path_to_tweet_file <- example_tweet_file()
+#'                                                        # first 5 rows
+#' tweet_df <- read_tweets(file_path = path_to_tweet_file)[1:5, ]
+#' 
+#' # write comma-separated values files ==================================================
+#' target_csv_file <- tempfile(fileext = ".csv")
+#' target_csv_file
+#' 
+#' write_tweet_csv(tweet_df, file_path = target_csv_file) 
 #' 
 #' @importFrom data.table fwrite
 #' 
 #' @export
 write_tweet_csv <- function(tweet_df, file_path, ...) {
+  if (!.is_dt(tweet_df)) {
+    tweet_df <- .as_dt(tweet_df)
+  }
+  
   fwrite(
     x = jsonify_list_cols(tweet_df), 
     file = file_path,
@@ -44,13 +59,21 @@ write_tweet_csv <- function(tweet_df, file_path, ...) {
 
 #' @rdname write_tweet_csv
 #' 
-#' @param asTable `<logical>`, default: `TRUE`. Argument passed to [openxlsx::write.xlsx()]'s
-#' `asTable` parameter.
-#' 
+#' @param asTable `<logical>`, default: `TRUE`.
 #' 
 #' @aliases write_tweet_excel
 #' 
 #' @seealso [openxlsx::write.xlsx()]
+#' 
+#' @examples 
+#' # write Microsoft Excel files =========================================================
+#' target_excel_file <- tempfile(fileext = ".xlsx")
+#' target_excel_file
+#' 
+#' write_tweet_xlsx(tweet_df, file_path = target_excel_file)
+#' 
+#' # same as `write_tweet_xlsx()`
+#' write_tweet_excel(tweet_df, file_path = target_excel_file)
 #' 
 #' @export
 write_tweet_xlsx <- function(tweet_df, file_path, asTable = TRUE, ...) {
@@ -59,7 +82,7 @@ write_tweet_xlsx <- function(tweet_df, file_path, asTable = TRUE, ...) {
   }
   
   if (!.is_dt(tweet_df)) {
-    tweet_df <- as.data.table(tweet_df)
+    tweet_df <- .as_dt(tweet_df)
   }
   
   openxlsx::write.xlsx(

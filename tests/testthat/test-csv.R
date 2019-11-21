@@ -1,7 +1,6 @@
 test_that("reading/writing spreadsheets works", {
   test_df <- read_tweets(
-    system.file("example-data/api-stream.json.gz", package = "tweetio"), 
-    as_tibble = FALSE
+    example_tweet_file()
   )[1:100]
 
   csv_temp_file <- tempfile(fileext = ".csv")
@@ -9,6 +8,11 @@ test_that("reading/writing spreadsheets works", {
   
   expect_error(
     write_tweet_csv(test_df, csv_temp_file),
+    NA
+  )
+  
+  expect_error(
+    read.csv(csv_temp_file),
     NA
   )
   

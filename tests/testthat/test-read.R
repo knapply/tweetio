@@ -44,8 +44,7 @@ test_that("reading rtweet stream works", {
   )
   
   
-  test_df <- read_tweets(system.file("example-data/api-stream.json.gz", 
-                                     package = "tweetio"))
+  test_df <- read_tweets(example_tweet_file())
 
   expect_true(
     identical(

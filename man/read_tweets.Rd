@@ -3,9 +3,9 @@
 \name{read_tweets}
 \alias{read_tweets}
 \alias{read_tweets_bulk}
-\title{Read tweets into a data frame}
+\title{Read Tweets into a Data Frame}
 \usage{
-read_tweets(file_path, as_tibble = TRUE, ...)
+read_tweets(file_path, as_tibble = FALSE, ...)
 
 read_tweets_bulk(file_path, in_parallel = TRUE, strategy = NULL,
   as_tibble = FALSE, ...)
@@ -13,7 +13,8 @@ read_tweets_bulk(file_path, in_parallel = TRUE, strategy = NULL,
 \arguments{
 \item{file_path}{Path(s) to tweet files.}
 
-\item{as_tibble}{Whether a \code{<tibble>} data frame should be returned. Requires the \code{{tibble}} package.}
+\item{as_tibble}{Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the
+\code{{tibble}} package is not installed.}
 
 \item{...}{Arguments passed to or from other methods.}
 
@@ -24,10 +25,26 @@ to process the files in parallel. Ignored if \code{{future}} or \code{{future.ap
 If \code{NULL}, \code{future::multiprocess} is used. Ignored if \code{{future}} or \code{{future.apply}} are not installed.}
 }
 \value{
-\code{data.table}
+\itemize{
+\item Data Frame
+\itemize{
+\item default: \code{\link[data.table:data.table]{data.table::data.table()}}
+\item \code{\link[tibble:tibble]{tibble::tibble()}} if \code{as_tibble} is \code{TRUE} and the \code{{tibble}} is installed.
+}
+}
 }
 \description{
-Read tweets into a data frame
+Go from a file of raw tweet data to a convenient, \code{{rtweet}}-style data frame.
+}
+\examples{
+path_to_tweet_file <- example_tweet_file()
+
+tweet_data.table <- read_tweets(file_path = path_to_tweet_file)
+
+tweet_tibble <- read_tweets(file_path = path_to_tweet_file, as_tibble = TRUE)
+
+tweet_tibble
+
 }
 \author{
 Brendan Knapp \email{brendan.g.knapp@gmail.com}

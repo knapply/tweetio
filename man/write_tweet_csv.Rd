@@ -13,20 +13,41 @@ write_tweet_xlsx(tweet_df, file_path, asTable = TRUE, ...)
 write_tweet_excel(tweet_df, file_path, asTable = TRUE, ...)
 }
 \arguments{
-\item{tweet_df}{A data frame of tweets, as obtained by \code{{rtweet}} or \code{tweetio::read_tweets()}.}
+\item{tweet_df}{A data frame of tweets, as obtained by \code{read_tweets()} or
+one of \code{{rtweet}}'s collection functions, e.g. \code{\link[rtweet:search_tweets]{rtweet::search_tweets()}}.}
 
 \item{file_path}{File path to which to write or from which to read.}
 
 \item{...}{Arguments passed to or from other methods.}
 
-\item{asTable}{\code{<logical>}, default: \code{TRUE}. Argument passed to \code{\link[openxlsx:write.xlsx]{openxlsx::write.xlsx()}}'s
-\code{asTable} parameter.}
+\item{asTable}{\code{<logical>}, default: \code{TRUE}.}
 }
 \description{
 Write Tweets to Spreadsheets
 }
+\examples{
+path_to_tweet_file <- example_tweet_file()
+                                                       # first 5 rows
+tweet_df <- read_tweets(file_path = path_to_tweet_file)[1:5, ]
+
+# write comma-separated values files ==================================================
+target_csv_file <- tempfile(fileext = ".csv")
+target_csv_file
+
+write_tweet_csv(tweet_df, file_path = target_csv_file) 
+
+# write Microsoft Excel files =========================================================
+target_excel_file <- tempfile(fileext = ".xlsx")
+target_excel_file
+
+write_tweet_xlsx(tweet_df, file_path = target_excel_file)
+
+# same as `write_tweet_xlsx()`
+write_tweet_excel(tweet_df, file_path = target_excel_file)
+
+}
 \seealso{
-\code{\link[data.table:fread]{data.table::fread()}}
+\code{\link[data.table:fwrite]{data.table::fwrite()}}
 
 \code{\link[openxlsx:write.xlsx]{openxlsx::write.xlsx()}}
 }
