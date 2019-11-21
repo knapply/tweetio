@@ -23,7 +23,8 @@ Imports:
     jsonify,
     Rcpp,
     stats,
-    stringi
+    stringi,
+    utils
 Suggests:
     covr,
     here,
