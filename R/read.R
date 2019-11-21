@@ -55,7 +55,7 @@
   file_path <- path.expand(file_path)
   
   init <- read_tweets_impl(file_path)
-  
+
   if (attr(init, "has_metadata", exact = TRUE)) {
     setDT(init$tweets
           )[, metadata := init[["metadata"]]
@@ -76,12 +76,12 @@
 #' @template author-bk
 #' 
 #' @export
-read_tweets <- function(file_path, ...) {
+read_tweets <- function(file_path, as_tibble = TRUE, ...) {
   out <- .read_tweets(file_path, ...)
 
-  .finalize_cols(out)[]
+  out <- .finalize_cols(out)
 
-  out
+  .finalize_df(out, as_tibble = as_tibble)
 }
 
 
@@ -90,12 +90,14 @@ read_tweets <- function(file_path, ...) {
 #' 
 #' @param in_parallel Default: `TRUE`. Whether to use `future.apply::future_lapply()`
 #'  to process the files in parallel. Ignored if `{future}` or `{future.apply}` are not installed.
-#' @param .strategy Default: `NULL`. argument passed to `future::plan()`'s `strategy` parameter.
+#' @param strategy Default: `NULL`. argument passed to `future::plan()`'s `strategy` parameter.
 #'   If `NULL`, `future::multiprocess` is used. Ignored if `{future}` or `{future.apply}` are not installed.
+#' @template param-as_tibble
 #' 
 #' @importFrom data.table rbindlist
 #' @export
-read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ...) {
+read_tweets_bulk <- function(file_path, in_parallel = TRUE, strategy = NULL, 
+                             as_tibble = FALSE, ...) {
   if (length(file_path) == 1L) {
     return(read_tweets(file_path))
   }
@@ -115,7 +117,9 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, .strategy = NULL, ..
   
   out <- rbindlist(init)
   
-  .finalize_cols(out)[]
+  out <- .finalize_cols(out)
+  
+  .finalize_df(out, as_tibble = as_tibble)
 }
 
 

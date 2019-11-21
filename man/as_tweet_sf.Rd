@@ -5,12 +5,16 @@
 \title{Build a \code{sf} Object of Tweets}
 \usage{
 as_tweet_sf(tweet_df, geom_col = c("bbox_coords", "quoted_bbox_coords",
-  "retweet_bbox_coords", "all"), .geometry = NULL, ...)
+  "retweet_bbox_coords", "all"), as_tibble = FALSE, .geometry = NULL,
+  ...)
 }
 \arguments{
 \item{tweet_df}{A data frame of tweets, as obtained by \code{{rtweet}} or \code{tweetio::read_tweets()}.}
 
-\item{geom_col}{Which column to use as the active \code{geometry} column in result.}
+\item{geom_col}{Which column to use as the active \code{geometry} column in result:
+\code{"bbox_coords"}, \code{"quoted_bbox_coords"},\code{"retweet_bbox_coords"}, or \code{"all"}.}
+
+\item{as_tibble}{Whether a \code{<tibble>} data frame should be returned. Requires the \code{{tibble}} package.}
 
 \item{.geometry}{Name of output's geometry column. Intended for internal use only.}
 
@@ -23,6 +27,7 @@ as_tweet_sf(tweet_df, geom_col = c("bbox_coords", "quoted_bbox_coords",
 Build a \code{sf} Object of Tweets
 }
 \details{
+\code{geom_col} can be oneo
 \code{as_tweet_sf()} uses the \code{bbox_coords} to build \code{POLYGON}s. Rows without a valid
 bounding box are discarded.
 }

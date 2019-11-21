@@ -14,11 +14,19 @@
 # // You should have received a copy of the GNU General Public License
 # // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#' @importFrom data.table rbindlist setcolorder setnames
+#' @importFrom data.table data.table rbindlist setcolorder setnames
+#' @importFrom stats na.omit
 as_sna_proto_net <- function(tweet_df, relations = c("mention" ,"retweet",
                                                      "reply_to", "quoted"),
-                             jsonify_list_cols = TRUE,
+                             as_tibble = FALSE,
                              ...) {
+  # silence R CMD Check NOTE #############################################################
+  ..edge_cols <- NULL
+  relation <- NULL
+  ########################################################################################
+  if (!.is_dt(tweet_df)) {
+    tweet_df <- as.data.table(tweet_df)
+  }
   
   relations <- match.arg(relations, c("mentions" ,"retweet", "reply_to", "quoted"),
                          several.ok = TRUE)
@@ -62,19 +70,33 @@ as_sna_proto_net <- function(tweet_df, relations = c("mention" ,"retweet",
   nodes <- build_user_df(tweet_df)
   
   structure(
-    list(edges = edges, nodes = nodes),
-    attr = "proto_net"
+    list(edges = .finalize_df(edges, as_tibble = as_tibble), 
+         nodes = .finalize_df(nodes, as_tibble = as_tibble)),
+    class = "proto_net"
   )
 }
 
 
 
 
+as_sna_igraph <- function(x, ...) {
+  UseMethod("as_sna_igraph")
+}
 
+as_sna_igraph.default <- function(x, relations = c("mention" ,"retweet",
+                                                   "reply_to", "quoted"),
+                                  ...) {
+  as_sna_igraph(
+    as_sna_proto_net(x, relations = relations, ...)
+  )
+}
 
 #' @importFrom data.table copy setDT
 #' @importFrom stringi stri_detect_regex
-as_sna_igraph <- function(proto_net, copy = TRUE) {
+as_sna_igraph.proto_net <- function(proto_net, copy = TRUE) {
+  # silence R CMD Check NOTE #############################################################
+  .SD <- NULL
+  ########################################################################################
   if (!requireNamespace("igraph", quietly = TRUE)) {
     stop("{igraph} package is required for this functionality.", call. = FALSE)
   }
@@ -120,7 +142,7 @@ as_sna_igraph <- function(proto_net, copy = TRUE) {
   out <- igraph::make_empty_graph(n = nrow(proto_net$nodes), directed = TRUE)
   out <- igraph::add_edges(graph = out, edges = el)
   igraph::vertex_attr(out) <- as.list(proto_net$nodes)
-  igraph::vertex_attr(out, "name") <- proto_net$nodes$user_id
+  # igraph::vertex_attr(out, "name") <- proto_net$nodes$user_id
   igraph::edge_attr(out) <- as.list(proto_net$edges)
 
   out

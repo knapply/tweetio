@@ -116,12 +116,14 @@ Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(const std::string& file_
 
     rapidjson::Document parsed_json;
     parsed_json.Parse( line_string.c_str() );
+    const auto& doc = parsed_json["doc"];
 
-    if ( parsed_json["doc"].FindMember("id_str") == parsed_json["doc"].MemberEnd() ) {
+    // if ( parsed_json["doc"].FindMember("id_str") == parsed_json["doc"].MemberEnd() ) {
+    if ( doc.FindMember("id_str") == doc.MemberEnd() ) {
       continue;
     }
     
-    tweets.push( parsed_json["doc"] );
+    tweets.push( doc );
     metadata.push(parsed_json);
   }
 
@@ -139,23 +141,16 @@ Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(const std::string& file_
 
 template<>
 Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path) {
-  // FILE* fp = fopen(file_path.c_str(), FILE_MODE);
-  // char readBuffer[65536];
-  // rapidjson::FileReadStream is( fp, readBuffer, sizeof(readBuffer) );
+  igzstream in_file;
+  in_file.open( file_path.c_str() );
 
-  std::ifstream in_file;
-  in_file.open(file_path);
-
-  std::string content;
-  in_file.seekg(0, std::ios::end);
-  content.resize( in_file.tellg() );
-  in_file.seekg(0, std::ios::beg);
-  in_file.read( &content[0], content.size() );
+  const std::string content( std::istreambuf_iterator<char>{in_file},
+                             std::istreambuf_iterator<char>() );
   in_file.close();
 
   rapidjson::Document parsed_json;
   
-  rapidjson::ParseResult ok = parsed_json.Parse(content.c_str());
+  rapidjson::ParseResult ok = parsed_json.ParseInsitu( (char*)content.c_str() );
   if (!ok) {
     Rcpp::stop("parsing error");
   }
@@ -167,12 +162,15 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path)
 
   for ( const auto& val : parsed_json.GetArray() ) {
     progress.increment();
+
+    const auto& doc = val["_source"]["doc"];
+    
   
-    if ( !val["_source"]["doc"]["id_str"].IsString() ) {
+    if ( !doc["id_str"].IsString() ) {
       continue;
     }
 
-    tweets.push(val["_source"]["doc"]);
+    tweets.push(doc);
     metadata.push(val["_source"]);
 
   }
@@ -220,7 +218,6 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& fil
 
   }
 
-  using Rcpp::_;
   Rcpp::List out = tweets.to_r();
   out.attr("has_metadata") = false;
 

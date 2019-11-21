@@ -14,6 +14,20 @@
 # // You should have received a copy of the GNU General Public License
 # // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+.finalize_df <- function(df, as_tibble) {
+  if (!as_tibble || !requireNamespace("tibble", quietly = TRUE)) {
+    return(df)
+  }
+  
+  original_class <- class(df)
+  df <- tibble::as_tibble(df)
+
+  if (original_class[[1L]] == "sf" && requireNamespace("sf", quietly = TRUE)) {
+    df <- sf::st_as_sf(df)
+  }
+  
+  df
+}
 
 .as_posixct <- function(x, .tz = "UTC", .class = c("POSIXct", "POSIXt")) {
   structure(x, class = .class, tzone = .tz)
@@ -65,13 +79,18 @@
   is.atomic(x) && any(!is.na(x))
 }
 
-.set_names <- function(.x, .nm = .x) {
-  `names<-`(.x, .nm)
+.set_names <- function(x, y = x) {
+  `names<-`(x, y)
 }
 
-.is_empty <- function(.x) {
-  length(.x) == 0L 
+.is_empty <- function(x) {
+  length(x) == 0L 
 }
+
+.is_dt <- function(x) {
+  inherits(x, "data.table")
+}
+
 
 #' @importFrom data.table copy
 #' @importFrom jsonify to_json
@@ -79,16 +98,24 @@ jsonify_list_cols <- function(df, copy = TRUE) {
   # silence R CMD Check NOTE =============================================================
   .SD <- NULL
   # ======================================================================================
+  list_cols <- .match_col_names(df, is.list)
+  
+  if (.is_empty(list_cols)) {
+    return(df)
+  }
+  
   if (copy) {
     df <- copy(df)
   }
-  
-  list_cols <- .match_col_names(df, is.list)
-  
-  df[, (list_cols) := lapply(.SD, .map_chr, to_json),
-     .SDcols = list_cols
+
+  df[, (list_cols) := lapply(.SD, .map_chr, function(.x) {
+    .x[is.na(.x)] <- ""
+    to_json(.x, unbox = TRUE)
+    }),
+    .SDcols = list_cols
   ]
 }
+
 
 #' @importFrom data.table setnames
 standardize_cols <- function(df) {

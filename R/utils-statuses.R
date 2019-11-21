@@ -49,7 +49,8 @@ status_col_names <- function(tweet_df) {
   Filter(function(.x) length(.x) > 1L, out)
 }
 
-#' @importFrom data.table data.table is.data.table setcolorder setDT setnames
+#' @importFrom data.table as.data.table setcolorder setDT setnames
+#' @importFrom stats na.omit
 build_status_df <- function(tweet_df, unique_statuses = TRUE, split = FALSE, ...) {
   # silence R CMD Check NOTE
   ..x <- NULL
@@ -60,8 +61,8 @@ build_status_df <- function(tweet_df, unique_statuses = TRUE, split = FALSE, ...
   .N <- NULL
   #########################
   
-  if (!is.data.table(tweet_df)) {
-    tweet_df <- data.table(tweet_df)
+  if (!.is_dt(tweet_df)) {
+    tweet_df <- as.data.table(tweet_df)
   }
   
   split_statuses <- lapply(
