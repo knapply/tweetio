@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
   warning = FALSE
 )
 
-options(width = 100)
+options(width = 120)
 ```
 
 
@@ -91,6 +91,10 @@ remotes::install_github("knapply/tweetio")
 
 # Usage
 
+```{r}
+library(tweetio)
+```
+
 ## Simple Example
 
 First, we'll save a stream of tweets using `rtweet::stream_tweets()`.
@@ -103,11 +107,9 @@ rtweet::stream_tweets(timeout = 15, parse = FALSE, file_name = temp_file)
 We can then pass the file path to `tweetio::read_tweets()` to efficiently parse the data into an `{rtweet}`-style data frame.
 
 ```{r}
-library(tweetio)
+small_rtweet_stream <- read_tweets(temp_file, as_tibble = TRUE)
 
-small_rtweet_stream <- read_tweets(temp_file)
-
-tibble::as_tibble(small_rtweet_stream)
+small_rtweet_stream
 ```
 
 ## Scaling Up
@@ -115,7 +117,7 @@ tibble::as_tibble(small_rtweet_stream)
 We're more interested in handling much larger data sets, but for demonstration we'll use a file of a reasonable size that was obtained using `rtweet::stream_tweets()`. 
 
 ```{r}
-rtweet_stream_path <- system.file("example-data/api-stream.json.gz", package = "tweetio")
+rtweet_stream_path <- "inst/example-data/api-stream.json.gz"
 
 scales::number_bytes(file.size(rtweet_stream_path))
 ```

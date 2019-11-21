@@ -81,6 +81,10 @@ remotes::install_github("knapply/tweetio")
 
 # Usage
 
+``` r
+library(tweetio)
+```
+
 ## Simple Example
 
 First, we’ll save a stream of tweets using `rtweet::stream_tweets()`.
@@ -94,50 +98,43 @@ We can then pass the file path to `tweetio::read_tweets()` to
 efficiently parse the data into an `{rtweet}`-style data frame.
 
 ``` r
-library(tweetio)
+small_rtweet_stream <- read_tweets(temp_file, as_tibble = TRUE)
 
-small_rtweet_stream <- read_tweets(temp_file)
-
-tibble::as_tibble(small_rtweet_stream)
+small_rtweet_stream
 ```
 
-    #> # A tibble: 523 x 90
-    #>    user_id status_id created_at          screen_name text  source reply_to_status~ reply_to_user_id
-    #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>           
-    #>  1 101952~ 11962668~ 2019-11-18 03:20:16 pontaro051~ <U+5360><U+3044><U+3068><U+304B>~ Twitt~ <NA>             <NA>            
-    #>  2 116264~ 11962668~ 2019-11-18 03:20:16 002Marine   "<U+522B><U+6765><U+79C1>~ Twitt~ <NA>             <NA>            
-    #>  3 252134~ 11962668~ 2019-11-18 03:20:16 yann_poke1~ @kag~ Twitt~ 119626250587972~ 950213158878064~
-    #>  4 108147~ 11962668~ 2019-11-18 03:20:16 alondddra1  "ska~ Twitt~ <NA>             <NA>            
-    #>  5 115616~ 11962668~ 2019-11-18 03:20:16 honoka2108~ "RT ~ Twitt~ <NA>             <NA>            
-    #>  6 111911~ 11962668~ 2019-11-18 03:20:16 S__yume__   <U+B77C><U+B514><U+C624> ~ Twitt~ <NA>             <NA>            
-    #>  7 197548~ 11962668~ 2019-11-18 03:20:16 alkhwzaai   RT @~ Twitt~ <NA>             <NA>            
-    #>  8 119143~ 11962668~ 2019-11-18 03:20:16 Willy_noje~ Magr~ Twitt~ <NA>             <NA>            
-    #>  9 119562~ 11962668~ 2019-11-18 03:20:16 sertakt840~ @der~ Twitt~ 119617016008590~ 819211783       
-    #> 10 243872~ 11962668~ 2019-11-18 03:20:16 kimmwaters4 RT @~ Twitt~ <NA>             <NA>            
-    #> # ... with 513 more rows, and 82 more variables: reply_to_screen_name <chr>, is_quote <lgl>,
-    #> #   is_retweet <lgl>, hashtags <list>, urls_expanded_url <list>, media_url <list>,
-    #> #   media_expanded_url <list>, media_type <list>, mentions_user_id <list>,
-    #> #   mentions_screen_name <list>, quoted_status_id <chr>, quoted_text <chr>,
-    #> #   quoted_created_at <dttm>, quoted_source <chr>, quoted_favorite_count <int>,
-    #> #   quoted_retweet_count <int>, quoted_user_id <chr>, quoted_screen_name <chr>, quoted_name <chr>,
-    #> #   quoted_followers_count <int>, quoted_friends_count <int>, quoted_statuses_count <int>,
-    #> #   quoted_location <chr>, quoted_description <chr>, quoted_verified <lgl>,
+    #> # A tibble: 582 x 90
+    #>    user_id status_id created_at          screen_name text  source reply_to_status~ reply_to_user_id reply_to_screen~
+    #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>            <chr>           
+    #>  1 119245~ 11973467~ 2019-11-21 02:51:20 SexyDivulga "RT ~ Twitt~ <NA>             <NA>             <NA>            
+    #>  2 157233~ 11973468~ 2019-11-21 02:51:51 tgainokimo~ <U+7D50><U+5C40><U+597D><U+304D>~ twitt~ <NA>             <NA>             <NA>            
+    #>  3 118831~ 11973468~ 2019-11-21 02:51:51 xyomu_tete5 "RT ~ Twitt~ <NA>             <NA>             <NA>            
+    #>  4 118910~ 11973468~ 2019-11-21 02:51:51 tequila_ta~ RT @~ Twitt~ <NA>             <NA>             <NA>            
+    #>  5 108150~ 11973468~ 2019-11-21 02:51:51 geekinisma~ yeah~ Twitt~ <NA>             <NA>             <NA>            
+    #>  6 860995~ 11973468~ 2019-11-21 02:51:51 PieriBasti~ RT @~ Twitt~ <NA>             <NA>             <NA>            
+    #>  7 744739~ 11973468~ 2019-11-21 02:51:51 bbow_taetee RT @~ Twitt~ <NA>             <NA>             <NA>            
+    #>  8 986402~ 11973468~ 2019-11-21 02:51:51 Claudia106~ @lui~ Twitt~ 119729751010603~ 93290595         luis_gj         
+    #>  9 110473~ 11973468~ 2019-11-21 02:51:51 bayrifu     <U+3044><U+3044><U+306A><U+3042>~ Twitt~ <NA>             <NA>             <NA>            
+    #> 10 276340~ 11973468~ 2019-11-21 02:51:51 YG_LilTorro I ru~ Twitt~ <NA>             <NA>             <NA>            
+    #> # ... with 572 more rows, and 81 more variables: is_quote <lgl>, is_retweet <lgl>, hashtags <list>,
+    #> #   urls_expanded_url <list>, media_url <list>, media_expanded_url <list>, media_type <list>, mentions_user_id <list>,
+    #> #   mentions_screen_name <list>, quoted_status_id <chr>, quoted_text <chr>, quoted_created_at <dttm>,
+    #> #   quoted_source <chr>, quoted_favorite_count <int>, quoted_retweet_count <int>, quoted_user_id <chr>,
+    #> #   quoted_screen_name <chr>, quoted_name <chr>, quoted_followers_count <int>, quoted_friends_count <int>,
+    #> #   quoted_statuses_count <int>, quoted_location <chr>, quoted_description <chr>, quoted_verified <lgl>,
     #> #   retweet_status_id <chr>, retweet_text <chr>, retweet_created_at <dttm>, retweet_source <chr>,
-    #> #   retweet_favorite_count <int>, retweet_retweet_count <int>, retweet_user_id <chr>,
-    #> #   retweet_screen_name <chr>, retweet_name <chr>, retweet_followers_count <int>,
-    #> #   retweet_friends_count <int>, retweet_statuses_count <int>, retweet_location <chr>,
-    #> #   retweet_description <chr>, retweet_verified <lgl>, place_url <chr>, place_name <chr>,
-    #> #   place_full_name <chr>, place_type <chr>, country <chr>, country_code <chr>, bbox_coords <list>,
-    #> #   status_url <chr>, name <chr>, location <chr>, description <chr>, url <chr>, protected <lgl>,
-    #> #   followers_count <int>, friends_count <int>, listed_count <int>, statuses_count <int>,
-    #> #   favourites_count <int>, account_created_at <dttm>, verified <lgl>, profile_url <chr>,
-    #> #   account_lang <chr>, profile_banner_url <chr>, profile_image_url <chr>, is_retweeted <lgl>,
-    #> #   retweet_place_url <chr>, retweet_place_name <chr>, retweet_place_full_name <chr>,
-    #> #   retweet_place_type <chr>, retweet_country <chr>, retweet_country_code <chr>,
-    #> #   retweet_bbox_coords <list>, quoted_place_url <chr>, quoted_place_name <chr>,
-    #> #   quoted_place_full_name <chr>, quoted_place_type <chr>, quoted_country <chr>,
-    #> #   quoted_country_code <chr>, quoted_bbox_coords <list>, timestamp_ms <dttm>,
-    #> #   contributors_enabled <lgl>, profile_url2 <chr>
+    #> #   retweet_favorite_count <int>, retweet_retweet_count <int>, retweet_user_id <chr>, retweet_screen_name <chr>,
+    #> #   retweet_name <chr>, retweet_followers_count <int>, retweet_friends_count <int>, retweet_statuses_count <int>,
+    #> #   retweet_location <chr>, retweet_description <chr>, retweet_verified <lgl>, place_url <chr>, place_name <chr>,
+    #> #   place_full_name <chr>, place_type <chr>, country <chr>, country_code <chr>, bbox_coords <list>, status_url <chr>,
+    #> #   name <chr>, location <chr>, description <chr>, url <chr>, protected <lgl>, followers_count <int>,
+    #> #   friends_count <int>, listed_count <int>, statuses_count <int>, favourites_count <int>, account_created_at <dttm>,
+    #> #   verified <lgl>, profile_url <chr>, profile_url2 <chr>, account_lang <chr>, profile_banner_url <chr>,
+    #> #   profile_image_url <chr>, is_retweeted <lgl>, retweet_place_url <chr>, retweet_place_name <chr>,
+    #> #   retweet_place_full_name <chr>, retweet_place_type <chr>, retweet_country <chr>, retweet_country_code <chr>,
+    #> #   retweet_bbox_coords <list>, quoted_place_url <chr>, quoted_place_name <chr>, quoted_place_full_name <chr>,
+    #> #   quoted_place_type <chr>, quoted_country <chr>, quoted_country_code <chr>, quoted_bbox_coords <list>,
+    #> #   timestamp_ms <dttm>, contributors_enabled <lgl>
 
 ## Scaling Up
 
@@ -146,7 +143,7 @@ demonstration we’ll use a file of a reasonable size that was obtained
 using `rtweet::stream_tweets()`.
 
 ``` r
-rtweet_stream_path <- system.file("example-data/api-stream.json.gz", package = "tweetio")
+rtweet_stream_path <- "inst/example-data/api-stream.json.gz"
 
 scales::number_bytes(file.size(rtweet_stream_path))
 ```
@@ -185,40 +182,36 @@ rtweet_validate_and_parse(source_file_path = rtweet_stream_path,
 ```
 
     #> # A tibble: 12,824 x 90
-    #>    user_id status_id created_at          screen_name text  source display_text_wi~ reply_to_status~
-    #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>             <dbl> <chr>           
-    #>  1 807195~ 11780078~ 2019-09-28 18:05:23 ykaoi0327   "<U+4EE5><U+4E0A><U+3067>~ Twitt~               NA <NA>            
-    #>  2 114393~ 11780078~ 2019-09-28 18:05:23 yowasugi723 "@Di~ Twitt~                9 117771450591824~
-    #>  3 247059~ 11780078~ 2019-09-28 18:05:23 itsauroras~ "“So~ Twitt~               NA <NA>            
-    #>  4 822602~ 11780078~ 2019-09-28 18:05:23 Darrell894~ It's~ Twitt~               NA <NA>            
-    #>  5 797200~ 11780078~ 2019-09-28 18:05:23 NastyWoman~ @Bra~ Twitt~               69 117796816033668~
-    #>  6 110779~ 11780078~ 2019-09-28 18:05:23 DeshaunAwe~ met ~ twitt~               NA <NA>            
-    #>  7 110441~ 11780078~ 2019-09-28 18:05:23 diamondy_u  "<U+2728>Lo~ Twitt~               NA <NA>            
-    #>  8 359294~ 11780078~ 2019-09-28 18:05:23 piyakat28   "Saf~ Twitt~               NA <NA>            
-    #>  9 194250~ 11780078~ 2019-09-28 18:05:23 Stgo_centro Me d~ Twitt~               NA <NA>            
-    #> 10 116013~ 11780078~ 2019-09-28 18:05:23 119lonwi_y~ <U+D55C><U+AD6D><U+C5D0><U+C11C>~ Twitt~               NA <NA>            
-    #> # ... with 12,814 more rows, and 82 more variables: reply_to_user_id <chr>,
-    #> #   reply_to_screen_name <chr>, is_quote <lgl>, is_retweet <lgl>, favorite_count <int>,
-    #> #   retweet_count <int>, quote_count <int>, reply_count <int>, hashtags <list>, symbols <list>,
-    #> #   urls_url <list>, urls_t.co <list>, urls_expanded_url <list>, media_url <list>,
-    #> #   media_t.co <list>, media_expanded_url <list>, media_type <list>, ext_media_url <list>,
-    #> #   ext_media_t.co <list>, ext_media_expanded_url <list>, ext_media_type <chr>,
-    #> #   mentions_user_id <list>, mentions_screen_name <list>, lang <chr>, quoted_status_id <chr>,
-    #> #   quoted_text <chr>, quoted_created_at <dttm>, quoted_source <chr>, quoted_favorite_count <int>,
-    #> #   quoted_retweet_count <int>, quoted_user_id <chr>, quoted_screen_name <chr>, quoted_name <chr>,
-    #> #   quoted_followers_count <int>, quoted_friends_count <int>, quoted_statuses_count <int>,
-    #> #   quoted_location <chr>, quoted_description <chr>, quoted_verified <lgl>,
-    #> #   retweet_status_id <chr>, retweet_text <chr>, retweet_created_at <dttm>, retweet_source <chr>,
-    #> #   retweet_favorite_count <int>, retweet_retweet_count <int>, retweet_user_id <chr>,
-    #> #   retweet_screen_name <chr>, retweet_name <chr>, retweet_followers_count <int>,
-    #> #   retweet_friends_count <int>, retweet_statuses_count <int>, retweet_location <chr>,
-    #> #   retweet_description <chr>, retweet_verified <lgl>, place_url <chr>, place_name <chr>,
-    #> #   place_full_name <chr>, place_type <chr>, country <chr>, country_code <chr>, geo_coords <list>,
-    #> #   coords_coords <list>, bbox_coords <list>, status_url <chr>, name <chr>, location <chr>,
-    #> #   description <chr>, url <chr>, protected <lgl>, followers_count <int>, friends_count <int>,
-    #> #   listed_count <int>, statuses_count <int>, favourites_count <int>, account_created_at <dttm>,
-    #> #   verified <lgl>, profile_url <chr>, profile_expanded_url <chr>, account_lang <lgl>,
-    #> #   profile_banner_url <chr>, profile_background_url <chr>, profile_image_url <chr>
+    #>    user_id status_id created_at          screen_name text  source display_text_wi~ reply_to_status~ reply_to_user_id
+    #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>             <dbl> <chr>            <chr>           
+    #>  1 807195~ 11780078~ 2019-09-28 18:05:23 ykaoi0327   "<U+4EE5><U+4E0A><U+3067>~ Twitt~               NA <NA>             <NA>            
+    #>  2 114393~ 11780078~ 2019-09-28 18:05:23 yowasugi723 "@Di~ Twitt~                9 117771450591824~ 113811437998190~
+    #>  3 247059~ 11780078~ 2019-09-28 18:05:23 itsauroras~ "“So~ Twitt~               NA <NA>             <NA>            
+    #>  4 822602~ 11780078~ 2019-09-28 18:05:23 Darrell894~ It's~ Twitt~               NA <NA>             <NA>            
+    #>  5 797200~ 11780078~ 2019-09-28 18:05:23 NastyWoman~ @Bra~ Twitt~               69 117796816033668~ 21833728        
+    #>  6 110779~ 11780078~ 2019-09-28 18:05:23 DeshaunAwe~ met ~ twitt~               NA <NA>             <NA>            
+    #>  7 110441~ 11780078~ 2019-09-28 18:05:23 diamondy_u  "<U+2728>Lo~ Twitt~               NA <NA>             <NA>            
+    #>  8 359294~ 11780078~ 2019-09-28 18:05:23 piyakat28   "Saf~ Twitt~               NA <NA>             <NA>            
+    #>  9 194250~ 11780078~ 2019-09-28 18:05:23 Stgo_centro Me d~ Twitt~               NA <NA>             <NA>            
+    #> 10 116013~ 11780078~ 2019-09-28 18:05:23 119lonwi_y~ <U+D55C><U+AD6D><U+C5D0><U+C11C>~ Twitt~               NA <NA>             <NA>            
+    #> # ... with 12,814 more rows, and 81 more variables: reply_to_screen_name <chr>, is_quote <lgl>, is_retweet <lgl>,
+    #> #   favorite_count <int>, retweet_count <int>, quote_count <int>, reply_count <int>, hashtags <list>, symbols <list>,
+    #> #   urls_url <list>, urls_t.co <list>, urls_expanded_url <list>, media_url <list>, media_t.co <list>,
+    #> #   media_expanded_url <list>, media_type <list>, ext_media_url <list>, ext_media_t.co <list>,
+    #> #   ext_media_expanded_url <list>, ext_media_type <chr>, mentions_user_id <list>, mentions_screen_name <list>,
+    #> #   lang <chr>, quoted_status_id <chr>, quoted_text <chr>, quoted_created_at <dttm>, quoted_source <chr>,
+    #> #   quoted_favorite_count <int>, quoted_retweet_count <int>, quoted_user_id <chr>, quoted_screen_name <chr>,
+    #> #   quoted_name <chr>, quoted_followers_count <int>, quoted_friends_count <int>, quoted_statuses_count <int>,
+    #> #   quoted_location <chr>, quoted_description <chr>, quoted_verified <lgl>, retweet_status_id <chr>,
+    #> #   retweet_text <chr>, retweet_created_at <dttm>, retweet_source <chr>, retweet_favorite_count <int>,
+    #> #   retweet_retweet_count <int>, retweet_user_id <chr>, retweet_screen_name <chr>, retweet_name <chr>,
+    #> #   retweet_followers_count <int>, retweet_friends_count <int>, retweet_statuses_count <int>, retweet_location <chr>,
+    #> #   retweet_description <chr>, retweet_verified <lgl>, place_url <chr>, place_name <chr>, place_full_name <chr>,
+    #> #   place_type <chr>, country <chr>, country_code <chr>, geo_coords <list>, coords_coords <list>, bbox_coords <list>,
+    #> #   status_url <chr>, name <chr>, location <chr>, description <chr>, url <chr>, protected <lgl>, followers_count <int>,
+    #> #   friends_count <int>, listed_count <int>, statuses_count <int>, favourites_count <int>, account_created_at <dttm>,
+    #> #   verified <lgl>, profile_url <chr>, profile_expanded_url <chr>, account_lang <lgl>, profile_banner_url <chr>,
+    #> #   profile_background_url <chr>, profile_image_url <chr>
 
 Fortunately, `{tweetio}` can handle these situations by validating the
 JSON before it gets anywhere near R.
@@ -233,7 +226,7 @@ bench::mark(
     #> # A tibble: 1 x 6
     #>   expression                           min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>                      <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 read_tweets(rtweet_stream_path)    3.38s    3.45s     0.289     176MB     1.16
+    #> 1 read_tweets(rtweet_stream_path)    2.62s    2.71s     0.369     135MB    0.984
 
 Ignoring the time it takes to run the above
 `rtweet_validate_and_parse()` function for `rtweet::parse_stream()` to
@@ -254,14 +247,14 @@ bench_mark[, 1:9]
     #> # A tibble: 2 x 6
     #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 rtweet       25.69s    27.1s    0.0368     480MB    4.57 
-    #> 2 tweetio       2.83s    2.84s    0.349      135MB    0.931
+    #> 1 rtweet       24.57s   24.82s    0.0404   480.3MB     5.25
+    #> 2 tweetio       2.49s    2.78s    0.372     93.1MB     1.61
 
 ``` r
 plot(bench_mark)
 ```
 
-<img src="man/figures/unnamed-chunk-9-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;" />
 
 With bigger files, using `rtweet::parse_stream()` is no longer
 realistic, but that’s where `tweetio::read_tweets()` can help.
@@ -280,10 +273,9 @@ bench::mark(
 ```
 
     #> # A tibble: 1 x 6
-    #>   expression                                                    min median `itr/sec` mem_alloc
-    #>   <bch:expr>                                                  <bch> <bch:>     <dbl> <bch:byt>
-    #> 1 big_tweet_df <- tweetio::read_tweets(big_tweet_stream_path) 23.8s  23.8s    0.0420     640MB
-    #> # ... with 1 more variable: `gc/sec` <dbl>
+    #>   expression                                                       min   median `itr/sec` mem_alloc `gc/sec`
+    #>   <bch:expr>                                                  <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+    #> 1 big_tweet_df <- tweetio::read_tweets(big_tweet_stream_path)    18.2s    18.2s    0.0549     384MB    0.329
 
 <!-- ## Data Dumps -->
 
@@ -616,7 +608,7 @@ ggplot(sf_for_gg) +
         panel.background = element_rect(fill = "#daf3ff"))
 ```
 
-<img src="man/figures/unnamed-chunk-14-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/unnamed-chunk-15-1.png" style="display: block; margin: auto;" />
 
 # Can we go faster?
 
