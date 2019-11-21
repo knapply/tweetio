@@ -34,14 +34,19 @@
   }
   
   if (grepl("\\.zip$", file_path)) {
+    if (requireNamespace("utils", quietly = TRUE)) {
+      stop("`file_path` points to a .zip file. The {utils} package is required in order to
+           unzip it.", call. = FALSE)
+    } 
+
     temp_dir <- tempdir(check = TRUE)
     target_dir <- paste0(temp_dir, "/tweetio")
     dir.create(target_dir)
     on.exit(unlink(target_dir, recursive = TRUE, force = TRUE))
 
-    unzip(zipfile = file_path, exdir = target_dir)
+    utils::unzip(zipfile = file_path, exdir = target_dir)
     unzipped <- dir(target_dir, full.names = TRUE)
-    if (length(unzipped) == 0L) {
+    if (.is_empty(unzipped)) {
       stop("`file_path` is a ZIP archive, but it's empty.")
     }
     if (length(unzipped) > 1L) {
@@ -66,17 +71,31 @@
 }
 
 
-#' Read tweets into a data frame
+#' Read Tweets into a Data Frame
+#' 
+#' Go from a file of raw tweet data to a convenient, `{rtweet}`-style data frame.
 #' 
 #' @param file_path Path(s) to tweet files.
 #' @param ... Arguments passed to or from other methods.
 #' 
-#' @return `data.table`
+#' @return 
+#' * Data Frame
+#'   + default: [data.table::data.table()]
+#'   + [tibble::tibble()] if `as_tibble` is `TRUE` and the `{tibble}` is installed.
 #' 
 #' @template author-bk
 #' 
+#' @examples
+#' path_to_tweet_file <- example_tweet_file()
+#' 
+#' tweet_data.table <- read_tweets(file_path = path_to_tweet_file)
+#' 
+#' tweet_tibble <- read_tweets(file_path = path_to_tweet_file, as_tibble = TRUE)
+#' 
+#' tweet_tibble
+#' 
 #' @export
-read_tweets <- function(file_path, as_tibble = TRUE, ...) {
+read_tweets <- function(file_path, as_tibble = FALSE, ...) {
   out <- .read_tweets(file_path, ...)
 
   out <- .finalize_cols(out)

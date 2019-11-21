@@ -2,34 +2,45 @@
 % Please edit documentation in R/geo.R
 \name{as_tweet_sf}
 \alias{as_tweet_sf}
-\title{Build a \code{sf} Object of Tweets}
+\title{Build an \code{sf} Object of Tweets}
 \usage{
 as_tweet_sf(tweet_df, geom_col = c("bbox_coords", "quoted_bbox_coords",
   "retweet_bbox_coords", "all"), as_tibble = FALSE, .geometry = NULL,
   ...)
 }
 \arguments{
-\item{tweet_df}{A data frame of tweets, as obtained by \code{{rtweet}} or \code{tweetio::read_tweets()}.}
+\item{tweet_df}{A data frame of tweets, as obtained by \code{read_tweets()} or
+one of \code{{rtweet}}'s collection functions, e.g. \code{\link[rtweet:search_tweets]{rtweet::search_tweets()}}.}
 
 \item{geom_col}{Which column to use as the active \code{geometry} column in result:
 \code{"bbox_coords"}, \code{"quoted_bbox_coords"},\code{"retweet_bbox_coords"}, or \code{"all"}.}
 
-\item{as_tibble}{Whether a \code{<tibble>} data frame should be returned. Requires the \code{{tibble}} package.}
+\item{as_tibble}{Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the
+\code{{tibble}} package is not installed.}
 
 \item{.geometry}{Name of output's geometry column. Intended for internal use only.}
 
 \item{...}{Arguments passed to or from other methods.}
 }
 \value{
-\code{sf}
+\code{\link[sf:st_sf]{sf::st_sf()}}
 }
 \description{
-Build a \code{sf} Object of Tweets
+Build an \code{sf} Object of Tweets
 }
-\details{
-\code{geom_col} can be oneo
-\code{as_tweet_sf()} uses the \code{bbox_coords} to build \code{POLYGON}s. Rows without a valid
-bounding box are discarded.
+\examples{
+path_to_tweet_file <- example_tweet_file()
+
+tweet_df <- read_tweets(file_path = path_to_tweet_file)
+
+bbox_coords <- as_tweet_sf(tweet_df)
+
+rwtweet_bbox_cooords <- as_tweet_sf(tweet_df, geom_col = "retweet_bbox_coords")
+
+tweet_sf <- as_tweet_sf(tweet_df, geom_col = "all", as_tibble = TRUE)
+
+tweet_sf[, c("created_at", "text", "which_geom", "geometry")]
+
 }
 \author{
 Brendan Knapp \email{brendan.g.knapp@gmail.com}

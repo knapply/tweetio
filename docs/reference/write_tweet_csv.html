@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tweetio</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1</span>
       </span>
     </div>
 
@@ -143,7 +143,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tweet_df</th>
-      <td><p>A data frame of tweets, as obtained by <code>{rtweet}</code> or <code><a href='read_tweets.html'>tweetio::read_tweets()</a></code>.</p></td>
+      <td><p>A data frame of tweets, as obtained by <code><a href='read_tweets.html'>read_tweets()</a></code> or
+one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https://rdrr.io/pkg/rtweet/man/search_tweets.html'>rtweet::search_tweets()</a></code>.</p></td>
     </tr>
     <tr>
       <th>file_path</th>
@@ -155,22 +156,39 @@
     </tr>
     <tr>
       <th>asTable</th>
-      <td><p><code>&lt;logical&gt;</code>, default: <code>TRUE</code>. Argument passed to <code><a href='https://rdrr.io/pkg/openxlsx/man/write.xlsx.html'>openxlsx::write.xlsx()</a></code>'s
-<code>asTable</code> parameter.</p></td>
+      <td><p><code>&lt;logical&gt;</code>, default: <code>TRUE</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>data.table::fread()</a></code></p>
+    <div class='dont-index'><p><code><a href='https://Rdatatable.gitlab.io/data.table/reference/fwrite.html'>data.table::fwrite()</a></code></p>
 <p><code><a href='https://rdrr.io/pkg/openxlsx/man/write.xlsx.html'>openxlsx::write.xlsx()</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>path_to_tweet_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example_tweet_file.html'>example_tweet_file</a></span>()
+                                                       <span class='co'># first 5 rows</span>
+<span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>)[<span class='fl'>1</span>:<span class='fl'>5</span>, ]
+
+<span class='co'># write comma-separated values files ==================================================</span>
+<span class='no'>target_csv_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".csv"</span>)
+<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "C:\\Users\\brend\\AppData\\Local\\Temp\\RtmpyW0daV\\file82903d2f2b7b.csv"</div><div class='input'>
+<span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_csv_file</span>)
+
+<span class='co'># write Microsoft Excel files =========================================================</span>
+<span class='no'>target_excel_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xlsx"</span>)
+<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "C:\\Users\\brend\\AppData\\Local\\Temp\\RtmpyW0daV\\file8290431c2d78.xlsx"</div><div class='input'>
+<span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)
+
+<span class='co'># same as `write_tweet_xlsx()`</span>
+<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
     <h2>Author</h2>

@@ -14,3 +14,28 @@ navbar:
       href: https://twitter.com/knapply_
     - icon: fa-github fa-lg
       href: https://github.com/knapply/tweetio
+
+reference:
+  - title: Read Tweets into Data Frames
+    contents:
+    - read_tweets
+    - read_tweets_bulk
+    
+  - title: Write Tweet Data Frames to Spreadsheets
+    contents:
+    - write_tweet_csv
+    - write_tweet_xlsx
+    - write_tweet_excel
+    
+  - title: Build Spatial (sf) Tweet Data Frames
+    contents:
+    - as_tweet_sf
+
+  - title: Miscellaneous
+    contents:
+    - example_tweet_file
+
+
+
+
+

@@ -91,6 +91,8 @@
   inherits(x, "data.table")
 }
 
+#' @importFrom data.table as.data.table
+.as_dt <- as.data.table
 
 #' @importFrom data.table copy
 #' @importFrom jsonify to_json

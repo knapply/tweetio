@@ -1,6 +1,6 @@
 Package: tweetio
 Title: Really, Really, Ridiculously Fast Tweet Data
-Version: 0.2
+Version: 0.1
 Authors@R: 
     person("Brendan", "Knapp", 
            email = "brendan.g.knapp@gmail.com", 
@@ -22,7 +22,6 @@ Imports:
     data.table,
     jsonify,
     Rcpp,
-    stats,
     stringi
 Suggests:
     covr,
@@ -35,7 +34,8 @@ Suggests:
     rtweet,
     sf,
     testthat (>= 2.1.0),
-    tibble
+    tibble,
+    utils
 Remotes: 
     SymbolixAU/jsonify,
     ycphs/openxlsx
