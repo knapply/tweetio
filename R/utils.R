@@ -51,9 +51,9 @@
 
 .imap <- function(.x, .f, ...) {
   nm <- names(.x) %||% seq_along(.x)
-  Map(.f, .x, nm, ...)
-  # mapply(FUN = .f, .x, nm, MoreArgs = list(...), SIMPLIFY = FALSE)
+  Map(f = .f, .x, nm, ...)
 }
+
 
 .map_if <- function(.x, .p, .f, ...) {
   targets <- .map_lgl(.x, .p)
@@ -130,7 +130,7 @@ jsonify_list_cols <- function(df, copy = TRUE) {
 
 
 #' @importFrom data.table setnames
-standardize_cols <- function(df) {
+standarize_cols <- function(df) {
   prototype_regex <- "^(retweet|reply_to|quoted|mentions)_"
   setnames(df, old = names(df), new =  sub(
     pattern = prototype_regex, replacement = "", x = names(df)

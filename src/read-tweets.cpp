@@ -234,11 +234,11 @@ Rcpp::List read_tweets_impl(const std::string& file_path) {
     
     
     case TweetFileType::unknown:
-      Rcpp::warning("Unknown data type`.");
+      Rcpp::warning("Unknown file type.");
       return R_NilValue;
   }
 
-  Rcpp::warning("Unknown data type`.");
+  Rcpp::warning("Something went wrong.");
   return R_NilValue;
 }
 
