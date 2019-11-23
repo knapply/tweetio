@@ -81,7 +81,7 @@
 #' @return 
 #' * Data Frame
 #'   + default: [data.table::data.table()]
-#'   + [tibble::tibble()] if `as_tibble` is `TRUE` and the `{tibble}` is installed.
+#'   + [tibble::tibble()] if `as_tibble` is `TRUE` and `{tibble}` is installed.
 #' 
 #' @template author-bk
 #' 
@@ -115,8 +115,8 @@ read_tweets <- function(file_path, as_tibble = FALSE, ...) {
 #' 
 #' @importFrom data.table rbindlist
 #' @export
-read_tweets_bulk <- function(file_path, in_parallel = TRUE, strategy = NULL, 
-                             as_tibble = FALSE, ...) {
+read_tweets_bulk <- function(file_path, as_tibble = FALSE, 
+                             in_parallel = TRUE, strategy = NULL, ...) {
   if (length(file_path) == 1L) {
     return(read_tweets(file_path))
   }
@@ -134,7 +134,7 @@ read_tweets_bulk <- function(file_path, in_parallel = TRUE, strategy = NULL,
     init <- lapply(file_path, .read_tweets)
   }
   
-  out <- rbindlist(init)
+  out <- rbindlist(init, use.names = TRUE, fill = TRUE)
   
   out <- .finalize_cols(out)
   
