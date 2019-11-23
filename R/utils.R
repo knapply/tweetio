@@ -130,7 +130,7 @@ jsonify_list_cols <- function(df, copy = TRUE) {
 
 
 #' @importFrom data.table setnames
-standarize_cols <- function(df) {
+standardize_cols <- function(df) {
   prototype_regex <- "^(retweet|reply_to|quoted|mentions)_"
   setnames(df, old = names(df), new =  sub(
     pattern = prototype_regex, replacement = "", x = names(df)
