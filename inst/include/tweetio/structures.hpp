@@ -362,6 +362,8 @@ class TweetDF {
             "created_at", 
             "screen_name", 
             "text",
+            "lang",
+
             "source", 
             "reply_to_status_id", 
             "reply_to_user_id", 
@@ -451,108 +453,109 @@ class TweetDF {
             "contributors_enabled"
         };
 
-        constexpr int n_cols = 86;
+        constexpr int n_cols = 87;
         Rcpp::List columns(n_cols);
         columns[0]   = this->user_id[seq_out];
         columns[1]   = this->status_id[seq_out];
         columns[2]   = this->created_at[seq_out];
         columns[3]   = this->screen_name[seq_out];
         columns[4]   = this->text[seq_out];
+        columns[5]   = this->lang[seq_out];
 
-        columns[5]   = this->source[seq_out];
-        columns[6]   = this->reply_to_status_id[seq_out];
-        columns[7]   = this->reply_to_user_id[seq_out];
-        columns[8]   = this->reply_to_screen_name[seq_out];
-        columns[9]   = this->is_quote[seq_out];
-        columns[10]  = this->is_retweeted[seq_out];
+        columns[6]   = this->source[seq_out];
+        columns[7]   = this->reply_to_status_id[seq_out];
+        columns[8]   = this->reply_to_user_id[seq_out];
+        columns[9]   = this->reply_to_screen_name[seq_out];
+        columns[10]   = this->is_quote[seq_out];
+        columns[11]  = this->is_retweeted[seq_out];
 
-        columns[11]  = this->hashtags[seq_out];
-        columns[12]  = this->urls_expanded_url[seq_out];
-        columns[13]  = this->media_expanded_url[seq_out];
-        columns[14]  = this->media_url[seq_out];
-        columns[15]  = this->media_type[seq_out];
-        columns[16]  = this->mentions_user_id[seq_out];
-        columns[17]  = this->mentions_screen_name[seq_out];
+        columns[12]  = this->hashtags[seq_out];
+        columns[13]  = this->urls_expanded_url[seq_out];
+        columns[14]  = this->media_expanded_url[seq_out];
+        columns[15]  = this->media_url[seq_out];
+        columns[16]  = this->media_type[seq_out];
+        columns[17]  = this->mentions_user_id[seq_out];
+        columns[18]  = this->mentions_screen_name[seq_out];
 
-        columns[18]  = this->quoted_status_id[seq_out];
-        columns[19]  = this->quoted_text[seq_out];
-        columns[20]  = this->quoted_created_at[seq_out];
-        columns[21]  = this->quoted_source[seq_out];
-        columns[22]  = this->quoted_favorite_count[seq_out];
-        columns[23]  = this->quoted_retweet_count[seq_out];
-        columns[24]  = this->quoted_user_id[seq_out];
-        columns[25]  = this->quoted_screen_name[seq_out];
-        columns[26]  = this->quoted_name[seq_out];
-        columns[27]  = this->quoted_followers_count[seq_out];
-        columns[28]  = this->quoted_friends_count[seq_out];
-        columns[29]  = this->quoted_statuses_count[seq_out];
-        columns[30]  = this->quoted_location[seq_out];
-        columns[31]  = this->quoted_description[seq_out];
-        columns[32]  = this->quoted_verified[seq_out];
+        columns[19]  = this->quoted_status_id[seq_out];
+        columns[20]  = this->quoted_text[seq_out];
+        columns[21]  = this->quoted_created_at[seq_out];
+        columns[22]  = this->quoted_source[seq_out];
+        columns[23]  = this->quoted_favorite_count[seq_out];
+        columns[24]  = this->quoted_retweet_count[seq_out];
+        columns[25]  = this->quoted_user_id[seq_out];
+        columns[26]  = this->quoted_screen_name[seq_out];
+        columns[27]  = this->quoted_name[seq_out];
+        columns[28]  = this->quoted_followers_count[seq_out];
+        columns[29]  = this->quoted_friends_count[seq_out];
+        columns[30]  = this->quoted_statuses_count[seq_out];
+        columns[31]  = this->quoted_location[seq_out];
+        columns[32]  = this->quoted_description[seq_out];
+        columns[33]  = this->quoted_verified[seq_out];
 
-        columns[33]  = this->retweet_status_id[seq_out];
-        columns[34]  = this->retweet_text[seq_out];
-        columns[35]  = this->retweet_created_at[seq_out];
-        columns[36]  = this->retweet_source[seq_out];
-        columns[37]  = this->retweet_favorite_count[seq_out];
-        columns[38]  = this->retweet_retweet_count[seq_out];
-        columns[39]  = this->retweet_user_id[seq_out];
-        columns[40]  = this->retweet_screen_name[seq_out];
-        columns[41]  = this->retweet_name[seq_out];
-        columns[42]  = this->retweet_followers_count[seq_out];
-        columns[43]  = this->retweet_friends_count[seq_out];
-        columns[44]  = this->retweet_statuses_count[seq_out];
-        columns[45]  = this->retweet_location[seq_out];
-        columns[46]  = this->retweet_description[seq_out];
-        columns[47]  = this->retweet_verified[seq_out];
+        columns[34]  = this->retweet_status_id[seq_out];
+        columns[35]  = this->retweet_text[seq_out];
+        columns[36]  = this->retweet_created_at[seq_out];
+        columns[37]  = this->retweet_source[seq_out];
+        columns[38]  = this->retweet_favorite_count[seq_out];
+        columns[39]  = this->retweet_retweet_count[seq_out];
+        columns[40]  = this->retweet_user_id[seq_out];
+        columns[41]  = this->retweet_screen_name[seq_out];
+        columns[42]  = this->retweet_name[seq_out];
+        columns[43]  = this->retweet_followers_count[seq_out];
+        columns[44]  = this->retweet_friends_count[seq_out];
+        columns[45]  = this->retweet_statuses_count[seq_out];
+        columns[46]  = this->retweet_location[seq_out];
+        columns[47]  = this->retweet_description[seq_out];
+        columns[48]  = this->retweet_verified[seq_out];
 
-        columns[48]  = this->place_url[seq_out];
-        columns[49]  = this->place_name[seq_out];
-        columns[50]  = this->place_full_name[seq_out];
-        columns[51]  = this->place_type[seq_out];
-        columns[52]  = this->country[seq_out];
-        columns[53]  = this->country_code[seq_out];
-        columns[54]  = this->bbox_coords[seq_out];
+        columns[49]  = this->place_url[seq_out];
+        columns[50]  = this->place_name[seq_out];
+        columns[51]  = this->place_full_name[seq_out];
+        columns[52]  = this->place_type[seq_out];
+        columns[53]  = this->country[seq_out];
+        columns[54]  = this->country_code[seq_out];
+        columns[55]  = this->bbox_coords[seq_out];
 
-        columns[55]  = this->retweet_place_url[seq_out];
-        columns[56]  = this->retweet_place_name[seq_out];
-        columns[57]  = this->retweet_place_full_name[seq_out];
-        columns[58]  = this->retweet_place_type[seq_out];
-        columns[59]  = this->retweet_country[seq_out];
-        columns[60]  = this->retweet_country_code[seq_out];
-        columns[61]  = this->retweet_bbox_coords[seq_out];
+        columns[56]  = this->retweet_place_url[seq_out];
+        columns[57]  = this->retweet_place_name[seq_out];
+        columns[58]  = this->retweet_place_full_name[seq_out];
+        columns[59]  = this->retweet_place_type[seq_out];
+        columns[60]  = this->retweet_country[seq_out];
+        columns[61]  = this->retweet_country_code[seq_out];
+        columns[62]  = this->retweet_bbox_coords[seq_out];
 
-        columns[62]  = this->quoted_place_url[seq_out];
-        columns[63]  = this->quoted_place_name[seq_out];
-        columns[64]  = this->quoted_place_full_name[seq_out];
-        columns[65]  = this->quoted_place_type[seq_out];
-        columns[66]  = this->quoted_country[seq_out];
-        columns[67]  = this->quoted_country_code[seq_out];
-        columns[68]  = this->quoted_bbox_coords[seq_out];
+        columns[63]  = this->quoted_place_url[seq_out];
+        columns[64]  = this->quoted_place_name[seq_out];
+        columns[65]  = this->quoted_place_full_name[seq_out];
+        columns[66]  = this->quoted_place_type[seq_out];
+        columns[67]  = this->quoted_country[seq_out];
+        columns[68]  = this->quoted_country_code[seq_out];
+        columns[69]  = this->quoted_bbox_coords[seq_out];
 
-        columns[69]  = this->name[seq_out];
-        columns[70]  = this->location[seq_out];
-        columns[71]  = this->description[seq_out];
-        columns[72]  = this->url[seq_out];
-        columns[73]  = this->protected_[seq_out];
-        columns[74]  = this->followers_count[seq_out];
-        columns[75]  = this->friends_count[seq_out];
-        columns[76]  = this->listed_count[seq_out];
-        columns[77]  = this->statuses_count[seq_out];
-        columns[78]  = this->favourites_count[seq_out];
-        columns[79]  = this->account_created_at[seq_out];
-        columns[80]  = this->verified[seq_out];
-        columns[81]  = this->account_lang[seq_out];
-        columns[82]  = this->profile_banner_url[seq_out];
-        columns[83]  = this->profile_image_url[seq_out];
+        columns[70]  = this->name[seq_out];
+        columns[71]  = this->location[seq_out];
+        columns[72]  = this->description[seq_out];
+        columns[73]  = this->url[seq_out];
+        columns[74]  = this->protected_[seq_out];
+        columns[75]  = this->followers_count[seq_out];
+        columns[76]  = this->friends_count[seq_out];
+        columns[77]  = this->listed_count[seq_out];
+        columns[78]  = this->statuses_count[seq_out];
+        columns[79]  = this->favourites_count[seq_out];
+        columns[80]  = this->account_created_at[seq_out];
+        columns[81]  = this->verified[seq_out];
+        columns[82]  = this->account_lang[seq_out];
+        columns[83]  = this->profile_banner_url[seq_out];
+        columns[84]  = this->profile_image_url[seq_out];
 
         this->timestamp_ms.attr("class") = Rcpp::CharacterVector{"POSIXct", "POSIXt"};
         this->timestamp_ms.attr("tzone") = "UTC";
 
-        columns[84]  = this->timestamp_ms[seq_out]; 
+        columns[85]  = this->timestamp_ms[seq_out]; 
 
 
-        columns[85]  = this->contributors_enabled[seq_out];
+        columns[86]  = this->contributors_enabled[seq_out];
         
 
         const int n_rows = max_length;

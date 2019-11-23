@@ -58,15 +58,21 @@ build_status_df <- function(tweet_df, unique_statuses = TRUE, split = FALSE, ...
   created_at <- NULL
   timestamp_ms <- NULL
   .N <- NULL
+  status_type <- NULL
   #########################
   
   if (!.is_dt(tweet_df)) {
     tweet_df <- as.data.table(tweet_df)
   }
   
-  split_statuses <- lapply(
+  split_statuses <- .imap(
     status_col_names(tweet_df),  
-    function(.x) standardize_cols(tweet_df[!is.na(status_id), .x, with = FALSE])
+    function(.x, .y) {
+      standardize_cols(tweet_df[, .x, with = FALSE]
+                       )[!is.na(status_id)
+                         ][, status_type := .y
+                           ]
+    }
   )
   
   out <- rbindlist(split_statuses, use.names = TRUE, fill = TRUE)

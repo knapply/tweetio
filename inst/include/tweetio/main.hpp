@@ -36,6 +36,7 @@
 #include <tweetio/utils.hpp>
 #include <tweetio/json.hpp>
 #include <tweetio/structures.hpp>
+#include <tweetio/progressbar.hpp>
 
 
 

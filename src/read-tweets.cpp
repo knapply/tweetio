@@ -16,16 +16,7 @@
 
 
 #include <tweetio.hpp>
-
 #include "gzstream.h"
-
-#include <progress.hpp>
-#include <progress_bar.hpp>
-
-// typedef Rcpp::Vector<STRSXP> vec_chr;
-// typedef Rcpp::Vector<LGLSXP> vec_lgl;
-// typedef Rcpp::Vector<INTSXP> vec_int;
-// typedef Rcpp::Vector<REALSXP> vec_dbl;
 
 
 enum class TweetFileType: int8_t {
@@ -50,6 +41,7 @@ int count_lines(const std::string& file_path) {
 
   return out;
 }
+
 
 TweetFileType detect_file_type(const std::string& file_path) {
   igzstream in_file;
@@ -97,7 +89,7 @@ Rcpp::List read_tweets(const std::string&);
 template<>
 Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(const std::string& file_path) {
   const int n_lines = count_lines(file_path);
-  Progress progress(n_lines, true);
+  tweetio::Progress progress(n_lines, true);
 
   std::string line_string;
   igzstream in_file;
@@ -158,7 +150,7 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path)
   const int n( parsed_json.Size() );
   tweetio::TweetDF tweets(n);
   tweetio::PulseMeta metadata(n);
-  Progress progress(n, true);
+  tweetio::Progress progress(n, true);
 
   for ( const auto& val : parsed_json.GetArray() ) {
     progress.increment();
@@ -183,6 +175,7 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path)
 
   out.attr("has_metadata") = true;
 
+  // Rcpp::Rcout << "\n" << std::endl;
   return out;
 }
 
@@ -203,7 +196,7 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& fil
 
   tweetio::TweetDF tweets( raw_json.size() );
   tweetio::PulseMeta metadata( raw_json.size() );
-  Progress progress(raw_json.size(), true);
+  tweetio::Progress progress(raw_json.size(), true);
 
   for (const auto& line : raw_json) {
     progress.increment();
@@ -217,10 +210,10 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& fil
     tweets.push(parsed_json);
 
   }
-
+  
   Rcpp::List out = tweets.to_r();
   out.attr("has_metadata") = false;
-
+  
   return out;
 }
 

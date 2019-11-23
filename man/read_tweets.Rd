@@ -29,7 +29,7 @@ If \code{NULL}, \code{future::multiprocess} is used. Ignored if \code{{future}} 
 \item Data Frame
 \itemize{
 \item default: \code{\link[data.table:data.table]{data.table::data.table()}}
-\item \code{\link[tibble:tibble]{tibble::tibble()}} if \code{as_tibble} is \code{TRUE} and the \code{{tibble}} is installed.
+\item \code{\link[tibble:tibble]{tibble::tibble()}} if \code{as_tibble} is \code{TRUE} and \code{{tibble}} is installed.
 }
 }
 }

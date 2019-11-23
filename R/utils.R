@@ -29,6 +29,10 @@
   df
 }
 
+`%||%` <- function(lhs, rhs) {
+  if (is.null(lhs)) rhs else lhs
+}
+
 .as_posixct <- function(x, .tz = "UTC", .class = c("POSIXct", "POSIXt")) {
   structure(x, class = .class, tzone = .tz)
 }
@@ -44,6 +48,12 @@
   .map_template(.x, .f, logical(1L), ...)
 }
 
+
+.imap <- function(.x, .f, ...) {
+  nm <- names(.x) %||% seq_along(.x)
+  Map(.f, .x, nm, ...)
+  # mapply(FUN = .f, .x, nm, MoreArgs = list(...), SIMPLIFY = FALSE)
+}
 
 .map_if <- function(.x, .p, .f, ...) {
   targets <- .map_lgl(.x, .p)
