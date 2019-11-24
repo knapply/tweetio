@@ -34,7 +34,7 @@
   }
   
   if (grepl("\\.zip$", file_path)) {
-    if (requireNamespace("utils", quietly = TRUE)) {
+    if (!requireNamespace("utils", quietly = TRUE)) {
       stop("`file_path` points to a .zip file. The {utils} package is required in order to
            unzip it.", call. = FALSE)
     } 

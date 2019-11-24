@@ -38,7 +38,7 @@ status_col_names <- function(tweet_df) {
   with_context <- list(
     main = col_templates,
     retweet = paste0("retweet_", col_templates),
-    reply_to = paste0("reply_to", col_templates),
+    reply_to = paste0("reply_to_", col_templates),
     quoted = paste0("quoted_", col_templates)
   )
   
