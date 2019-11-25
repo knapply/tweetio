@@ -86,6 +86,14 @@ as_tweet_sf <- function(tweet_df,
       }
       res
     })
+    
+    # any_multipolygons <- .map_lgl(out, function(.x) {
+    #   "MULTIPOLYGON" %in% sf::st_geometry(.x)
+    # })
+    # 
+    # if (any_multipolygons) {
+    #   out <- lapply(out, sf::st_cast("MULTIPOLYGON"))
+    # }
 
     return(do.call(rbind, out))
   }
@@ -105,19 +113,30 @@ as_tweet_sf <- function(tweet_df,
       length(.x$ist_complex_value[!is.na(.x$ist_complex_value)]) > 0L
     })
     
-    init <- tweet_df[rows_to_keep]
-    init[, (.geometry) := sf::st_sfc(
-      unlist(
-        lapply(metadata, function(.x) {
-          val <- .x$ist_complex_value[!is.na(.x$ist_complex_value)]
-          sf::st_union(geojsonsf::geojson_sfc(val))
-        }),
-        recursive = FALSE
-      ),
+    filtered_rows <- tweet_df[rows_to_keep]
+    
+    with_sfc_col <- filtered_rows[
+      , (.geometry) := sf::st_sfc(
+        
+        unlist(
+          
+          lapply(metadata, function(.x) {
+            val <- unique(.x$ist_complex_value[!is.na(.x$ist_complex_value)])
+            sf::st_convex_hull(
+              sf::st_combine(
+                geojsonsf::geojson_sfc(val)
+              )
+            )
+          }),
+          
+          recursive = FALSE,
+          use.names = FALSE
+        ),
+        
       crs = 4326L
     )]
     
-    out <- sf::st_sf(init, stringsAsFactors = FALSE)
+    out <- sf::st_sf(with_sfc_col, stringsAsFactors = FALSE)
     
     return(.finalize_df(out, as_tibble = as_tibble))
   }
