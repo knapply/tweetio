@@ -81,7 +81,7 @@ as_tweet_sf <- function(tweet_df,
   
     out <- lapply(valid_cols, function(.x) {
       res <- as_tweet_sf(tweet_df, .x, as_tibble = as_tibble, .geometry = "geometry", ...)
-      if (!is.null(res)) {
+      if (!is.null(res) && nrow(res) > 0L) {
         res[["which_geom"]] <- .x
       }
       res
@@ -95,7 +95,7 @@ as_tweet_sf <- function(tweet_df,
     #   out <- lapply(out, sf::st_cast("MULTIPOLYGON"))
     # }
 
-    return(do.call(rbind, out))
+    return(do.call(rbind, .discard(.compact(out), function(.x) nrow(.x) == 0L)))
   }
   
   if (geom_col == "ist_complex_value") {
@@ -110,8 +110,14 @@ as_tweet_sf <- function(tweet_df,
     }
     
     rows_to_keep <- .map_lgl(tweet_df$metadata, function(.x) {
-      length(.x$ist_complex_value[!is.na(.x$ist_complex_value)]) > 0L
+      length(
+        unique( .x$ist_complex_value[ !is.na(.x$ist_complex_value) ] )
+        ) == 1L
     })
+    
+    if (length(rows_to_keep) == 0L) {
+      return(NULL)
+    }
     
     filtered_rows <- tweet_df[rows_to_keep]
     
@@ -121,12 +127,8 @@ as_tweet_sf <- function(tweet_df,
         unlist(
           
           lapply(metadata, function(.x) {
-            val <- unique(.x$ist_complex_value[!is.na(.x$ist_complex_value)])
-            sf::st_convex_hull(
-              sf::st_combine(
-                geojsonsf::geojson_sfc(val)
-              )
-            )
+            val <- unique( .x$ist_complex_value[ !is.na(.x$ist_complex_value) ] )
+            geojsonsf::geojson_sfc(val)
           }),
           
           recursive = FALSE,

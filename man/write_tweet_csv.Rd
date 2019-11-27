@@ -6,17 +6,21 @@
 \alias{write_tweet_excel}
 \title{Write Tweets to Spreadsheets}
 \usage{
-write_tweet_csv(tweet_df, file_path, ...)
+write_tweet_csv(tweet_df, file_path, verbose = FALSE, ...)
 
-write_tweet_xlsx(tweet_df, file_path, asTable = TRUE, ...)
+write_tweet_xlsx(tweet_df, file_path, asTable = TRUE, verbose = FALSE,
+  ...)
 
-write_tweet_excel(tweet_df, file_path, asTable = TRUE, ...)
+write_tweet_excel(tweet_df, file_path, asTable = TRUE, verbose = FALSE,
+  ...)
 }
 \arguments{
 \item{tweet_df}{A data frame of tweets, as obtained by \code{read_tweets()} or
 one of \code{{rtweet}}'s collection functions, e.g. \code{\link[rtweet:search_tweets]{rtweet::search_tweets()}}.}
 
 \item{file_path}{File path to which to write or from which to read.}
+
+\item{verbose}{Whether to show diagnostic or progress messages.}
 
 \item{...}{Arguments passed to or from other methods.}
 

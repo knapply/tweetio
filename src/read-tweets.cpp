@@ -19,7 +19,7 @@
 #include "gzstream.h"
 
 
-enum class TweetFileType: int8_t {
+enum class TweetFileType {
   unknown,
   twitter_api_stream,
   pulse_nested_doc,
@@ -47,25 +47,36 @@ TweetFileType detect_file_type(const std::string& file_path) {
   igzstream in_file;
   in_file.open( file_path.c_str() );
 
-  const char first_char = in_file.peek();
+  char first_char = in_file.peek();
   if (first_char == '[') {
     in_file.close();
     return TweetFileType::pulse_array;
   }
+  if (first_char == '{') {
+    first_char = in_file.get();
+    const char second_char = in_file.peek();
+    if (second_char != '"') {
+      Rcpp::stop("Unknown file schema.");
+    }
+  }
+
+  // can't use in_file.seekg() on igzstream, so reset if character consumed
+  in_file.close();
+  in_file.open( file_path.c_str() );
   
   std::string line_string;
   rapidjson::Document test_parse;
   rapidjson::ParseResult parse_successful;
   while ( std::getline(in_file, line_string) ) {
     if ( !line_string.empty() ) {
-      parse_successful = test_parse.ParseInsitu( (char*)line_string.c_str() );
+      parse_successful = test_parse.Parse( line_string.c_str() );
       if (parse_successful) {
         break;
       }
     }
   }
   in_file.close();
-
+  
   if ( !parse_successful ) {
     Rcpp::stop("File does not contain any valid JSON.");
   }
@@ -78,7 +89,7 @@ TweetFileType detect_file_type(const std::string& file_path) {
     return TweetFileType::pulse_nested_doc;
   }
 
-  return TweetFileType::unknown;
+  Rcpp::stop("Unknown file schema.");
 }
 
 
@@ -88,7 +99,12 @@ Rcpp::List read_tweets(const std::string&);
 
 template<>
 Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(const std::string& file_path) {
-  const int n_lines = count_lines(file_path);
+  tweetio::msg("schema detected: Pulse, nested-doc\n");
+
+  const auto n_lines = count_lines(file_path);
+  const auto n_tweets_msg = "potential tweets detected: " + std::to_string(n_lines) + "\n";
+  tweetio::msg(n_tweets_msg);
+
   tweetio::Progress progress(n_lines, true);
 
   std::string line_string;
@@ -133,6 +149,8 @@ Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(const std::string& file_
 
 template<>
 Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path) {
+  tweetio::msg("schema detected: Pulse, array\n");
+  
   igzstream in_file;
   in_file.open( file_path.c_str() );
 
@@ -148,6 +166,9 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path)
   }
 
   const int n( parsed_json.Size() );
+  const auto n_tweets_msg = "potential tweets detected: " + std::to_string(n) + "\n";
+  tweetio::msg(n_tweets_msg);
+
   tweetio::TweetDF tweets(n);
   tweetio::PulseMeta metadata(n);
   tweetio::Progress progress(n, true);
@@ -182,6 +203,8 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path)
 
 template<>
 Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& file_path) {
+  tweetio::msg("schema detected: Twitter API\n");
+
   std::string line_string;
   std::vector<std::string> raw_json;
   
@@ -194,9 +217,13 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& fil
   }
   in_file.close();
 
-  tweetio::TweetDF tweets( raw_json.size() );
-  tweetio::PulseMeta metadata( raw_json.size() );
-  tweetio::Progress progress(raw_json.size(), true);
+  const auto n = raw_json.size();
+  const auto n_tweets_msg = "potential tweets detected: " + std::to_string(n) + "\n";
+  tweetio::msg(n_tweets_msg);
+
+  tweetio::TweetDF tweets(n);
+  tweetio::PulseMeta metadata(n);
+  tweetio::Progress progress(n, true);
 
   for (const auto& line : raw_json) {
     progress.increment();
@@ -234,11 +261,11 @@ Rcpp::List read_tweets_impl(const std::string& file_path) {
     
     
     case TweetFileType::unknown:
-      Rcpp::warning("Unknown file type.");
+      Rcpp::stop("Unknown file schema.");
       return R_NilValue;
   }
 
-  Rcpp::warning("Something went wrong.");
+  Rcpp::stop("Something went wrong.");
   return R_NilValue;
 }
 
