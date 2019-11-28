@@ -20,6 +20,7 @@ status_col_names <- function(tweet_df) {
     "status_id",
     "created_at",
     "text",
+    "status_url",
     "source",
     "is_quote",
     "is_retweeted",
@@ -38,7 +39,7 @@ status_col_names <- function(tweet_df) {
   with_context <- list(
     main = col_templates,
     retweet = paste0("retweet_", col_templates),
-    reply_to = paste0("reply_to", col_templates),
+    reply_to = paste0("reply_to_", col_templates),
     quoted = paste0("quoted_", col_templates)
   )
   
@@ -46,7 +47,7 @@ status_col_names <- function(tweet_df) {
     intersect(.x, names(tweet_df))
   })
   
-  Filter(function(.x) length(.x) > 1L, out)
+  Filter(function(.x) length(.x) >= 1L, out)
 }
 
 #' @importFrom data.table as.data.table setcolorder setDT setnames

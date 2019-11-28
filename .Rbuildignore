@@ -16,3 +16,4 @@
 ^pkgdown$
 ^LICENSE\.md$
 ^test\.graphml$
+^playground$

@@ -25,6 +25,7 @@ Imports:
     stringi
 Suggests:
     covr,
+    geojsonsf,
     here,
     igraph,
     knitr,

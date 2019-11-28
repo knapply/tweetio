@@ -24,6 +24,7 @@
 #' 
 #' @template param-tweet_df
 #' @template param-file_path
+#' @template param-verbose
 #' @template param-dots 
 #' 
 #' @template author-bk
@@ -44,14 +45,19 @@
 #' @importFrom data.table fwrite
 #' 
 #' @export
-write_tweet_csv <- function(tweet_df, file_path, ...) {
+write_tweet_csv <- function(tweet_df, file_path, verbose = FALSE, ...) {
+  if (verbose) message("Preprocessing data...")
+  
   if (!.is_dt(tweet_df)) {
     tweet_df <- .as_dt(tweet_df)
   }
   
+  if (verbose) message("Writing .csv file...")
+  
   fwrite(
     x = jsonify_list_cols(tweet_df), 
     file = file_path,
+    bom = TRUE,
     ...
   )
 }
@@ -76,14 +82,19 @@ write_tweet_csv <- function(tweet_df, file_path, ...) {
 #' write_tweet_excel(tweet_df, file_path = target_excel_file)
 #' 
 #' @export
-write_tweet_xlsx <- function(tweet_df, file_path, asTable = TRUE, ...) {
+write_tweet_xlsx <- function(tweet_df, file_path, asTable = TRUE, 
+                             verbose = FALSE, ...) {
   if (!requireNamespace("openxlsx", quietly = TRUE)) {
     stop("{openxlsx} package is required for this functionality.", call. = FALSE)
   }
   
+  if (verbose) message("Preprocessing data...")
+  
   if (!.is_dt(tweet_df)) {
     tweet_df <- .as_dt(tweet_df)
   }
+  
+  if (verbose) message("Writing .xlsx file...")
   
   openxlsx::write.xlsx(
     x = jsonify_list_cols(tweet_df),
