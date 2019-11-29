@@ -20,7 +20,7 @@
 #' 
 #' @importFrom data.table := setDT
 #' @importFrom utils unzip
-.read_tweets <- function(file_path, ...) {
+.read_tweets <- function(file_path, verbose, ...) {
   # silence R CMD Check NOTE =============================================================
   metadata <- NULL
   # ======================================================================================
@@ -59,7 +59,7 @@
   
   file_path <- path.expand(file_path)
   
-  init <- read_tweets_impl(file_path)
+  init <- read_tweets_impl(file_path, verbose)
 
   if (attr(init, "has_metadata", exact = TRUE)) {
     setDT(init$tweets
@@ -76,6 +76,7 @@
 #' Go from a file of raw tweet data to a convenient, `{rtweet}`-style data frame.
 #' 
 #' @param file_path Path(s) to tweet files.
+#' @template param-verbose
 #' @param ... Arguments passed to or from other methods.
 #' 
 #' @return 
@@ -95,8 +96,8 @@
 #' tweet_tibble
 #' 
 #' @export
-read_tweets <- function(file_path, as_tibble = FALSE, ...) {
-  out <- .read_tweets(file_path, ...)
+read_tweets <- function(file_path, as_tibble = FALSE, verbose = FALSE, ...) {
+  out <- .read_tweets(file_path, verbose, ...)
 
   out <- .finalize_cols(out)
 
@@ -215,11 +216,24 @@ read_tweets_bulk <- function(file_path, as_tibble = FALSE,
     , (col_with_control_chars) := lapply(.SD, stri_replace_all_regex, "[[:cntrl:]]", ""),
     .SDcols = col_with_control_chars
     ][, is_retweet := !is.na(retweet_status_id)
-      ][, status_url := paste0("https://twitter.com/", screen_name, "/status/", status_id)
-        ][, profile_url := paste0("https://twitter.com/i/user/", user_id)
-          ][, profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
-            ]
-
+      ][, profile_url := paste0("https://twitter.com/i/user/", user_id)
+        ]
+  # [, profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
+          # ]
+  
+  # add status URL columns
+  status_url_cols <- c(status_id = "status_url",
+                       retweet_status_id = "retweet_status_url",
+                       quoted_status_id = "quoted_tweet_url", 
+                       reply_to_status_id = "reply_to_status_url") 
+  proto_tweet_df <- proto_tweet_df[, (status_url_cols) := lapply(
+    .SD, function(.x) paste0("https://twitter.com/i/web/status/", .x)
+    ),
+    .SDcols = names(status_url_cols)
+  ]
+  
+  
+  
   # there are some occasional control characters that end up in the strings.
   # AFAIK, they are always `\0`, which aren't allowed in XML files.
   # To be on the safe side, all control characters are stripped here

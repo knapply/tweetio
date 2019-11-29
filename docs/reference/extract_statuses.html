@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Write Tweets to Spreadsheets — write_tweet_csv • tweetio</title>
+<title>Extract All Statuses — extract_statuses • tweetio</title>
 
 
 <!-- jquery -->
@@ -37,8 +37,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Write Tweets to Spreadsheets — write_tweet_csv" />
-<meta property="og:description" content="Write Tweets to Spreadsheets" />
+<meta property="og:title" content="Extract All Statuses — extract_statuses" />
+<meta property="og:description" content="Build a data frame of statuses where each is summarized in a single row. The values of
+each column hold the most recent non-NA/non-empty value." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -123,22 +124,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Write Tweets to Spreadsheets</h1>
-    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/csv.R'><code>R/csv.R</code></a></small>
-    <div class="hidden name"><code>write_tweet_csv.Rd</code></div>
+    <h1>Extract All Statuses</h1>
+    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/utils-statuses.R'><code>R/utils-statuses.R</code></a></small>
+    <div class="hidden name"><code>extract_statuses.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Write Tweets to Spreadsheets</p>
+    <p>Build a data frame of statuses where each is summarized in a single row. The values of
+each column hold the most recent non-<code>NA</code>/non-empty value.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
-
-<span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>)
-
-<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>extract_statuses</span>(<span class='no'>tweet_df</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,51 +145,44 @@
 one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https://rdrr.io/pkg/rtweet/man/search_tweets.html'>rtweet::search_tweets()</a></code>.</p></td>
     </tr>
     <tr>
-      <th>file_path</th>
-      <td><p>File path to which to write or from which to read.</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>Whether to show diagnostic or progress messages.</p></td>
+      <th>as_tibble</th>
+      <td><p>Whether a <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> should be returned. Ignored if the
+<code>{tibble}</code> package is not installed.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Arguments passed to or from other methods.</p></td>
     </tr>
-    <tr>
-      <th>asTable</th>
-      <td><p><code>&lt;logical&gt;</code>, default: <code>TRUE</code>.</p></td>
-    </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='https://Rdatatable.gitlab.io/data.table/reference/fwrite.html'>data.table::fwrite()</a></code></p>
-<p><code><a href='https://rdrr.io/pkg/openxlsx/man/write.xlsx.html'>openxlsx::write.xlsx()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>path_to_tweet_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example_tweet_file.html'>example_tweet_file</a></span>()
-                                                       <span class='co'># first 5 rows</span>
-<span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>)[<span class='fl'>1</span>:<span class='fl'>5</span>, ]
+<span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='no'>path_to_tweet_file</span>)
 
-<span class='co'># write comma-separated values files ==================================================</span>
-<span class='no'>target_csv_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".csv"</span>)
-<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "C:\\Users\\brend\\AppData\\Local\\Temp\\RtmpI5AsOJ\\fileea82f7a2935.csv"</div><div class='input'>
-<span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_csv_file</span>)
-
-<span class='co'># write Microsoft Excel files =========================================================</span>
-<span class='no'>target_excel_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xlsx"</span>)
-<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "C:\\Users\\brend\\AppData\\Local\\Temp\\RtmpI5AsOJ\\fileea81d2d4531.xlsx"</div><div class='input'>
-<span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)
-
-<span class='co'># same as `write_tweet_xlsx()`</span>
-<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)</div></pre>
+<span class='fu'>extract_statuses</span>(<span class='no'>tweet_df</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 41,875 x 17</span><span>
+#&gt;    status_id status_url created_at          text  source is_quote is_retweeted
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>       
+#&gt; </span><span style='color: #555555;'> 1</span><span> 11780078~ https://t~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> RT @~ Twitt~ FALSE    FALSE       
+#&gt; </span><span style='color: #555555;'> 2</span><span> 11780078~ https://t~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> </span><span style='color: #555555;'>"</span><span>@Di~ Twitt~ FALSE    FALSE       
+#&gt; </span><span style='color: #555555;'> 3</span><span> 11780078~ https://t~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> RT @~ Twitt~ FALSE    FALSE       
+#&gt; </span><span style='color: #555555;'> 4</span><span> 11780078~ https://t~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> RT @~ Twitt~ FALSE    FALSE       
+#&gt; </span><span style='color: #555555;'> 5</span><span> 11780078~ https://t~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> @Bra~ Twitt~ FALSE    FALSE       
+#&gt; </span><span style='color: #555555;'> 6</span><span> 11780078~ https://t~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> met ~ twitt~ FALSE    FALSE       
+#&gt; </span><span style='color: #555555;'> 7</span><span> 11780078~ https://t~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> </span><span style='color: #555555;'>"</span><span>RT ~ Twitt~ FALSE    FALSE       
+#&gt; </span><span style='color: #555555;'> 8</span><span> 11780078~ https://t~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> </span><span style='color: #555555;'>"</span><span>RT ~ Twitt~ FALSE    FALSE       
+#&gt; </span><span style='color: #555555;'> 9</span><span> 11780078~ https://t~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> RT @~ Twitt~ FALSE    FALSE       
+#&gt; </span><span style='color: #555555;'>10</span><span> 11780078~ https://t~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> RT @~ Twitt~ FALSE    FALSE       
+#&gt; </span><span style='color: #555555;'># ... with 41,865 more rows, and 10 more variables: media_url </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,
+#&gt; #   media_type </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, place_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, place_name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   place_full_name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, place_type </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, country </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, country_code </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   bbox_coords </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, status_type </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

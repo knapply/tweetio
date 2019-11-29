@@ -30,11 +30,16 @@ reference:
   - title: Build Spatial (sf) Tweet Data Frames
     contents:
     - as_tweet_sf
+    
+  - title: Extraction
+    contents:
+    - extract_statuses
+    - extract_users
 
   - title: Miscellaneous
     contents:
     - example_tweet_file
-
+    
 
 
 

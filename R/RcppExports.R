@@ -9,8 +9,8 @@ prep_bbox <- function(bbox_coords) {
     .Call(`_tweetio_prep_bbox`, bbox_coords)
 }
 
-read_tweets_impl <- function(file_path) {
-    .Call(`_tweetio_read_tweets_impl`, file_path)
+read_tweets_impl <- function(file_path, verbose = FALSE) {
+    .Call(`_tweetio_read_tweets_impl`, file_path, verbose)
 }
 
 unnest_entities_impl <- function(tracker, source, target, col_names) {
