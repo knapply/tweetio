@@ -28,13 +28,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // read_tweets_impl
-Rcpp::List read_tweets_impl(const std::string& file_path);
-RcppExport SEXP _tweetio_read_tweets_impl(SEXP file_pathSEXP) {
+Rcpp::List read_tweets_impl(const std::string& file_path, const bool verbose);
+RcppExport SEXP _tweetio_read_tweets_impl(SEXP file_pathSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string& >::type file_path(file_pathSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_tweets_impl(file_path));
+    Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(read_tweets_impl(file_path, verbose));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -70,7 +71,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_tweetio_is_valid_bbox", (DL_FUNC) &_tweetio_is_valid_bbox, 1},
     {"_tweetio_prep_bbox", (DL_FUNC) &_tweetio_prep_bbox, 1},
-    {"_tweetio_read_tweets_impl", (DL_FUNC) &_tweetio_read_tweets_impl, 1},
+    {"_tweetio_read_tweets_impl", (DL_FUNC) &_tweetio_read_tweets_impl, 2},
     {"_tweetio_unnest_entities_impl", (DL_FUNC) &_tweetio_unnest_entities_impl, 4},
     {"_tweetio_unnest_entities2_impl", (DL_FUNC) &_tweetio_unnest_entities2_impl, 4},
     {NULL, NULL, 0}

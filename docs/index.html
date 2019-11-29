@@ -172,20 +172,20 @@ Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">small_rtweet_stream &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_tweets.html">read_tweets</a></span>(temp_file, <span class="dt">as_tibble =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb4-2" title="2"></a>
 <a class="sourceLine" id="cb4-3" title="3">small_rtweet_stream</a></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co">#&gt; # A tibble: 582 x 90</span></a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co">#&gt; # A tibble: 532 x 90</span></a>
 <a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt;    user_id status_id created_at          screen_name text  source reply_to_status~ reply_to_user_id reply_to_screen~</span></a>
 <a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;     &lt;dttm&gt;              &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           </span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt;  1 119245~ 11973467~ 2019-11-21 02:51:20 SexyDivulga "RT ~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt;  2 157233~ 11973468~ 2019-11-21 02:51:51 tgainokimo~ &lt;U+7D50&gt;&lt;U+5C40&gt;&lt;U+597D&gt;&lt;U+304D&gt;~ twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
-<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt;  3 118831~ 11973468~ 2019-11-21 02:51:51 xyomu_tete5 "RT ~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
-<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt;  4 118910~ 11973468~ 2019-11-21 02:51:51 tequila_ta~ RT @~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
-<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt;  5 108150~ 11973468~ 2019-11-21 02:51:51 geekinisma~ yeah~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
-<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt;  6 860995~ 11973468~ 2019-11-21 02:51:51 PieriBasti~ RT @~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
-<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt;  7 744739~ 11973468~ 2019-11-21 02:51:51 bbow_taetee RT @~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
-<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt;  8 986402~ 11973468~ 2019-11-21 02:51:51 Claudia106~ @lui~ Twitt~ 119729751010603~ 93290595         luis_gj         </span></a>
-<a class="sourceLine" id="cb5-12" title="12"><span class="co">#&gt;  9 110473~ 11973468~ 2019-11-21 02:51:51 bayrifu     &lt;U+3044&gt;&lt;U+3044&gt;&lt;U+306A&gt;&lt;U+3042&gt;~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
-<a class="sourceLine" id="cb5-13" title="13"><span class="co">#&gt; 10 276340~ 11973468~ 2019-11-21 02:51:51 YG_LilTorro I ru~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
-<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt; # ... with 572 more rows, and 81 more variables: is_quote &lt;lgl&gt;, is_retweet &lt;lgl&gt;, hashtags &lt;list&gt;,</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt;  1 222835~ 11979360~ 2019-11-22 17:53:09 Ebakalamir~ RT @~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt;  2 140924~ 11979360~ 2019-11-22 17:53:09 Leah_henman 2 pe~ fllwrs &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt;  3 106613~ 11979360~ 2019-11-22 17:53:09 James93723~ "RT ~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt;  4 609038~ 11979360~ 2019-11-22 17:53:09 whitetemel  "RT ~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt;  5 377472~ 11979360~ 2019-11-22 17:53:09 rolfmulder  @Nin~ Twitt~ 119786710329606~ 581938841        NinadeKoning    </span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt;  6 143756~ 11979360~ 2019-11-22 17:53:09 CuzISaidSo~ RT @~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt;  7 761248~ 11979360~ 2019-11-22 17:53:09 Primo_Dulce pubs~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt;  8 357908~ 11979360~ 2019-11-22 17:53:09 DomSyndrom~ @Bro~ Twitt~ 119789485923701~ 128313714        BroadStBull     </span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="co">#&gt;  9 297831~ 11979360~ 2019-11-22 17:53:09 Shiroyasha~ RT @~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="co">#&gt; 10 891315~ 11979360~ 2019-11-22 17:53:09 MianYasirR~ "RT ~ Twitt~ &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt; # ... with 522 more rows, and 81 more variables: is_quote &lt;lgl&gt;, is_retweet &lt;lgl&gt;, hashtags &lt;list&gt;,</span></a>
 <a class="sourceLine" id="cb5-15" title="15"><span class="co">#&gt; #   urls_expanded_url &lt;list&gt;, media_url &lt;list&gt;, media_expanded_url &lt;list&gt;, media_type &lt;list&gt;, mentions_user_id &lt;list&gt;,</span></a>
 <a class="sourceLine" id="cb5-16" title="16"><span class="co">#&gt; #   mentions_screen_name &lt;list&gt;, quoted_status_id &lt;chr&gt;, quoted_text &lt;chr&gt;, quoted_created_at &lt;dttm&gt;,</span></a>
 <a class="sourceLine" id="cb5-17" title="17"><span class="co">#&gt; #   quoted_source &lt;chr&gt;, quoted_favorite_count &lt;int&gt;, quoted_retweet_count &lt;int&gt;, quoted_user_id &lt;chr&gt;,</span></a>
@@ -271,7 +271,7 @@ Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_
 <div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co">#&gt; # A tibble: 1 x 6</span></a>
 <a class="sourceLine" id="cb13-2" title="2"><span class="co">#&gt;   expression                           min   median `itr/sec` mem_alloc `gc/sec`</span></a>
 <a class="sourceLine" id="cb13-3" title="3"><span class="co">#&gt;   &lt;bch:expr&gt;                      &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb13-4" title="4"><span class="co">#&gt; 1 read_tweets(rtweet_stream_path)    2.62s    2.71s     0.369     135MB    0.984</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-4" title="4"><span class="co">#&gt; 1 read_tweets(rtweet_stream_path)    3.02s    3.15s     0.315     135MB    0.945</span></a></code></pre></div>
 <p>Ignoring the time it takes to run the above <code>rtweet_validate_and_parse()</code> function for <code><a href="https://rdrr.io/pkg/rtweet/man/parse_stream.html">rtweet::parse_stream()</a></code> to work, how much faster is <code><a href="reference/read_tweets.html">tweetio::read_tweets()</a></code>?</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">bench_mark &lt;-<span class="st"> </span>bench<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span>(</a>
 <a class="sourceLine" id="cb14-2" title="2">  <span class="dt">rtweet =</span> rtweet<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rtweet/man/parse_stream.html">parse_stream</a></span>(rtweet_stream_path2),</a>
@@ -285,8 +285,8 @@ Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_
 <div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
 <a class="sourceLine" id="cb15-2" title="2"><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></a>
 <a class="sourceLine" id="cb15-3" title="3"><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb15-4" title="4"><span class="co">#&gt; 1 rtweet       24.57s   24.82s    0.0404   480.3MB     5.25</span></a>
-<a class="sourceLine" id="cb15-5" title="5"><span class="co">#&gt; 2 tweetio       2.49s    2.78s    0.372     93.1MB     1.61</span></a></code></pre></div>
+<a class="sourceLine" id="cb15-4" title="4"><span class="co">#&gt; 1 rtweet       25.01s   25.14s    0.0397   479.6MB     5.25</span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="co">#&gt; 2 tweetio       2.34s    2.52s    0.400     93.1MB     1.20</span></a></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(bench_mark)</a></code></pre></div>
 <p><img src="reference/figures/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>With bigger files, using <code><a href="https://rdrr.io/pkg/rtweet/man/parse_stream.html">rtweet::parse_stream()</a></code> is no longer realistic, but that’s where <code><a href="reference/read_tweets.html">tweetio::read_tweets()</a></code> can help.</p>
@@ -299,7 +299,7 @@ Spatial Tweets via <code><a href="reference/as_tweet_sf.html">tweetio::as_tweet_
 <div class="sourceCode" id="cb20"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co">#&gt; # A tibble: 1 x 6</span></a>
 <a class="sourceLine" id="cb20-2" title="2"><span class="co">#&gt;   expression                                                       min   median `itr/sec` mem_alloc `gc/sec`</span></a>
 <a class="sourceLine" id="cb20-3" title="3"><span class="co">#&gt;   &lt;bch:expr&gt;                                                  &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb20-4" title="4"><span class="co">#&gt; 1 big_tweet_df &lt;- tweetio::read_tweets(big_tweet_stream_path)    18.2s    18.2s    0.0549     384MB    0.329</span></a></code></pre></div>
+<a class="sourceLine" id="cb20-4" title="4"><span class="co">#&gt; 1 big_tweet_df &lt;- tweetio::read_tweets(big_tweet_stream_path)    18.8s    18.8s    0.0533     384MB    0.320</span></a></code></pre></div>
 <!-- ## Data Dumps -->
 <!-- Using Elasticsearch seems to be the most common practice for handling social media data at scale, but it's (unfortunately) possible that you'll need to work with data dumps. -->
 <!-- The data collected from APIs are stored inside a nested JSON object named `"doc"`. `"doc"` is typically embedded in a ton of system metadata, most of which you probably don't care about.  -->

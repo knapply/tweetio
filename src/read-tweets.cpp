@@ -94,18 +94,16 @@ TweetFileType detect_file_type(const std::string& file_path) {
 
 
 template<TweetFileType>
-Rcpp::List read_tweets(const std::string&);
+Rcpp::List read_tweets(const std::string&, const bool);
 
 
 template<>
-Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(const std::string& file_path) {
-  tweetio::msg("schema detected: Pulse, nested-doc\n");
+Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(const std::string& file_path, const bool verbose) {
+  if (verbose) tweetio::msg("schema detected: Pulse, nested-doc\n");
 
   const auto n_lines = count_lines(file_path);
-  const auto n_tweets_msg = "potential tweets detected: " + std::to_string(n_lines) + "\n";
-  tweetio::msg(n_tweets_msg);
 
-  tweetio::Progress progress(n_lines, true);
+  tweetio::Progress progress(n_lines, verbose);
 
   std::string line_string;
   igzstream in_file;
@@ -148,8 +146,8 @@ Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(const std::string& file_
 
 
 template<>
-Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path) {
-  tweetio::msg("schema detected: Pulse, array\n");
+Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path, const bool verbose) {
+  if (verbose) tweetio::msg("schema detected: Pulse, array\n");
   
   igzstream in_file;
   in_file.open( file_path.c_str() );
@@ -166,12 +164,11 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path)
   }
 
   const int n( parsed_json.Size() );
-  const auto n_tweets_msg = "potential tweets detected: " + std::to_string(n) + "\n";
-  tweetio::msg(n_tweets_msg);
+
 
   tweetio::TweetDF tweets(n);
   tweetio::PulseMeta metadata(n);
-  tweetio::Progress progress(n, true);
+  tweetio::Progress progress(n, verbose);
 
   for ( const auto& val : parsed_json.GetArray() ) {
     progress.increment();
@@ -202,8 +199,8 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path)
 
 
 template<>
-Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& file_path) {
-  tweetio::msg("schema detected: Twitter API\n");
+Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& file_path, const bool verbose) {
+  if (verbose) tweetio::msg("schema detected: Twitter API\n");
 
   std::string line_string;
   std::vector<std::string> raw_json;
@@ -218,12 +215,10 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& fil
   in_file.close();
 
   const auto n = raw_json.size();
-  const auto n_tweets_msg = "potential tweets detected: " + std::to_string(n) + "\n";
-  tweetio::msg(n_tweets_msg);
 
   tweetio::TweetDF tweets(n);
   tweetio::PulseMeta metadata(n);
-  tweetio::Progress progress(n, true);
+  tweetio::Progress progress(n, verbose);
 
   for (const auto& line : raw_json) {
     progress.increment();
@@ -246,18 +241,18 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& fil
 
 
 // [[Rcpp::export]]
-Rcpp::List read_tweets_impl(const std::string& file_path) {
+Rcpp::List read_tweets_impl(const std::string& file_path, const bool verbose = false) {
   const TweetFileType file_type = detect_file_type(file_path);
 
   switch (file_type) {
     case TweetFileType::pulse_nested_doc:
-      return read_tweets<TweetFileType::pulse_nested_doc>(file_path);
+      return read_tweets<TweetFileType::pulse_nested_doc>(file_path, verbose);
 
     case TweetFileType::pulse_array:
-      return read_tweets<TweetFileType::pulse_array>(file_path);
+      return read_tweets<TweetFileType::pulse_array>(file_path, verbose);
     
     case TweetFileType::twitter_api_stream:
-      return read_tweets<TweetFileType::twitter_api_stream>(file_path);
+      return read_tweets<TweetFileType::twitter_api_stream>(file_path, verbose);
     
     
     case TweetFileType::unknown:

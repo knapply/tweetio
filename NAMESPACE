@@ -2,6 +2,8 @@
 
 export(as_tweet_sf)
 export(example_tweet_file)
+export(extract_statuses)
+export(extract_users)
 export(read_tweets)
 export(read_tweets_bulk)
 export(write_tweet_csv)

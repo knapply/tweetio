@@ -18,9 +18,9 @@
 status_col_names <- function(tweet_df) {
   col_templates <- c(
     "status_id",
+    "status_url",
     "created_at",
     "text",
-    "status_url",
     "source",
     "is_quote",
     "is_retweeted",
@@ -50,9 +50,29 @@ status_col_names <- function(tweet_df) {
   Filter(function(.x) length(.x) >= 1L, out)
 }
 
+
+#' Extract All Statuses
+#' 
+#' Build a data frame of statuses where each is summarized in a single row. The values of
+#' each column hold the most recent non-`NA`/non-empty value.
+#' 
+#' @template param-tweet_df
+#' @template param-as_tibble
+#' @template param-dots
+#' 
+#' @template author-bk
+#' 
+#' @examples 
+#' path_to_tweet_file <- example_tweet_file()
+#' tweet_df <- read_tweets(path_to_tweet_file)
+#'
+#' extract_statuses(tweet_df, as_tibble = TRUE) 
+#' 
 #' @importFrom data.table as.data.table setcolorder setDT setnames
-build_status_df <- function(tweet_df, unique_statuses = TRUE, split = FALSE, ...) {
-  # silence R CMD Check NOTE
+#' 
+#' @export
+extract_statuses <- function(tweet_df, as_tibble = FALSE, ...) {
+  # silence R CMD Check NOTE =============================================================
   ..x <- NULL
   .SD <- NULL
   status_id <- NULL
@@ -60,7 +80,7 @@ build_status_df <- function(tweet_df, unique_statuses = TRUE, split = FALSE, ...
   timestamp_ms <- NULL
   .N <- NULL
   status_type <- NULL
-  #########################
+  # ======================================================================================
   
   if (!.is_dt(tweet_df)) {
     tweet_df <- as.data.table(tweet_df)
@@ -78,28 +98,36 @@ build_status_df <- function(tweet_df, unique_statuses = TRUE, split = FALSE, ...
   
   out <- rbindlist(split_statuses, use.names = TRUE, fill = TRUE)
   
-  col_order <- c("status_id", setdiff(names(out), "status_id"))
-  setcolorder(out, col_order)
-  setnames(out, old = "created_at", new = "timestamp_ms")
   
-  if (split) {
-    return(split(out, by = "status_id"))
-  }
+  # if (drop_empty_cols) {
+  #   empty_col_test <- .map_lgl(out, function(.x) {
+  #     if (is.list(.x)) all(.map_lgl(.x, .is_empty)) else all(is.na(.x))
+  #   })
+  #   
+  #   empty_cols <- names(out)[empty_col_test]
+  #   if (!.is_empty(empty_cols)) {
+  #     out <- out[, !..empty_cols]
+  #   }
+  # }
   
-  if (!unique_statuses) {
-    return(out)
-  }
+  # if (split) {
+  #   out <- split(out, by = "status_id")
+  #   if (!as_tibble || !requireNamespace("tibble", quietly = TRUE)) {
+  #     return(out)
+  #   }
+  #   return(lapply(out, tibble::as_tibble))
+  # }
   
   out[
-    order(-timestamp_ms),
+    order(-created_at),
     lapply(.SD, function(x) {
       if (.N == 1L) x
       else if (is.atomic(x)) .subset2(x, which.min(is.na(x)))                                           
       else .subset(x, which.min( vapply(.subset2(x, 1L), length, integer(1L) ) == 0L))
     }),
-    by = status_id,
-    ][, timestamp_ms := as.POSIXct(timestamp_ms, origin = "1970-01-01")
+    keyby = status_id,
+    ][, created_at := as.POSIXct(created_at, origin = "1970-01-01")
       ]
   
-  out[]
+  .finalize_df(out, as_tibble = as_tibble)
 }

@@ -132,10 +132,10 @@
     <p>Go from a file of raw tweet data to a convenient, <code>{rtweet}</code>-style data frame.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_tweets</span>(<span class='no'>file_path</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>read_tweets</span>(<span class='no'>file_path</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
-<span class='fu'>read_tweets_bulk</span>(<span class='no'>file_path</span>, <span class='kw'>in_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strategy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>read_tweets_bulk</span>(<span class='no'>file_path</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>in_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>strategy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,6 +148,10 @@
       <th>as_tibble</th>
       <td><p>Whether a <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> should be returned. Ignored if the
 <code>{tibble}</code> package is not installed.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Whether to show diagnostic or progress messages.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -171,7 +175,7 @@ If <code>NULL</code>, <code><a href='https://rdrr.io/pkg/future/man/multiprocess
 <ul>
 <li><p>Data Frame</p><ul>
 <li><p>default: <code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table::data.table()</a></code></p></li>
-<li><p><code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> if <code>as_tibble</code> is <code>TRUE</code> and the <code>{tibble}</code> is installed.</p></li>
+<li><p><code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> if <code>as_tibble</code> is <code>TRUE</code> and <code>{tibble}</code> is installed.</p></li>
 </ul></li>
 </ul>
 
@@ -183,7 +187,7 @@ If <code>NULL</code>, <code><a href='https://rdrr.io/pkg/future/man/multiprocess
 
 <span class='no'>tweet_tibble</span> <span class='kw'>&lt;-</span> <span class='fu'>read_tweets</span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='no'>tweet_tibble</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 22,760 x 90</span><span>
+<span class='no'>tweet_tibble</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 22,760 x 93</span><span>
 #&gt;    user_id status_id created_at          screen_name text  source
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> 
 #&gt; </span><span style='color: #555555;'> 1</span><span> 807195~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> ykaoi0327   RT @~ Twitt~
@@ -196,11 +200,11 @@ If <code>NULL</code>, <code><a href='https://rdrr.io/pkg/future/man/multiprocess
 #&gt; </span><span style='color: #555555;'> 8</span><span> 359294~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> piyakat28   </span><span style='color: #555555;'>"</span><span>RT ~ Twitt~
 #&gt; </span><span style='color: #555555;'> 9</span><span> 194250~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> Stgo_centro RT @~ Twitt~
 #&gt; </span><span style='color: #555555;'>10</span><span> 116013~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> 119lonwi_y~ RT @~ Twitt~
-#&gt; </span><span style='color: #555555;'># ... with 22,750 more rows, and 84 more variables: reply_to_status_id </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; </span><span style='color: #555555;'># ... with 22,750 more rows, and 87 more variables: reply_to_status_id </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
 #&gt; #   reply_to_user_id </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, reply_to_screen_name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, is_quote </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,
 #&gt; #   is_retweet </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, hashtags </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, urls_expanded_url </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,
 #&gt; #   media_url </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, media_expanded_url </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, media_type </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,
-#&gt; #   mentions_user_id </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, mentions_screen_name </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,
+#&gt; #   mentions_user_id </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, mentions_screen_name </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, lang </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
 #&gt; #   quoted_status_id </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, quoted_text </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, quoted_created_at </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>,
 #&gt; #   quoted_source </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, quoted_favorite_count </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
 #&gt; #   quoted_retweet_count </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, quoted_user_id </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, quoted_screen_name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
@@ -219,7 +223,7 @@ If <code>NULL</code>, <code><a href='https://rdrr.io/pkg/future/man/multiprocess
 #&gt; #   location </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, description </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, protected </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,
 #&gt; #   followers_count </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, friends_count </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, listed_count </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
 #&gt; #   statuses_count </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, favourites_count </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, account_created_at </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>,
-#&gt; #   verified </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, profile_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, profile_url2 </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, account_lang </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   verified </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, profile_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, account_lang </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
 #&gt; #   profile_banner_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, profile_image_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, is_retweeted </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,
 #&gt; #   retweet_place_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, retweet_place_name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
 #&gt; #   retweet_place_full_name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, retweet_place_type </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
@@ -227,7 +231,8 @@ If <code>NULL</code>, <code><a href='https://rdrr.io/pkg/future/man/multiprocess
 #&gt; #   retweet_bbox_coords </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, quoted_place_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
 #&gt; #   quoted_place_name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, quoted_place_full_name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
 #&gt; #   quoted_place_type </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, quoted_country </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, quoted_country_code </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   quoted_bbox_coords </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, timestamp_ms </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, contributors_enabled </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span></div><div class='input'>
+#&gt; #   quoted_bbox_coords </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, timestamp_ms </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, contributors_enabled </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,
+#&gt; #   retweet_status_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, quoted_tweet_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, reply_to_status_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

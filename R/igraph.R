@@ -64,7 +64,7 @@ as_sna_proto_net <- function(tweet_df, relations = c("mention" ,"retweet",
   
   # edges <- jsonify_list_cols(edges, copy = FALSE)
   # nodes <- jsonify_list_cols(build_user_df(tweet_df, copy = FALSE))
-  nodes <- build_user_df(tweet_df)
+  nodes <- extract_users(tweet_df)
   
   structure(
     list(edges = .finalize_df(edges, as_tibble = as_tibble), 

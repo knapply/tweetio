@@ -55,16 +55,46 @@ user_col_names <- function(tweet_df) {
 }
 
 
+
+
+#' Extract All Users
+#' 
+#' Build a data frame of users where each is summarized in a single row. The values of
+#' each column hold the most recent non-`NA`/non-empty value.
+#' 
+#' @template param-tweet_df
+#' @param split `logical(1L)`, Default: `FALSE`. Whether to split users into separate data
+#' frames and return a list of those data frames, retaining all instances where each user
+#' was observed.
+#' @template param-as_tibble
+#' @template param-dots
+#' 
+#' @template author-bk
+#' 
+#' @examples 
+#' path_to_tweet_file <- example_tweet_file()
+#' tweet_df <- read_tweets(path_to_tweet_file)
+#'
+#' extract_users(tweet_df, as_tibble = TRUE) 
+#' 
+#' split_users <- extract_users(tweet_df, split = TRUE, as_tibble = TRUE)
+#' 
+#' # first 3 users with more than 5 observations
+#' split_users[vapply(split_users, function(.x) nrow(.x) > 5, logical(1L))][1:3]
+#' 
 #' @importFrom data.table data.table is.data.table setcolorder setDT setnames
-build_user_df <- function(tweet_df, unique_users = TRUE, split = FALSE, ...) {
-  # silence R CMD Check NOTE
+#' 
+#' @export
+extract_users <- function(tweet_df, split = FALSE, as_tibble = FALSE, ...) {
+  # silence R CMD Check NOTE =============================================================
   ..col <- NULL
   .SD <- NULL
   user_id <- NULL
   created_at <- NULL
   timestamp_ms <- NULL
   .N <- NULL
-  #########################
+  observation_type <- NULL
+  # ======================================================================================
   
   if (!is.data.table(tweet_df)) {
     tweet_df <- data.table(tweet_df)
@@ -85,29 +115,39 @@ build_user_df <- function(tweet_df, unique_users = TRUE, split = FALSE, ...) {
       col_names = c("user_id", "screen_name", "created_at")
     )
   )
+  if (split) {
+    split_users <- .imap(split_users, function(.x, .y) {
+      .x[, observation_type := .y]
+    })
+  }
   
   out <- rbindlist(split_users, use.names = TRUE, fill = TRUE)
   
-  col_order <- c("user_id", setdiff(names(out), "user_id"))
+  col_order <- intersect(
+    c("user_id", "observation_type", setdiff(names(out), "user_id")), 
+    names(out)
+  )
   setcolorder(out, col_order)
   setnames(out, old = "created_at", new = "timestamp_ms")
   
-  if (unique_users && !split) {
-    out <- out[
-      order(-timestamp_ms),
-      lapply(.SD, function(x) {
-        if (.N == 1L) x
-        else if (is.atomic(x)) .subset2(x, which.min(is.na(x)))                                           
-        else .subset(x, which.min( vapply(.subset2(x, 1L), length, integer(1L)) == 0L))
-      }),
-      keyby = user_id
-    ][, timestamp_ms := .as_posixct(timestamp_ms)
-      ][order(timestamp_ms)]
-  }
-  
   if (split) {
-    out <- split(out, by = "user_id")
+    out <- split(out[order(timestamp_ms)], by = "user_id")
+    if (as_tibble && requireNamespace("tibble", quietly = TRUE)) {
+      out <- lapply(out, tibble::as_tibble)
+    }
+    return(out)
   }
   
-  out[]
+  out <- out[
+    order(-timestamp_ms),
+    lapply(.SD, function(x) {
+      if (.N == 1L) x
+      else if (is.atomic(x)) .subset2(x, which.min(is.na(x)))                                           
+      else .subset(x, which.min( vapply(.subset2(x, 1L), length, integer(1L)) == 0L))
+    }),
+    keyby = user_id
+  ][, timestamp_ms := .as_posixct(timestamp_ms)
+    ][order(timestamp_ms)]
+  
+  .finalize_df(out, as_tibble = as_tibble)
 }
