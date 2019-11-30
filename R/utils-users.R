@@ -42,7 +42,7 @@ user_col_names <- function(tweet_df) {
   with_context <- list(
     main = col_templates,
     retweet = paste0("retweet_", col_templates),
-    reply_to = paste0("reply_to", col_templates),
+    reply_to = paste0("reply_to_", col_templates),
     quoted = paste0("quoted_", col_templates),
     mentions = paste0("mentions_", col_templates)
   )
@@ -79,8 +79,8 @@ user_col_names <- function(tweet_df) {
 #' 
 #' split_users <- extract_users(tweet_df, split = TRUE, as_tibble = TRUE)
 #' 
-#' # first 3 users with more than 5 observations
-#' split_users[vapply(split_users, function(.x) nrow(.x) > 5, logical(1L))][1:3]
+#' # first 3 users with more than 20 observations.
+#' split_users[vapply(split_users, function(.x) nrow(.x) > 20, logical(1L))][1:3]
 #' 
 #' @importFrom data.table data.table is.data.table setcolorder setDT setnames
 #' 
@@ -96,16 +96,14 @@ extract_users <- function(tweet_df, split = FALSE, as_tibble = FALSE, ...) {
   observation_type <- NULL
   # ======================================================================================
   
-  if (!is.data.table(tweet_df)) {
+  if (!.is_dt(tweet_df)) {
     tweet_df <- data.table(tweet_df)
   }
+  
   split_users <- lapply(user_col_names(tweet_df), 
-                        function(.x) standardize_cols(tweet_df[, .x, with = FALSE])
-  )
-  split_users[c("main", "retweet", "quoted")] <- lapply(
-    split_users[c("main", "retweet", "quoted")], function(.x) {
-      .x[!is.na(user_id)]
-    })
+                        function(.x) standardize_cols(tweet_df[, .x, with = FALSE]))
+  split_users <- .map_at(split_users, c("main", "retweet", "quoted", "reply_to"), 
+                         function(.x) .x[!is.na(user_id)])
   
   split_users$mentions <- setDT(
     unnest_entities2_impl(
@@ -115,11 +113,13 @@ extract_users <- function(tweet_df, split = FALSE, as_tibble = FALSE, ...) {
       col_names = c("user_id", "screen_name", "created_at")
     )
   )
+  
   if (split) {
     split_users <- .imap(split_users, function(.x, .y) {
       .x[, observation_type := .y]
     })
   }
+  
   
   out <- rbindlist(split_users, use.names = TRUE, fill = TRUE)
   
@@ -142,10 +142,10 @@ extract_users <- function(tweet_df, split = FALSE, as_tibble = FALSE, ...) {
     order(-timestamp_ms),
     lapply(.SD, function(x) {
       if (.N == 1L) x
-      else if (is.atomic(x)) .subset2(x, which.min(is.na(x)))                                           
+      else if (is.atomic(x)) .subset2(x, which.min(is.na(x))) # which.min() return first `FALSE` here if any not-NA                                           
       else .subset(x, which.min( vapply(.subset2(x, 1L), length, integer(1L)) == 0L))
     }),
-    keyby = user_id
+    by = user_id
   ][, timestamp_ms := .as_posixct(timestamp_ms)
     ][order(timestamp_ms)]
   

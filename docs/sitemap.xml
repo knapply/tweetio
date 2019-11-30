@@ -4,6 +4,12 @@
     <loc>https://knapply.github.io/tweetio/index.html</loc>
   </url>
   <url>
+    <loc>https://knapply.github.io/tweetio/reference/as_igraph.html</loc>
+  </url>
+  <url>
+    <loc>https://knapply.github.io/tweetio/reference/as_proto_net.html</loc>
+  </url>
+  <url>
     <loc>https://knapply.github.io/tweetio/reference/as_tweet_sf.html</loc>
   </url>
   <url>
@@ -14,6 +20,9 @@
   </url>
   <url>
     <loc>https://knapply.github.io/tweetio/reference/extract_users.html</loc>
+  </url>
+  <url>
+    <loc>https://knapply.github.io/tweetio/reference/pipe.html</loc>
   </url>
   <url>
     <loc>https://knapply.github.io/tweetio/reference/read_tweets.html</loc>

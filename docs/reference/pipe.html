@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • tweetio</title>
+<title>Pipe operator — %&gt;% • tweetio</title>
 
 
 <!-- jquery -->
@@ -37,7 +37,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Pipe operator — %&gt;%" />
+<meta property="og:description" content="See magrittr::%&amp;gt;% for details." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -66,7 +68,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -119,129 +121,27 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Pipe operator</h1>
+    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/utils-pipe.R'><code>R/utils-pipe.R</code></a></small>
+    <div class="hidden name"><code>pipe.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>See <code>magrittr::%&gt;%</code> for details.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='no'>lhs</span> <span class='kw'>%&gt;%</span> <span class='no'>rhs</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-input" class="hasAnchor"><a href="#section-input" class="anchor"></a>Input</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="read_tweets.html">read_tweets()</a></code> <code><a href="read_tweets.html">read_tweets_bulk()</a></code> </p>
-        </td>
-        <td><p>Read Tweets into a Data Frame</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-output" class="hasAnchor"><a href="#section-output" class="anchor"></a>Output</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="write_tweet_csv.html">write_tweet_csv()</a></code> <code><a href="write_tweet_csv.html">write_tweet_xlsx()</a></code> <code><a href="write_tweet_csv.html">write_tweet_excel()</a></code> </p>
-        </td>
-        <td><p>Write Tweets to Spreadsheets</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-network-analysis" class="hasAnchor"><a href="#section-network-analysis" class="anchor"></a>Network Analysis</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="as_proto_net.html">as_proto_net()</a></code> </p>
-        </td>
-        <td><p>Convert Various Objects to <code>proto_net</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_igraph.html">as_igraph()</a></code> </p>
-        </td>
-        <td><p>Convert Various Objects to <code>igraph</code> graphs.</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-spatial-analysis" class="hasAnchor"><a href="#section-spatial-analysis" class="anchor"></a>Spatial Analysis</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="as_tweet_sf.html">as_tweet_sf()</a></code> </p>
-        </td>
-        <td><p>Build an <code>sf</code> Object of Tweets</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-extraction" class="hasAnchor"><a href="#section-extraction" class="anchor"></a>Extraction</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="extract_statuses.html">extract_statuses()</a></code> </p>
-        </td>
-        <td><p>Extract All Statuses</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="extract_users.html">extract_users()</a></code> </p>
-        </td>
-        <td><p>Extract All Users</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-miscellaneous" class="hasAnchor"><a href="#section-miscellaneous" class="anchor"></a>Miscellaneous</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="example_tweet_file.html">example_tweet_file()</a></code> </p>
-        </td>
-        <td><p>Path to an Example File</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-input">Input</a></li>
-      <li><a href="#section-output">Output</a></li>
-      <li><a href="#section-network-analysis">Network Analysis</a></li>
-      <li><a href="#section-spatial-analysis">Spatial Analysis</a></li>
-      <li><a href="#section-extraction">Extraction</a></li>
-      <li><a href="#section-miscellaneous">Miscellaneous</a></li>
     </ul>
+
   </div>
 </div>
 

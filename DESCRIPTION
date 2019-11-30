@@ -22,7 +22,8 @@ Imports:
     data.table,
     jsonify,
     Rcpp,
-    stringi
+    stringi,
+    magrittr
 Suggests:
     covr,
     geojsonsf,

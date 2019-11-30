@@ -118,14 +118,15 @@ extract_statuses <- function(tweet_df, as_tibble = FALSE, ...) {
   #   return(lapply(out, tibble::as_tibble))
   # }
   
-  out[
+  sd_cols <- setdiff(names(out), "status_id")
+  out <- out[
     order(-created_at),
     lapply(.SD, function(x) {
       if (.N == 1L) x
       else if (is.atomic(x)) .subset2(x, which.min(is.na(x)))                                           
       else .subset(x, which.min( vapply(.subset2(x, 1L), length, integer(1L) ) == 0L))
     }),
-    keyby = status_id,
+    by = status_id, .SDcols = sd_cols
     ][, created_at := as.POSIXct(created_at, origin = "1970-01-01")
       ]
   

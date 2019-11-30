@@ -39,6 +39,7 @@ options(width = 120)
 [![Depends](https://img.shields.io/badge/Depends-GNU_R>=3.3-blue.svg)](https://www.r-project.org/)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](https://github.com/knapply/tweetio)
 [![HitCount](http://hits.dwyl.io/knapply/tweetio.svg)](http://hits.dwyl.io/knapply/tweetio)
+[!GH-Stars](https://img.shields.io/github/stars/knapply/tweetio?style=social)
 <!-- badges: end -->
 
 # Progress
