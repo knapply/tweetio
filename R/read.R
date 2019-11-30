@@ -19,7 +19,6 @@
 #' @template author-bk
 #' 
 #' @importFrom data.table := setDT
-#' @importFrom utils unzip
 .read_tweets <- function(file_path, verbose, ...) {
   # silence R CMD Check NOTE =============================================================
   metadata <- NULL
@@ -206,20 +205,20 @@ read_tweets_bulk <- function(file_path, as_tibble = FALSE,
                    .SDcols = dttm_cols]
   }
   
+  # there are some occasional control characters that end up in the strings.
+  # AFAIK, they are always `\0`, which aren't allowed in XML files.
+  # To be on the safe side, all control characters are stripped here.
   col_with_control_chars <- c(
     "text", "quoted_text", "quoted_source", "quoted_name", "quoted_location",
     "quoted_description", "retweet_text", "retweet_source", "retweet_location",
     "retweet_description", "name", "location", "description"
   )
-
   proto_tweet_df <- proto_tweet_df[
     , (col_with_control_chars) := lapply(.SD, stri_replace_all_regex, "[[:cntrl:]]", ""),
     .SDcols = col_with_control_chars
     ][, is_retweet := !is.na(retweet_status_id)
       ][, profile_url := paste0("https://twitter.com/i/user/", user_id)
         ]
-  # [, profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
-          # ]
   
   # add status URL columns
   status_url_cols <- c(status_id = "status_url",
@@ -232,39 +231,18 @@ read_tweets_bulk <- function(file_path, as_tibble = FALSE,
     .SDcols = names(status_url_cols)
   ]
   
-  
-  
-  # there are some occasional control characters that end up in the strings.
-  # AFAIK, they are always `\0`, which aren't allowed in XML files.
-  # To be on the safe side, all control characters are stripped here
-  # proto_tweet_df[
-  #   , (chr_cols) := lapply(.SD, stri_replace_all_fixed, "\\0", ""), # "[[:cntrl:]]", ""),
-  #   .SDcols = chr_cols
-  # ]
-  
-
-  
-  # proto_tweet_df <- proto_tweet_df[
-  #   , is_retweet := !is.na(retweet_status_id)
-  #   ][
-  #     , status_url := paste0("https://twitter.com/", screen_name, "/status/", status_id)
-  #   ][
-  #     , profile_url := paste0("https://twitter.com/i/user/", user_id)
-  #   ][
-  #     , profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
-  #   ]
-
-  # proto_tweet_df[
-    # , status_url := paste0("https://twitter.com/", screen_name, "/status/", status_id)
-  # ]
-  # add `profile_url` column (this doesn't appear to be documented)
-  # proto_tweet_df[
-    # , profile_url := paste0("https://twitter.com/i/user/", user_id)
-  # ]
-  # add `profile_url2` column (backup if `profile_url` is cut off)
-  # proto_tweet_df[
-    # , profile_url2 := paste0("https://twitter.com/intent/user?user_id=", user_id)
-  # ]
+  # first urls_expanded_url may be the status_url... drop it if so
+  proto_tweet_df[
+    , urls_expanded_url := .map2(
+      urls_expanded_url, status_url, function(.x, .y) {
+        if (!is.na(.x[[1L]]) && .x[[1L]] == .y) {
+          .x[-1L]
+        } else {
+          .x
+        }
+      }
+    )
+  ]
   
   # follow {rtweet}'s behavior and strip HTML from `*_source`s
   source_cols <- intersect(
@@ -278,7 +256,6 @@ read_tweets_bulk <- function(file_path, as_tibble = FALSE,
       .SDcols = source_cols
     ]
   }
-  
   
   .set_col_order(proto_tweet_df)[]
 }

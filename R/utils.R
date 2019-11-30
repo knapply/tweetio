@@ -48,6 +48,14 @@
   .map_template(.x, .f, logical(1L), ...)
 }
 
+.map2 <- function(.x, .y, .f, ...) {
+  mapply(.f, .x, .y, MoreArgs = list(...), SIMPLIFY = FALSE)
+}
+
+.map2_lgl <- function(.x, .y, .f, ...) {
+  as.vector(.map2(.x, .y, .f, ...), mode = "logical")
+}
+
 
 .imap <- function(.x, .f, ...) {
   nm <- names(.x) %||% seq_along(.x)
@@ -60,6 +68,12 @@
   .x[targets] <- lapply(.x[targets], .f, ...)
   .x
 }
+
+.map_at <- function(.x, .at, .f, ...) {
+  .x[.at] <- lapply(.x[.at], .f, ...)
+  .x
+}
+
 
 .keep <- function(.x, .f, ...) {
   .x[.map_lgl(.x, .f, ...)]
