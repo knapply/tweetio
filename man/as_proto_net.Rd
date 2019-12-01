@@ -13,7 +13,7 @@ as_proto_net(tweet_df, target_class = c("user", "hashtag", "url",
 one of \code{{rtweet}}'s collection functions, e.g. \code{\link[rtweet:search_tweets]{rtweet::search_tweets()}}.}
 
 \item{target_class}{\code{character(1L)}, Default: \code{"user"}. The class of nodes to use as
-the second half of each dyad (the to/target/tail poriton). See Details.}
+the second half of each dyad (target/to/tail). See Details.}
 
 \item{all_status_data}{\code{logical(1L)}, Default: \code{FALSE}. Whether to attach all relevant
 status data to the \code{edges} data frame, which can then be used as edge attributes for
