@@ -4,6 +4,6 @@
 #' 
 #' @export
 example_tweet_file <- function() {
-  system.file("example-data/api-stream.json.gz", 
+  system.file("example-data/api-stream-small.json.gz", 
               package = "tweetio")
 }

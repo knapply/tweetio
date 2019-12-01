@@ -159,31 +159,31 @@
 <span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='no'>path_to_tweet_file</span>)
 
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>as_igraph</span>()</div><div class='output co'>#&gt; IGRAPH 2818672 DN-- 37519 42191 -- 
+  <span class='fu'>as_igraph</span>()</div><div class='output co'>#&gt; IGRAPH ca49bd6 DN-- 1228 1234 -- 
 #&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
-#&gt; + edges from 2818672 (vertex names):
-#&gt;  [1] 807195027403259904 -&gt;938662230052052992 
-#&gt;  [2] 247059655          -&gt;609647782          
-#&gt;  [3] 822602638231535617 -&gt;701750402786717696 
-#&gt;  [4] 1104415177603133444-&gt;1108885040862121985
-#&gt;  [5] 359294371          -&gt;1034795669645447168
-#&gt;  [6] 194250838          -&gt;340309688          
-#&gt;  [7] 1160132819114287105-&gt;3251156738         
-#&gt;  [8] 1064053347164930048-&gt;2430693075         
+#&gt; + edges from ca49bd6 (vertex names):
+#&gt;  [1] 194250838          -&gt;340309688          
+#&gt;  [2] 825459487821619201 -&gt;966825602          
+#&gt;  [3] 1116228559616397312-&gt;3153145782         
+#&gt;  [4] 4374655520         -&gt;4167284315         
+#&gt;  [5] 1172885625068036102-&gt;1112877891841343488
+#&gt;  [6] 1132474594583928832-&gt;1217220278         
+#&gt;  [7] 20737729           -&gt;39334221           
+#&gt;  [8] 2198859787         -&gt;3096758526         
 #&gt; + ... omitted several edges</div><div class='input'>
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='as_proto_net.html'>as_proto_net</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>as_igraph</span>()</div><div class='output co'>#&gt; IGRAPH 2891b6a DN-- 37519 42191 -- 
+  <span class='fu'>as_igraph</span>()</div><div class='output co'>#&gt; IGRAPH ca50298 DN-- 1228 1234 -- 
 #&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
-#&gt; + edges from 2891b6a (vertex names):
-#&gt;  [1] 807195027403259904 -&gt;938662230052052992 
-#&gt;  [2] 247059655          -&gt;609647782          
-#&gt;  [3] 822602638231535617 -&gt;701750402786717696 
-#&gt;  [4] 1104415177603133444-&gt;1108885040862121985
-#&gt;  [5] 359294371          -&gt;1034795669645447168
-#&gt;  [6] 194250838          -&gt;340309688          
-#&gt;  [7] 1160132819114287105-&gt;3251156738         
-#&gt;  [8] 1064053347164930048-&gt;2430693075         
+#&gt; + edges from ca50298 (vertex names):
+#&gt;  [1] 194250838          -&gt;340309688          
+#&gt;  [2] 825459487821619201 -&gt;966825602          
+#&gt;  [3] 1116228559616397312-&gt;3153145782         
+#&gt;  [4] 4374655520         -&gt;4167284315         
+#&gt;  [5] 1172885625068036102-&gt;1112877891841343488
+#&gt;  [6] 1132474594583928832-&gt;1217220278         
+#&gt;  [7] 20737729           -&gt;39334221           
+#&gt;  [8] 2198859787         -&gt;3096758526         
 #&gt; + ... omitted several edges</div><div class='input'>
 </div></pre>
   </div>

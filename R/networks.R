@@ -1,11 +1,11 @@
-#' Convert Various Objects to `proto_net`
+#' Convert Various Objects to `proto_net`s
 #' 
 #' A `proto_net` is a `list` containing two data frames named `edges` and `nodes`.
 #' 
 #' 
 #' @template param-tweet_df
 #' @param target_class `character(1L)`, Default: `"user"`. The class of nodes to use as
-#' the second half of each dyad (target/to/tail). See Details.
+#' the second half of each dyad (target/to/head). See Details.
 #' @param all_status_data `logical(1L)`, Default: `FALSE`. Whether to attach all relevant
 #' status data to the `edges` data frame, which can then be used as edge attributes for
 #' downstream tasks.
@@ -16,7 +16,7 @@
 #' @template param-dots
 #' 
 #' @details 
-#' * In a `proto_net`, users are always to source/from/head side of dyads. `target_class` 
+#' * In a `proto_net`, users are always to source/from/tail side of dyads. `target_class` 
 #' defaults to `"user"`, which creates edges where users on both sides of dyads. 
 #'   + However users can also share edges with `"hashtag"`s, `"url"`s, or `"media"`, so 
 #'   those values are also valid to provide to `target_class` to create two-mode/bipartite
@@ -66,9 +66,10 @@ as_proto_net <- function(tweet_df,
                          as_tibble = FALSE,
                          ...) {
   # silence R CMD Check NOTE =============================================================
-  ..edge_cols <- NULL
   relation <- NULL
+  to <- NULL
   # ======================================================================================
+  
   if (!.is_dt(tweet_df)) {
     tweet_df <- as.data.table(tweet_df)
   }
@@ -96,7 +97,7 @@ as_proto_net <- function(tweet_df,
   edge_by_status_type <- .imap(targets, function(.x, .y) {
     edge_cols <- c("user_id", .x, "status_id")
     
-    res <- tweet_df[!is.na(get(.x)), ..edge_cols]
+    res <- tweet_df[!is.na(get(.x)), edge_cols, with = FALSE]
     
     setnames(res, c("from", "to", "status_id"))
     

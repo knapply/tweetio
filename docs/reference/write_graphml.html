@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • tweetio</title>
+<title>Write Gephi-Friendly .graphml Files — write_graphml • tweetio</title>
 
 
 <!-- jquery -->
@@ -37,7 +37,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Write Gephi-Friendly .graphml Files — write_graphml" />
+<meta property="og:description" content="Simple, safe transformation of attributes to values with which Gephi will cooperate." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -66,7 +68,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -119,135 +121,80 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Write Gephi-Friendly .graphml Files</h1>
+    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/graphml.R'><code>R/graphml.R</code></a></small>
+    <div class="hidden name"><code>write_graphml.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Simple, safe transformation of attributes to values with which Gephi will cooperate.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>write_graphml</span>(<span class='no'>g</span>, <span class='no'>file_path</span>, <span class='kw'>na_numbers_as</span> <span class='kw'>=</span> -<span class='fl'>1</span>, <span class='kw'>na_characters_as</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='no'>...</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-input" class="hasAnchor"><a href="#section-input" class="anchor"></a>Input</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="read_tweets.html">read_tweets()</a></code> <code><a href="read_tweets.html">read_tweets_bulk()</a></code> </p>
-        </td>
-        <td><p>Read Tweets into a Data Frame</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-output" class="hasAnchor"><a href="#section-output" class="anchor"></a>Output</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="write_tweet_csv.html">write_tweet_csv()</a></code> <code><a href="write_tweet_csv.html">write_tweet_xlsx()</a></code> <code><a href="write_tweet_csv.html">write_tweet_excel()</a></code> </p>
-        </td>
-        <td><p>Write Tweets to Spreadsheets</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="write_graphml.html">write_graphml()</a></code> </p>
-        </td>
-        <td><p>Write Gephi-Friendly .graphml Files</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-network-analysis" class="hasAnchor"><a href="#section-network-analysis" class="anchor"></a>Network Analysis</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="as_proto_net.html">as_proto_net()</a></code> </p>
-        </td>
-        <td><p>Convert Various Objects to <code>proto_net</code>s</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="as_igraph.html">as_igraph()</a></code> </p>
-        </td>
-        <td><p>Convert Various Objects to <code>igraph</code> graphs.</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-spatial-analysis" class="hasAnchor"><a href="#section-spatial-analysis" class="anchor"></a>Spatial Analysis</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="as_tweet_sf.html">as_tweet_sf()</a></code> </p>
-        </td>
-        <td><p>Build an <code>sf</code> Object of Tweets</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-extraction" class="hasAnchor"><a href="#section-extraction" class="anchor"></a>Extraction</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="extract_statuses.html">extract_statuses()</a></code> </p>
-        </td>
-        <td><p>Extract All Statuses</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="extract_users.html">extract_users()</a></code> </p>
-        </td>
-        <td><p>Extract All Users</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-miscellaneous" class="hasAnchor"><a href="#section-miscellaneous" class="anchor"></a>Miscellaneous</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="example_tweet_file.html">example_tweet_file()</a></code> </p>
-        </td>
-        <td><p>Path to an Example File</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>g</th>
+      <td><p><code><a href='https://rdrr.io/pkg/igraph/man/make_graph.html'>igraph::graph()</a></code> object</p></td>
+    </tr>
+    <tr>
+      <th>file_path</th>
+      <td><p>File path to which to write or from which to read.</p></td>
+    </tr>
+    <tr>
+      <th>na_numbers_as</th>
+      <td><p><code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1L)</a></code>, Default: <code>-1</code>. Value to replace
+<code>NA_real_</code>/<code>NA_integer_</code>s in the resulting file.</p></td>
+    </tr>
+    <tr>
+      <th>na_characters_as</th>
+      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1L)</a></code>, Default: <code>""</code>. Value to replace
+<code>NA_character_</code>s in the resulting file.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed to or from other methods.</p></td>
+    </tr>
     </table>
-  </div>
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>path_to_tweet_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example_tweet_file.html'>example_tweet_file</a></span>()
+                                                       <span class='co'># first 5 rows</span>
+<span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>)[<span class='fl'>1</span>:<span class='fl'>5</span>, ]
+
+<span class='no'>tweet_graph</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as_igraph.html'>as_igraph</a></span>(<span class='no'>tweet_df</span>)
+<span class='no'>tweet_graph</span></div><div class='output co'>#&gt; IGRAPH cd41cb9 DN-- 9 9 -- 
+#&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
+#&gt; + edges from cd41cb9 (vertex names):
+#&gt; [1] 194250838         -&gt;340309688          
+#&gt; [2] 825459487821619201-&gt;966825602          
+#&gt; [3] 218889555         -&gt;3193408588         
+#&gt; [4] 2949080443        -&gt;1079593643130859520
+#&gt; [5] 194250838         -&gt;340309688          
+#&gt; [6] 825459487821619201-&gt;966825602          
+#&gt; [7] 218889555         -&gt;3193408588         
+#&gt; [8] 218889555         -&gt;278758337          
+#&gt; + ... omitted several edges</div><div class='input'>
+<span class='co'># write comma-separated values files ==================================================</span>
+<span class='no'>graphml_path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".graphml"</span>)
+<span class='no'>graphml_path</span></div><div class='output co'>#&gt; [1] "C:\\Users\\brend\\AppData\\Local\\Temp\\RtmpWA3u0K\\file337854367888.graphml"</div><div class='input'>
+<span class='fu'>write_graphml</span>(<span class='no'>tweet_graph</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>graphml_path</span>)</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-input">Input</a></li>
-      <li><a href="#section-output">Output</a></li>
-      <li><a href="#section-network-analysis">Network Analysis</a></li>
-      <li><a href="#section-spatial-analysis">Spatial Analysis</a></li>
-      <li><a href="#section-extraction">Extraction</a></li>
-      <li><a href="#section-miscellaneous">Miscellaneous</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
+    <h2>Author</h2>
+    <p>Brendan Knapp <a href='mailto:brendan.g.knapp@gmail.com'>brendan.g.knapp@gmail.com</a></p>
   </div>
 </div>
 

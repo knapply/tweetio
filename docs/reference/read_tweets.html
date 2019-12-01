@@ -134,8 +134,8 @@
 
     <pre class="usage"><span class='fu'>read_tweets</span>(<span class='no'>file_path</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
-<span class='fu'>read_tweets_bulk</span>(<span class='no'>file_path</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>in_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>strategy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>read_tweets_bulk</span>(<span class='no'>file_path</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>in_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strategy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,20 +187,20 @@ If <code>NULL</code>, <code><a href='https://rdrr.io/pkg/future/man/multiprocess
 
 <span class='no'>tweet_tibble</span> <span class='kw'>&lt;-</span> <span class='fu'>read_tweets</span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='no'>tweet_tibble</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 22,760 x 93</span><span>
+<span class='no'>tweet_tibble</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 681 x 93</span><span>
 #&gt;    user_id status_id created_at          screen_name text  source
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #555555;'> 1</span><span> 807195~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> ykaoi0327   RT @~ Twitt~
-#&gt; </span><span style='color: #555555;'> 2</span><span> 114393~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> yowasugi723 </span><span style='color: #555555;'>"</span><span>@Di~ Twitt~
-#&gt; </span><span style='color: #555555;'> 3</span><span> 247059~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> itsauroras~ RT @~ Twitt~
-#&gt; </span><span style='color: #555555;'> 4</span><span> 822602~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> Darrell894~ RT @~ Twitt~
-#&gt; </span><span style='color: #555555;'> 5</span><span> 797200~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> NastyWoman~ @Bra~ Twitt~
-#&gt; </span><span style='color: #555555;'> 6</span><span> 110779~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> DeshaunAwe~ met ~ twitt~
-#&gt; </span><span style='color: #555555;'> 7</span><span> 110441~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> diamondy_u  </span><span style='color: #555555;'>"</span><span>RT ~ Twitt~
-#&gt; </span><span style='color: #555555;'> 8</span><span> 359294~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> piyakat28   </span><span style='color: #555555;'>"</span><span>RT ~ Twitt~
-#&gt; </span><span style='color: #555555;'> 9</span><span> 194250~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> Stgo_centro RT @~ Twitt~
-#&gt; </span><span style='color: #555555;'>10</span><span> 116013~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> 119lonwi_y~ RT @~ Twitt~
-#&gt; </span><span style='color: #555555;'># ... with 22,750 more rows, and 87 more variables: reply_to_status_id </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; </span><span style='color: #555555;'> 1</span><span> 194250~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:23</span><span> Stgo_centro RT @~ Twitt~
+#&gt; </span><span style='color: #555555;'> 2</span><span> 825459~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:24</span><span> taylorxkas~ RT @~ Twitt~
+#&gt; </span><span style='color: #555555;'> 3</span><span> 218889~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:24</span><span> markaduck   @_Ce~ Twitt~
+#&gt; </span><span style='color: #555555;'> 4</span><span> 401300~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:25</span><span> unmario     Foto~ Insta~
+#&gt; </span><span style='color: #555555;'> 5</span><span> 294908~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:25</span><span> ALmardoza21 </span><span style='color: #555555;'>"</span><span>@Es~ Twitt~
+#&gt; </span><span style='color: #555555;'> 6</span><span> 111622~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:27</span><span> singhbhrme~ </span><span style='color: #555555;'>"</span><span>RT ~ Twitt~
+#&gt; </span><span style='color: #555555;'> 7</span><span> 231344~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:27</span><span> barbimoral~ </span><span style='color: #555555;'>"</span><span>Mi ~ Twitt~
+#&gt; </span><span style='color: #555555;'> 8</span><span> 437465~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:27</span><span> javii_sotoo </span><span style='color: #555555;'>"</span><span>RT ~ Twitt~
+#&gt; </span><span style='color: #555555;'> 9</span><span> 117288~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:29</span><span> nLfRH1      </span><span style='color: #555555;'>"</span><span>RT ~ Twitt~
+#&gt; </span><span style='color: #555555;'>10</span><span> 113247~ 11780078~ 2019-09-28 </span><span style='color: #555555;'>18:05:30</span><span> bexxxv97    RT @~ Twitt~
+#&gt; </span><span style='color: #555555;'># ... with 671 more rows, and 87 more variables: reply_to_status_id </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
 #&gt; #   reply_to_user_id </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, reply_to_screen_name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, is_quote </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,
 #&gt; #   is_retweet </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, hashtags </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, urls_expanded_url </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,
 #&gt; #   media_url </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, media_expanded_url </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, media_type </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>,

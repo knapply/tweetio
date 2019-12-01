@@ -2,7 +2,7 @@
 % Please edit documentation in R/networks.R
 \name{as_proto_net}
 \alias{as_proto_net}
-\title{Convert Various Objects to \code{proto_net}}
+\title{Convert Various Objects to \code{proto_net}s}
 \usage{
 as_proto_net(tweet_df, target_class = c("user", "hashtag", "url",
   "media"), all_status_data = FALSE, all_user_data = FALSE,
@@ -13,7 +13,7 @@ as_proto_net(tweet_df, target_class = c("user", "hashtag", "url",
 one of \code{{rtweet}}'s collection functions, e.g. \code{\link[rtweet:search_tweets]{rtweet::search_tweets()}}.}
 
 \item{target_class}{\code{character(1L)}, Default: \code{"user"}. The class of nodes to use as
-the second half of each dyad (target/to/tail). See Details.}
+the second half of each dyad (target/to/head). See Details.}
 
 \item{all_status_data}{\code{logical(1L)}, Default: \code{FALSE}. Whether to attach all relevant
 status data to the \code{edges} data frame, which can then be used as edge attributes for
@@ -33,7 +33,7 @@ A \code{proto_net} is a \code{list} containing two data frames named \code{edges
 }
 \details{
 \itemize{
-\item In a \code{proto_net}, users are always to source/from/head side of dyads. \code{target_class}
+\item In a \code{proto_net}, users are always to source/from/tail side of dyads. \code{target_class}
 defaults to \code{"user"}, which creates edges where users on both sides of dyads.
 \itemize{
 \item However users can also share edges with \code{"hashtag"}s, \code{"url"}s, or \code{"media"}, so
