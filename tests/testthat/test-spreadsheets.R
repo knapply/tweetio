@@ -12,12 +12,22 @@ test_that("reading/writing spreadsheets works", {
   )
   
   expect_error(
+    write_tweet_csv(as.data.frame(test_df), csv_temp_file),
+    NA
+  )
+  
+  expect_error(
     read.csv(csv_temp_file),
     NA
   )
   
   expect_error(
     write_tweet_xlsx(test_df, xl_temp_file),
+    NA
+  )
+  
+  expect_error(
+    write_tweet_xlsx(as.data.frame(test_df), xl_temp_file),
     NA
   )
 })
