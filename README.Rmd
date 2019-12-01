@@ -212,19 +212,14 @@ Each line contains a single JSON object resembling the following:
     "system_metadata_you_dont_care_about": "blahblahblah",
     "more_metadata1": "blahblahblah",
     "more_metadata2": "blahblahblah",
-    "more_metadata3": "blahblahblah",
-    "more_metadata4": "blahblahblah",
-    "more_metadata5": "blahblahblah",
     "doc": {
         "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
         "id": 92108498098018010401,
-        "id_str": "92108498098018010401"
+        "id_str": "92108498098018010401",
+        "_text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
     },
     "more_metadata6": "blahblahblah",
-    "more_metadata7": "blahblahblah",
-    "more_metadata8": "blahblahblah",
-    "more_metadata9": "blahblahblah",
-    "more_metadata10": "blahblahblah"
+    "more_metadata7": "blahblahblah"
 }
 ```
 
@@ -242,7 +237,8 @@ The array structure is a complete dump of the file, which looks something like t
             "doc": {
                 "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
                 "id": 92108498098018010401,
-                "id_str": "92108498098018010401"
+                "id_str": "92108498098018010401",
+                "_text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
             },
             "more_metadata6": "blahblahblah"
         }
@@ -257,7 +253,8 @@ The array structure is a complete dump of the file, which looks something like t
             "doc": {
                 "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
                 "id": 92108498098018010401,
-                "id_str": "92108498098018010401"
+                "id_str": "92108498098018010401",
+                "_text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
             },
             "more_metadata6": "blahblahblah"
         }

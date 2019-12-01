@@ -1,9 +1,13 @@
 test_that("as_tweet_sf() works", {
-  tweet_df <- read_tweets(system.file("example-data/api-stream.json.gz", 
-                                      package = "tweetio"))
+  tweet_df <- read_tweets(example_tweet_file())
   
   expect_s3_class(
     as_tweet_sf(tweet_df),
+    "sf"
+  )
+  
+  expect_s3_class(
+    as_tweet_sf(tweet_df, as_tibble = TRUE),
     "sf"
   )
   
@@ -17,6 +21,11 @@ test_that("as_tweet_sf() works", {
   
   expect_identical(
     attr(as_tweet_sf(tweet_df), "sf_column"),
+    "bbox_coords"
+  )
+  
+  expect_identical(
+    attr(as_tweet_sf(as.data.frame(tweet_df)), "sf_column"),
     "bbox_coords"
   )
   

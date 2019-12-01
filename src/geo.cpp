@@ -42,29 +42,6 @@ bool has_valid_coords(const vec_dbl& bbox) {
          bbox[5] >= min_lat && bbox[5] <= max_lat &&
          bbox[6] >= min_lon && bbox[6] <= max_lon &&
          bbox[7] >= min_lat && bbox[7] <= max_lat;
-
-  // const bool good_longs = bbox[0] >= min_long && bbox[0] <= max_long &&
-  //                         bbox[2] >= min_long && bbox[2] <= max_long &&
-  //                         bbox[4] >= min_long && bbox[4] <= max_long &&
-  //                         bbox[6] >= min_long && bbox[6] <= max_long;
-
-  // const bool good_lats  = bbox[1] >= min_lat && bbox[1] <= max_lat &&
-  //                         bbox[3] >= min_lat && bbox[3] <= max_lat &&
-  //                         bbox[5] >= min_lat && bbox[5] <= max_lat &&
-  //                         bbox[7] >= min_lat && bbox[7] <= max_lat;
-  // Rcpp::Rcout << "good_lats: " << good_lats << std::endl;  
-
-
-  // return good_longs && good_lats;
-
-  // return bbox[0] >= min_long && bbox[0] <= max_long &&
-  //        bbox[1] >= min_lat  && bbox[1] <= max_lat  &&
-  //        bbox[2] >= min_long && bbox[2] <= max_long &&
-  //        bbox[3] >= min_lat  && bbox[3] <= max_lat  &&
-  //        bbox[4] >= min_long && bbox[4] <= max_long &&
-  //        bbox[5] >= min_lat  && bbox[5] <= max_lat  &&
-  //        bbox[6] >= min_long && bbox[6] <= min_long &&
-  //        bbox[7] >= min_lat  && bbox[7] <= max_lat;
 }
 
 // [[Rcpp::export]]
@@ -73,9 +50,12 @@ Rcpp::LogicalVector is_valid_bbox(const Rcpp::List& bbox_coords) {
   vec_lgl out(n);
 
   for (R_xlen_t i = 0; i < n; ++i) {
-    vec_dbl current_bbox = bbox_coords[i];
-
-    out[i] = has_valid_coords(current_bbox);
+    if (TYPEOF(bbox_coords[i]) != REALSXP) {
+      out[i] = false;
+    } else {
+      vec_dbl current_bbox = bbox_coords[i];
+      out[i] = has_valid_coords(current_bbox);
+    }
   }
 
   return out;
@@ -86,72 +66,34 @@ Rcpp::List prep_bbox(const Rcpp::List& bbox_coords) {
   const int n( bbox_coords.length() );
   const vec_chr current_out_class = vec_chr{"XY", "POLYGON", "sfg"};
 
-  // vec_dbl test_coords = bbox_coords[0];
-  // const bool col_major = test_coords[0] != test_coords[2];
-
   Rcpp::List out = Rcpp::List(n);
 
-  vec_dbl current_in;
+  // vec_dbl current_in;
 
-  // constexpr R_xlen_t valid_length = 8;
 
   for (R_xlen_t i = 0; i < n; ++i) {
-    current_in = bbox_coords[i];
-    // if (Rcpp::na_omit(current_in).length() != valid_length) {
-    //   out[i] = vec_dbl{NA_REAL};
-    //   continue;
-    // }
+    vec_dbl current_in = bbox_coords[i];
 
-    // bool invalid(false);
-    // for (R_xlen_t j = 0; j < valid_length; ++j) {
-    //   if (current_in[j] == 180) {
-    //     invalid = true;
-    //   }
-    // }
-    // if (invalid) {
-    //   out[i] = vec_dbl{NA_REAL};
-    //   continue;
-    // }
-            
+    if (current_in.length() != 8) {
+      Rcpp::List empty_geom;
+      empty_geom.attr("class") = current_out_class;
+      out[i] = empty_geom;
+      continue;
+    }
 
     Rcpp::NumericMatrix current_mat(5, 2);
 
-    // if (col_major) {
-      // current_mat[0] = current_in[0];
-      // current_mat[1] = current_in[1];
-      // current_mat[2] = current_in[2];
-      // current_mat[3] = current_in[3];
-      // current_mat[4] = current_in[0];
+    current_mat[0] = current_in[0];
+    current_mat[1] = current_in[2];
+    current_mat[2] = current_in[4];
+    current_mat[3] = current_in[6];
+    current_mat[4] = current_in[0];
 
-      // current_mat[5] = current_in[4];
-      // current_mat[6] = current_in[5];
-      // current_mat[7] = current_in[6];
-      // current_mat[8] = current_in[7];
-      // current_mat[9] = current_in[4];
-
-    // } 
-    // else {
-      current_mat[0] = current_in[0];
-      current_mat[1] = current_in[2];
-      current_mat[2] = current_in[4];
-      current_mat[3] = current_in[6];
-      current_mat[4] = current_in[0];
-
-      current_mat[5] = current_in[1];
-      current_mat[6] = current_in[3];
-      current_mat[7] = current_in[5];
-      current_mat[8] = current_in[7];
-      current_mat[9] = current_in[1];
-
-    // }
-
-    // for (int j = 0; j < valid_length; ++j) {
-    //   if (current_mat[j] <= -180) {
-    //     current_mat[j] = -179;
-    //   } else if (current_mat[j] >= 180) {
-    //     current_mat[j] = 179;
-    //   }
-    // }
+    current_mat[5] = current_in[1];
+    current_mat[6] = current_in[3];
+    current_mat[7] = current_in[5];
+    current_mat[8] = current_in[7];
+    current_mat[9] = current_in[1];
 
     Rcpp::List current_out = Rcpp::List::create(current_mat);
     current_out.attr("class") = current_out_class;

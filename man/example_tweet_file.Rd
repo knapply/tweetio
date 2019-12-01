@@ -4,11 +4,21 @@
 \alias{example_tweet_file}
 \title{Path to an Example File}
 \usage{
-example_tweet_file()
+example_tweet_file(small = TRUE)
+}
+\arguments{
+\item{small}{\code{logical(1L)}, Default: \code{TRUE}.}
 }
 \value{
-\code{<character>} file path
+\code{character(1L)} file path
 }
 \description{
 Path to an Example File
+}
+\examples{
+example_tweet_file()
+
+}
+\author{
+Brendan Knapp \email{brendan.g.knapp@gmail.com}
 }
