@@ -32,7 +32,7 @@
          call. = FALSE)
   }
   
-  if (grepl("\\.zip$", file_path)) {
+  if (grepl("\\.zip$", file_path, ignore.case = TRUE)) {
     if (!requireNamespace("utils", quietly = TRUE)) {
       stop("`file_path` points to a .zip file. The {utils} package is required in order to
            unzip it.", call. = FALSE)
@@ -115,7 +115,7 @@ read_tweets <- function(file_path, as_tibble = FALSE, verbose = FALSE, ...) {
 #' 
 #' @importFrom data.table rbindlist
 #' @export
-read_tweets_bulk <- function(file_path, as_tibble = FALSE, 
+read_tweets_bulk <- function(file_path, verbose = FALSE, as_tibble = FALSE, 
                              in_parallel = TRUE, strategy = NULL, ...) {
   if (length(file_path) == 1L) {
     return(read_tweets(file_path))
@@ -126,12 +126,12 @@ read_tweets_bulk <- function(file_path, as_tibble = FALSE,
                   requireNamespace("future.apply", quietly = TRUE)
   
   if (use_future) {
-    .strategy <- if (is.null(.strategy)) future::multiprocess else .strategy
+    .strategy <- if (is.null(strategy)) future::multiprocess else strategy
     future::plan(strategy = .strategy, ...)
 
-    init <- future.apply::future_lapply(file_path, .read_tweets)
+    init <- future.apply::future_lapply(file_path, .read_tweets, verbose = verbose)
   } else {
-    init <- lapply(file_path, .read_tweets)
+    init <- lapply(file_path, .read_tweets, verbose = verbose)
   }
   
   out <- rbindlist(init, use.names = TRUE, fill = TRUE)
@@ -194,6 +194,7 @@ read_tweets_bulk <- function(file_path, as_tibble = FALSE,
   screen_name <- NULL
   status_id <- NULL
   user_id <- NULL
+  urls_expanded_url <- NULL
   # ======================================================================================
   
   # convert date-times to POSIXct

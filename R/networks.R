@@ -5,7 +5,7 @@
 #' 
 #' @template param-tweet_df
 #' @param target_class `character(1L)`, Default: `"user"`. The class of nodes to use as
-#' the second half of each dyad (the to/target/tail poriton). See Details.
+#' the second half of each dyad (target/to/tail). See Details.
 #' @param all_status_data `logical(1L)`, Default: `FALSE`. Whether to attach all relevant
 #' status data to the `edges` data frame, which can then be used as edge attributes for
 #' downstream tasks.
@@ -65,6 +65,10 @@ as_proto_net <- function(tweet_df,
                          all_user_data = FALSE,
                          as_tibble = FALSE,
                          ...) {
+  # silence R CMD Check NOTE =============================================================
+  ..edge_cols <- NULL
+  relation <- NULL
+  # ======================================================================================
   if (!.is_dt(tweet_df)) {
     tweet_df <- as.data.table(tweet_df)
   }

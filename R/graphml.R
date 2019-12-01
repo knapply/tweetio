@@ -27,11 +27,9 @@ write_graphml <- function(g, file_path, na_numbers_as = -1,
   if (!is.character(file_path) || length(file_path) != 1L) {
     stop("`path` must be a <character> scalar.", call. = FALSE)
   }
-  if (!is.null(na_numbers_as)) {
-    if (!is.numeric(na_numbers_as) || length(na_numbers_as) != 1L) {
-      stop("`na_numbers_as` must be `NULL` or a scalar <numeric>.",
-           call. = FALSE)
-    }
+  if (!is.numeric(na_numbers_as) || length(na_numbers_as) != 1L) {
+    stop("`na_numbers_as` must be `NULL` or a scalar <numeric>.",
+         call. = FALSE)
   }
   if (!is.null(na_characters_as)) {
     if (!is.character(na_characters_as) || length(na_characters_as) != 1L) {

@@ -7,8 +7,8 @@
 \usage{
 read_tweets(file_path, as_tibble = FALSE, verbose = FALSE, ...)
 
-read_tweets_bulk(file_path, as_tibble = FALSE, in_parallel = TRUE,
-  strategy = NULL, ...)
+read_tweets_bulk(file_path, verbose = FALSE, as_tibble = FALSE,
+  in_parallel = TRUE, strategy = NULL, ...)
 }
 \arguments{
 \item{file_path}{Path(s) to tweet files.}

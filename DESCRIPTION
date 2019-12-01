@@ -1,5 +1,5 @@
 Package: tweetio
-Title: Really, Really, Ridiculously Fast Tweet Data
+Title: Efficient Analytical Routines and I/O for Twitter Data
 Version: 0.1
 Authors@R: 
     person("Brendan", "Knapp", 
@@ -7,10 +7,13 @@ Authors@R:
            role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3284-4972"))
 Description: 
-    `{tweetio}`'s primary goal is to read raw tweets into data frames as fast as possible,
-    whether the data came directly from the Twitter API, a database dump, or from
-    `{rtweet}` or another package. It also provides routines to transform tweet data into 
-    useful structures and write the data to useful file formats.
+    `{tweetio}` has three goals: 1) efficiently read Twitter data into R from multiple 
+    sources, 2) provide the building blocks for robust analytical pipelines that use 
+    network, spatial, and/or natural language processing perspectives, and 3) write Twitter
+    data to multiple file formats, including those that best enable non-technical analysts 
+    to work. The primary data frame structure is heavily inspired by `{rtweet}`, and 
+    all analytical routines being compatible with `{rtweet}` data frames is heavily
+    prioritized.
 License: GPL-3 + file LICENSE
 Depends: R (>= 3.3)
 SystemRequirements: zlib, C++11

@@ -1,5 +1,5 @@
 test_that("detecting data type works", {
-  temp_file <- tempfile()
+  temp_file <- tempfile(fileext = ".json")
   
   # deleted status from API stream
   normal1 <- "{\"delete\":{\"status\":{\"id\":565342480917602305,\"id_str\":\"565342480917602305\",\"user_id\":1666065217,\"user_id_str\":\"1666065217\"},\"timestamp_ms\":\"1569693799718\"}}"
@@ -15,6 +15,12 @@ test_that("detecting data type works", {
   write(normal2, temp_file)
   expect_error(
     nrow(read_tweets(temp_file)),
+    NA
+  )
+  
+  # zip file
+  expect_error(
+    nrow(read_tweets(system.file("example-data/test.zip", package = "tweetio"))),
     NA
   )
 
@@ -51,8 +57,8 @@ test_that("detecting data type works", {
     0
   )
   
-  nested_doc <- '{"junk":[],"doc":{"kind":"test"}}.'
-  write(nested_doc, temp_file)
+  bad_json <- '{"junk":[],"doc":{"kind":"test"}}.'
+  write(bad_json, temp_file)
   expect_error(
     nrow(read_tweets(temp_file)),
     "File does not contain any valid JSON."
