@@ -51,7 +51,7 @@ user_col_names <- function(tweet_df) {
     c("created_at", intersect(.x, names(tweet_df)))
   })
   
-  Filter(function(.x) length(.x) > 1L, out)
+  .keep(out, function(.x) length(.x) > 1L)
 }
 
 
@@ -59,13 +59,14 @@ user_col_names <- function(tweet_df) {
 
 #' Extract All Users
 #' 
-#' Build a data frame of users where each is summarized in a single row. The values of
-#' each column hold the most recent non-`NA`/non-empty value.
+#' Extract all users and relevant data, including retweeters, quoters, repliers, and mentions.
 #' 
 #' @template param-tweet_df
+#' @param summarize `logical(1L)`, Default: `TRUE`. Whether to aggregate all users data to
+#' a single row containing the most recent non-missing values.
 #' @param split `logical(1L)`, Default: `FALSE`. Whether to split users into separate data
 #' frames and return a list of those data frames, retaining all instances where each user
-#' was observed.
+#' was observed. Ignored if `summarize` is `TRUE`.
 #' @template param-as_tibble
 #' @template param-dots
 #' 
@@ -77,7 +78,9 @@ user_col_names <- function(tweet_df) {
 #'
 #' extract_users(tweet_df, as_tibble = TRUE) 
 #' 
-#' split_users <- extract_users(tweet_df, split = TRUE, as_tibble = TRUE)
+#' extract_users(tweet_df, summarize = FALSE, as_tibble = TRUE) 
+#' 
+#' split_users <- extract_users(tweet_df, summarize = FALSE, split = TRUE, as_tibble = TRUE)
 #' 
 #' # first 3 users with more than 5 observations.
 #' split_users[vapply(split_users, function(.x) nrow(.x) > 5, logical(1L))][1:3]
@@ -85,14 +88,14 @@ user_col_names <- function(tweet_df) {
 #' @importFrom data.table data.table is.data.table setcolorder setDT setnames
 #' 
 #' @export
-extract_users <- function(tweet_df, split = FALSE, as_tibble = FALSE, ...) {
+extract_users <- function(tweet_df, summarize = TRUE, split = FALSE, as_tibble = FALSE, ...) {
   # silence R CMD Check NOTE =============================================================
-  ..col <- NULL
+  .N <- NULL
   .SD <- NULL
+  ..col <- NULL
   user_id <- NULL
   created_at <- NULL
   timestamp_ms <- NULL
-  .N <- NULL
   observation_type <- NULL
   # ======================================================================================
   
@@ -114,7 +117,7 @@ extract_users <- function(tweet_df, split = FALSE, as_tibble = FALSE, ...) {
     )
   )
   
-  if (split) {
+  if (!summarize && split) {
     split_users <- .imap(split_users, function(.x, .y) {
       .x[, observation_type := .y]
     })
@@ -130,12 +133,17 @@ extract_users <- function(tweet_df, split = FALSE, as_tibble = FALSE, ...) {
   setcolorder(out, col_order)
   setnames(out, old = "created_at", new = "timestamp_ms")
   
-  if (split) {
-    out <- split(out[order(timestamp_ms)], by = "user_id")
-    if (as_tibble && requireNamespace("tibble", quietly = TRUE)) {
-      out <- lapply(out, tibble::as_tibble)
+  if (!summarize) {
+    if (split) {
+      out <- split(out[order(timestamp_ms)], by = "user_id")
+    
+      if (as_tibble && requireNamespace("tibble", quietly = TRUE)) {
+        out <- lapply(out, tibble::as_tibble)
+      }
+      return(out)
     }
-    return(out)
+    
+    return(.finalize_df(out, as_tibble = as_tibble))
   }
   
   out <- out[

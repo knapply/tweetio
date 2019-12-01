@@ -56,6 +56,13 @@
   as.vector(.map2(.x, .y, .f, ...), mode = "logical")
 }
 
+# .map3 <- function(.x, .y, .z, .f, ...) {
+  # mapply(.f, .x, .y, .z, MoreArgs = list(...), SIMPLIFY = FALSE)
+# }
+
+# .map3_lgl <- function(.x, .y, .z, .f, ...) {
+  # as.vector(.map3(.x, .y, .z, .f, ...), "logical")
+# }
 
 .imap <- function(.x, .f, ...) {
   nm <- names(.x) %||% seq_along(.x)
@@ -99,9 +106,9 @@
 }
 
 
-.is_atomic_with_non_nas <- function(x) {
-  is.atomic(x) && any(!is.na(x))
-}
+# .is_atomic_with_non_nas <- function(x) {
+  # is.atomic(x) && any(!is.na(x))
+# }
 
 .set_names <- function(x, y = x) {
   `names<-`(x, y)
