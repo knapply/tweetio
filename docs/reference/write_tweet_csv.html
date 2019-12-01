@@ -124,7 +124,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Write Tweets to Spreadsheets</h1>
-    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/csv.R'><code>R/csv.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/spreadsheets.R'><code>R/spreadsheets.R</code></a></small>
     <div class="hidden name"><code>write_tweet_csv.Rd</code></div>
     </div>
 
@@ -132,13 +132,11 @@
     <p>Write Tweets to Spreadsheets</p>
     </div>
 
-    <pre class="usage"><span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='no'>...</span>)
 
-<span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>)
+<span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
-<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>)</pre>
+<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,10 +149,6 @@ one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https:/
     <tr>
       <th>file_path</th>
       <td><p>File path to which to write or from which to read.</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>Whether to show diagnostic or progress messages.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -178,12 +172,12 @@ one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https:/
 
 <span class='co'># write comma-separated values files ==================================================</span>
 <span class='no'>target_csv_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".csv"</span>)
-<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "C:\\Users\\brend\\AppData\\Local\\Temp\\RtmpUrs4LH\\file328475b176a.csv"</div><div class='input'>
+<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "C:\\Users\\brend\\AppData\\Local\\Temp\\Rtmp2Rv5Mp\\file3eac13756a56.csv"</div><div class='input'>
 <span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_csv_file</span>)
 
 <span class='co'># write Microsoft Excel files =========================================================</span>
 <span class='no'>target_excel_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xlsx"</span>)
-<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "C:\\Users\\brend\\AppData\\Local\\Temp\\RtmpUrs4LH\\file32842cc24685.xlsx"</div><div class='input'>
+<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "C:\\Users\\brend\\AppData\\Local\\Temp\\Rtmp2Rv5Mp\\file3eac5bda15ff.xlsx"</div><div class='input'>
 <span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)
 
 <span class='co'># same as `write_tweet_xlsx()`</span>

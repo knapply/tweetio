@@ -22,7 +22,7 @@ LinkingTo:
     Rcpp, 
     RcppProgress
 Imports:
-    data.table,
+    data.table (>= 1.12.4),
     jsonify,
     Rcpp,
     stringi,

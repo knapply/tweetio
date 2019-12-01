@@ -50,16 +50,5 @@ test_that("reading rtweet stream works", {
       target_schema
     )
   )
-  
-  expect_error(
-    read_tweets_bulk(
-      c(
-        example_tweet_file(),
-        system.file("example-data/test.zip", package = "tweetio")
-      ),
-      in_parallel = FALSE
-    ),
-    NA
-  )
 
 })

@@ -59,8 +59,10 @@ as_igraph.proto_net <- function(x, ...) {
     el
   )
   
-  igraph::edge_attr(out) <- x$edges[, -(1L:2L)]
-  igraph::vertex_attr(out) <- x$nodes
+  # x$edges[, -(1:2L)]
+  
+  igraph::edge_attr(out) <- as.list(x$edges[, -(1L:2L)])
+  igraph::vertex_attr(out) <- as.list(x$nodes)
   
   # add bipartite attr if targets aren't users
   if (!is.null(attr(x, "target_class")) && attr(x, "target_class") != "user") {

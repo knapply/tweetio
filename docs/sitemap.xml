@@ -28,6 +28,9 @@
     <loc>https://knapply.github.io/tweetio/reference/read_tweets.html</loc>
   </url>
   <url>
+    <loc>https://knapply.github.io/tweetio/reference/write_graphml.html</loc>
+  </url>
+  <url>
     <loc>https://knapply.github.io/tweetio/reference/write_tweet_csv.html</loc>
   </url>
 </urlset>
