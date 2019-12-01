@@ -19,9 +19,10 @@
 #' Simple, safe transformation of attributes to values with which Gephi will cooperate.
 #' 
 #' @param g `igraph::graph()` object
-#' @param na_number_as `numeric(1L)`, Default: `-1`. Value to replace
+#' @template param-file_path
+#' @param na_numbers_as `numeric(1L)`, Default: `-1`. Value to replace
 #'  `NA_real_`/`NA_integer_`s in the resulting file.
-#' @param na_character_as `character(1L)`, Default: `""`. Value to replace 
+#' @param na_characters_as `character(1L)`, Default: `""`. Value to replace 
 #' `NA_character_`s in the resulting file.
 #' @template param-dots
 #' 

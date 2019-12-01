@@ -112,10 +112,11 @@ We're more interested in handling much larger data sets, but for demonstration w
 ```{r}
 rtweet_stream_path <- "inst/example-data/api-stream.json.gz"
 
-scales::number_bytes(file.size(rtweet_stream_path))
+rtweet_stream_path %>% 
+  file.size() %>% 
+  scales::number_bytes() # 153 Mb before compression
 ```
 
-Before compression, the file was about 153 Mb.
 
 Unfortunately, `rtweet::parse_stream()` may fail parsing streams because the data returned may not be valid JSON.
 
@@ -172,7 +173,9 @@ With bigger files, using `rtweet::parse_stream()` is no longer realistic, but th
 
 ```{r}
 big_tweet_stream_path <- "~/ufc-tweet-stream.json.gz"
-scales::number_bytes(file.size(big_tweet_stream_path)) # 1.2 Gb before compression
+big_tweet_stream_path %>%
+  file.size() %>% 
+  scales::number_bytes() # 1.2 Gb before compression
 
 bench::mark(
   big_tweet_df <- tweetio::read_tweets(big_tweet_stream_path)
