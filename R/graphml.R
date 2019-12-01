@@ -30,13 +30,12 @@
 #' 
 #' @examples 
 #' path_to_tweet_file <- example_tweet_file()
-#'                                                        # first 5 rows
-#' tweet_df <- read_tweets(file_path = path_to_tweet_file)[1:5, ]
+#' 
+#' tweet_df <- read_tweets(file_path = path_to_tweet_file)
 #' 
 #' tweet_graph <- as_igraph(tweet_df)
 #' tweet_graph
 #' 
-#' # write comma-separated values files ==================================================
 #' graphml_path <- tempfile(fileext = ".graphml")
 #' graphml_path
 #' 

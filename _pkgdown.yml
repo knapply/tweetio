@@ -32,6 +32,8 @@ reference:
     contents:
     - as_proto_net
     - as_igraph
+    - as_igraph.proto_net
+    - as_igraph.data.frame
 
   - title: Spatial Analysis
     contents:

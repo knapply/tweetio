@@ -38,7 +38,7 @@
            unzip it.", call. = FALSE)
     } 
 
-    temp_dir <- tempdir(check = TRUE)
+    temp_dir <- tempdir()
     target_dir <- paste0(temp_dir, "/tweetio")
     dir.create(target_dir)
     on.exit(unlink(target_dir, recursive = TRUE, force = TRUE))

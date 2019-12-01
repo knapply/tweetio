@@ -143,18 +143,22 @@
       <td><p><code><a href='https://rdrr.io/pkg/igraph/man/make_graph.html'>igraph::graph()</a></code> object</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Arguments passed to or from other methods.</p></td>
+      <th>file_path</th>
+      <td><p>File path to which to write or from which to read.</p></td>
     </tr>
     <tr>
-      <th>na_number_as</th>
+      <th>na_numbers_as</th>
       <td><p><code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1L)</a></code>, Default: <code>-1</code>. Value to replace
 <code>NA_real_</code>/<code>NA_integer_</code>s in the resulting file.</p></td>
     </tr>
     <tr>
-      <th>na_character_as</th>
+      <th>na_characters_as</th>
       <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1L)</a></code>, Default: <code>""</code>. Value to replace
 <code>NA_character_</code>s in the resulting file.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed to or from other methods.</p></td>
     </tr>
     </table>
 
@@ -165,21 +169,21 @@
 <span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>)[<span class='fl'>1</span>:<span class='fl'>5</span>, ]
 
 <span class='no'>tweet_graph</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as_igraph.html'>as_igraph</a></span>(<span class='no'>tweet_df</span>)
-<span class='no'>tweet_graph</span></div><div class='output co'>#&gt; IGRAPH 4ab9e8b DN-- 10 10 -- 
+<span class='no'>tweet_graph</span></div><div class='output co'>#&gt; IGRAPH cd41cb9 DN-- 9 9 -- 
 #&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
-#&gt; + edges from 4ab9e8b (vertex names):
-#&gt;  [1] 807195027403259904 -&gt;938662230052052992 
-#&gt;  [2] 247059655          -&gt;609647782          
-#&gt;  [3] 822602638231535617 -&gt;701750402786717696 
-#&gt;  [4] 1143938448002129920-&gt;1138114379981905920
-#&gt;  [5] 797200129606488064 -&gt;21833728           
-#&gt;  [6] 807195027403259904 -&gt;938662230052052992 
-#&gt;  [7] 1143938448002129920-&gt;1138114379981905920
-#&gt;  [8] 247059655          -&gt;609647782          
+#&gt; + edges from cd41cb9 (vertex names):
+#&gt; [1] 194250838         -&gt;340309688          
+#&gt; [2] 825459487821619201-&gt;966825602          
+#&gt; [3] 218889555         -&gt;3193408588         
+#&gt; [4] 2949080443        -&gt;1079593643130859520
+#&gt; [5] 194250838         -&gt;340309688          
+#&gt; [6] 825459487821619201-&gt;966825602          
+#&gt; [7] 218889555         -&gt;3193408588         
+#&gt; [8] 218889555         -&gt;278758337          
 #&gt; + ... omitted several edges</div><div class='input'>
 <span class='co'># write comma-separated values files ==================================================</span>
 <span class='no'>graphml_path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".graphml"</span>)
-<span class='no'>graphml_path</span></div><div class='output co'>#&gt; [1] "C:\\Users\\brend\\AppData\\Local\\Temp\\Rtmp2Rv5Mp\\file3eac194362ce.graphml"</div><div class='input'>
+<span class='no'>graphml_path</span></div><div class='output co'>#&gt; [1] "C:\\Users\\brend\\AppData\\Local\\Temp\\RtmpWA3u0K\\file337854367888.graphml"</div><div class='input'>
 <span class='fu'>write_graphml</span>(<span class='no'>tweet_graph</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>graphml_path</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -79,8 +79,8 @@ user_col_names <- function(tweet_df) {
 #' 
 #' split_users <- extract_users(tweet_df, split = TRUE, as_tibble = TRUE)
 #' 
-#' # first 3 users with more than 20 observations.
-#' split_users[vapply(split_users, function(.x) nrow(.x) > 20, logical(1L))][1:3]
+#' # first 3 users with more than 5 observations.
+#' split_users[vapply(split_users, function(.x) nrow(.x) > 5, logical(1L))][1:3]
 #' 
 #' @importFrom data.table data.table is.data.table setcolorder setDT setnames
 #' 
