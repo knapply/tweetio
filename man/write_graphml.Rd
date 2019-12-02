@@ -32,7 +32,6 @@ tweet_graph <- as_igraph(tweet_df)
 tweet_graph
 
 graphml_path <- tempfile(fileext = ".graphml")
-graphml_path
 
 write_graphml(tweet_graph, file_path = graphml_path) 
 
