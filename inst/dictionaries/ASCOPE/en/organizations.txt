@@ -1,0 +1,8 @@
+military
+political
+NGO
+terrorist
+police
+military
+army
+guerilla

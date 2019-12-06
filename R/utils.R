@@ -48,6 +48,10 @@
   .map_template(.x, .f, logical(1L), ...)
 }
 
+.map_int <- function(.x, .f, ...) {
+  .map_template(.x, .f, integer(1L), ...)
+}
+
 .map2 <- function(.x, .y, .f, ...) {
   mapply(.f, .x, .y, MoreArgs = list(...), SIMPLIFY = FALSE)
 }

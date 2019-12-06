@@ -1,0 +1,8 @@
+ports
+electricity
+internet
+mobile provider
+telephone service
+rebuild
+reconstruction
+water

@@ -1,0 +1,15 @@
+province
+sea 
+hotspot
+island
+eastern 
+western 
+southern 
+northern 
+conflict zones
+occupied territory 
+region 
+safe zone
+border 
+territory
+village
