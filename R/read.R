@@ -181,6 +181,7 @@ read_tweets_bulk <- function(file_path, verbose = FALSE, as_tibble = FALSE,
   proto_tweet_df
 }
 
+#' @importFrom data.table := fifelse
 #' @importFrom stringi stri_extract_first_regex stri_replace_all_regex
 .finalize_cols <- function(proto_tweet_df, ...) {
   # silence R CMD Check NOTE =============================================================
@@ -227,8 +228,9 @@ read_tweets_bulk <- function(file_path, verbose = FALSE, as_tibble = FALSE,
                        quoted_status_id = "quoted_tweet_url", 
                        reply_to_status_id = "reply_to_status_url") 
   proto_tweet_df <- proto_tweet_df[, (status_url_cols) := lapply(
-    .SD, function(.x) paste0("https://twitter.com/i/web/status/", .x)
-    ),
+    .SD, function(.x) {
+      fifelse(is.na(.x), .x, paste0("https://twitter.com/i/web/status/"))
+    }),
     .SDcols = names(status_url_cols)
   ]
   
