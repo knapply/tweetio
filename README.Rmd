@@ -29,6 +29,7 @@ options(width = 120)
 
 
 <!-- badges: start -->
+[![R build status](https://github.com/DavisVaughan/cbuild/workflows/R-CMD-check/badge.svg)](https://github.com/knapply/tweetio)
 [![CRAN status](https://www.r-pkg.org/badges/version/tweetio)](https://cran.r-project.org/package=tweetio)
 [![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![GitHub last commit](https://img.shields.io/github/last-commit/knapply/tweetio.svg)](https://github.com/knapply/tweetio/commits/master)

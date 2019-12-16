@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![R build
+status](https://github.com/DavisVaughan/cbuild/workflows/R-CMD-check/badge.svg)](https://github.com/knapply/tweetio)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/tweetio)](https://cran.r-project.org/package=tweetio)
 [![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
@@ -96,20 +98,20 @@ small_rtweet_stream <- read_tweets(temp_file, as_tibble = TRUE)
 small_rtweet_stream
 ```
 
-    #> # A tibble: 495 x 93
-    #>    user_id status_id created_at          screen_name text  source reply_to_status~ reply_to_user_id reply_to_screen~
+    #> # A tibble: 751 x 93
+    #>    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen…
     #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>            <chr>           
-    #>  1 353747~ 12010036~ 2019-12-01 05:02:42 leiiisilva  Grab~ Twitt~ <NA>             <NA>             <NA>            
-    #>  2 500994~ 12010036~ 2019-12-01 05:02:42 UofA_AugVi~ MBB:~ Twitt~ <NA>             <NA>             <NA>            
-    #>  3 438789~ 12010036~ 2019-12-01 05:02:43 Dumb_bab    RT @~ Twitt~ <NA>             <NA>             <NA>            
-    #>  4 903478~ 12010036~ 2019-12-01 05:02:43 fullsunflo~ kage~ Twitt~ <NA>             <NA>             <NA>            
-    #>  5 113295~ 12010036~ 2019-12-01 05:02:43 jaIsbV7bZa~ "RT ~ Twitt~ <NA>             <NA>             <NA>            
-    #>  6 117905~ 12010036~ 2019-12-01 05:02:43 jinsei8148  @591~ Twitt~ 120100187262395~ 2982659066       5917bm          
-    #>  7 330017~ 12010036~ 2019-12-01 05:02:43 StevenLam29 RT @~ Twitt~ <NA>             <NA>             <NA>            
-    #>  8 782127~ 12010036~ 2019-12-01 05:02:43 jkxbangtann RT @~ Twitt~ <NA>             <NA>             <NA>            
-    #>  9 976364~ 12010036~ 2019-12-01 05:02:43 KKBADIN     RT @~ Twitt~ <NA>             <NA>             <NA>            
-    #> 10 893878~ 12010036~ 2019-12-01 05:02:43 jiwon_peach RT @~ Twitt~ <NA>             <NA>             <NA>            
-    #> # ... with 485 more rows, and 84 more variables: is_quote <lgl>, is_retweet <lgl>, hashtags <list>,
+    #>  1 107886… 12065814… 2019-12-16 14:26:45 yuu6x_      <U+62D7><U+306D><U+3066><U+5BDD>… Twitt… <NA>             <NA>             <NA>            
+    #>  2 899160… 12065814… 2019-12-16 14:26:45 hiya_85     "@ei… Twitt… 120657853889307… 274998581        eimi_A3         
+    #>  3 813008… 12065814… 2019-12-16 14:26:45 loveTUBE5   "@pe… Twitt… 120657817048218… 169660088        pekeko4649      
+    #>  4 191814… 12065814… 2019-12-16 14:26:45 mameusagi   RT @… Twitt… <NA>             <NA>             <NA>            
+    #>  5 117179… 12065814… 2019-12-16 14:26:45 Fashana1    @Son… Twitt… 120656481941276… 111411281409474… Soniyaa21827595 
+    #>  6 102925… 12065814… 2019-12-16 14:26:45 miiiiii752… "<U+660E><U+65E5><U+5E74>… Twitt… <NA>             <NA>             <NA>            
+    #>  7 113759… 12065814… 2019-12-16 14:26:45 w_s326      "RT … Twitt… <NA>             <NA>             <NA>            
+    #>  8 298795… 12065814… 2019-12-16 14:26:45 nokkungww   RT @… Twitt… <NA>             <NA>             <NA>            
+    #>  9 923431… 12065814… 2019-12-16 14:26:45 ngt_tyorow… "RT … Twitt… <NA>             <NA>             <NA>            
+    #> 10 736205… 12065814… 2019-12-16 14:26:45 S_F_alrash… RT @… Twitt… <NA>             <NA>             <NA>            
+    #> # … with 741 more rows, and 84 more variables: is_quote <lgl>, is_retweet <lgl>, hashtags <list>,
     #> #   urls_expanded_url <list>, media_url <list>, media_expanded_url <list>, media_type <list>, mentions_user_id <list>,
     #> #   mentions_screen_name <list>, lang <chr>, quoted_status_id <chr>, quoted_text <chr>, quoted_created_at <dttm>,
     #> #   quoted_source <chr>, quoted_favorite_count <int>, quoted_retweet_count <int>, quoted_user_id <chr>,
@@ -138,12 +140,12 @@ using `rtweet::stream_tweets()`.
 ``` r
 rtweet_stream_path <- "inst/example-data/api-stream.json.gz"
 
-scales::number_bytes(file.size(rtweet_stream_path))
+rtweet_stream_path %>% 
+  file.size() %>% 
+  scales::number_bytes() # 153 Mb before compression
 ```
 
     #> [1] "18 MiB"
-
-Before compression, the file was about 153 Mb.
 
 Unfortunately, `rtweet::parse_stream()` may fail parsing streams because
 the data returned may not be valid JSON.
@@ -175,19 +177,19 @@ rtweet_validate_and_parse(source_file_path = rtweet_stream_path,
 ```
 
     #> # A tibble: 12,824 x 90
-    #>    user_id status_id created_at          screen_name text  source display_text_wi~ reply_to_status~ reply_to_user_id
+    #>    user_id status_id created_at          screen_name text  source display_text_wi… reply_to_status… reply_to_user_id
     #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>             <dbl> <chr>            <chr>           
-    #>  1 807195~ 11780078~ 2019-09-28 18:05:23 ykaoi0327   "<U+4EE5><U+4E0A><U+3067>~ Twitt~               NA <NA>             <NA>            
-    #>  2 114393~ 11780078~ 2019-09-28 18:05:23 yowasugi723 "@Di~ Twitt~                9 117771450591824~ 113811437998190~
-    #>  3 247059~ 11780078~ 2019-09-28 18:05:23 itsauroras~ "“So~ Twitt~               NA <NA>             <NA>            
-    #>  4 822602~ 11780078~ 2019-09-28 18:05:23 Darrell894~ It's~ Twitt~               NA <NA>             <NA>            
-    #>  5 797200~ 11780078~ 2019-09-28 18:05:23 NastyWoman~ @Bra~ Twitt~               69 117796816033668~ 21833728        
-    #>  6 110779~ 11780078~ 2019-09-28 18:05:23 DeshaunAwe~ met ~ twitt~               NA <NA>             <NA>            
-    #>  7 110441~ 11780078~ 2019-09-28 18:05:23 diamondy_u  "<U+2728>Lo~ Twitt~               NA <NA>             <NA>            
-    #>  8 359294~ 11780078~ 2019-09-28 18:05:23 piyakat28   "Saf~ Twitt~               NA <NA>             <NA>            
-    #>  9 194250~ 11780078~ 2019-09-28 18:05:23 Stgo_centro Me d~ Twitt~               NA <NA>             <NA>            
-    #> 10 116013~ 11780078~ 2019-09-28 18:05:23 119lonwi_y~ <U+D55C><U+AD6D><U+C5D0><U+C11C>~ Twitt~               NA <NA>             <NA>            
-    #> # ... with 12,814 more rows, and 81 more variables: reply_to_screen_name <chr>, is_quote <lgl>, is_retweet <lgl>,
+    #>  1 807195… 11780078… 2019-09-28 18:05:23 ykaoi0327   "<U+4EE5><U+4E0A><U+3067>… Twitt…               NA <NA>             <NA>            
+    #>  2 114393… 11780078… 2019-09-28 18:05:23 yowasugi723 "@Di… Twitt…                9 117771450591824… 113811437998190…
+    #>  3 247059… 11780078… 2019-09-28 18:05:23 itsauroras… "“So… Twitt…               NA <NA>             <NA>            
+    #>  4 822602… 11780078… 2019-09-28 18:05:23 Darrell894… It's… Twitt…               NA <NA>             <NA>            
+    #>  5 797200… 11780078… 2019-09-28 18:05:23 NastyWoman… @Bra… Twitt…               69 117796816033668… 21833728        
+    #>  6 110779… 11780078… 2019-09-28 18:05:23 DeshaunAwe… met … twitt…               NA <NA>             <NA>            
+    #>  7 110441… 11780078… 2019-09-28 18:05:23 diamondy_u  "<U+2728>Lo… Twitt…               NA <NA>             <NA>            
+    #>  8 359294… 11780078… 2019-09-28 18:05:23 piyakat28   "Saf… Twitt…               NA <NA>             <NA>            
+    #>  9 194250… 11780078… 2019-09-28 18:05:23 Stgo_centro Me d… Twitt…               NA <NA>             <NA>            
+    #> 10 116013… 11780078… 2019-09-28 18:05:23 119lonwi_y… <U+D55C><U+AD6D><U+C5D0><U+C11C>… Twitt…               NA <NA>             <NA>            
+    #> # … with 12,814 more rows, and 81 more variables: reply_to_screen_name <chr>, is_quote <lgl>, is_retweet <lgl>,
     #> #   favorite_count <int>, retweet_count <int>, quote_count <int>, reply_count <int>, hashtags <list>, symbols <list>,
     #> #   urls_url <list>, urls_t.co <list>, urls_expanded_url <list>, media_url <list>, media_t.co <list>,
     #> #   media_expanded_url <list>, media_type <list>, ext_media_url <list>, ext_media_t.co <list>,
@@ -219,7 +221,7 @@ bench::mark(
     #> # A tibble: 1 x 6
     #>   expression                           min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>                      <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 read_tweets(rtweet_stream_path)    3.21s    3.26s     0.303     136MB     1.01
+    #> 1 read_tweets(rtweet_stream_path)    3.61s    3.67s     0.271     137MB    0.992
 
 Ignoring the time it takes to run the above
 `rtweet_validate_and_parse()` function for `rtweet::parse_stream()` to
@@ -240,8 +242,8 @@ bench_mark[, 1:9]
     #> # A tibble: 2 x 6
     #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 rtweet       25.95s   26.62s    0.0379     480MB     4.54
-    #> 2 tweetio       2.56s    2.69s    0.362       95MB     1.33
+    #> 1 rtweet       26.39s   30.34s    0.0343     480MB     4.29
+    #> 2 tweetio       3.21s    3.23s    0.298       95MB     1.09
 
 ``` r
 plot(bench_mark)
@@ -254,7 +256,9 @@ realistic, but that’s where `tweetio::read_tweets()` can help.
 
 ``` r
 big_tweet_stream_path <- "~/ufc-tweet-stream.json.gz"
-scales::number_bytes(file.size(big_tweet_stream_path)) # 1.2 Gb before compression
+big_tweet_stream_path %>%
+  file.size() %>% 
+  scales::number_bytes() # 1.2 Gb before compression
 ```
 
     #> [1] "122 MiB"
@@ -268,7 +272,7 @@ bench::mark(
     #> # A tibble: 1 x 6
     #>   expression                                                       min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>                                                  <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 big_tweet_df <- tweetio::read_tweets(big_tweet_stream_path)    20.2s    20.2s    0.0495     396MB    0.347
+    #> 1 big_tweet_df <- tweetio::read_tweets(big_tweet_stream_path)    24.4s    24.4s    0.0410     396MB    0.369
 
 ## Data Dumps
 
@@ -301,19 +305,14 @@ Each line contains a single JSON object resembling the following:
     "system_metadata_you_dont_care_about": "blahblahblah",
     "more_metadata1": "blahblahblah",
     "more_metadata2": "blahblahblah",
-    "more_metadata3": "blahblahblah",
-    "more_metadata4": "blahblahblah",
-    "more_metadata5": "blahblahblah",
     "doc": {
         "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
         "id": 92108498098018010401,
-        "id_str": "92108498098018010401"
+        "id_str": "92108498098018010401",
+        "_text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
     },
     "more_metadata6": "blahblahblah",
-    "more_metadata7": "blahblahblah",
-    "more_metadata8": "blahblahblah",
-    "more_metadata9": "blahblahblah",
-    "more_metadata10": "blahblahblah"
+    "more_metadata7": "blahblahblah"
 }
 ```
 
@@ -332,7 +331,8 @@ something like this:
             "doc": {
                 "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
                 "id": 92108498098018010401,
-                "id_str": "92108498098018010401"
+                "id_str": "92108498098018010401",
+                "_text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
             },
             "more_metadata6": "blahblahblah"
         }
@@ -347,7 +347,8 @@ something like this:
             "doc": {
                 "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
                 "id": 92108498098018010401,
-                "id_str": "92108498098018010401"
+                "id_str": "92108498098018010401",
+                "_text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
             },
             "more_metadata6": "blahblahblah"
         }
@@ -496,9 +497,9 @@ big_tweet_df %>%
   as_igraph()
 ```
 
-    #> IGRAPH 73546af DN-- 64172 238713 -- 
+    #> IGRAPH cc32b87 DN-- 64172 238713 -- 
     #> + attr: name (v/c), status_id (e/c), relation (e/c)
-    #> + edges from 73546af (vertex names):
+    #> + edges from cc32b87 (vertex names):
     #>  [1] 340165454          ->44607937            50229830           ->146322653          
     #>  [3] 1113359075029295106->6446742             3427037277         ->6446742            
     #>  [5] 2426567863         ->6446742             1049130232559620096->6446742            
@@ -517,7 +518,7 @@ big_tweet_df %>%
   as_igraph(all_user_data = TRUE, all_status_data = TRUE)
 ```
 
-    #> IGRAPH 7a8d376 DN-- 64172 238713 -- 
+    #> IGRAPH d582a77 DN-- 64172 238713 -- 
     #> + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name (v/c), location (v/c), description (v/c),
     #> | url (v/c), protected (v/l), followers_count (v/n), friends_count (v/n), listed_count (v/n),
     #> | statuses_count (v/n), favourites_count (v/n), account_created_at (v/n), verified (v/l), profile_url
@@ -526,7 +527,7 @@ big_tweet_df %>%
     #> | (e/l), is_retweeted (e/l), media_url (e/x), media_type (e/x), place_url (e/c), place_name (e/c),
     #> | place_full_name (e/c), place_type (e/c), country (e/c), country_code (e/c), bbox_coords (e/x),
     #> | status_type (e/c)
-    #> + edges from 7a8d376 (vertex names):
+    #> + edges from d582a77 (vertex names):
     #> [1] 2547690569->6446742  2547690569->6446742  245171523 ->52181976
     #> + ... omitted several edges
 
@@ -540,9 +541,9 @@ big_tweet_df %>%
   as_igraph(target_class = "hashtag")
 ```
 
-    #> IGRAPH 7b8a101 DN-B 60417 134468 -- 
+    #> IGRAPH d66df88 DN-B 60417 134468 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 7b8a101 (vertex names):
+    #> + edges from d66df88 (vertex names):
     #>  [1] 340165454          ->ufc244 50229830           ->new    50229830           ->ufc244 1113359075029295106->ufc244
     #>  [5] 1120821278410145793->ufc244 2945072804         ->ufc244 250392181          ->ufc244 3427037277         ->ufc244
     #>  [9] 2426567863         ->ufc244 1049130232559620096->ufc244 245455601          ->ufc244 895707290          ->ufc244
@@ -558,9 +559,9 @@ big_tweet_df %>%
   as_igraph(target_class = "url")
 ```
 
-    #> IGRAPH 7bb0f77 DN-B 8864 10014 -- 
+    #> IGRAPH d6b6a5b DN-B 8864 10014 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 7bb0f77 (vertex names):
+    #> + edges from d6b6a5b (vertex names):
     #> [1] 54342307           ->https://twitter.com/jjmast1/status/1190812770951925760      
     #> [2] 822180925467398148 ->https://twitter.com/usatoday/status/1190848577171529729     
     #> [3] 1161588424488341504->https://livestreamon.co/ufc244                              
@@ -575,9 +576,9 @@ big_tweet_df %>%
   as_igraph(target_class = "media")
 ```
 
-    #> IGRAPH 7c0c59b DN-B 35704 45448 -- 
+    #> IGRAPH d72611f DN-B 35704 45448 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 7c0c59b (vertex names):
+    #> + edges from d72611f (vertex names):
     #> [1] 1113359075029295106->http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
     #> [2] 3427037277         ->http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
     #> [3] 2426567863         ->http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
@@ -601,34 +602,34 @@ big_tweet_df %>%
     #> # A tibble: 238,713 x 20
     #>    from  to    status_id relation created_at          text  status_url source is_quote is_retweeted media_url media_type
     #>    <chr> <chr> <chr>     <chr>    <dttm>              <chr> <chr>      <chr>  <lgl>    <lgl>        <list>    <list>    
-    #>  1 2547~ 6446~ 11908873~ retweet  2019-11-03 07:03:55 "RT ~ https://t~ Twitt~ FALSE    FALSE        <chr [1]> <chr [1]> 
-    #>  2 2547~ 6446~ 11908873~ mentions 2019-11-03 07:03:55 "RT ~ https://t~ Twitt~ FALSE    FALSE        <chr [1]> <chr [1]> 
-    #>  3 2451~ 5218~ 11908873~ mentions 2019-11-03 07:03:55 “Fu@~ https://t~ Twitt~ FALSE    FALSE        <chr [1]> <chr [1]> 
-    #>  4 8062~ 1463~ 11908873~ retweet  2019-11-03 07:03:55 RT @~ https://t~ Twitt~ FALSE    FALSE        <chr [1]> <chr [1]> 
-    #>  5 8062~ 1463~ 11908873~ mentions 2019-11-03 07:03:55 RT @~ https://t~ Twitt~ FALSE    FALSE        <chr [1]> <chr [1]> 
-    #>  6 8045~ 4588~ 11908873~ retweet  2019-11-03 07:03:55 RT @~ https://t~ Twitt~ TRUE     FALSE        <chr [1]> <chr [1]> 
-    #>  7 8045~ 3934~ 11908873~ quoted   2019-11-03 07:03:55 RT @~ https://t~ Twitt~ TRUE     FALSE        <chr [1]> <chr [1]> 
-    #>  8 8045~ 4588~ 11908873~ mentions 2019-11-03 07:03:55 RT @~ https://t~ Twitt~ TRUE     FALSE        <chr [1]> <chr [1]> 
-    #>  9 2973~ 8174~ 11908873~ retweet  2019-11-03 07:03:55 RT @~ https://t~ Twitt~ TRUE     FALSE        <chr [1]> <chr [1]> 
-    #> 10 2973~ 7776~ 11908873~ quoted   2019-11-03 07:03:55 RT @~ https://t~ Twitt~ TRUE     FALSE        <chr [1]> <chr [1]> 
-    #> # ... with 238,703 more rows, and 8 more variables: place_url <chr>, place_name <chr>, place_full_name <chr>,
+    #>  1 2547… 6446… 11908873… retweet  2019-11-03 07:03:55 "RT … https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]> 
+    #>  2 2547… 6446… 11908873… mentions 2019-11-03 07:03:55 "RT … https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]> 
+    #>  3 2451… 5218… 11908873… mentions 2019-11-03 07:03:55 “Fu@… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]> 
+    #>  4 8062… 1463… 11908873… retweet  2019-11-03 07:03:55 RT @… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]> 
+    #>  5 8062… 1463… 11908873… mentions 2019-11-03 07:03:55 RT @… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]> 
+    #>  6 8045… 4588… 11908873… retweet  2019-11-03 07:03:55 RT @… https://t… Twitt… TRUE     FALSE        <chr [1]> <chr [1]> 
+    #>  7 8045… 3934… 11908873… quoted   2019-11-03 07:03:55 RT @… https://t… Twitt… TRUE     FALSE        <chr [1]> <chr [1]> 
+    #>  8 8045… 4588… 11908873… mentions 2019-11-03 07:03:55 RT @… https://t… Twitt… TRUE     FALSE        <chr [1]> <chr [1]> 
+    #>  9 2973… 8174… 11908873… retweet  2019-11-03 07:03:55 RT @… https://t… Twitt… TRUE     FALSE        <chr [1]> <chr [1]> 
+    #> 10 2973… 7776… 11908873… quoted   2019-11-03 07:03:55 RT @… https://t… Twitt… TRUE     FALSE        <chr [1]> <chr [1]> 
+    #> # … with 238,703 more rows, and 8 more variables: place_url <chr>, place_name <chr>, place_full_name <chr>,
     #> #   place_type <chr>, country <chr>, country_code <chr>, bbox_coords <list>, status_type <chr>
     #> 
     #> $nodes
     #> # A tibble: 64,172 x 20
     #>    name  timestamp_ms        name.y screen_name location description url   protected followers_count friends_count
     #>    <chr> <dttm>              <chr>  <chr>       <chr>    <chr>       <chr> <lgl>               <int>         <int>
-    #>  1 1000~ 2019-11-03 04:53:06 <U+1D07><U+029F> <U+1D0A><U+1D1C>~ Urbeaner_   Colorad~ "UCCS ‘21 ~ <NA>  FALSE                 158           250
-    #>  2 1000~ 2019-11-03 05:24:27 adrie~ a2rien_     "DTM \U~ <NA>        <NA>  FALSE                 161           124
-    #>  3 1000~ 2019-11-03 05:08:38 Adee   SailorSlim  Freepor~ Instagram:~ <NA>  FALSE                  54            24
-    #>  4 1000~ 2019-11-03 06:09:47 Khair~ Jenklens_   209      "26. Marri~ http~ FALSE                1977          1622
-    #>  5 1000~ 2019-11-03 05:13:37 me, m~ Amanda8728~ "Usa "   take your ~ <NA>  FALSE                  28           243
-    #>  6 1000~ 2019-11-03 04:49:04 hoodi~ eghoops1    htx      shoot hoop~ http~ FALSE                 838           258
-    #>  7 1000~ 2019-11-03 05:19:56 Dylan~ CieslikDyl~ Oak Rid~ Aspiring B~ <NA>  FALSE                  38           137
-    #>  8 1000~ 2019-11-03 06:17:14 "Tony~ tonystinks~ <NA>     Sc: tonyst~ <NA>  FALSE                  54            76
-    #>  9 1000~ 2019-11-03 06:49:02 Pablo~ PabloEskiB~ London,~ "The one s~ <NA>  FALSE                 982           295
-    #> 10 1000~ 2019-11-03 04:37:22 ThomT~ ThomThom715 <NA>     <NA>        <NA>  FALSE                   3            30
-    #> # ... with 64,162 more rows, and 10 more variables: listed_count <int>, statuses_count <int>, favourites_count <int>,
+    #>  1 1000… 2019-11-03 04:53:06 <U+1D07><U+029F> <U+1D0A><U+1D1C>… Urbeaner_   Colorad… "UCCS ‘21 … <NA>  FALSE                 158           250
+    #>  2 1000… 2019-11-03 05:24:27 adrie… a2rien_     "DTM \U… <NA>        <NA>  FALSE                 161           124
+    #>  3 1000… 2019-11-03 05:08:38 Adee   SailorSlim  Freepor… Instagram:… <NA>  FALSE                  54            24
+    #>  4 1000… 2019-11-03 06:09:47 Khair… Jenklens_   209      "26. Marri… http… FALSE                1977          1622
+    #>  5 1000… 2019-11-03 05:13:37 me, m… Amanda8728… "Usa "   take your … <NA>  FALSE                  28           243
+    #>  6 1000… 2019-11-03 04:49:04 hoodi… eghoops1    htx      shoot hoop… http… FALSE                 838           258
+    #>  7 1000… 2019-11-03 05:19:56 Dylan… CieslikDyl… Oak Rid… Aspiring B… <NA>  FALSE                  38           137
+    #>  8 1000… 2019-11-03 06:17:14 "Tony… tonystinks… <NA>     Sc: tonyst… <NA>  FALSE                  54            76
+    #>  9 1000… 2019-11-03 06:49:02 Pablo… PabloEskiB… London,… "The one s… <NA>  FALSE                 982           295
+    #> 10 1000… 2019-11-03 04:37:22 ThomT… ThomThom715 <NA>     <NA>        <NA>  FALSE                   3            30
+    #> # … with 64,162 more rows, and 10 more variables: listed_count <int>, statuses_count <int>, favourites_count <int>,
     #> #   account_created_at <dttm>, verified <lgl>, profile_url <chr>, account_lang <chr>, profile_banner_url <chr>,
     #> #   profile_image_url <chr>, bbox_coords <list>
     #> 

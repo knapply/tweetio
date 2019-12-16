@@ -143,43 +143,85 @@ read_tweets_bulk <- function(file_path, verbose = FALSE, as_tibble = FALSE,
 
 
 #' @importFrom data.table setcolorder
-.set_col_order <- function(proto_tweet_df) {
-  rtweet_order <- c(
-    "user_id", "status_id", "created_at", "screen_name", "text", 
-    "source", "display_text_width", "reply_to_status_id", "reply_to_user_id", 
-    "reply_to_screen_name", "is_quote", "is_retweet", "favorite_count", 
-    "retweet_count", "quote_count", "reply_count", "hashtags", "symbols", 
-    "urls_url", "urls_t.co", "urls_expanded_url", "media_url", "media_t.co", 
-    "media_expanded_url", "media_type", "ext_media_url", "ext_media_t.co", 
-    "ext_media_expanded_url", "ext_media_type", "mentions_user_id", 
-    "mentions_screen_name", "lang", "quoted_status_id", "quoted_text", 
-    "quoted_created_at", "quoted_source", "quoted_favorite_count", 
-    "quoted_retweet_count", "quoted_user_id", "quoted_screen_name", 
-    "quoted_name", "quoted_followers_count", "quoted_friends_count", 
-    "quoted_statuses_count", "quoted_location", "quoted_description", 
-    "quoted_verified", "retweet_status_id", "retweet_text", "retweet_created_at", 
-    "retweet_source", "retweet_favorite_count", "retweet_retweet_count", 
-    "retweet_user_id", "retweet_screen_name", "retweet_name", "retweet_followers_count", 
-    "retweet_friends_count", "retweet_statuses_count", "retweet_location", 
-    "retweet_description", "retweet_verified", "place_url", "place_name", 
-    "place_full_name", "place_type", "country", "country_code", "geo_coords", 
-    "coords_coords", "bbox_coords", "status_url", "name", "location", 
-    "description", "url", "protected", "followers_count", "friends_count", 
-    "listed_count", "statuses_count", "favourites_count", "account_created_at", 
-    "verified",
-    "profile_url", "profile_url2", # profile_url2 not in rtweet, but makes more sense here
-    "profile_expanded_url", "account_lang", 
-    "profile_banner_url", "profile_background_url", "profile_image_url"
-  )
+.set_col_order <- function(tweet_df, rtweet_order = FALSE) {
+  if (rtweet_order) {
+    potential_cols <- c(
+      "user_id", "status_id", "created_at", "screen_name", "text",
+      "source", "display_text_width", "reply_to_status_id", "reply_to_user_id",
+      "reply_to_screen_name", "is_quote", "is_retweet", "favorite_count",
+      "retweet_count", "quote_count", "reply_count", "hashtags", "symbols",
+      "urls_url", "urls_t.co", "urls_expanded_url", "media_url", "media_t.co",
+      "media_expanded_url", "media_type", "ext_media_url", "ext_media_t.co",
+      "ext_media_expanded_url", "ext_media_type", "mentions_user_id",
+      "mentions_screen_name", "lang", "quoted_status_id", "quoted_text",
+      "quoted_created_at", "quoted_source", "quoted_favorite_count",
+      "quoted_retweet_count", "quoted_user_id", "quoted_screen_name",
+      "quoted_name", "quoted_followers_count", "quoted_friends_count",
+      "quoted_statuses_count", "quoted_location", "quoted_description",
+      "quoted_verified", "retweet_status_id", "retweet_text", "retweet_created_at",
+      "retweet_source", "retweet_favorite_count", "retweet_retweet_count",
+      "retweet_user_id", "retweet_screen_name", "retweet_name", "retweet_followers_count",
+      "retweet_friends_count", "retweet_statuses_count", "retweet_location",
+      "retweet_description", "retweet_verified", "place_url", "place_name",
+      "place_full_name", "place_type", "country", "country_code", "geo_coords",
+      "coords_coords", "bbox_coords", "status_url", "name", "location",
+      "description", "url", "protected", "followers_count", "friends_count",
+      "listed_count", "statuses_count", "favourites_count", "account_created_at",
+      "verified",
+      "profile_url", "profile_url2", # profile_url2 not in rtweet, but makes more sense here
+      "profile_expanded_url", "account_lang",
+      "profile_banner_url", "profile_background_url", "profile_image_url"
+    )
+  } else {
+    user_col_templates <- c(
+      "user_id", "screen_name", "name", "location", "description", "url","protected", 
+      "followers_count", "friends_count", "listed_count", "statuses_count", 
+      "favourites_count", "account_created_at", "verified", "profile_url", "profile_url2",
+      "account_lang", "profile_banner_url", "profile_image_url", "contributors_enabled"
+    )
+    
+    status_col_templates <- c(
+      "status_id", "created_at", "text", "source", "is_quote", "is_retweet",
+      "hashtags", "urls_expanded_url", "media_url", "media_expanded_url", 
+      "media_type", "mentions_user_id", "mentions_screen_name", "lang", 
+      "place_url", "place_name", "place_full_name", "place_type", "country", 
+      "country_code", "bbox_coords", "status_url", "is_retweeted", 
+      "timestamp_ms", "metadata"
+    )
+    
+    main <- c(status_col_templates, user_col_templates)
+    
+    mentions <- c(
+      paste0("mentions_", status_col_templates),
+      paste0("mentions_", user_col_templates)
+    )
+    
+    quoted <- c(
+      paste0("quoted_", status_col_templates),
+      paste0("quoted_", user_col_templates)
+    )
+    
+    retweet <- c(
+      paste0("retweet_", status_col_templates),
+      paste0("retweet_", user_col_templates)
+    )
+    
+    reply_to <- c(
+      paste0("reply_to_", status_col_templates),
+      paste0("reply_to_", user_col_templates)
+    )
+    
+    potential_cols <- c(main, quoted, retweet, reply_to, mentions)
+  }
+  
+  actual_cols <- intersect(potential_cols, names(tweet_df))
+  other_cols <- setdiff(actual_cols, names(tweet_df))
+  new_col_order <- c(actual_cols, other_cols)
+  
+  setcolorder(tweet_df, new_col_order)
+  tweet_df
+} 
 
-  rtweet_cols <- intersect(rtweet_order, names(proto_tweet_df))
-  
-  non_rtweet_cols <- setdiff(names(proto_tweet_df), rtweet_order)
-  
-  new_col_order <- c(rtweet_cols, non_rtweet_cols)
-  setcolorder(proto_tweet_df, new_col_order)
-  proto_tweet_df
-}
 
 #' @importFrom data.table := fifelse
 #' @importFrom stringi stri_extract_first_regex stri_replace_all_regex
