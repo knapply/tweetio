@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -159,9 +159,9 @@
 <span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='no'>path_to_tweet_file</span>)
 
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>as_igraph</span>()</div><div class='output co'>#&gt; IGRAPH ca49bd6 DN-- 1228 1234 -- 
+  <span class='fu'>as_igraph</span>()</div><div class='output co'>#&gt; IGRAPH c2496d5 DN-- 1228 1234 -- 
 #&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
-#&gt; + edges from ca49bd6 (vertex names):
+#&gt; + edges from c2496d5 (vertex names):
 #&gt;  [1] 194250838          -&gt;340309688          
 #&gt;  [2] 825459487821619201 -&gt;966825602          
 #&gt;  [3] 1116228559616397312-&gt;3153145782         
@@ -173,9 +173,9 @@
 #&gt; + ... omitted several edges</div><div class='input'>
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='as_proto_net.html'>as_proto_net</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>as_igraph</span>()</div><div class='output co'>#&gt; IGRAPH ca50298 DN-- 1228 1234 -- 
+  <span class='fu'>as_igraph</span>()</div><div class='output co'>#&gt; IGRAPH e6e80a4 DN-- 1228 1234 -- 
 #&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
-#&gt; + edges from ca50298 (vertex names):
+#&gt; + edges from e6e80a4 (vertex names):
 #&gt;  [1] 194250838          -&gt;340309688          
 #&gt;  [2] 825459487821619201 -&gt;966825602          
 #&gt;  [3] 1116228559616397312-&gt;3153145782         
@@ -206,7 +206,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>
