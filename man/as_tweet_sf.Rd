@@ -4,9 +4,14 @@
 \alias{as_tweet_sf}
 \title{Build an \code{sf} Object of Tweets}
 \usage{
-as_tweet_sf(tweet_df, geom_col = c("bbox_coords", "quoted_bbox_coords",
-  "retweet_bbox_coords", "ist_complex_value", "all"), as_tibble = FALSE,
-  .geometry = NULL, ...)
+as_tweet_sf(
+  tweet_df,
+  geom_col = c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords",
+    "ist_complex_value", "all"),
+  as_tibble = FALSE,
+  .geometry = NULL,
+  ...
+)
 }
 \arguments{
 \item{tweet_df}{A data frame of tweets, as obtained by \code{read_tweets()} or

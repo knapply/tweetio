@@ -126,20 +126,20 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>small_rtweet_stream &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_tweets.html">read_tweets</a></span>(temp_file, <span class="dt">as_tibble =</span> <span class="ot">TRUE</span>)</span>
 <span id="cb4-2"><a href="#cb4-2"></a></span>
 <span id="cb4-3"><a href="#cb4-3"></a>small_rtweet_stream</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#&gt; # A tibble: 893 x 93</span></span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#&gt; # A tibble: 908 x 93</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="co">#&gt;    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen…</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;     &lt;dttm&gt;              &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           </span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt;  1 117432… 12200001… 2020-01-22 15:07:56 taiga2501   RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt;  2 550880… 12200001… 2020-01-22 15:07:59 noeyyeonnn  เมื่…   Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#&gt;  3 221389… 12200001… 2020-01-22 15:07:59 D_N_syatik… セント「… twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt;  4 110737… 12200001… 2020-01-22 15:07:59 almasonee   واذا… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt;  5 113488… 12200001… 2020-01-22 15:07:59 Michhee16   RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt;  6 360080… 12200001… 2020-01-22 15:07:59 brsywe_a_a  水着ガチ… Tweet… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt;  7 823127… 12200001… 2020-01-22 15:07:59 AndreasVar_ xx α… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt;  8 110614… 12200001… 2020-01-22 15:07:59 kaino20_f4f 続き→水… Twitt… 122000005706521… 110614293938896… kaino20_f4f     </span></span>
-<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt;  9 386193… 12200001… 2020-01-22 15:07:59 shoaa92     RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt; 10 702892… 12200001… 2020-01-22 15:07:59 BUtydw      RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; # … with 883 more rows, and 84 more variables: is_quote &lt;lgl&gt;, is_retweet &lt;lgl&gt;, hashtags &lt;list&gt;,</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt;  1 594068… 12200026… 2020-01-22 15:17:58 SusanRsbur… @ihe… Twitt… 121614807153849… 317385247        iheartmindy     </span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt;  2 100223… 12200026… 2020-01-22 15:18:00 baitoeii3   RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#&gt;  3 233658… 12200026… 2020-01-22 15:18:00 ARQHUIMAN   0 ht… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt;  4 114994… 12200026… 2020-01-22 15:18:00 mayu_vayce  ところで… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt;  5 231194… 12200026… 2020-01-22 15:17:58 Gabbiano19… @Ton… Twitt… 121999638592111… 72345365         TonyMac85       </span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt;  6 400096… 12200026… 2020-01-22 15:17:58 barbarakev… RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt;  7 101471… 12200026… 2020-01-22 15:18:00 longlow1    RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt;  8 116114… 12200026… 2020-01-22 15:18:00 BANDI_hyeo… 여우님 … Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt;  9 988685… 12200026… 2020-01-22 15:18:00 arishime__… RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt; 10 139044… 12200026… 2020-01-22 15:18:00 hatorikkkko ぼくもお… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; # … with 898 more rows, and 84 more variables: is_quote &lt;lgl&gt;, is_retweet &lt;lgl&gt;, hashtags &lt;list&gt;,</span></span>
 <span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt; #   urls_expanded_url &lt;list&gt;, media_url &lt;list&gt;, media_expanded_url &lt;list&gt;, media_type &lt;list&gt;, mentions_user_id &lt;list&gt;,</span></span>
 <span id="cb5-16"><a href="#cb5-16"></a><span class="co">#&gt; #   mentions_screen_name &lt;list&gt;, lang &lt;chr&gt;, quoted_status_id &lt;chr&gt;, quoted_text &lt;chr&gt;, quoted_created_at &lt;dttm&gt;,</span></span>
 <span id="cb5-17"><a href="#cb5-17"></a><span class="co">#&gt; #   quoted_source &lt;chr&gt;, quoted_favorite_count &lt;int&gt;, quoted_retweet_count &lt;int&gt;, quoted_user_id &lt;chr&gt;,</span></span>
@@ -226,7 +226,7 @@
 <div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">#&gt; # A tibble: 1 x 6</span></span>
 <span id="cb13-2"><a href="#cb13-2"></a><span class="co">#&gt;   expression                           min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span id="cb13-3"><a href="#cb13-3"></a><span class="co">#&gt;   &lt;bch:expr&gt;                      &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a><span class="co">#&gt; 1 read_tweets(rtweet_stream_path)    2.28s    2.46s     0.415     137MB     1.24</span></span></code></pre></div>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="co">#&gt; 1 read_tweets(rtweet_stream_path)    2.52s    2.71s     0.375     137MB     1.13</span></span></code></pre></div>
 <p>Ignoring the time it takes to run the above <code>rtweet_validate_and_parse()</code> function for <code><a href="https://rdrr.io/pkg/rtweet/man/parse_stream.html">rtweet::parse_stream()</a></code> to work, how much faster is <code><a href="reference/read_tweets.html">tweetio::read_tweets()</a></code>?</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>bench_mark &lt;-<span class="st"> </span>bench<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span>(</span>
 <span id="cb14-2"><a href="#cb14-2"></a>  <span class="dt">rtweet =</span> rtweet<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rtweet/man/parse_stream.html">parse_stream</a></span>(rtweet_stream_path2),</span>
@@ -240,8 +240,8 @@
 <div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#&gt; # A tibble: 2 x 6</span></span>
 <span id="cb15-2"><a href="#cb15-2"></a><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span id="cb15-3"><a href="#cb15-3"></a><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span id="cb15-4"><a href="#cb15-4"></a><span class="co">#&gt; 1 rtweet       21.59s    21.7s    0.0461     483MB     4.26</span></span>
-<span id="cb15-5"><a href="#cb15-5"></a><span class="co">#&gt; 2 tweetio       1.66s    1.83s    0.525       95MB     1.92</span></span></code></pre></div>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="co">#&gt; 1 rtweet       21.55s   22.13s    0.0444     483MB     4.10</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="co">#&gt; 2 tweetio       1.74s    2.19s    0.470       95MB     1.73</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(bench_mark)</span></code></pre></div>
 <p><img src="reference/figures/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>With bigger files, using <code><a href="https://rdrr.io/pkg/rtweet/man/parse_stream.html">rtweet::parse_stream()</a></code> is no longer realistic, but that’s where <code><a href="reference/read_tweets.html">tweetio::read_tweets()</a></code> can help.</p>
@@ -256,7 +256,7 @@
 <div class="sourceCode" id="cb20"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co">#&gt; # A tibble: 1 x 6</span></span>
 <span id="cb20-2"><a href="#cb20-2"></a><span class="co">#&gt;   expression                                              min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span id="cb20-3"><a href="#cb20-3"></a><span class="co">#&gt;   &lt;bch:expr&gt;                                         &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span id="cb20-4"><a href="#cb20-4"></a><span class="co">#&gt; 1 big_tweet_df &lt;- read_tweets(big_tweet_stream_path)    16.1s    16.1s    0.0622     396MB    0.497</span></span></code></pre></div>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="co">#&gt; 1 big_tweet_df &lt;- read_tweets(big_tweet_stream_path)    16.3s    16.3s    0.0612     396MB    0.490</span></span></code></pre></div>
 </div>
 <div id="data-dumps" class="section level2">
 <h2 class="hasAnchor">
@@ -415,9 +415,9 @@
 <p>If you want to analyze tweet networks, you can get started immediately using <code><a href="reference/as_igraph.html">tweetio::as_igraph()</a></code>.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>big_tweet_df <span class="op">%&gt;%</span></span>
 <span id="cb31-2"><a href="#cb31-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>()</span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co">#&gt; IGRAPH 385a31d DN-- 64172 238713 -- </span></span>
+<div class="sourceCode" id="cb32"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co">#&gt; IGRAPH 03d12b7 DN-- 64172 238713 -- </span></span>
 <span id="cb32-2"><a href="#cb32-2"></a><span class="co">#&gt; + attr: name (v/c), status_id (e/c), relation (e/c)</span></span>
-<span id="cb32-3"><a href="#cb32-3"></a><span class="co">#&gt; + edges from 385a31d (vertex names):</span></span>
+<span id="cb32-3"><a href="#cb32-3"></a><span class="co">#&gt; + edges from 03d12b7 (vertex names):</span></span>
 <span id="cb32-4"><a href="#cb32-4"></a><span class="co">#&gt;  [1] 340165454          -&gt;44607937            50229830           -&gt;146322653          </span></span>
 <span id="cb32-5"><a href="#cb32-5"></a><span class="co">#&gt;  [3] 1113359075029295106-&gt;6446742             3427037277         -&gt;6446742            </span></span>
 <span id="cb32-6"><a href="#cb32-6"></a><span class="co">#&gt;  [5] 2426567863         -&gt;6446742             1049130232559620096-&gt;6446742            </span></span>
@@ -430,7 +430,7 @@
 <p>If you want to take advantage of all the metadata available, you can set <code>all_status_data</code> and/or <code>all_user_data</code> to <code>TRUE</code></p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb33-2"><a href="#cb33-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>(<span class="dt">all_user_data =</span> <span class="ot">TRUE</span>, <span class="dt">all_status_data =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb34"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co">#&gt; IGRAPH 1b70fae DN-- 64172 238713 -- </span></span>
+<div class="sourceCode" id="cb34"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co">#&gt; IGRAPH 1192f86 DN-- 64172 238713 -- </span></span>
 <span id="cb34-2"><a href="#cb34-2"></a><span class="co">#&gt; + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name (v/c), location (v/c), description (v/c),</span></span>
 <span id="cb34-3"><a href="#cb34-3"></a><span class="co">#&gt; | url (v/c), protected (v/l), followers_count (v/n), friends_count (v/n), listed_count (v/n),</span></span>
 <span id="cb34-4"><a href="#cb34-4"></a><span class="co">#&gt; | statuses_count (v/n), favourites_count (v/n), account_created_at (v/n), verified (v/l), profile_url</span></span>
@@ -439,15 +439,15 @@
 <span id="cb34-7"><a href="#cb34-7"></a><span class="co">#&gt; | (e/l), is_retweeted (e/l), media_url (e/x), media_type (e/x), place_url (e/c), place_name (e/c),</span></span>
 <span id="cb34-8"><a href="#cb34-8"></a><span class="co">#&gt; | place_full_name (e/c), place_type (e/c), country (e/c), country_code (e/c), bbox_coords (e/x),</span></span>
 <span id="cb34-9"><a href="#cb34-9"></a><span class="co">#&gt; | status_type (e/c)</span></span>
-<span id="cb34-10"><a href="#cb34-10"></a><span class="co">#&gt; + edges from 1b70fae (vertex names):</span></span>
+<span id="cb34-10"><a href="#cb34-10"></a><span class="co">#&gt; + edges from 1192f86 (vertex names):</span></span>
 <span id="cb34-11"><a href="#cb34-11"></a><span class="co">#&gt; [1] 2547690569-&gt;6446742  2547690569-&gt;6446742  245171523 -&gt;52181976</span></span>
 <span id="cb34-12"><a href="#cb34-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
 <p>You can also build two-mode networks by specifying the <code>target_class</code> as <code>"hashtag"</code>s, <code>"url"</code>s, or <code>"media"</code>. The returned <code>&lt;igraph&gt;</code> will be set as bipartite following <code>{igraph}</code>’s convention of a <code>logical</code> vertex attribute specifying each’s partition (users are <code>TRUE</code>).</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb35-2"><a href="#cb35-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>(<span class="dt">target_class =</span> <span class="st">"hashtag"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb36"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co">#&gt; IGRAPH 0319eb0 DN-B 60417 134468 -- </span></span>
+<div class="sourceCode" id="cb36"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co">#&gt; IGRAPH be33de4 DN-B 60417 134468 -- </span></span>
 <span id="cb36-2"><a href="#cb36-2"></a><span class="co">#&gt; + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)</span></span>
-<span id="cb36-3"><a href="#cb36-3"></a><span class="co">#&gt; + edges from 0319eb0 (vertex names):</span></span>
+<span id="cb36-3"><a href="#cb36-3"></a><span class="co">#&gt; + edges from be33de4 (vertex names):</span></span>
 <span id="cb36-4"><a href="#cb36-4"></a><span class="co">#&gt;  [1] 340165454          -&gt;ufc244 50229830           -&gt;new    50229830           -&gt;ufc244 1113359075029295106-&gt;ufc244</span></span>
 <span id="cb36-5"><a href="#cb36-5"></a><span class="co">#&gt;  [5] 1120821278410145793-&gt;ufc244 2945072804         -&gt;ufc244 250392181          -&gt;ufc244 3427037277         -&gt;ufc244</span></span>
 <span id="cb36-6"><a href="#cb36-6"></a><span class="co">#&gt;  [9] 2426567863         -&gt;ufc244 1049130232559620096-&gt;ufc244 245455601          -&gt;ufc244 895707290          -&gt;ufc244</span></span>
@@ -459,9 +459,9 @@
 <span id="cb36-12"><a href="#cb36-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb37-2"><a href="#cb37-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>(<span class="dt">target_class =</span> <span class="st">"url"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb38"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co">#&gt; IGRAPH d0f9ced DN-B 8864 10014 -- </span></span>
+<div class="sourceCode" id="cb38"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co">#&gt; IGRAPH c76b217 DN-B 8864 10014 -- </span></span>
 <span id="cb38-2"><a href="#cb38-2"></a><span class="co">#&gt; + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)</span></span>
-<span id="cb38-3"><a href="#cb38-3"></a><span class="co">#&gt; + edges from d0f9ced (vertex names):</span></span>
+<span id="cb38-3"><a href="#cb38-3"></a><span class="co">#&gt; + edges from c76b217 (vertex names):</span></span>
 <span id="cb38-4"><a href="#cb38-4"></a><span class="co">#&gt; [1] 54342307           -&gt;https://twitter.com/jjmast1/status/1190812770951925760      </span></span>
 <span id="cb38-5"><a href="#cb38-5"></a><span class="co">#&gt; [2] 822180925467398148 -&gt;https://twitter.com/usatoday/status/1190848577171529729     </span></span>
 <span id="cb38-6"><a href="#cb38-6"></a><span class="co">#&gt; [3] 1161588424488341504-&gt;https://livestreamon.co/ufc244                              </span></span>
@@ -472,9 +472,9 @@
 <span id="cb38-11"><a href="#cb38-11"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb39-2"><a href="#cb39-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>(<span class="dt">target_class =</span> <span class="st">"media"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb40"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="co">#&gt; IGRAPH 07ff27a DN-B 35704 45448 -- </span></span>
+<div class="sourceCode" id="cb40"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="co">#&gt; IGRAPH 0079190 DN-B 35704 45448 -- </span></span>
 <span id="cb40-2"><a href="#cb40-2"></a><span class="co">#&gt; + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)</span></span>
-<span id="cb40-3"><a href="#cb40-3"></a><span class="co">#&gt; + edges from 07ff27a (vertex names):</span></span>
+<span id="cb40-3"><a href="#cb40-3"></a><span class="co">#&gt; + edges from 0079190 (vertex names):</span></span>
 <span id="cb40-4"><a href="#cb40-4"></a><span class="co">#&gt; [1] 1113359075029295106-&gt;http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             </span></span>
 <span id="cb40-5"><a href="#cb40-5"></a><span class="co">#&gt; [2] 3427037277         -&gt;http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             </span></span>
 <span id="cb40-6"><a href="#cb40-6"></a><span class="co">#&gt; [3] 2426567863         -&gt;http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             </span></span>
@@ -569,7 +569,7 @@ Tweet networks via <code>{igraph}</code>
 <h1 class="hasAnchor">
 <a href="#shout-outs" class="anchor"></a>Shout Outs</h1>
 <p>The <a href="https://rtweet.info/"><code>{rtweet}</code></a> package <strong>spoils R users rotten</strong>, in the best possible way. The underlying data carpentry is so seamless that the user doesn’t need to know anything about the horrors of Twitter data, which is pretty amazing. If you use <code>{rtweet}</code>, you probably owe <a href="https://twitter.com/kearneymw">Michael Kearney</a> some <a href="https://github.com/mkearney/rtweet_citations">citations</a>. If he hadn’t developed a way to sensibly structure tweet data frames in R, <code>{tweetio}</code> would’ve never happened.</p>
-<p><code>{tweetio}</code> uses a combination of C++ via <a href="http://www.rcpp.org/"><code>{Rcpp}</code></a>, the <a href="http://rapidjson.org/"><code>rapidjson</code></a> C++ library (made available by <a href="https://cran.r-project.org/web/packages/rapidjsonr/index.html"><code>{rapidjsonr}</code></a>), <a href="https://cran.r-project.org/web/packages/jsonify/index.html"><code>{jsonify}</code></a>) for an R-level interface to <code>rapidjson</code>, <a href="https://cran.r-project.org/web/packages/RcppProgress/index.html"><code>{RcppProgress}</code></a>), and the <strong>R’s not-so-secret super weapon</strong>: <a href="https://rdatatable.gitlab.io/data.table/"><code>{data.table}</code></a>.</p>
+<p><code>{tweetio}</code> uses a combination of C++ via <a href="http://www.rcpp.org/"><code>{Rcpp}</code></a>, the <a href="http://rapidjson.org/"><code>rapidjson</code></a> C++ library (made available by <a href="https://cran.r-project.org/web/packages/rapidjsonr/index.html"><code>{rapidjsonr}</code></a>), <a href="https://cran.r-project.org/web/packages/jsonify/index.html"><code>{jsonify}</code></a>) for an R-level interface to <code>rapidjson</code>, <a href="https://cran.r-project.org/web/packages/RcppProgress/index.html"><code>{RcppProgress}</code></a>), and <strong>R’s not-so-secret super weapon</strong>: <a href="https://rdatatable.gitlab.io/data.table/"><code>{data.table}</code></a>.</p>
 <p>Major inspiration from <a href="https://gitlab.com/hrbrmstr/ndjson"><code>{ndjson}</code></a> was taken, particularly its use of <a href="https://www.cs.unc.edu/Research/compgeom/gzstream/"><code>Gzstream</code></a>.</p>
 </div>
 

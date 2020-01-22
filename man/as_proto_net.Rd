@@ -4,9 +4,14 @@
 \alias{as_proto_net}
 \title{Convert Various Objects to \code{proto_net}s}
 \usage{
-as_proto_net(tweet_df, target_class = c("user", "hashtag", "url",
-  "media"), all_status_data = FALSE, all_user_data = FALSE,
-  as_tibble = FALSE, ...)
+as_proto_net(
+  tweet_df,
+  target_class = c("user", "hashtag", "url", "media"),
+  all_status_data = FALSE,
+  all_user_data = FALSE,
+  as_tibble = FALSE,
+  ...
+)
 }
 \arguments{
 \item{tweet_df}{A data frame of tweets, as obtained by \code{read_tweets()} or

@@ -4,8 +4,7 @@
 \alias{write_graphml}
 \title{Write Gephi-Friendly .graphml Files}
 \usage{
-write_graphml(g, file_path, na_numbers_as = -1, na_characters_as = "",
-  ...)
+write_graphml(g, file_path, na_numbers_as = -1, na_characters_as = "", ...)
 }
 \arguments{
 \item{g}{\code{igraph::graph()} object}

@@ -172,12 +172,12 @@ one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https:/
 
 <span class='co'># write comma-separated values files ==================================================</span>
 <span class='no'>target_csv_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".csv"</span>)
-<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp4I0JwU/file52cb371ae699.csv"</div><div class='input'>
+<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpxG1X0D/file5ae1784adcdb.csv"</div><div class='input'>
 <span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_csv_file</span>)
 
 <span class='co'># write Microsoft Excel files =========================================================</span>
 <span class='no'>target_excel_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xlsx"</span>)
-<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp4I0JwU/file52cb1c793776.xlsx"</div><div class='input'>
+<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpxG1X0D/file5ae1b849cb5.xlsx"</div><div class='input'>
 <span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)
 
 <span class='co'># same as `write_tweet_xlsx()`</span>

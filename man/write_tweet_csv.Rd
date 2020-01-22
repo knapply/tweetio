@@ -20,7 +20,7 @@ one of \code{{rtweet}}'s collection functions, e.g. \code{\link[rtweet:search_tw
 
 \item{...}{Arguments passed to or from other methods.}
 
-\item{asTable}{\code{<logical>}, default: \code{TRUE}.}
+\item{asTable}{\verb{<logical>}, default: \code{TRUE}.}
 }
 \description{
 Write Tweets to Spreadsheets

@@ -132,9 +132,14 @@
     <p>A <code>proto_net</code> is a <code>list</code> containing two data frames named <code>edges</code> and <code>nodes</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_proto_net</span>(<span class='no'>tweet_df</span>, <span class='kw'>target_class</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"user"</span>, <span class='st'>"hashtag"</span>, <span class='st'>"url"</span>,
-  <span class='st'>"media"</span>), <span class='kw'>all_status_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>as_proto_net</span>(
+  <span class='no'>tweet_df</span>,
+  <span class='kw'>target_class</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"user"</span>, <span class='st'>"hashtag"</span>, <span class='st'>"url"</span>, <span class='st'>"media"</span>),
+  <span class='kw'>all_status_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

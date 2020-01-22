@@ -78,20 +78,20 @@ small_rtweet_stream <- read_tweets(temp_file, as_tibble = TRUE)
 small_rtweet_stream
 ```
 
-    #> # A tibble: 893 x 93
+    #> # A tibble: 908 x 93
     #>    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen…
     #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>            <chr>           
-    #>  1 117432… 12200001… 2020-01-22 15:07:56 taiga2501   RT @… Twitt… <NA>             <NA>             <NA>            
-    #>  2 550880… 12200001… 2020-01-22 15:07:59 noeyyeonnn  เมื่…   Twitt… <NA>             <NA>             <NA>            
-    #>  3 221389… 12200001… 2020-01-22 15:07:59 D_N_syatik… セント「… twitt… <NA>             <NA>             <NA>            
-    #>  4 110737… 12200001… 2020-01-22 15:07:59 almasonee   واذا… Twitt… <NA>             <NA>             <NA>            
-    #>  5 113488… 12200001… 2020-01-22 15:07:59 Michhee16   RT @… Twitt… <NA>             <NA>             <NA>            
-    #>  6 360080… 12200001… 2020-01-22 15:07:59 brsywe_a_a  水着ガチ… Tweet… <NA>             <NA>             <NA>            
-    #>  7 823127… 12200001… 2020-01-22 15:07:59 AndreasVar_ xx α… Twitt… <NA>             <NA>             <NA>            
-    #>  8 110614… 12200001… 2020-01-22 15:07:59 kaino20_f4f 続き→水… Twitt… 122000005706521… 110614293938896… kaino20_f4f     
-    #>  9 386193… 12200001… 2020-01-22 15:07:59 shoaa92     RT @… Twitt… <NA>             <NA>             <NA>            
-    #> 10 702892… 12200001… 2020-01-22 15:07:59 BUtydw      RT @… Twitt… <NA>             <NA>             <NA>            
-    #> # … with 883 more rows, and 84 more variables: is_quote <lgl>, is_retweet <lgl>, hashtags <list>,
+    #>  1 594068… 12200026… 2020-01-22 15:17:58 SusanRsbur… @ihe… Twitt… 121614807153849… 317385247        iheartmindy     
+    #>  2 100223… 12200026… 2020-01-22 15:18:00 baitoeii3   RT @… Twitt… <NA>             <NA>             <NA>            
+    #>  3 233658… 12200026… 2020-01-22 15:18:00 ARQHUIMAN   0 ht… Twitt… <NA>             <NA>             <NA>            
+    #>  4 114994… 12200026… 2020-01-22 15:18:00 mayu_vayce  ところで… Twitt… <NA>             <NA>             <NA>            
+    #>  5 231194… 12200026… 2020-01-22 15:17:58 Gabbiano19… @Ton… Twitt… 121999638592111… 72345365         TonyMac85       
+    #>  6 400096… 12200026… 2020-01-22 15:17:58 barbarakev… RT @… Twitt… <NA>             <NA>             <NA>            
+    #>  7 101471… 12200026… 2020-01-22 15:18:00 longlow1    RT @… Twitt… <NA>             <NA>             <NA>            
+    #>  8 116114… 12200026… 2020-01-22 15:18:00 BANDI_hyeo… 여우님 … Twitt… <NA>             <NA>             <NA>            
+    #>  9 988685… 12200026… 2020-01-22 15:18:00 arishime__… RT @… Twitt… <NA>             <NA>             <NA>            
+    #> 10 139044… 12200026… 2020-01-22 15:18:00 hatorikkkko ぼくもお… Twitt… <NA>             <NA>             <NA>            
+    #> # … with 898 more rows, and 84 more variables: is_quote <lgl>, is_retweet <lgl>, hashtags <list>,
     #> #   urls_expanded_url <list>, media_url <list>, media_expanded_url <list>, media_type <list>, mentions_user_id <list>,
     #> #   mentions_screen_name <list>, lang <chr>, quoted_status_id <chr>, quoted_text <chr>, quoted_created_at <dttm>,
     #> #   quoted_source <chr>, quoted_favorite_count <int>, quoted_retweet_count <int>, quoted_user_id <chr>,
@@ -201,7 +201,7 @@ bench::mark(
     #> # A tibble: 1 x 6
     #>   expression                           min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>                      <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 read_tweets(rtweet_stream_path)    2.28s    2.46s     0.415     137MB     1.24
+    #> 1 read_tweets(rtweet_stream_path)    2.52s    2.71s     0.375     137MB     1.13
 
 Ignoring the time it takes to run the above
 `rtweet_validate_and_parse()` function for `rtweet::parse_stream()` to
@@ -222,8 +222,8 @@ bench_mark[, 1:9]
     #> # A tibble: 2 x 6
     #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 rtweet       21.59s    21.7s    0.0461     483MB     4.26
-    #> 2 tweetio       1.66s    1.83s    0.525       95MB     1.92
+    #> 1 rtweet       21.55s   22.13s    0.0444     483MB     4.10
+    #> 2 tweetio       1.74s    2.19s    0.470       95MB     1.73
 
 ``` r
 plot(bench_mark)
@@ -252,7 +252,7 @@ bench::mark(
     #> # A tibble: 1 x 6
     #>   expression                                              min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>                                         <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 big_tweet_df <- read_tweets(big_tweet_stream_path)    16.1s    16.1s    0.0622     396MB    0.497
+    #> 1 big_tweet_df <- read_tweets(big_tweet_stream_path)    16.3s    16.3s    0.0612     396MB    0.490
 
 ## Data Dumps
 
@@ -459,9 +459,9 @@ big_tweet_df %>%
   as_igraph()
 ```
 
-    #> IGRAPH 385a31d DN-- 64172 238713 -- 
+    #> IGRAPH 03d12b7 DN-- 64172 238713 -- 
     #> + attr: name (v/c), status_id (e/c), relation (e/c)
-    #> + edges from 385a31d (vertex names):
+    #> + edges from 03d12b7 (vertex names):
     #>  [1] 340165454          ->44607937            50229830           ->146322653          
     #>  [3] 1113359075029295106->6446742             3427037277         ->6446742            
     #>  [5] 2426567863         ->6446742             1049130232559620096->6446742            
@@ -480,7 +480,7 @@ big_tweet_df %>%
   as_igraph(all_user_data = TRUE, all_status_data = TRUE)
 ```
 
-    #> IGRAPH 1b70fae DN-- 64172 238713 -- 
+    #> IGRAPH 1192f86 DN-- 64172 238713 -- 
     #> + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name (v/c), location (v/c), description (v/c),
     #> | url (v/c), protected (v/l), followers_count (v/n), friends_count (v/n), listed_count (v/n),
     #> | statuses_count (v/n), favourites_count (v/n), account_created_at (v/n), verified (v/l), profile_url
@@ -489,7 +489,7 @@ big_tweet_df %>%
     #> | (e/l), is_retweeted (e/l), media_url (e/x), media_type (e/x), place_url (e/c), place_name (e/c),
     #> | place_full_name (e/c), place_type (e/c), country (e/c), country_code (e/c), bbox_coords (e/x),
     #> | status_type (e/c)
-    #> + edges from 1b70fae (vertex names):
+    #> + edges from 1192f86 (vertex names):
     #> [1] 2547690569->6446742  2547690569->6446742  245171523 ->52181976
     #> + ... omitted several edges
 
@@ -503,9 +503,9 @@ big_tweet_df %>%
   as_igraph(target_class = "hashtag")
 ```
 
-    #> IGRAPH 0319eb0 DN-B 60417 134468 -- 
+    #> IGRAPH be33de4 DN-B 60417 134468 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 0319eb0 (vertex names):
+    #> + edges from be33de4 (vertex names):
     #>  [1] 340165454          ->ufc244 50229830           ->new    50229830           ->ufc244 1113359075029295106->ufc244
     #>  [5] 1120821278410145793->ufc244 2945072804         ->ufc244 250392181          ->ufc244 3427037277         ->ufc244
     #>  [9] 2426567863         ->ufc244 1049130232559620096->ufc244 245455601          ->ufc244 895707290          ->ufc244
@@ -521,9 +521,9 @@ big_tweet_df %>%
   as_igraph(target_class = "url")
 ```
 
-    #> IGRAPH d0f9ced DN-B 8864 10014 -- 
+    #> IGRAPH c76b217 DN-B 8864 10014 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from d0f9ced (vertex names):
+    #> + edges from c76b217 (vertex names):
     #> [1] 54342307           ->https://twitter.com/jjmast1/status/1190812770951925760      
     #> [2] 822180925467398148 ->https://twitter.com/usatoday/status/1190848577171529729     
     #> [3] 1161588424488341504->https://livestreamon.co/ufc244                              
@@ -538,9 +538,9 @@ big_tweet_df %>%
   as_igraph(target_class = "media")
 ```
 
-    #> IGRAPH 07ff27a DN-B 35704 45448 -- 
+    #> IGRAPH 0079190 DN-B 35704 45448 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 07ff27a (vertex names):
+    #> + edges from 0079190 (vertex names):
     #> [1] 1113359075029295106->http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
     #> [2] 3427037277         ->http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
     #> [3] 2426567863         ->http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
@@ -627,7 +627,7 @@ developed a way to sensibly structure tweet data frames in R,
 [`{jsonify}`](https://cran.r-project.org/web/packages/jsonify/index.html))
 for an R-level interface to `rapidjson`,
 [`{RcppProgress}`](https://cran.r-project.org/web/packages/RcppProgress/index.html)),
-and the **R’s not-so-secret super weapon**:
+and **R’s not-so-secret super weapon**:
 [`{data.table}`](https://rdatatable.gitlab.io/data.table/).
 
 Major inspiration from [`{ndjson}`](https://gitlab.com/hrbrmstr/ndjson)
