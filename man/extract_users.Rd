@@ -4,8 +4,13 @@
 \alias{extract_users}
 \title{Extract All Users}
 \usage{
-extract_users(tweet_df, summarize = TRUE, split = FALSE,
-  as_tibble = FALSE, ...)
+extract_users(
+  tweet_df,
+  summarize = TRUE,
+  split = FALSE,
+  as_tibble = FALSE,
+  ...
+)
 }
 \arguments{
 \item{tweet_df}{A data frame of tweets, as obtained by \code{read_tweets()} or

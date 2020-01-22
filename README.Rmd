@@ -29,48 +29,31 @@ options(width = 120)
 
 
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/tweetio)](https://cran.r-project.org/package=tweetio)
 [![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![GitHub last commit](https://img.shields.io/github/last-commit/knapply/tweetio.svg)](https://github.com/knapply/tweetio/commits/master)
-[![Codecov test coverage](https://codecov.io/gh/knapply/tweetio/branch/master/graph/badge.svg)](https://codecov.io/gh/knapply/tweetio?branch=master)
+[![R build status](https://github.com/knapply/tweetio/workflows/R-CMD-check/badge.svg)](https://github.com/knapply/tweetio/actions?workflow=R-CMD-check)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/knapply/tweetio?branch=master&svg=true)](https://ci.appveyor.com/project/knapply/tweetio)
 [![Travis-CI Build Status](https://travis-ci.org/knapply/tweetio.svg?branch=master)](https://travis-ci.org/knapply/tweetio)
+[![Codecov test coverage](https://codecov.io/gh/knapply/tweetio/branch/master/graph/badge.svg)](https://codecov.io/gh/knapply/tweetio?branch=master)
+[![GitHub last commit](https://img.shields.io/github/last-commit/knapply/tweetio.svg)](https://github.com/knapply/tweetio/commits/master)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Depends](https://img.shields.io/badge/Depends-GNU_R>=3.3-blue.svg)](https://www.r-project.org/)
+[![CRAN status](https://www.r-pkg.org/badges/version/tweetio)](https://cran.r-project.org/package=tweetio)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](https://github.com/knapply/tweetio)
 [![HitCount](http://hits.dwyl.io/knapply/tweetio.svg)](http://hits.dwyl.io/knapply/tweetio)
 <!-- badges: end -->
 
-# Progress
 
-### Supported Data Inputs
-
-- [x] Twitter API streams: .json, .json.gz
-- [x] API to Elasticsearch data dump (JSON Array): .json, .json.gz
-- [x] API to Elasticsearch data dump (line-delimited JSON): .jsonl, .jsonl.gz
-
-### Supported Data Outputs
-
-- [x] CSV
-- [x] Excel
-- [x] Gephi-friendly GraphML
-
-### Structures
-
-- [x] `{rtweet}`-style data frames
-- [x] Spatial Tweets via `{sf}`
-- [x] Tweet networks via `{igraph}`
 
 
 # Introduction
 
-`{tweetio}` goal is to enable safe, efficient I/O and transformation of Twitter data. Whether the data came from the Twitter API, a database dump, or some other source, `{tweetio}`'s job is to get them into R and ready for analysis.
+`{tweetio}`'s goal is to enable safe, efficient I/O and transformation of Twitter data. Whether the data came from the Twitter API, a database dump, or some other source, `{tweetio}`'s job is to get them into R and ready for analysis.
 
-`{tweetio}` is __not__ a competitor to `{rtweet}`: it is not interested in collecting Twitter data. That said, it definitely attempts to emulate its data frame schema because...
+`{tweetio}` is __not__ a competitor to [`{rtweet}`](https://rtweet.info/): it is not interested in collecting Twitter data. That said, it definitely attempts to compliment it by emulating its data frame schema because...
 
 1. It's incredibly easy to use.
 2. It's more efficient to analyze than a key-value format following the raw data.
-3. It'd be a waste not to maximize compatibiltiy with tools built specifically around `{rtweet}`'s data frames.
+3. It'd be a waste not to maximize compatibility with tools built specifically around `{rtweet}`'s data frames.
 
 # Installation
 
@@ -178,7 +161,7 @@ big_tweet_stream_path %>%
   scales::number_bytes() # 1.2 Gb before compression
 
 bench::mark(
-  big_tweet_df <- tweetio::read_tweets(big_tweet_stream_path)
+  big_tweet_df <- read_tweets(big_tweet_stream_path)
 )[, 1:9]
 ```
 
@@ -278,9 +261,10 @@ This has three unfortunate consequences:
 If you have `{sf}` installed, you can use `as_tweet_sf()` to only keep those tweets that contain valid bounding box polygons.
 
 ```{r}
-tweet_sf <- as_tweet_sf(tweet_df = big_tweet_df) 
+tweet_sf <- big_tweet_df %>% 
+  as_tweet_sf()
 
-tweet_sf[, "bbox_coords"]
+tweet_sf[, "bbox_coords"] %>% head()
 ```
 
 
@@ -293,16 +277,20 @@ There are currently three columns that can potentially hold bounding boxes:
 You can select which one to use to build your `sf` object by modifying the `geom_col=` parameter (default: `"bbox_coords"`)
 
 ```{r}
-as_tweet_sf(big_tweet_df, geom_col = "quoted_bbox_coords"
-            )[, "quoted_bbox_coords"]
+big_tweet_df %>% 
+  as_tweet_sf(geom_col = "quoted_bbox_coords") %>% 
+  .[, "quoted_bbox_coords"] %>% 
+  head()
 ```
 
 You can also build _all_ the supported bounding boxes by setting `geom_col=` to `"all"`.
 
 ```{r}
-all_bboxes <- as_tweet_sf(big_tweet_df, geom_col = "all")
-all_bboxes[, c("geometry", "which_geom")]
-unique(all_bboxes$which_geom)
+all_bboxes <- big_tweet_df %>% 
+  as_tweet_sf(geom_col = "all")
+
+all_bboxes[, c("geometry", "which_geom")] %>% 
+  unique(by = "which_geom")
 ```
 
 
@@ -365,14 +353,40 @@ You're not stuck with going directly to `<igraph>` objects though. Underneath th
 
 ```{r}
 big_tweet_df %>% 
-  as_proto_net(all_status_data = TRUE, all_user_data = TRUE, as_tibble = TRUE)
+  as_proto_net(all_status_data = TRUE, all_user_data = TRUE, as_tibble = TRUE) %>% 
+  lapply(head)
 ```
+
+
+# Progress
+
+### Supported Data Inputs
+
+- [x] Twitter API streams: .json, .json.gz
+- [x] API to Elasticsearch data dump (JSON Array): .json, .json.gz
+- [x] API to Elasticsearch data dump (line-delimited JSON): .jsonl, .jsonl.gz
+
+### Supported Data Outputs
+
+- [x] CSV
+- [x] Excel
+- [x] Gephi-friendly GraphML
+
+### Structures
+
+- [x] `{rtweet}`-style data frames
+- [x] Spatial Tweets via `{sf}`
+- [x] Tweet networks via `{igraph}`
 
 
 # Shout Outs
 
-`{tweetio}` uses a combination of C++ via [`{Rcpp}`](http://www.rcpp.org/), the [`rapidjson`](http://rapidjson.org/) C++ library (made available by [`{rapidjsonr}`](https://cran.r-project.org/web/packages/rapidjsonr/index.html)), [`{jsonify}`](https://cran.r-project.org/web/packages/jsonify/index.html)) for an R-level interface to `rapidjson`, [`{RcppProgress}`](https://cran.r-project.org/web/packages/RcppProgress/index.html)), and __R's secret weapon__: [`{data.table}`](https://rdatatable.gitlab.io/data.table/).
+ The [`{rtweet}`](https://rtweet.info/) package __spoils R users rotten__, in the best possible way. The underlying data carpentry is so seamless that the user doesn't need to know anything about the horrors of Twitter data, which is pretty amazing. If you use `{rtweet}`, you probably owe [Michael Kearney](https://twitter.com/kearneymw) some [citations](https://github.com/mkearney/rtweet_citations). If he hadn't developed a way to sensibly structure tweet data frames in R, `{tweetio}` would've never happened.
+ 
+
+`{tweetio}` uses a combination of C++ via [`{Rcpp}`](http://www.rcpp.org/), the [`rapidjson`](http://rapidjson.org/) C++ library (made available by [`{rapidjsonr}`](https://cran.r-project.org/web/packages/rapidjsonr/index.html)), [`{jsonify}`](https://cran.r-project.org/web/packages/jsonify/index.html)) for an R-level interface to `rapidjson`, [`{RcppProgress}`](https://cran.r-project.org/web/packages/RcppProgress/index.html)), and __R's not-so-secret super weapon__: [`{data.table}`](https://rdatatable.gitlab.io/data.table/).
 
 Major inspiration from [`{ndjson}`](https://gitlab.com/hrbrmstr/ndjson) was taken, particularly its use of [`Gzstream`](https://www.cs.unc.edu/Research/compgeom/gzstream/).
+
 
 

@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -132,9 +132,14 @@
     <p>A <code>proto_net</code> is a <code>list</code> containing two data frames named <code>edges</code> and <code>nodes</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_proto_net</span>(<span class='no'>tweet_df</span>, <span class='kw'>target_class</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"user"</span>, <span class='st'>"hashtag"</span>, <span class='st'>"url"</span>,
-  <span class='st'>"media"</span>), <span class='kw'>all_status_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>as_proto_net</span>(
+  <span class='no'>tweet_df</span>,
+  <span class='kw'>target_class</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"user"</span>, <span class='st'>"hashtag"</span>, <span class='st'>"url"</span>, <span class='st'>"media"</span>),
+  <span class='kw'>all_status_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -205,36 +210,36 @@ networks with the maximum amount of attribute data embedded in the graph structu
 
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>as_proto_net</span>(<span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $edges
-#&gt; <span style='color: #555555;'># A tibble: 1,234 x 4</span><span>
+#&gt; <span style='color: #949494;'># A tibble: 1,234 x 4</span><span>
 #&gt;    from                to                  status_id           relation
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   
-#&gt; </span><span style='color: #555555;'> 1</span><span> 194250838           340309688           1178007813257388032 retweet 
-#&gt; </span><span style='color: #555555;'> 2</span><span> 825459487821619201  966825602           1178007817426370560 retweet 
-#&gt; </span><span style='color: #555555;'> 3</span><span> 1116228559616397312 3153145782          1178007830034448384 retweet 
-#&gt; </span><span style='color: #555555;'> 4</span><span> 4374655520          4167284315          1178007830005080064 retweet 
-#&gt; </span><span style='color: #555555;'> 5</span><span> 1172885625068036102 1112877891841343488 1178007838418984960 retweet 
-#&gt; </span><span style='color: #555555;'> 6</span><span> 1132474594583928832 1217220278          1178007842592149505 retweet 
-#&gt; </span><span style='color: #555555;'> 7</span><span> 20737729            39334221            1178007846790692864 retweet 
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2198859787          3096758526          1178007846782287878 retweet 
-#&gt; </span><span style='color: #555555;'> 9</span><span> 3237877098          847885187325276164  1178007851001737217 retweet 
-#&gt; </span><span style='color: #555555;'>10</span><span> 868219009350676481  1962155772          1178007859403132928 retweet 
-#&gt; </span><span style='color: #555555;'># ... with 1,224 more rows</span><span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 194250838           340309688           1178007813257388032 retweet 
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 825459487821619201  966825602           1178007817426370560 retweet 
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 1116228559616397312 3153145782          1178007830034448384 retweet 
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 4374655520          4167284315          1178007830005080064 retweet 
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 1172885625068036102 1112877891841343488 1178007838418984960 retweet 
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 1132474594583928832 1217220278          1178007842592149505 retweet 
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 20737729            39334221            1178007846790692864 retweet 
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 2198859787          3096758526          1178007846782287878 retweet 
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 3237877098          847885187325276164  1178007851001737217 retweet 
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 868219009350676481  1962155772          1178007859403132928 retweet 
+#&gt; </span><span style='color: #949494;'># … with 1,224 more rows</span><span>
 #&gt; 
 #&gt; $nodes
-#&gt; </span><span style='color: #555555;'># A tibble: 1,228 x 1</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 1,228 x 1</span><span>
 #&gt;    name               
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              
-#&gt; </span><span style='color: #555555;'> 1</span><span> 194250838          
-#&gt; </span><span style='color: #555555;'> 2</span><span> 825459487821619201 
-#&gt; </span><span style='color: #555555;'> 3</span><span> 1116228559616397312
-#&gt; </span><span style='color: #555555;'> 4</span><span> 4374655520         
-#&gt; </span><span style='color: #555555;'> 5</span><span> 1172885625068036102
-#&gt; </span><span style='color: #555555;'> 6</span><span> 1132474594583928832
-#&gt; </span><span style='color: #555555;'> 7</span><span> 20737729           
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2198859787         
-#&gt; </span><span style='color: #555555;'> 9</span><span> 3237877098         
-#&gt; </span><span style='color: #555555;'>10</span><span> 868219009350676481 
-#&gt; </span><span style='color: #555555;'># ... with 1,218 more rows</span><span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 194250838          
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 825459487821619201 
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 1116228559616397312
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 4374655520         
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 1172885625068036102
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 1132474594583928832
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 20737729           
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 2198859787         
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 3237877098         
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 868219009350676481 
+#&gt; </span><span style='color: #949494;'># … with 1,218 more rows</span><span>
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "proto_net"
@@ -242,36 +247,36 @@ networks with the maximum amount of attribute data embedded in the graph structu
 #&gt; [1] "user"</div><div class='input'>
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>as_proto_net</span>(<span class='kw'>target_class</span> <span class='kw'>=</span> <span class='st'>"hashtag"</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $edges
-#&gt; </span><span style='color: #555555;'># A tibble: 267 x 4</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 267 x 4</span><span>
 #&gt;    from                to                    status_id           relation
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   
-#&gt; </span><span style='color: #555555;'> 1</span><span> 218889555           sooners               1178007817460039683 uses    
-#&gt; </span><span style='color: #555555;'> 2</span><span> 93732206            conejopride           1178007867770597377 uses    
-#&gt; </span><span style='color: #555555;'> 3</span><span> 93732206            inclusionishappening  1178007867770597377 uses    
-#&gt; </span><span style='color: #555555;'> 4</span><span> 93732206            ireadbannedbooks      1178007867770597377 uses    
-#&gt; </span><span style='color: #555555;'> 5</span><span> 1165554985406304257 &lt;U+0E1B&gt;&lt;U+0E4B&gt;&lt;U+0E2D&gt;&lt;U+0E08&gt;&lt;U+0E49&gt;&lt;U+0E32&gt;&lt;U+0E19&gt;                 1178007888725344256 uses    
-#&gt; </span><span style='color: #555555;'> 6</span><span> 1270106738          theboss               1178007888742293504 uses    
-#&gt; </span><span style='color: #555555;'> 7</span><span> 1270106738          jefa                  1178007888742293504 uses    
-#&gt; </span><span style='color: #555555;'> 8</span><span> 1270106738          nahreptop250          1178007888742293504 uses    
-#&gt; </span><span style='color: #555555;'> 9</span><span> 1270106738          nahrep                1178007888742293504 uses    
-#&gt; </span><span style='color: #555555;'>10</span><span> 1270106738          olivaresandmolinateam 1178007888742293504 uses    
-#&gt; </span><span style='color: #555555;'># ... with 257 more rows</span><span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 218889555           sooners               1178007817460039683 uses    
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 93732206            conejopride           1178007867770597377 uses    
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 93732206            inclusionishappening  1178007867770597377 uses    
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 93732206            ireadbannedbooks      1178007867770597377 uses    
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 1165554985406304257 ป๋อจ้าน                 1178007888725344256 uses    
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 1270106738          theboss               1178007888742293504 uses    
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 1270106738          jefa                  1178007888742293504 uses    
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 1270106738          nahreptop250          1178007888742293504 uses    
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 1270106738          nahrep                1178007888742293504 uses    
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 1270106738          olivaresandmolinateam 1178007888742293504 uses    
+#&gt; </span><span style='color: #949494;'># … with 257 more rows</span><span>
 #&gt; 
 #&gt; $nodes
-#&gt; </span><span style='color: #555555;'># A tibble: 366 x 1</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 366 x 1</span><span>
 #&gt;    name               
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              
-#&gt; </span><span style='color: #555555;'> 1</span><span> 218889555          
-#&gt; </span><span style='color: #555555;'> 2</span><span> 93732206           
-#&gt; </span><span style='color: #555555;'> 3</span><span> 1165554985406304257
-#&gt; </span><span style='color: #555555;'> 4</span><span> 1270106738         
-#&gt; </span><span style='color: #555555;'> 5</span><span> 1065721261744107521
-#&gt; </span><span style='color: #555555;'> 6</span><span> 1177166063710035968
-#&gt; </span><span style='color: #555555;'> 7</span><span> 979945309370572800 
-#&gt; </span><span style='color: #555555;'> 8</span><span> 110467298          
-#&gt; </span><span style='color: #555555;'> 9</span><span> 1177725296306540545
-#&gt; </span><span style='color: #555555;'>10</span><span> 16429082           
-#&gt; </span><span style='color: #555555;'># ... with 356 more rows</span><span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 218889555          
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 93732206           
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 1165554985406304257
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 1270106738         
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 1065721261744107521
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 1177166063710035968
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 979945309370572800 
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 110467298          
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 1177725296306540545
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 16429082           
+#&gt; </span><span style='color: #949494;'># … with 356 more rows</span><span>
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "proto_net"
@@ -279,36 +284,36 @@ networks with the maximum amount of attribute data embedded in the graph structu
 #&gt; [1] "hashtag"</div><div class='input'>
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>as_proto_net</span>(<span class='kw'>target_class</span> <span class='kw'>=</span> <span class='st'>"url"</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $edges
-#&gt; </span><span style='color: #555555;'># A tibble: 103 x 4</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 103 x 4</span><span>
 #&gt;    from         to                                        status_id     relation
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   
-#&gt; </span><span style='color: #555555;'> 1</span><span> 401300296    https://www.instagram.com/p/B29ty1WI8Hq/~ 117800782164~ uses    
-#&gt; </span><span style='color: #555555;'> 2</span><span> 4374655520   https://twitter.com/richie_ixii/status/1~ 117800783000~ uses    
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2198859787   https://twitter.com/_trapicuI/status/117~ 117800784678~ uses    
-#&gt; </span><span style='color: #555555;'> 4</span><span> 3237877098   http://M.Tech                             117800785100~ uses    
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2204772030   https://www.instagram.com/p/B29tyfugf-mH~ 117800788456~ uses    
-#&gt; </span><span style='color: #555555;'> 6</span><span> 1270106738   https://www.instagram.com/p/B29t0pfj69T/~ 117800788874~ uses    
-#&gt; </span><span style='color: #555555;'> 7</span><span> 11771660637~ https://twitter.com/paritchi/status/1177~ 117800792648~ uses    
-#&gt; </span><span style='color: #555555;'> 8</span><span> 1421542118   https://twitter.com/damndrosetweets/stat~ 117800801458~ uses    
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2551085480   https://twitter.com/tioorochi/status/117~ 117800803555~ uses    
-#&gt; </span><span style='color: #555555;'>10</span><span> 92930913417~ https://www.instagram.com/p/B29t5e-nBMJ/~ 117800804391~ uses    
-#&gt; </span><span style='color: #555555;'># ... with 93 more rows</span><span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 401300296    https://www.instagram.com/p/B29ty1WI8Hq/… 117800782164… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 4374655520   https://twitter.com/richie_ixii/status/1… 117800783000… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 2198859787   https://twitter.com/_trapicuI/status/117… 117800784678… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 3237877098   http://M.Tech                             117800785100… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 2204772030   https://www.instagram.com/p/B29tyfugf-mH… 117800788456… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 1270106738   https://www.instagram.com/p/B29t0pfj69T/… 117800788874… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 11771660637… https://twitter.com/paritchi/status/1177… 117800792648… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 1421542118   https://twitter.com/damndrosetweets/stat… 117800801458… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 2551085480   https://twitter.com/tioorochi/status/117… 117800803555… uses    
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 92930913417… https://www.instagram.com/p/B29t5e-nBMJ/… 117800804391… uses    
+#&gt; </span><span style='color: #949494;'># … with 93 more rows</span><span>
 #&gt; 
 #&gt; $nodes
-#&gt; </span><span style='color: #555555;'># A tibble: 198 x 1</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 198 x 1</span><span>
 #&gt;    name               
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              
-#&gt; </span><span style='color: #555555;'> 1</span><span> 401300296          
-#&gt; </span><span style='color: #555555;'> 2</span><span> 4374655520         
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2198859787         
-#&gt; </span><span style='color: #555555;'> 4</span><span> 3237877098         
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2204772030         
-#&gt; </span><span style='color: #555555;'> 6</span><span> 1270106738         
-#&gt; </span><span style='color: #555555;'> 7</span><span> 1177166063710035968
-#&gt; </span><span style='color: #555555;'> 8</span><span> 1421542118         
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2551085480         
-#&gt; </span><span style='color: #555555;'>10</span><span> 929309134175993862 
-#&gt; </span><span style='color: #555555;'># ... with 188 more rows</span><span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 401300296          
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 4374655520         
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 2198859787         
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 3237877098         
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 2204772030         
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 1270106738         
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 1177166063710035968
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 1421542118         
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 2551085480         
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 929309134175993862 
+#&gt; </span><span style='color: #949494;'># … with 188 more rows</span><span>
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "proto_net"
@@ -316,36 +321,36 @@ networks with the maximum amount of attribute data embedded in the graph structu
 #&gt; [1] "url"</div><div class='input'>
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>as_proto_net</span>(<span class='kw'>target_class</span> <span class='kw'>=</span> <span class='st'>"media"</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $edges
-#&gt; </span><span style='color: #555555;'># A tibble: 137 x 4</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 137 x 4</span><span>
 #&gt;    from         to                                        status_id     relation
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   
-#&gt; </span><span style='color: #555555;'> 1</span><span> 11728856250~ http://pbs.twimg.com/media/EFjoYwdXoAIMN~ 117800783841~ uses    
-#&gt; </span><span style='color: #555555;'> 2</span><span> 11324745945~ http://pbs.twimg.com/ext_tw_video_thumb/~ 117800784259~ uses    
-#&gt; </span><span style='color: #555555;'> 3</span><span> 93732206     http://pbs.twimg.com/ext_tw_video_thumb/~ 117800786777~ uses    
-#&gt; </span><span style='color: #555555;'> 4</span><span> 11214555122~ http://pbs.twimg.com/media/EFhtCsZUcAAWB~ 117800788455~ uses    
-#&gt; </span><span style='color: #555555;'> 5</span><span> 10657212617~ http://pbs.twimg.com/media/EFkf8M8W4AAIb~ 117800790970~ uses    
-#&gt; </span><span style='color: #555555;'> 6</span><span> 10657212617~ http://pbs.twimg.com/media/EFkf8M9XkAA_U~ 117800790970~ uses    
-#&gt; </span><span style='color: #555555;'> 7</span><span> 10657212617~ http://pbs.twimg.com/media/EFkf8i9WkAE96~ 117800790970~ uses    
-#&gt; </span><span style='color: #555555;'> 8</span><span> 10429113052~ http://pbs.twimg.com/media/EFkf-xWUwAEl_~ 117800794325~ uses    
-#&gt; </span><span style='color: #555555;'> 9</span><span> 110467298    http://pbs.twimg.com/media/EFZmJaaXkAY1g~ 117800794746~ uses    
-#&gt; </span><span style='color: #555555;'>10</span><span> 98041717153~ http://pbs.twimg.com/tweet_video_thumb/E~ 117800796425~ uses    
-#&gt; </span><span style='color: #555555;'># ... with 127 more rows</span><span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 11728856250… http://pbs.twimg.com/media/EFjoYwdXoAIMN… 117800783841… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 11324745945… http://pbs.twimg.com/ext_tw_video_thumb/… 117800784259… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 93732206     http://pbs.twimg.com/ext_tw_video_thumb/… 117800786777… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 11214555122… http://pbs.twimg.com/media/EFhtCsZUcAAWB… 117800788455… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 10657212617… http://pbs.twimg.com/media/EFkf8M8W4AAIb… 117800790970… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 10657212617… http://pbs.twimg.com/media/EFkf8M9XkAA_U… 117800790970… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 10657212617… http://pbs.twimg.com/media/EFkf8i9WkAE96… 117800790970… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 10429113052… http://pbs.twimg.com/media/EFkf-xWUwAEl_… 117800794325… uses    
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 110467298    http://pbs.twimg.com/media/EFZmJaaXkAY1g… 117800794746… uses    
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 98041717153… http://pbs.twimg.com/tweet_video_thumb/E… 117800796425… uses    
+#&gt; </span><span style='color: #949494;'># … with 127 more rows</span><span>
 #&gt; 
 #&gt; $nodes
-#&gt; </span><span style='color: #555555;'># A tibble: 253 x 1</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 253 x 1</span><span>
 #&gt;    name               
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              
-#&gt; </span><span style='color: #555555;'> 1</span><span> 1172885625068036102
-#&gt; </span><span style='color: #555555;'> 2</span><span> 1132474594583928832
-#&gt; </span><span style='color: #555555;'> 3</span><span> 93732206           
-#&gt; </span><span style='color: #555555;'> 4</span><span> 1121455512283832320
-#&gt; </span><span style='color: #555555;'> 5</span><span> 1065721261744107521
-#&gt; </span><span style='color: #555555;'> 6</span><span> 1042911305202454528
-#&gt; </span><span style='color: #555555;'> 7</span><span> 110467298          
-#&gt; </span><span style='color: #555555;'> 8</span><span> 980417171531685888 
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2328141540         
-#&gt; </span><span style='color: #555555;'>10</span><span> 834583812977881090 
-#&gt; </span><span style='color: #555555;'># ... with 243 more rows</span><span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 1172885625068036102
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 1132474594583928832
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 93732206           
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 1121455512283832320
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 1065721261744107521
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 1042911305202454528
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 110467298          
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 980417171531685888 
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 2328141540         
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 834583812977881090 
+#&gt; </span><span style='color: #949494;'># … with 243 more rows</span><span>
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "proto_net"
@@ -353,43 +358,43 @@ networks with the maximum amount of attribute data embedded in the graph structu
 #&gt; [1] "media"</div><div class='input'>
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>as_proto_net</span>(<span class='kw'>all_status_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $edges
-#&gt; </span><span style='color: #555555;'># A tibble: 1,234 x 20</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 1,234 x 20</span><span>
 #&gt;    from  to    status_id relation created_at          text  status_url source
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #555555;'> 1</span><span> 8627~ 8453~ 11780103~ retweet  2019-09-28 </span><span style='color: #555555;'>18:15:22</span><span> RT @~ https://t~ Twitt~
-#&gt; </span><span style='color: #555555;'> 2</span><span> 8627~ 8453~ 11780103~ mentions 2019-09-28 </span><span style='color: #555555;'>18:15:22</span><span> RT @~ https://t~ Twitt~
-#&gt; </span><span style='color: #555555;'> 3</span><span> 8627~ 1579~ 11780103~ mentions 2019-09-28 </span><span style='color: #555555;'>18:15:22</span><span> RT @~ https://t~ Twitt~
-#&gt; </span><span style='color: #555555;'> 4</span><span> 8627~ 1508~ 11780103~ mentions 2019-09-28 </span><span style='color: #555555;'>18:15:22</span><span> RT @~ https://t~ Twitt~
-#&gt; </span><span style='color: #555555;'> 5</span><span> 8627~ 5943~ 11780103~ mentions 2019-09-28 </span><span style='color: #555555;'>18:15:22</span><span> RT @~ https://t~ Twitt~
-#&gt; </span><span style='color: #555555;'> 6</span><span> 3688~ 8698~ 11780103~ retweet  2019-09-28 </span><span style='color: #555555;'>18:15:20</span><span> RT @~ https://t~ Twitt~
-#&gt; </span><span style='color: #555555;'> 7</span><span> 3688~ 8698~ 11780103~ mentions 2019-09-28 </span><span style='color: #555555;'>18:15:20</span><span> RT @~ https://t~ Twitt~
-#&gt; </span><span style='color: #555555;'> 8</span><span> 3688~ 7661~ 11780103~ mentions 2019-09-28 </span><span style='color: #555555;'>18:15:20</span><span> RT @~ https://t~ Twitt~
-#&gt; </span><span style='color: #555555;'> 9</span><span> 3688~ 1876~ 11780103~ mentions 2019-09-28 </span><span style='color: #555555;'>18:15:20</span><span> RT @~ https://t~ Twitt~
-#&gt; </span><span style='color: #555555;'>10</span><span> 3688~ 5882~ 11780103~ mentions 2019-09-28 </span><span style='color: #555555;'>18:15:20</span><span> RT @~ https://t~ Twitt~
-#&gt; </span><span style='color: #555555;'># ... with 1,224 more rows, and 12 more variables: is_quote </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,
-#&gt; #   is_retweeted </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, media_url </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, media_type </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, place_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   place_name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, place_full_name </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, place_type </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, country </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   country_code </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, bbox_coords </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span style='color: #555555;'>, status_type </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 8627… 8453… 11780103… retweet  2019-09-28 </span><span style='color: #949494;'>18:15:22</span><span> RT @… https://t… Twitt…
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 8627… 8453… 11780103… mentions 2019-09-28 </span><span style='color: #949494;'>18:15:22</span><span> RT @… https://t… Twitt…
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 8627… 1579… 11780103… mentions 2019-09-28 </span><span style='color: #949494;'>18:15:22</span><span> RT @… https://t… Twitt…
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 8627… 1508… 11780103… mentions 2019-09-28 </span><span style='color: #949494;'>18:15:22</span><span> RT @… https://t… Twitt…
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 8627… 5943… 11780103… mentions 2019-09-28 </span><span style='color: #949494;'>18:15:22</span><span> RT @… https://t… Twitt…
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 3688… 8698… 11780103… retweet  2019-09-28 </span><span style='color: #949494;'>18:15:20</span><span> RT @… https://t… Twitt…
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 3688… 8698… 11780103… mentions 2019-09-28 </span><span style='color: #949494;'>18:15:20</span><span> RT @… https://t… Twitt…
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 3688… 7661… 11780103… mentions 2019-09-28 </span><span style='color: #949494;'>18:15:20</span><span> RT @… https://t… Twitt…
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 3688… 1876… 11780103… mentions 2019-09-28 </span><span style='color: #949494;'>18:15:20</span><span> RT @… https://t… Twitt…
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 3688… 5882… 11780103… mentions 2019-09-28 </span><span style='color: #949494;'>18:15:20</span><span> RT @… https://t… Twitt…
+#&gt; </span><span style='color: #949494;'># … with 1,224 more rows, and 12 more variables: is_quote </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
+#&gt; #   is_retweeted </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, media_url </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, media_type </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, place_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
+#&gt; #   place_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, place_full_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, place_type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, country </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
+#&gt; #   country_code </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, bbox_coords </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, status_type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; 
 #&gt; $nodes
-#&gt; </span><span style='color: #555555;'># A tibble: 1,228 x 20</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 1,228 x 20</span><span>
 #&gt;    name  timestamp_ms        name.y screen_name location description url  
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 1001~ 2019-09-28 </span><span style='color: #555555;'>18:15:00</span><span> </span><span style='color: #555555;'>"</span><span>&lt;U+30D6&gt;&lt;U+30EA&gt;&lt;U+30A2&gt;&lt;U+30CA&gt;~ yoongi_Far~ &lt;U+65B0&gt;&lt;U+5BBF&gt;     </span><span style='color: #555555;'>"</span><span>&lt;U+23B7&gt; = &lt;U+79C1&gt;&lt;U+306F&gt;&lt;U+79D8&gt;&lt;U+5BC6&gt;&lt;U+306E&gt;~ </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 2</span><span> 1001~ 2019-09-28 </span><span style='color: #555555;'>18:13:04</span><span> </span><span style='color: #555555;'>"</span><span>Loca~ ornella944~ Bronx, ~ Snap:ornel~ </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 3</span><span> 1001~ 2019-09-28 </span><span style='color: #555555;'>18:08:35</span><span> RAWAN~ rawanjehad~ Jeddah   </span><span style='color: #555555;'>"</span><span>Respirato~ http~
-#&gt; </span><span style='color: #555555;'> 4</span><span> 1001~ 2019-09-28 </span><span style='color: #555555;'>18:12:13</span><span> </span><span style='color: #555555;'>"</span><span>Shas~ sks_rk      Kolkata~ Right to c~ </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 5</span><span> 1003~ 2019-09-28 </span><span style='color: #555555;'>18:06:45</span><span> </span><span style='color: #555555;'>"</span><span>J\U0~ cherrydoze  Garland~ </span><span style='color: #555555;'>"</span><span>3/22\U000~ http~
-#&gt; </span><span style='color: #555555;'> 6</span><span> 1003~ 2019-09-28 </span><span style='color: #555555;'>18:13:16</span><span> Side03 Side031     Space F~ Twitter de~ </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 7</span><span> 1003~ 2019-09-28 </span><span style='color: #555555;'>18:09:58</span><span> </span><span style='color: #555555;'>"</span><span>J.O.~ AlexisAbat~ </span><span style='color: #BB0000;'>NA</span><span>       Money Life  </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 8</span><span> 1003~ 2019-09-28 </span><span style='color: #555555;'>18:07:53</span><span> </span><span style='color: #555555;'>"</span><span>ti_b~ t_benjy     Bourges~ </span><span style='color: #555555;'>"</span><span>Bad Vibes~ </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'> 9</span><span> 1003~ 2019-09-28 </span><span style='color: #555555;'>18:11:28</span><span> </span><span style='color: #555555;'>"</span><span>A A ~ ManojManuu_ India    </span><span style='color: #555555;'>"</span><span>@alluarju~ </span><span style='color: #BB0000;'>NA</span><span>   
-#&gt; </span><span style='color: #555555;'>10</span><span> 1003~ 2019-09-28 </span><span style='color: #555555;'>18:06:26</span><span> &lt;U+BC31&gt;&lt;U+D600&gt;_&lt;U+C5D1&gt;&lt;U+C18C&gt;~ i8Cg9ETNlz~ Taipei ~ @B_hundred~ http~
-#&gt; </span><span style='color: #555555;'># ... with 1,218 more rows, and 13 more variables: protected </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,
-#&gt; #   followers_count </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, friends_count </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, listed_count </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
-#&gt; #   statuses_count </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, favourites_count </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, account_created_at </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>,
-#&gt; #   verified </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, profile_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, account_lang </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   profile_banner_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, profile_image_url </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, bbox_coords </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 1001… 2019-09-28 </span><span style='color: #949494;'>18:15:00</span><span> ブリアナ.… yoongi_Far… 新宿     </span><span style='color: #949494;'>"</span><span>⎷ = 私は秘密の… </span><span style='color: #BB0000;'>NA</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 1001… 2019-09-28 </span><span style='color: #949494;'>18:13:04</span><span> Local… ornella944… Bronx, … </span><span style='color: #949494;'>"</span><span>Snap:orne… </span><span style='color: #BB0000;'>NA</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 1001… 2019-09-28 </span><span style='color: #949494;'>18:08:35</span><span> RAWAN… rawanjehad… Jeddah   </span><span style='color: #949494;'>"</span><span>Respirato… http…
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 1001… 2019-09-28 </span><span style='color: #949494;'>18:12:13</span><span> Shash… sks_rk      Kolkata… </span><span style='color: #949494;'>"</span><span>Right to … </span><span style='color: #BB0000;'>NA</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 1003… 2019-09-28 </span><span style='color: #949494;'>18:06:45</span><span> J🥀    cherrydoze  Garland… </span><span style='color: #949494;'>"</span><span>3/22🥝</span><span style='color: #949494;'>"</span><span>    http…
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 1003… 2019-09-28 </span><span style='color: #949494;'>18:13:16</span><span> Side03 Side031     Space F… </span><span style='color: #949494;'>"</span><span>Twitter d… </span><span style='color: #BB0000;'>NA</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 1003… 2019-09-28 </span><span style='color: #949494;'>18:09:58</span><span> J.O.K… AlexisAbat… </span><span style='color: #BB0000;'>NA</span><span>       </span><span style='color: #949494;'>"</span><span>Money Lif… </span><span style='color: #BB0000;'>NA</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 1003… 2019-09-28 </span><span style='color: #949494;'>18:07:53</span><span> ti_be… t_benjy     Bourges… </span><span style='color: #949494;'>"</span><span>Bad Vibes… </span><span style='color: #BB0000;'>NA</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 1003… 2019-09-28 </span><span style='color: #949494;'>18:11:28</span><span> A A R… ManojManuu_ India    </span><span style='color: #949494;'>"</span><span>@alluarju… </span><span style='color: #BB0000;'>NA</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 1003… 2019-09-28 </span><span style='color: #949494;'>18:06:26</span><span> 백혀_엑소… i8Cg9ETNlz… Taipei … </span><span style='color: #949494;'>"</span><span>@B_hundre… http…
+#&gt; </span><span style='color: #949494;'># … with 1,218 more rows, and 13 more variables: protected </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
+#&gt; #   followers_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, friends_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, listed_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,
+#&gt; #   statuses_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, favourites_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, account_created_at </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #949494;'>,
+#&gt; #   verified </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, profile_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, account_lang </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
+#&gt; #   profile_banner_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, profile_image_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, bbox_coords </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "proto_net"
@@ -417,7 +422,7 @@ networks with the maximum amount of attribute data embedded in the graph structu
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

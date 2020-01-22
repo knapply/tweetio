@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -132,9 +132,14 @@
     <p>Build an <code>sf</code> Object of Tweets</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_tweet_sf</span>(<span class='no'>tweet_df</span>, <span class='kw'>geom_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bbox_coords"</span>, <span class='st'>"quoted_bbox_coords"</span>,
-  <span class='st'>"retweet_bbox_coords"</span>, <span class='st'>"ist_complex_value"</span>, <span class='st'>"all"</span>), <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>.geometry</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>as_tweet_sf</span>(
+  <span class='no'>tweet_df</span>,
+  <span class='kw'>geom_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bbox_coords"</span>, <span class='st'>"quoted_bbox_coords"</span>, <span class='st'>"retweet_bbox_coords"</span>,
+    <span class='st'>"ist_complex_value"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>.geometry</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,20 +190,20 @@ one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https:/
 #&gt; bbox:           xmin: -157.9505 ymin: -55.11686 xmax: 171.1442 ymax: 63.99495
 #&gt; epsg (SRID):    4326
 #&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs
-#&gt; <span style='color: #555555;'># A tibble: 685 x 4</span><span>
+#&gt; <span style='color: #949494;'># A tibble: 685 x 4</span><span>
 #&gt;    created_at          text           which_geom                        geometry
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                        </span><span style='color: #555555;font-style: italic;'>&lt;POLYGON [°]&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 2019-09-28 </span><span style='color: #555555;'>18:05:24</span><span> @_CeeDeeThree~ bbox_coor~ ((-97.51982 35.15327, -97.5198~
-#&gt; </span><span style='color: #555555;'> 2</span><span> 2019-09-28 </span><span style='color: #555555;'>18:05:25</span><span> Foto appena p~ bbox_coor~ ((8.665852 44.37908, 8.665852 ~
-#&gt; </span><span style='color: #555555;'> 3</span><span> 2019-09-28 </span><span style='color: #555555;'>18:05:25</span><span> </span><span style='color: #555555;'>"</span><span>@EsrodKatia ~ bbox_coor~ ((-106.9506 31.12068, -106.950~
-#&gt; </span><span style='color: #555555;'> 4</span><span> 2019-09-28 </span><span style='color: #555555;'>18:05:27</span><span> </span><span style='color: #555555;'>"</span><span>Mi viejo fue~ bbox_coor~ ((-63.39386 -41.03501, -63.393~
-#&gt; </span><span style='color: #555555;'> 5</span><span> 2019-09-28 </span><span style='color: #555555;'>18:05:30</span><span> </span><span style='color: #555555;'>"</span><span>@Sanatsalkol~ bbox_coor~ ((30.42998 39.76794, 30.42998 ~
-#&gt; </span><span style='color: #555555;'> 6</span><span> 2019-09-28 </span><span style='color: #555555;'>18:05:31</span><span> I’m calling i~ bbox_coor~ ((-118.6684 33.70454, -118.668~
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2019-09-28 </span><span style='color: #555555;'>18:05:32</span><span> </span><span style='color: #555555;'>"</span><span>@t_Ace_ZERO ~ bbox_coor~ ((139.136 36.24259, 139.136 36~
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2019-09-28 </span><span style='color: #555555;'>18:05:32</span><span> </span><span style='color: #555555;'>"</span><span>@crz_updates~ bbox_coor~ ((135.5633 34.68448, 135.5633 ~
-#&gt; </span><span style='color: #555555;'> 9</span><span> 2019-09-28 </span><span style='color: #555555;'>18:05:36</span><span> </span><span style='color: #555555;'>"</span><span>Volunteering~ bbox_coor~ ((-119.0618 34.12687, -119.061~
-#&gt; </span><span style='color: #555555;'>10</span><span> 2019-09-28 </span><span style='color: #555555;'>18:05:38</span><span> </span><span style='color: #555555;'>"</span><span>Un hermoso s~ bbox_coor~ ((-63.78454 -35.6894, -63.7845~
-#&gt; </span><span style='color: #555555;'># ... with 675 more rows</span><span></div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                        </span><span style='color: #949494;font-style: italic;'>&lt;POLYGON [°]&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 2019-09-28 </span><span style='color: #949494;'>18:05:24</span><span> </span><span style='color: #949494;'>"</span><span>@_CeeDeeThre… bbox_coor… ((-97.51982 35.15327, -97.5198…
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 2019-09-28 </span><span style='color: #949494;'>18:05:25</span><span> </span><span style='color: #949494;'>"</span><span>Foto appena … bbox_coor… ((8.665852 44.37908, 8.665852 …
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 2019-09-28 </span><span style='color: #949494;'>18:05:25</span><span> </span><span style='color: #949494;'>"</span><span>@EsrodKatia … bbox_coor… ((-106.9506 31.12068, -106.950…
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 2019-09-28 </span><span style='color: #949494;'>18:05:27</span><span> </span><span style='color: #949494;'>"</span><span>Mi viejo fue… bbox_coor… ((-63.39386 -41.03501, -63.393…
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 2019-09-28 </span><span style='color: #949494;'>18:05:30</span><span> </span><span style='color: #949494;'>"</span><span>@Sanatsalkol… bbox_coor… ((30.42998 39.76794, 30.42998 …
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 2019-09-28 </span><span style='color: #949494;'>18:05:31</span><span> </span><span style='color: #949494;'>"</span><span>I’m calling … bbox_coor… ((-118.6684 33.70454, -118.668…
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 2019-09-28 </span><span style='color: #949494;'>18:05:32</span><span> </span><span style='color: #949494;'>"</span><span>@t_Ace_ZERO … bbox_coor… ((139.136 36.24259, 139.136 36…
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 2019-09-28 </span><span style='color: #949494;'>18:05:32</span><span> </span><span style='color: #949494;'>"</span><span>@crz_updates… bbox_coor… ((135.5633 34.68448, 135.5633 …
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 2019-09-28 </span><span style='color: #949494;'>18:05:36</span><span> </span><span style='color: #949494;'>"</span><span>Volunteering… bbox_coor… ((-119.0618 34.12687, -119.061…
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 2019-09-28 </span><span style='color: #949494;'>18:05:38</span><span> </span><span style='color: #949494;'>"</span><span>Un hermoso s… bbox_coor… ((-63.78454 -35.6894, -63.7845…
+#&gt; </span><span style='color: #949494;'># … with 675 more rows</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -221,7 +226,7 @@ one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https:/
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>
