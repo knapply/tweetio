@@ -55,7 +55,7 @@ jobs:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
           sudo ldconfig
-          Rscript -e "install.packages('rgdal', repos='http://R-Forge.R-project.org')"
+          Rscript -e "install.packages('rgdal', dependencies = TRUE, repos='http://R-Forge.R-project.org')"
           Rscript -e "install.packages('igraph', repos='http://R-Forge.R-project.org')"
           Rscript -e "install.packages('sf', repos='http://R-Forge.R-project.org')"
           Rscript -e "install.packages('remotes')" -e "remotes::install_github('r-hub/sysreqs')"

@@ -43,7 +43,9 @@ Suggests:
     utils
 Remotes: 
     SymbolixAU/jsonify,
-    ycphs/openxlsx
+    ycphs/openxlsx,
+    igraph/rigraph,
+    r-spatial/sf
 URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio
 BugReports: https://github.com/knapply/tweetio/issues
 Encoding: UTF-8
