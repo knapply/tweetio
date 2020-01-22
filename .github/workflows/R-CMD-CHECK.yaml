@@ -56,6 +56,8 @@ jobs:
         run: |
           sudo ldconfig
           Rscript -e "install.packages('rgdal', repos='http://R-Forge.R-project.org')"
+          Rscript -e "install.packages('igraph', repos='http://R-Forge.R-project.org')"
+          Rscript -e "install.packages('sf', repos='http://R-Forge.R-project.org')"
           Rscript -e "install.packages('remotes')" -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
