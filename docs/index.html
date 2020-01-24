@@ -17,7 +17,7 @@
     sources, 2) provide the building blocks for robust analytical pipelines that use 
     network, spatial, and/or natural language processing perspectives, and 3) write Twitter
     data to multiple file formats, including those that best enable non-technical analysts 
-    to work. The primary data frame structure is heavily inspired by `{rtweet}`, and 
+    to work. The primary data structure is inspired by `{rtweet}`, and 
     all analytical routines being compatible with `{rtweet}` data frames is heavily
     prioritized.">
 <meta name="twitter:card" content="summary">
@@ -93,6 +93,7 @@
 </h1></div>
 <!-- badges: start -->
 
+<!-- [![R build status](https://github.com/knapply/tweetio/workflows/R-CMD-check/badge.svg)](https://github.com/knapply/tweetio/actions?workflow=R-CMD-check) -->
 </div>
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
@@ -115,7 +116,8 @@
 <div id="usage" class="section level1">
 <h1 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h1>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tweetio)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tweetio)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="dt">tweetio.as_tibble =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <div id="simple-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#simple-example" class="anchor"></a>Simple Example</h2>
@@ -123,23 +125,23 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>temp_file &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(<span class="dt">fileext =</span> <span class="st">".json"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2"></a>rtweet<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rtweet/man/stream_tweets.html">stream_tweets</a></span>(<span class="dt">timeout =</span> <span class="dv">15</span>, <span class="dt">parse =</span> <span class="ot">FALSE</span>, <span class="dt">file_name =</span> temp_file)</span></code></pre></div>
 <p>We can then pass the file path to <code><a href="reference/read_tweets.html">tweetio::read_tweets()</a></code> to efficiently parse the data into an <code>{rtweet}</code>-style data frame.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>small_rtweet_stream &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_tweets.html">read_tweets</a></span>(temp_file, <span class="dt">as_tibble =</span> <span class="ot">TRUE</span>)</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>small_rtweet_stream &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_tweets.html">read_tweets</a></span>(temp_file)</span>
 <span id="cb4-2"><a href="#cb4-2"></a></span>
 <span id="cb4-3"><a href="#cb4-3"></a>small_rtweet_stream</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#&gt; # A tibble: 908 x 93</span></span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#&gt; # A tibble: 855 x 93</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="co">#&gt;    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen…</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;     &lt;dttm&gt;              &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           </span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt;  1 594068… 12200026… 2020-01-22 15:17:58 SusanRsbur… @ihe… Twitt… 121614807153849… 317385247        iheartmindy     </span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt;  2 100223… 12200026… 2020-01-22 15:18:00 baitoeii3   RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#&gt;  3 233658… 12200026… 2020-01-22 15:18:00 ARQHUIMAN   0 ht… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt;  4 114994… 12200026… 2020-01-22 15:18:00 mayu_vayce  ところで… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt;  5 231194… 12200026… 2020-01-22 15:17:58 Gabbiano19… @Ton… Twitt… 121999638592111… 72345365         TonyMac85       </span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt;  6 400096… 12200026… 2020-01-22 15:17:58 barbarakev… RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt;  7 101471… 12200026… 2020-01-22 15:18:00 longlow1    RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt;  8 116114… 12200026… 2020-01-22 15:18:00 BANDI_hyeo… 여우님 … Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt;  9 988685… 12200026… 2020-01-22 15:18:00 arishime__… RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt; 10 139044… 12200026… 2020-01-22 15:18:00 hatorikkkko ぼくもお… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; # … with 898 more rows, and 84 more variables: is_quote &lt;lgl&gt;, is_retweet &lt;lgl&gt;, hashtags &lt;list&gt;,</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt;  1 118481… 12207063… 2020-01-24 13:54:04 yumekusa22  あ、サン… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt;  2 957509… 12207063… 2020-01-24 13:54:04 t_yk1927    @kan… Twitt… 122068276096617… 1860090313       kaname000xxx    </span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#&gt;  3 111514… 12207063… 2020-01-24 13:54:04 stanmomola… ....… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt;  4 718443… 12207063… 2020-01-24 13:54:04 yrme_72     RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt;  5 959424… 12207063… 2020-01-24 13:54:04 arviel03    RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt;  6 273063… 12207063… 2020-01-24 13:54:04 xxxs8_m     RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt;  7 110683… 12207063… 2020-01-24 13:54:04 johnMic254  @Kak… Twitt… 122028748110023… 909829790        Kakamega_pundit </span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt;  8 337652… 12207063… 2020-01-24 13:54:04 ReemShiekh… RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt;  9 896387… 12207063… 2020-01-24 13:54:04 uz_ziel_ca… RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt; 10 110398… 12207063… 2020-01-24 13:54:04 Lury_0814   RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;            </span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; # … with 845 more rows, and 84 more variables: is_quote &lt;lgl&gt;, is_retweet &lt;lgl&gt;, hashtags &lt;list&gt;,</span></span>
 <span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt; #   urls_expanded_url &lt;list&gt;, media_url &lt;list&gt;, media_expanded_url &lt;list&gt;, media_type &lt;list&gt;, mentions_user_id &lt;list&gt;,</span></span>
 <span id="cb5-16"><a href="#cb5-16"></a><span class="co">#&gt; #   mentions_screen_name &lt;list&gt;, lang &lt;chr&gt;, quoted_status_id &lt;chr&gt;, quoted_text &lt;chr&gt;, quoted_created_at &lt;dttm&gt;,</span></span>
 <span id="cb5-17"><a href="#cb5-17"></a><span class="co">#&gt; #   quoted_source &lt;chr&gt;, quoted_favorite_count &lt;int&gt;, quoted_retweet_count &lt;int&gt;, quoted_user_id &lt;chr&gt;,</span></span>
@@ -226,7 +228,7 @@
 <div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">#&gt; # A tibble: 1 x 6</span></span>
 <span id="cb13-2"><a href="#cb13-2"></a><span class="co">#&gt;   expression                           min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span id="cb13-3"><a href="#cb13-3"></a><span class="co">#&gt;   &lt;bch:expr&gt;                      &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a><span class="co">#&gt; 1 read_tweets(rtweet_stream_path)    2.52s    2.71s     0.375     137MB     1.13</span></span></code></pre></div>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="co">#&gt; 1 read_tweets(rtweet_stream_path)    2.49s    2.51s     0.391     137MB     1.17</span></span></code></pre></div>
 <p>Ignoring the time it takes to run the above <code>rtweet_validate_and_parse()</code> function for <code><a href="https://rdrr.io/pkg/rtweet/man/parse_stream.html">rtweet::parse_stream()</a></code> to work, how much faster is <code><a href="reference/read_tweets.html">tweetio::read_tweets()</a></code>?</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>bench_mark &lt;-<span class="st"> </span>bench<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span>(</span>
 <span id="cb14-2"><a href="#cb14-2"></a>  <span class="dt">rtweet =</span> rtweet<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rtweet/man/parse_stream.html">parse_stream</a></span>(rtweet_stream_path2),</span>
@@ -240,8 +242,8 @@
 <div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#&gt; # A tibble: 2 x 6</span></span>
 <span id="cb15-2"><a href="#cb15-2"></a><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span id="cb15-3"><a href="#cb15-3"></a><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span id="cb15-4"><a href="#cb15-4"></a><span class="co">#&gt; 1 rtweet       21.55s   22.13s    0.0444     483MB     4.10</span></span>
-<span id="cb15-5"><a href="#cb15-5"></a><span class="co">#&gt; 2 tweetio       1.74s    2.19s    0.470       95MB     1.73</span></span></code></pre></div>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="co">#&gt; 1 rtweet       21.47s   21.52s    0.0462     483MB     4.26</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="co">#&gt; 2 tweetio       1.76s    1.86s    0.505       95MB     1.85</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(bench_mark)</span></code></pre></div>
 <p><img src="reference/figures/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>With bigger files, using <code><a href="https://rdrr.io/pkg/rtweet/man/parse_stream.html">rtweet::parse_stream()</a></code> is no longer realistic, but that’s where <code><a href="reference/read_tweets.html">tweetio::read_tweets()</a></code> can help.</p>
@@ -256,7 +258,7 @@
 <div class="sourceCode" id="cb20"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co">#&gt; # A tibble: 1 x 6</span></span>
 <span id="cb20-2"><a href="#cb20-2"></a><span class="co">#&gt;   expression                                              min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span id="cb20-3"><a href="#cb20-3"></a><span class="co">#&gt;   &lt;bch:expr&gt;                                         &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span id="cb20-4"><a href="#cb20-4"></a><span class="co">#&gt; 1 big_tweet_df &lt;- read_tweets(big_tweet_stream_path)    16.3s    16.3s    0.0612     396MB    0.490</span></span></code></pre></div>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="co">#&gt; 1 big_tweet_df &lt;- read_tweets(big_tweet_stream_path)    16.4s    16.4s    0.0610     396MB    0.488</span></span></code></pre></div>
 </div>
 <div id="data-dumps" class="section level2">
 <h2 class="hasAnchor">
@@ -344,13 +346,15 @@
 <span id="cb25-4"><a href="#cb25-4"></a><span class="co">#&gt; bbox:           xmin: -118.6684 ymin: 25.59918 xmax: 18.47324 ymax: 60.18611</span></span>
 <span id="cb25-5"><a href="#cb25-5"></a><span class="co">#&gt; epsg (SRID):    4326</span></span>
 <span id="cb25-6"><a href="#cb25-6"></a><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></span>
-<span id="cb25-7"><a href="#cb25-7"></a><span class="co">#&gt;                      bbox_coords</span></span>
-<span id="cb25-8"><a href="#cb25-8"></a><span class="co">#&gt; 1 POLYGON ((-90.23761 29.9683...</span></span>
-<span id="cb25-9"><a href="#cb25-9"></a><span class="co">#&gt; 2 POLYGON ((-80.20811 26.0809...</span></span>
-<span id="cb25-10"><a href="#cb25-10"></a><span class="co">#&gt; 3 POLYGON ((17.08005 59.73069...</span></span>
-<span id="cb25-11"><a href="#cb25-11"></a><span class="co">#&gt; 4 POLYGON ((-80.51985 39.7198...</span></span>
-<span id="cb25-12"><a href="#cb25-12"></a><span class="co">#&gt; 5 POLYGON ((-80.34364 25.5991...</span></span>
-<span id="cb25-13"><a href="#cb25-13"></a><span class="co">#&gt; 6 POLYGON ((-118.6684 33.7045...</span></span></code></pre></div>
+<span id="cb25-7"><a href="#cb25-7"></a><span class="co">#&gt; # A tibble: 6 x 1</span></span>
+<span id="cb25-8"><a href="#cb25-8"></a><span class="co">#&gt;                                                                                    bbox_coords</span></span>
+<span id="cb25-9"><a href="#cb25-9"></a><span class="co">#&gt;                                                                                  &lt;POLYGON [°]&gt;</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a><span class="co">#&gt; 1 ((-90.23761 29.96836, -90.23761 30.03413, -90.11965 30.03413, -90.11965 29.96836, -90.237...</span></span>
+<span id="cb25-11"><a href="#cb25-11"></a><span class="co">#&gt; 2 ((-80.20811 26.08094, -80.20811 26.2198, -80.09024 26.2198, -80.09024 26.08094, -80.20811...</span></span>
+<span id="cb25-12"><a href="#cb25-12"></a><span class="co">#&gt; 3 ((17.08005 59.73069, 17.08005 60.18611, 18.47324 60.18611, 18.47324 59.73069, 17.08005 59...</span></span>
+<span id="cb25-13"><a href="#cb25-13"></a><span class="co">#&gt; 4 ((-80.51985 39.7198, -80.51985 42.51607, -74.68952 42.51607, -74.68952 39.7198, -80.51985...</span></span>
+<span id="cb25-14"><a href="#cb25-14"></a><span class="co">#&gt; 5 ((-80.34364 25.59918, -80.34364 25.64553, -80.2875 25.64553, -80.2875 25.59918, -80.34364...</span></span>
+<span id="cb25-15"><a href="#cb25-15"></a><span class="co">#&gt; 6 ((-118.6684 33.70454, -118.6684 34.33704, -118.1554 34.33704, -118.1554 33.70454, -118.66...</span></span></code></pre></div>
 <p>There are currently three columns that can potentially hold bounding boxes:</p>
 <ol>
 <li><code>bbox_coords</code></li>
@@ -368,29 +372,41 @@
 <span id="cb27-4"><a href="#cb27-4"></a><span class="co">#&gt; bbox:           xmin: -73.99354 ymin: 40.75075 xmax: -73.99354 ymax: 40.75075</span></span>
 <span id="cb27-5"><a href="#cb27-5"></a><span class="co">#&gt; epsg (SRID):    4326</span></span>
 <span id="cb27-6"><a href="#cb27-6"></a><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></span>
-<span id="cb27-7"><a href="#cb27-7"></a><span class="co">#&gt;               quoted_bbox_coords</span></span>
-<span id="cb27-8"><a href="#cb27-8"></a><span class="co">#&gt; 1 POLYGON ((-73.99354 40.7507...</span></span>
-<span id="cb27-9"><a href="#cb27-9"></a><span class="co">#&gt; 2 POLYGON ((-73.99354 40.7507...</span></span>
-<span id="cb27-10"><a href="#cb27-10"></a><span class="co">#&gt; 3 POLYGON ((-73.99354 40.7507...</span></span>
-<span id="cb27-11"><a href="#cb27-11"></a><span class="co">#&gt; 4 POLYGON ((-73.99354 40.7507...</span></span>
-<span id="cb27-12"><a href="#cb27-12"></a><span class="co">#&gt; 5 POLYGON ((-73.99354 40.7507...</span></span>
-<span id="cb27-13"><a href="#cb27-13"></a><span class="co">#&gt; 6 POLYGON ((-73.99354 40.7507...</span></span></code></pre></div>
+<span id="cb27-7"><a href="#cb27-7"></a><span class="co">#&gt; # A tibble: 6 x 1</span></span>
+<span id="cb27-8"><a href="#cb27-8"></a><span class="co">#&gt;                                                                             quoted_bbox_coords</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a><span class="co">#&gt;                                                                                  &lt;POLYGON [°]&gt;</span></span>
+<span id="cb27-10"><a href="#cb27-10"></a><span class="co">#&gt; 1 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...</span></span>
+<span id="cb27-11"><a href="#cb27-11"></a><span class="co">#&gt; 2 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...</span></span>
+<span id="cb27-12"><a href="#cb27-12"></a><span class="co">#&gt; 3 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...</span></span>
+<span id="cb27-13"><a href="#cb27-13"></a><span class="co">#&gt; 4 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...</span></span>
+<span id="cb27-14"><a href="#cb27-14"></a><span class="co">#&gt; 5 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...</span></span>
+<span id="cb27-15"><a href="#cb27-15"></a><span class="co">#&gt; 6 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...</span></span></code></pre></div>
 <p>You can also build <em>all</em> the supported bounding boxes by setting <code>geom_col=</code> to <code>"all"</code>.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>all_bboxes &lt;-<span class="st"> </span>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb28-2"><a href="#cb28-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_tweet_sf.html">as_tweet_sf</a></span>(<span class="dt">geom_col =</span> <span class="st">"all"</span>)</span>
 <span id="cb28-3"><a href="#cb28-3"></a></span>
 <span id="cb28-4"><a href="#cb28-4"></a>all_bboxes[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"geometry"</span>, <span class="st">"which_geom"</span>)] <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb28-5"><a href="#cb28-5"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="dt">by =</span> <span class="st">"which_geom"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co">#&gt; Simple feature collection with 3 features and 1 field</span></span>
+<div class="sourceCode" id="cb29"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co">#&gt; Simple feature collection with 1162 features and 1 field</span></span>
 <span id="cb29-2"><a href="#cb29-2"></a><span class="co">#&gt; geometry type:  POLYGON</span></span>
 <span id="cb29-3"><a href="#cb29-3"></a><span class="co">#&gt; dimension:      XY</span></span>
 <span id="cb29-4"><a href="#cb29-4"></a><span class="co">#&gt; bbox:           xmin: -158.048 ymin: -50.35726 xmax: 175.5507 ymax: 61.4262</span></span>
 <span id="cb29-5"><a href="#cb29-5"></a><span class="co">#&gt; epsg (SRID):    4326</span></span>
 <span id="cb29-6"><a href="#cb29-6"></a><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></span>
-<span id="cb29-7"><a href="#cb29-7"></a><span class="co">#&gt;                         geometry          which_geom</span></span>
-<span id="cb29-8"><a href="#cb29-8"></a><span class="co">#&gt; 1 POLYGON ((-90.23761 29.9683...         bbox_coords</span></span>
-<span id="cb29-9"><a href="#cb29-9"></a><span class="co">#&gt; 2 POLYGON ((-73.99354 40.7507...  quoted_bbox_coords</span></span>
-<span id="cb29-10"><a href="#cb29-10"></a><span class="co">#&gt; 3 POLYGON ((-73.99354 40.7507... retweet_bbox_coords</span></span></code></pre></div>
+<span id="cb29-7"><a href="#cb29-7"></a><span class="co">#&gt; # A tibble: 1,162 x 2</span></span>
+<span id="cb29-8"><a href="#cb29-8"></a><span class="co">#&gt;                                                                                        geometry which_geom </span></span>
+<span id="cb29-9"><a href="#cb29-9"></a><span class="co">#&gt;                                                                                   &lt;POLYGON [°]&gt; &lt;chr&gt;      </span></span>
+<span id="cb29-10"><a href="#cb29-10"></a><span class="co">#&gt;  1 ((-90.23761 29.96836, -90.23761 30.03413, -90.11965 30.03413, -90.11965 29.96836, -90.237... bbox_coords</span></span>
+<span id="cb29-11"><a href="#cb29-11"></a><span class="co">#&gt;  2 ((-80.20811 26.08094, -80.20811 26.2198, -80.09024 26.2198, -80.09024 26.08094, -80.20811... bbox_coords</span></span>
+<span id="cb29-12"><a href="#cb29-12"></a><span class="co">#&gt;  3 ((17.08005 59.73069, 17.08005 60.18611, 18.47324 60.18611, 18.47324 59.73069, 17.08005 59... bbox_coords</span></span>
+<span id="cb29-13"><a href="#cb29-13"></a><span class="co">#&gt;  4 ((-80.51985 39.7198, -80.51985 42.51607, -74.68952 42.51607, -74.68952 39.7198, -80.51985... bbox_coords</span></span>
+<span id="cb29-14"><a href="#cb29-14"></a><span class="co">#&gt;  5 ((-80.34364 25.59918, -80.34364 25.64553, -80.2875 25.64553, -80.2875 25.59918, -80.34364... bbox_coords</span></span>
+<span id="cb29-15"><a href="#cb29-15"></a><span class="co">#&gt;  6 ((-118.6684 33.70454, -118.6684 34.33704, -118.1554 34.33704, -118.1554 33.70454, -118.66... bbox_coords</span></span>
+<span id="cb29-16"><a href="#cb29-16"></a><span class="co">#&gt;  7 ((-122.0662 37.92423, -122.0662 38.02242, -121.931 38.02242, -121.931 37.92423, -122.0662... bbox_coords</span></span>
+<span id="cb29-17"><a href="#cb29-17"></a><span class="co">#&gt;  8 ((-118.4485 33.97688, -118.4485 34.03514, -118.3695 34.03514, -118.3695 33.97688, -118.44... bbox_coords</span></span>
+<span id="cb29-18"><a href="#cb29-18"></a><span class="co">#&gt;  9 ((-97.66262 27.57851, -97.66262 27.89579, -97.20223 27.89579, -97.20223 27.57851, -97.662... bbox_coords</span></span>
+<span id="cb29-19"><a href="#cb29-19"></a><span class="co">#&gt; 10 ((-79.00759 35.86633, -79.00759 36.11563, -78.78329 36.11563, -78.78329 35.86633, -79.007... bbox_coords</span></span>
+<span id="cb29-20"><a href="#cb29-20"></a><span class="co">#&gt; # … with 1,152 more rows</span></span></code></pre></div>
 <p>From there, you can easily use the data like any other <code>{sf}</code> object.</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</span>
 <span id="cb30-2"><a href="#cb30-2"></a></span>
@@ -415,9 +431,9 @@
 <p>If you want to analyze tweet networks, you can get started immediately using <code><a href="reference/as_igraph.html">tweetio::as_igraph()</a></code>.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>big_tweet_df <span class="op">%&gt;%</span></span>
 <span id="cb31-2"><a href="#cb31-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>()</span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co">#&gt; IGRAPH 03d12b7 DN-- 64172 238713 -- </span></span>
+<div class="sourceCode" id="cb32"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co">#&gt; IGRAPH 18fdb07 DN-- 64172 238713 -- </span></span>
 <span id="cb32-2"><a href="#cb32-2"></a><span class="co">#&gt; + attr: name (v/c), status_id (e/c), relation (e/c)</span></span>
-<span id="cb32-3"><a href="#cb32-3"></a><span class="co">#&gt; + edges from 03d12b7 (vertex names):</span></span>
+<span id="cb32-3"><a href="#cb32-3"></a><span class="co">#&gt; + edges from 18fdb07 (vertex names):</span></span>
 <span id="cb32-4"><a href="#cb32-4"></a><span class="co">#&gt;  [1] 340165454          -&gt;44607937            50229830           -&gt;146322653          </span></span>
 <span id="cb32-5"><a href="#cb32-5"></a><span class="co">#&gt;  [3] 1113359075029295106-&gt;6446742             3427037277         -&gt;6446742            </span></span>
 <span id="cb32-6"><a href="#cb32-6"></a><span class="co">#&gt;  [5] 2426567863         -&gt;6446742             1049130232559620096-&gt;6446742            </span></span>
@@ -430,7 +446,7 @@
 <p>If you want to take advantage of all the metadata available, you can set <code>all_status_data</code> and/or <code>all_user_data</code> to <code>TRUE</code></p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb33-2"><a href="#cb33-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>(<span class="dt">all_user_data =</span> <span class="ot">TRUE</span>, <span class="dt">all_status_data =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb34"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co">#&gt; IGRAPH 1192f86 DN-- 64172 238713 -- </span></span>
+<div class="sourceCode" id="cb34"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co">#&gt; IGRAPH c530126 DN-- 64172 238713 -- </span></span>
 <span id="cb34-2"><a href="#cb34-2"></a><span class="co">#&gt; + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name (v/c), location (v/c), description (v/c),</span></span>
 <span id="cb34-3"><a href="#cb34-3"></a><span class="co">#&gt; | url (v/c), protected (v/l), followers_count (v/n), friends_count (v/n), listed_count (v/n),</span></span>
 <span id="cb34-4"><a href="#cb34-4"></a><span class="co">#&gt; | statuses_count (v/n), favourites_count (v/n), account_created_at (v/n), verified (v/l), profile_url</span></span>
@@ -439,15 +455,15 @@
 <span id="cb34-7"><a href="#cb34-7"></a><span class="co">#&gt; | (e/l), is_retweeted (e/l), media_url (e/x), media_type (e/x), place_url (e/c), place_name (e/c),</span></span>
 <span id="cb34-8"><a href="#cb34-8"></a><span class="co">#&gt; | place_full_name (e/c), place_type (e/c), country (e/c), country_code (e/c), bbox_coords (e/x),</span></span>
 <span id="cb34-9"><a href="#cb34-9"></a><span class="co">#&gt; | status_type (e/c)</span></span>
-<span id="cb34-10"><a href="#cb34-10"></a><span class="co">#&gt; + edges from 1192f86 (vertex names):</span></span>
+<span id="cb34-10"><a href="#cb34-10"></a><span class="co">#&gt; + edges from c530126 (vertex names):</span></span>
 <span id="cb34-11"><a href="#cb34-11"></a><span class="co">#&gt; [1] 2547690569-&gt;6446742  2547690569-&gt;6446742  245171523 -&gt;52181976</span></span>
 <span id="cb34-12"><a href="#cb34-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
 <p>You can also build two-mode networks by specifying the <code>target_class</code> as <code>"hashtag"</code>s, <code>"url"</code>s, or <code>"media"</code>. The returned <code>&lt;igraph&gt;</code> will be set as bipartite following <code>{igraph}</code>’s convention of a <code>logical</code> vertex attribute specifying each’s partition (users are <code>TRUE</code>).</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb35-2"><a href="#cb35-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>(<span class="dt">target_class =</span> <span class="st">"hashtag"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb36"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co">#&gt; IGRAPH be33de4 DN-B 60417 134468 -- </span></span>
+<div class="sourceCode" id="cb36"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co">#&gt; IGRAPH a0b7ba3 DN-B 60417 134468 -- </span></span>
 <span id="cb36-2"><a href="#cb36-2"></a><span class="co">#&gt; + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)</span></span>
-<span id="cb36-3"><a href="#cb36-3"></a><span class="co">#&gt; + edges from be33de4 (vertex names):</span></span>
+<span id="cb36-3"><a href="#cb36-3"></a><span class="co">#&gt; + edges from a0b7ba3 (vertex names):</span></span>
 <span id="cb36-4"><a href="#cb36-4"></a><span class="co">#&gt;  [1] 340165454          -&gt;ufc244 50229830           -&gt;new    50229830           -&gt;ufc244 1113359075029295106-&gt;ufc244</span></span>
 <span id="cb36-5"><a href="#cb36-5"></a><span class="co">#&gt;  [5] 1120821278410145793-&gt;ufc244 2945072804         -&gt;ufc244 250392181          -&gt;ufc244 3427037277         -&gt;ufc244</span></span>
 <span id="cb36-6"><a href="#cb36-6"></a><span class="co">#&gt;  [9] 2426567863         -&gt;ufc244 1049130232559620096-&gt;ufc244 245455601          -&gt;ufc244 895707290          -&gt;ufc244</span></span>
@@ -459,9 +475,9 @@
 <span id="cb36-12"><a href="#cb36-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb37-2"><a href="#cb37-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>(<span class="dt">target_class =</span> <span class="st">"url"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb38"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co">#&gt; IGRAPH c76b217 DN-B 8864 10014 -- </span></span>
+<div class="sourceCode" id="cb38"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co">#&gt; IGRAPH 1811e9d DN-B 8864 10014 -- </span></span>
 <span id="cb38-2"><a href="#cb38-2"></a><span class="co">#&gt; + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)</span></span>
-<span id="cb38-3"><a href="#cb38-3"></a><span class="co">#&gt; + edges from c76b217 (vertex names):</span></span>
+<span id="cb38-3"><a href="#cb38-3"></a><span class="co">#&gt; + edges from 1811e9d (vertex names):</span></span>
 <span id="cb38-4"><a href="#cb38-4"></a><span class="co">#&gt; [1] 54342307           -&gt;https://twitter.com/jjmast1/status/1190812770951925760      </span></span>
 <span id="cb38-5"><a href="#cb38-5"></a><span class="co">#&gt; [2] 822180925467398148 -&gt;https://twitter.com/usatoday/status/1190848577171529729     </span></span>
 <span id="cb38-6"><a href="#cb38-6"></a><span class="co">#&gt; [3] 1161588424488341504-&gt;https://livestreamon.co/ufc244                              </span></span>
@@ -472,9 +488,9 @@
 <span id="cb38-11"><a href="#cb38-11"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb39-2"><a href="#cb39-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>(<span class="dt">target_class =</span> <span class="st">"media"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb40"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="co">#&gt; IGRAPH 0079190 DN-B 35704 45448 -- </span></span>
+<div class="sourceCode" id="cb40"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="co">#&gt; IGRAPH 4cdf968 DN-B 35704 45448 -- </span></span>
 <span id="cb40-2"><a href="#cb40-2"></a><span class="co">#&gt; + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)</span></span>
-<span id="cb40-3"><a href="#cb40-3"></a><span class="co">#&gt; + edges from 0079190 (vertex names):</span></span>
+<span id="cb40-3"><a href="#cb40-3"></a><span class="co">#&gt; + edges from 4cdf968 (vertex names):</span></span>
 <span id="cb40-4"><a href="#cb40-4"></a><span class="co">#&gt; [1] 1113359075029295106-&gt;http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             </span></span>
 <span id="cb40-5"><a href="#cb40-5"></a><span class="co">#&gt; [2] 3427037277         -&gt;http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             </span></span>
 <span id="cb40-6"><a href="#cb40-6"></a><span class="co">#&gt; [3] 2426567863         -&gt;http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             </span></span>
@@ -486,7 +502,7 @@
 <span id="cb40-12"><a href="#cb40-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
 <p>You’re not stuck with going directly to <code>&lt;igraph&gt;</code> objects though. Underneath the hood, <code><a href="reference/as_igraph.html">as_igraph()</a></code> calls <code><a href="reference/as_proto_net.html">as_proto_net()</a></code>, which builds the edge and node data frames first. <code><a href="reference/as_proto_net.html">as_proto_net()</a></code> is also exported.</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-2"><a href="#cb41-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_proto_net.html">as_proto_net</a></span>(<span class="dt">all_status_data =</span> <span class="ot">TRUE</span>, <span class="dt">all_user_data =</span> <span class="ot">TRUE</span>, <span class="dt">as_tibble =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb41-2"><a href="#cb41-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_proto_net.html">as_proto_net</a></span>(<span class="dt">all_status_data =</span> <span class="ot">TRUE</span>, <span class="dt">all_user_data =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb41-3"><a href="#cb41-3"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(head)</span></code></pre></div>
 <div class="sourceCode" id="cb42"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="co">#&gt; $edges</span></span>
 <span id="cb42-2"><a href="#cb42-2"></a><span class="co">#&gt; # A tibble: 6 x 20</span></span>
@@ -609,7 +625,6 @@ Tweet networks via <code>{igraph}</code>
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle"></a></li>
-<li><a href="https://github.com/knapply/tweetio/actions?workflow=R-CMD-check"><img src="https://github.com/knapply/tweetio/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 <li><a href="https://ci.appveyor.com/project/knapply/tweetio"><img src="https://ci.appveyor.com/api/projects/status/github/knapply/tweetio?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
 <li><a href="https://travis-ci.org/knapply/tweetio"><img src="https://travis-ci.org/knapply/tweetio.svg?branch=master" alt="Travis-CI Build Status"></a></li>
 <li><a href="https://codecov.io/gh/knapply/tweetio?branch=master"><img src="https://codecov.io/gh/knapply/tweetio/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>

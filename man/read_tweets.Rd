@@ -5,12 +5,17 @@
 \alias{read_tweets_bulk}
 \title{Read Tweets into a Data Frame}
 \usage{
-read_tweets(file_path, as_tibble = FALSE, verbose = FALSE, ...)
+read_tweets(
+  file_path,
+  as_tibble = getOption("tweetio.as_tibble", FALSE),
+  verbose = FALSE,
+  ...
+)
 
 read_tweets_bulk(
   file_path,
   verbose = FALSE,
-  as_tibble = FALSE,
+  as_tibble = getOption("tweetio.as_tibble", FALSE),
   in_parallel = TRUE,
   strategy = NULL,
   ...
@@ -19,8 +24,9 @@ read_tweets_bulk(
 \arguments{
 \item{file_path}{Path(s) to tweet files.}
 
-\item{as_tibble}{Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the
-\code{{tibble}} package is not installed.}
+\item{as_tibble}{\verb{<logical>}, Default: \code{getOption("tweetio.as_tibble", FALSE)}.
+Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the \code{{tibble}}
+package is not installed.}
 
 \item{verbose}{Whether to show diagnostic or progress messages.}
 

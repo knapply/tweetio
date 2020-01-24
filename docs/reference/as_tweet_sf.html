@@ -136,7 +136,7 @@
   <span class='no'>tweet_df</span>,
   <span class='kw'>geom_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bbox_coords"</span>, <span class='st'>"quoted_bbox_coords"</span>, <span class='st'>"retweet_bbox_coords"</span>,
     <span class='st'>"ist_complex_value"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"tweetio.as_tibble"</span>, <span class='fl'>FALSE</span>),
   <span class='kw'>.geometry</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )</pre>
@@ -156,8 +156,9 @@ one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https:/
     </tr>
     <tr>
       <th>as_tibble</th>
-      <td><p>Whether a <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> should be returned. Ignored if the
-<code>{tibble}</code> package is not installed.</p></td>
+      <td><p><code>&lt;logical&gt;</code>, Default: <code><a href='https://rdrr.io/r/base/options.html'>getOption("tweetio.as_tibble", FALSE)</a></code>.
+Whether a <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> should be returned. Ignored if the <code>{tibble}</code>
+package is not installed.</p></td>
     </tr>
     <tr>
       <th>.geometry</th>

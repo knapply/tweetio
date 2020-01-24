@@ -137,7 +137,7 @@
   <span class='kw'>target_class</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"user"</span>, <span class='st'>"hashtag"</span>, <span class='st'>"url"</span>, <span class='st'>"media"</span>),
   <span class='kw'>all_status_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"tweetio.as_tibble"</span>, <span class='fl'>FALSE</span>),
   <span class='no'>...</span>
 )</pre>
 
@@ -168,8 +168,9 @@ downstream tasks..</p></td>
     </tr>
     <tr>
       <th>as_tibble</th>
-      <td><p>Whether a <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> should be returned. Ignored if the
-<code>{tibble}</code> package is not installed.</p></td>
+      <td><p><code>&lt;logical&gt;</code>, Default: <code><a href='https://rdrr.io/r/base/options.html'>getOption("tweetio.as_tibble", FALSE)</a></code>.
+Whether a <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> should be returned. Ignored if the <code>{tibble}</code>
+package is not installed.</p></td>
     </tr>
     <tr>
       <th>...</th>

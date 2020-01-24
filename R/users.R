@@ -88,7 +88,9 @@ user_col_names <- function(tweet_df) {
 #' @importFrom data.table data.table is.data.table setcolorder setDT setnames
 #' 
 #' @export
-extract_users <- function(tweet_df, summarize = TRUE, split = FALSE, as_tibble = FALSE, ...) {
+extract_users <- function(tweet_df, summarize = TRUE, split = FALSE, 
+                          as_tibble = getOption("tweetio.as_tibble", FALSE),
+                          ...) {
   # silence R CMD Check NOTE =============================================================
   .N <- NULL
   .SD <- NULL

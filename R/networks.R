@@ -63,7 +63,7 @@ as_proto_net <- function(tweet_df,
                          target_class = c("user", "hashtag", "url", "media"),
                          all_status_data = FALSE,
                          all_user_data = FALSE,
-                         as_tibble = FALSE,
+                         as_tibble = getOption("tweetio.as_tibble", FALSE),
                          ...) {
   # silence R CMD Check NOTE =============================================================
   relation <- NULL
@@ -116,7 +116,8 @@ as_proto_net <- function(tweet_df,
   edges <- rbindlist(edge_by_status_type, use.names = TRUE)
   
   if (all_status_data) {
-    edges <- edges[extract_statuses(tweet_df), on = "status_id", nomatch = 0]
+    edges <- edges[extract_statuses(tweet_df, as_tibble = FALSE),
+                   on = "status_id", nomatch = 0]
   }
   
   setcolorder(

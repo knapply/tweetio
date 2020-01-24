@@ -30,7 +30,6 @@ options(width = 120)
 
 <!-- badges: start -->
 [![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![R build status](https://github.com/knapply/tweetio/workflows/R-CMD-check/badge.svg)](https://github.com/knapply/tweetio/actions?workflow=R-CMD-check)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/knapply/tweetio?branch=master&svg=true)](https://ci.appveyor.com/project/knapply/tweetio)
 [![Travis-CI Build Status](https://travis-ci.org/knapply/tweetio.svg?branch=master)](https://travis-ci.org/knapply/tweetio)
 [![Codecov test coverage](https://codecov.io/gh/knapply/tweetio/branch/master/graph/badge.svg)](https://codecov.io/gh/knapply/tweetio?branch=master)
@@ -41,6 +40,8 @@ options(width = 120)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](https://github.com/knapply/tweetio)
 [![HitCount](http://hits.dwyl.io/knapply/tweetio.svg)](http://hits.dwyl.io/knapply/tweetio)
 <!-- badges: end -->
+
+<!-- [![R build status](https://github.com/knapply/tweetio/workflows/R-CMD-check/badge.svg)](https://github.com/knapply/tweetio/actions?workflow=R-CMD-check) -->
 
 
 
@@ -69,6 +70,7 @@ remotes::install_github("knapply/tweetio")
 
 ```{r}
 library(tweetio)
+options(tweetio.as_tibble = TRUE)
 ```
 
 ## Simple Example
@@ -83,7 +85,7 @@ rtweet::stream_tweets(timeout = 15, parse = FALSE, file_name = temp_file)
 We can then pass the file path to `tweetio::read_tweets()` to efficiently parse the data into an `{rtweet}`-style data frame.
 
 ```{r}
-small_rtweet_stream <- read_tweets(temp_file, as_tibble = TRUE)
+small_rtweet_stream <- read_tweets(temp_file)
 
 small_rtweet_stream
 ```
@@ -353,7 +355,7 @@ You're not stuck with going directly to `<igraph>` objects though. Underneath th
 
 ```{r}
 big_tweet_df %>% 
-  as_proto_net(all_status_data = TRUE, all_user_data = TRUE, as_tibble = TRUE) %>% 
+  as_proto_net(all_status_data = TRUE, all_user_data = TRUE) %>% 
   lapply(head)
 ```
 

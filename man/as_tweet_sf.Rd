@@ -8,7 +8,7 @@ as_tweet_sf(
   tweet_df,
   geom_col = c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords",
     "ist_complex_value", "all"),
-  as_tibble = FALSE,
+  as_tibble = getOption("tweetio.as_tibble", FALSE),
   .geometry = NULL,
   ...
 )
@@ -20,8 +20,9 @@ one of \code{{rtweet}}'s collection functions, e.g. \code{\link[rtweet:search_tw
 \item{geom_col}{Which column to use as the active \code{geometry} column in result:
 \code{"bbox_coords"}, \code{"quoted_bbox_coords"},\code{"retweet_bbox_coords"}, or \code{"all"}.}
 
-\item{as_tibble}{Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the
-\code{{tibble}} package is not installed.}
+\item{as_tibble}{\verb{<logical>}, Default: \code{getOption("tweetio.as_tibble", FALSE)}.
+Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the \code{{tibble}}
+package is not installed.}
 
 \item{.geometry}{Name of output's geometry column. Intended for internal use only.}
 

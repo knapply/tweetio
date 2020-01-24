@@ -4,14 +4,19 @@
 \alias{extract_statuses}
 \title{Extract All Statuses}
 \usage{
-extract_statuses(tweet_df, as_tibble = FALSE, ...)
+extract_statuses(
+  tweet_df,
+  as_tibble = getOption("tweetio.as_tibble", FALSE),
+  ...
+)
 }
 \arguments{
 \item{tweet_df}{A data frame of tweets, as obtained by \code{read_tweets()} or
 one of \code{{rtweet}}'s collection functions, e.g. \code{\link[rtweet:search_tweets]{rtweet::search_tweets()}}.}
 
-\item{as_tibble}{Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the
-\code{{tibble}} package is not installed.}
+\item{as_tibble}{\verb{<logical>}, Default: \code{getOption("tweetio.as_tibble", FALSE)}.
+Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the \code{{tibble}}
+package is not installed.}
 
 \item{...}{Arguments passed to or from other methods.}
 }

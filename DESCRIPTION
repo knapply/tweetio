@@ -11,7 +11,7 @@ Description:
     sources, 2) provide the building blocks for robust analytical pipelines that use 
     network, spatial, and/or natural language processing perspectives, and 3) write Twitter
     data to multiple file formats, including those that best enable non-technical analysts 
-    to work. The primary data frame structure is heavily inspired by `{rtweet}`, and 
+    to work. The primary data structure is inspired by `{rtweet}`, and 
     all analytical routines being compatible with `{rtweet}` data frames is heavily
     prioritized.
 License: GPL-3 + file LICENSE

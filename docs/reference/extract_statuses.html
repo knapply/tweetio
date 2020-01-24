@@ -134,7 +134,11 @@ each column hold the most recent non-NA/non-empty value." />
 each column hold the most recent non-<code>NA</code>/non-empty value.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_statuses</span>(<span class='no'>tweet_df</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>extract_statuses</span>(
+  <span class='no'>tweet_df</span>,
+  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"tweetio.as_tibble"</span>, <span class='fl'>FALSE</span>),
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,8 +150,9 @@ one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https:/
     </tr>
     <tr>
       <th>as_tibble</th>
-      <td><p>Whether a <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> should be returned. Ignored if the
-<code>{tibble}</code> package is not installed.</p></td>
+      <td><p><code>&lt;logical&gt;</code>, Default: <code><a href='https://rdrr.io/r/base/options.html'>getOption("tweetio.as_tibble", FALSE)</a></code>.
+Whether a <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> should be returned. Ignored if the <code>{tibble}</code>
+package is not installed.</p></td>
     </tr>
     <tr>
       <th>...</th>
