@@ -71,7 +71,9 @@ status_col_names <- function(tweet_df) {
 #' @importFrom data.table as.data.table setcolorder setDT setnames
 #' 
 #' @export
-extract_statuses <- function(tweet_df, as_tibble = FALSE, ...) {
+extract_statuses <- function(tweet_df, 
+                             as_tibble = getOption("tweetio.as_tibble", FALSE),
+                             ...) {
   # silence R CMD Check NOTE =============================================================
   ..x <- NULL
   .SD <- NULL

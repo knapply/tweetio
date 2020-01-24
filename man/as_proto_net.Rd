@@ -9,7 +9,7 @@ as_proto_net(
   target_class = c("user", "hashtag", "url", "media"),
   all_status_data = FALSE,
   all_user_data = FALSE,
-  as_tibble = FALSE,
+  as_tibble = getOption("tweetio.as_tibble", FALSE),
   ...
 )
 }
@@ -28,8 +28,9 @@ downstream tasks.}
 user data to the \code{nodes} data frame, which can then be uses as node attributes for
 downstream tasks..}
 
-\item{as_tibble}{Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the
-\code{{tibble}} package is not installed.}
+\item{as_tibble}{\verb{<logical>}, Default: \code{getOption("tweetio.as_tibble", FALSE)}.
+Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the \code{{tibble}}
+package is not installed.}
 
 \item{...}{Arguments passed to or from other methods.}
 }

@@ -1,7 +1,7 @@
 test_that("reading/writing spreadsheets works", {
   test_df <- read_tweets(
     example_tweet_file()
-  )[1:100]
+  )[1:100, ]
 
   csv_temp_file <- tempfile(fileext = ".csv")
   xl_temp_file <- tempfile(fileext = ".xlsx")

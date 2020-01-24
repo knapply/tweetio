@@ -46,7 +46,8 @@
 as_tweet_sf <- function(tweet_df, 
                         geom_col = c("bbox_coords", "quoted_bbox_coords",
                                      "retweet_bbox_coords",
-                                     "ist_complex_value",  "all"), as_tibble = FALSE,
+                                     "ist_complex_value",  "all"), 
+                        as_tibble = getOption("tweetio.as_tibble", FALSE),
                         .geometry = NULL,
                         ...) {
   # silence R CMD Check NOTE

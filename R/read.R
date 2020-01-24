@@ -95,7 +95,9 @@
 #' tweet_tibble
 #' 
 #' @export
-read_tweets <- function(file_path, as_tibble = FALSE, verbose = FALSE, ...) {
+read_tweets <- function(file_path, 
+                        as_tibble = getOption("tweetio.as_tibble", FALSE),
+                        verbose = FALSE, ...) {
   out <- .read_tweets(file_path, verbose, ...)
 
   out <- .finalize_cols(out)
@@ -115,7 +117,8 @@ read_tweets <- function(file_path, as_tibble = FALSE, verbose = FALSE, ...) {
 #' 
 #' @importFrom data.table rbindlist
 #' @export
-read_tweets_bulk <- function(file_path, verbose = FALSE, as_tibble = FALSE, 
+read_tweets_bulk <- function(file_path, verbose = FALSE, 
+                             as_tibble = getOption("tweetio.as_tibble", FALSE), 
                              in_parallel = TRUE, strategy = NULL, ...) {
   if (length(file_path) == 1L) {
     return(read_tweets(file_path))

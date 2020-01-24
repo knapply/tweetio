@@ -70,6 +70,7 @@ remotes::install_github("knapply/tweetio")
 
 ```{r}
 library(tweetio)
+options(tweetio.as_tibble = TRUE)
 ```
 
 ## Simple Example
@@ -84,7 +85,7 @@ rtweet::stream_tweets(timeout = 15, parse = FALSE, file_name = temp_file)
 We can then pass the file path to `tweetio::read_tweets()` to efficiently parse the data into an `{rtweet}`-style data frame.
 
 ```{r}
-small_rtweet_stream <- read_tweets(temp_file, as_tibble = TRUE)
+small_rtweet_stream <- read_tweets(temp_file)
 
 small_rtweet_stream
 ```
@@ -354,7 +355,7 @@ You're not stuck with going directly to `<igraph>` objects though. Underneath th
 
 ```{r}
 big_tweet_df %>% 
-  as_proto_net(all_status_data = TRUE, all_user_data = TRUE, as_tibble = TRUE) %>% 
+  as_proto_net(all_status_data = TRUE, all_user_data = TRUE) %>% 
   lapply(head)
 ```
 

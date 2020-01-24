@@ -58,6 +58,7 @@ remotes::install_github("knapply/tweetio")
 
 ``` r
 library(tweetio)
+options(tweetio.as_tibble = TRUE)
 ```
 
 ## Simple Example
@@ -73,25 +74,25 @@ We can then pass the file path to `tweetio::read_tweets()` to
 efficiently parse the data into an `{rtweet}`-style data frame.
 
 ``` r
-small_rtweet_stream <- read_tweets(temp_file, as_tibble = TRUE)
+small_rtweet_stream <- read_tweets(temp_file)
 
 small_rtweet_stream
 ```
 
-    #> # A tibble: 650 x 93
+    #> # A tibble: 855 x 93
     #>    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen…
     #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>            <chr>           
-    #>  1 781635… 12200506… 2020-01-22 18:28:43 Rub7doggda… Hoje… Twitt… <NA>             <NA>             <NA>            
-    #>  2 116676… 12200506… 2020-01-22 18:28:43 SuwatThain… RT @… Twitt… <NA>             <NA>             <NA>            
-    #>  3 335437… 12200506… 2020-01-22 18:28:43 enough      @EC0… Tweet… 122005052494018… 417277827        EC0YS           
-    #>  4 329026… 12200506… 2020-01-22 18:28:43 lucytanzi   RT @… Twitt… <NA>             <NA>             <NA>            
-    #>  5 103031… 12200506… 2020-01-22 18:28:43 Gold__0529  RT @… Twitt… <NA>             <NA>             <NA>            
-    #>  6 137737… 12200506… 2020-01-22 18:28:43 bigrickinj… @ren… Twitt… 121985113142320… 759481842814726… renato_mariotti 
-    #>  7 119150… 12200506… 2020-01-22 18:28:43 kiwikrier   RT @… Twitt… <NA>             <NA>             <NA>            
-    #>  8 116398… 12200506… 2020-01-22 18:28:43 P0STA_      @Hip… Twitt… 121965402076107… 15319698         HipHopDX        
-    #>  9 245058… 12200506… 2020-01-22 18:28:43 fred916940… RT @… Twitt… <NA>             <NA>             <NA>            
-    #> 10 905510… 12200506… 2020-01-22 18:28:43 iam_mwilole @Oyw… Twitt… 121988527303686… 2521148746       Oywaosmiam      
-    #> # … with 640 more rows, and 84 more variables: is_quote <lgl>, is_retweet <lgl>, hashtags <list>,
+    #>  1 118481… 12207063… 2020-01-24 13:54:04 yumekusa22  あ、サン… Twitt… <NA>             <NA>             <NA>            
+    #>  2 957509… 12207063… 2020-01-24 13:54:04 t_yk1927    @kan… Twitt… 122068276096617… 1860090313       kaname000xxx    
+    #>  3 111514… 12207063… 2020-01-24 13:54:04 stanmomola… ....… Twitt… <NA>             <NA>             <NA>            
+    #>  4 718443… 12207063… 2020-01-24 13:54:04 yrme_72     RT @… Twitt… <NA>             <NA>             <NA>            
+    #>  5 959424… 12207063… 2020-01-24 13:54:04 arviel03    RT @… Twitt… <NA>             <NA>             <NA>            
+    #>  6 273063… 12207063… 2020-01-24 13:54:04 xxxs8_m     RT @… Twitt… <NA>             <NA>             <NA>            
+    #>  7 110683… 12207063… 2020-01-24 13:54:04 johnMic254  @Kak… Twitt… 122028748110023… 909829790        Kakamega_pundit 
+    #>  8 337652… 12207063… 2020-01-24 13:54:04 ReemShiekh… RT @… Twitt… <NA>             <NA>             <NA>            
+    #>  9 896387… 12207063… 2020-01-24 13:54:04 uz_ziel_ca… RT @… Twitt… <NA>             <NA>             <NA>            
+    #> 10 110398… 12207063… 2020-01-24 13:54:04 Lury_0814   RT @… Twitt… <NA>             <NA>             <NA>            
+    #> # … with 845 more rows, and 84 more variables: is_quote <lgl>, is_retweet <lgl>, hashtags <list>,
     #> #   urls_expanded_url <list>, media_url <list>, media_expanded_url <list>, media_type <list>, mentions_user_id <list>,
     #> #   mentions_screen_name <list>, lang <chr>, quoted_status_id <chr>, quoted_text <chr>, quoted_created_at <dttm>,
     #> #   quoted_source <chr>, quoted_favorite_count <int>, quoted_retweet_count <int>, quoted_user_id <chr>,
@@ -201,7 +202,7 @@ bench::mark(
     #> # A tibble: 1 x 6
     #>   expression                           min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>                      <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 read_tweets(rtweet_stream_path)    2.19s     2.2s     0.443     137MB     1.62
+    #> 1 read_tweets(rtweet_stream_path)    2.49s    2.51s     0.391     137MB     1.17
 
 Ignoring the time it takes to run the above
 `rtweet_validate_and_parse()` function for `rtweet::parse_stream()` to
@@ -222,8 +223,8 @@ bench_mark[, 1:9]
     #> # A tibble: 2 x 6
     #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 rtweet       21.16s    21.8s    0.0462     483MB     6.98
-    #> 2 tweetio       2.04s     2.1s    0.476       95MB     2.22
+    #> 1 rtweet       21.47s   21.52s    0.0462     483MB     4.26
+    #> 2 tweetio       1.76s    1.86s    0.505       95MB     1.85
 
 ``` r
 plot(bench_mark)
@@ -252,7 +253,7 @@ bench::mark(
     #> # A tibble: 1 x 6
     #>   expression                                              min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr>                                         <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 big_tweet_df <- read_tweets(big_tweet_stream_path)    15.8s    15.8s    0.0633     396MB    0.506
+    #> 1 big_tweet_df <- read_tweets(big_tweet_stream_path)    16.4s    16.4s    0.0610     396MB    0.488
 
 ## Data Dumps
 
@@ -366,13 +367,15 @@ tweet_sf[, "bbox_coords"] %>% head()
     #> bbox:           xmin: -118.6684 ymin: 25.59918 xmax: 18.47324 ymax: 60.18611
     #> epsg (SRID):    4326
     #> proj4string:    +proj=longlat +datum=WGS84 +no_defs
-    #>                      bbox_coords
-    #> 1 POLYGON ((-90.23761 29.9683...
-    #> 2 POLYGON ((-80.20811 26.0809...
-    #> 3 POLYGON ((17.08005 59.73069...
-    #> 4 POLYGON ((-80.51985 39.7198...
-    #> 5 POLYGON ((-80.34364 25.5991...
-    #> 6 POLYGON ((-118.6684 33.7045...
+    #> # A tibble: 6 x 1
+    #>                                                                                    bbox_coords
+    #>                                                                                  <POLYGON [°]>
+    #> 1 ((-90.23761 29.96836, -90.23761 30.03413, -90.11965 30.03413, -90.11965 29.96836, -90.237...
+    #> 2 ((-80.20811 26.08094, -80.20811 26.2198, -80.09024 26.2198, -80.09024 26.08094, -80.20811...
+    #> 3 ((17.08005 59.73069, 17.08005 60.18611, 18.47324 60.18611, 18.47324 59.73069, 17.08005 59...
+    #> 4 ((-80.51985 39.7198, -80.51985 42.51607, -74.68952 42.51607, -74.68952 39.7198, -80.51985...
+    #> 5 ((-80.34364 25.59918, -80.34364 25.64553, -80.2875 25.64553, -80.2875 25.59918, -80.34364...
+    #> 6 ((-118.6684 33.70454, -118.6684 34.33704, -118.1554 34.33704, -118.1554 33.70454, -118.66...
 
 There are currently three columns that can potentially hold bounding
 boxes:
@@ -397,13 +400,15 @@ big_tweet_df %>%
     #> bbox:           xmin: -73.99354 ymin: 40.75075 xmax: -73.99354 ymax: 40.75075
     #> epsg (SRID):    4326
     #> proj4string:    +proj=longlat +datum=WGS84 +no_defs
-    #>               quoted_bbox_coords
-    #> 1 POLYGON ((-73.99354 40.7507...
-    #> 2 POLYGON ((-73.99354 40.7507...
-    #> 3 POLYGON ((-73.99354 40.7507...
-    #> 4 POLYGON ((-73.99354 40.7507...
-    #> 5 POLYGON ((-73.99354 40.7507...
-    #> 6 POLYGON ((-73.99354 40.7507...
+    #> # A tibble: 6 x 1
+    #>                                                                             quoted_bbox_coords
+    #>                                                                                  <POLYGON [°]>
+    #> 1 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...
+    #> 2 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...
+    #> 3 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...
+    #> 4 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...
+    #> 5 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...
+    #> 6 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...
 
 You can also build *all* the supported bounding boxes by setting
 `geom_col=` to `"all"`.
@@ -416,16 +421,26 @@ all_bboxes[, c("geometry", "which_geom")] %>%
   unique(by = "which_geom")
 ```
 
-    #> Simple feature collection with 3 features and 1 field
+    #> Simple feature collection with 1162 features and 1 field
     #> geometry type:  POLYGON
     #> dimension:      XY
     #> bbox:           xmin: -158.048 ymin: -50.35726 xmax: 175.5507 ymax: 61.4262
     #> epsg (SRID):    4326
     #> proj4string:    +proj=longlat +datum=WGS84 +no_defs
-    #>                         geometry          which_geom
-    #> 1 POLYGON ((-90.23761 29.9683...         bbox_coords
-    #> 2 POLYGON ((-73.99354 40.7507...  quoted_bbox_coords
-    #> 3 POLYGON ((-73.99354 40.7507... retweet_bbox_coords
+    #> # A tibble: 1,162 x 2
+    #>                                                                                        geometry which_geom 
+    #>                                                                                   <POLYGON [°]> <chr>      
+    #>  1 ((-90.23761 29.96836, -90.23761 30.03413, -90.11965 30.03413, -90.11965 29.96836, -90.237... bbox_coords
+    #>  2 ((-80.20811 26.08094, -80.20811 26.2198, -80.09024 26.2198, -80.09024 26.08094, -80.20811... bbox_coords
+    #>  3 ((17.08005 59.73069, 17.08005 60.18611, 18.47324 60.18611, 18.47324 59.73069, 17.08005 59... bbox_coords
+    #>  4 ((-80.51985 39.7198, -80.51985 42.51607, -74.68952 42.51607, -74.68952 39.7198, -80.51985... bbox_coords
+    #>  5 ((-80.34364 25.59918, -80.34364 25.64553, -80.2875 25.64553, -80.2875 25.59918, -80.34364... bbox_coords
+    #>  6 ((-118.6684 33.70454, -118.6684 34.33704, -118.1554 34.33704, -118.1554 33.70454, -118.66... bbox_coords
+    #>  7 ((-122.0662 37.92423, -122.0662 38.02242, -121.931 38.02242, -121.931 37.92423, -122.0662... bbox_coords
+    #>  8 ((-118.4485 33.97688, -118.4485 34.03514, -118.3695 34.03514, -118.3695 33.97688, -118.44... bbox_coords
+    #>  9 ((-97.66262 27.57851, -97.66262 27.89579, -97.20223 27.89579, -97.20223 27.57851, -97.662... bbox_coords
+    #> 10 ((-79.00759 35.86633, -79.00759 36.11563, -78.78329 36.11563, -78.78329 35.86633, -79.007... bbox_coords
+    #> # … with 1,152 more rows
 
 From there, you can easily use the data like any other `{sf}` object.
 
@@ -459,9 +474,9 @@ big_tweet_df %>%
   as_igraph()
 ```
 
-    #> IGRAPH 0a4a6e1 DN-- 64172 238713 -- 
+    #> IGRAPH 18fdb07 DN-- 64172 238713 -- 
     #> + attr: name (v/c), status_id (e/c), relation (e/c)
-    #> + edges from 0a4a6e1 (vertex names):
+    #> + edges from 18fdb07 (vertex names):
     #>  [1] 340165454          ->44607937            50229830           ->146322653          
     #>  [3] 1113359075029295106->6446742             3427037277         ->6446742            
     #>  [5] 2426567863         ->6446742             1049130232559620096->6446742            
@@ -480,7 +495,7 @@ big_tweet_df %>%
   as_igraph(all_user_data = TRUE, all_status_data = TRUE)
 ```
 
-    #> IGRAPH 128a522 DN-- 64172 238713 -- 
+    #> IGRAPH c530126 DN-- 64172 238713 -- 
     #> + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name (v/c), location (v/c), description (v/c),
     #> | url (v/c), protected (v/l), followers_count (v/n), friends_count (v/n), listed_count (v/n),
     #> | statuses_count (v/n), favourites_count (v/n), account_created_at (v/n), verified (v/l), profile_url
@@ -489,7 +504,7 @@ big_tweet_df %>%
     #> | (e/l), is_retweeted (e/l), media_url (e/x), media_type (e/x), place_url (e/c), place_name (e/c),
     #> | place_full_name (e/c), place_type (e/c), country (e/c), country_code (e/c), bbox_coords (e/x),
     #> | status_type (e/c)
-    #> + edges from 128a522 (vertex names):
+    #> + edges from c530126 (vertex names):
     #> [1] 2547690569->6446742  2547690569->6446742  245171523 ->52181976
     #> + ... omitted several edges
 
@@ -503,9 +518,9 @@ big_tweet_df %>%
   as_igraph(target_class = "hashtag")
 ```
 
-    #> IGRAPH af216ee DN-B 60417 134468 -- 
+    #> IGRAPH a0b7ba3 DN-B 60417 134468 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from af216ee (vertex names):
+    #> + edges from a0b7ba3 (vertex names):
     #>  [1] 340165454          ->ufc244 50229830           ->new    50229830           ->ufc244 1113359075029295106->ufc244
     #>  [5] 1120821278410145793->ufc244 2945072804         ->ufc244 250392181          ->ufc244 3427037277         ->ufc244
     #>  [9] 2426567863         ->ufc244 1049130232559620096->ufc244 245455601          ->ufc244 895707290          ->ufc244
@@ -521,9 +536,9 @@ big_tweet_df %>%
   as_igraph(target_class = "url")
 ```
 
-    #> IGRAPH 3e8b5e1 DN-B 8864 10014 -- 
+    #> IGRAPH 1811e9d DN-B 8864 10014 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 3e8b5e1 (vertex names):
+    #> + edges from 1811e9d (vertex names):
     #> [1] 54342307           ->https://twitter.com/jjmast1/status/1190812770951925760      
     #> [2] 822180925467398148 ->https://twitter.com/usatoday/status/1190848577171529729     
     #> [3] 1161588424488341504->https://livestreamon.co/ufc244                              
@@ -538,9 +553,9 @@ big_tweet_df %>%
   as_igraph(target_class = "media")
 ```
 
-    #> IGRAPH e6eb68e DN-B 35704 45448 -- 
+    #> IGRAPH 4cdf968 DN-B 35704 45448 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from e6eb68e (vertex names):
+    #> + edges from 4cdf968 (vertex names):
     #> [1] 1113359075029295106->http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
     #> [2] 3427037277         ->http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
     #> [3] 2426567863         ->http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
@@ -557,7 +572,7 @@ the edge and node data frames first. `as_proto_net()` is also exported.
 
 ``` r
 big_tweet_df %>% 
-  as_proto_net(all_status_data = TRUE, all_user_data = TRUE, as_tibble = TRUE) %>% 
+  as_proto_net(all_status_data = TRUE, all_user_data = TRUE) %>% 
   lapply(head)
 ```
 
