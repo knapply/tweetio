@@ -168,9 +168,9 @@
 <span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>)
 
 <span class='no'>tweet_graph</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as_tweet_igraph.html'>as_igraph</a></span>(<span class='no'>tweet_df</span>)
-<span class='no'>tweet_graph</span></div><div class='output co'>#&gt; IGRAPH 25db611 DN-- 1228 1234 -- 
+<span class='no'>tweet_graph</span></div><div class='output co'>#&gt; IGRAPH cab9ec5 DN-- 1228 1234 -- 
 #&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
-#&gt; + edges from 25db611 (vertex names):
+#&gt; + edges from cab9ec5 (vertex names):
 #&gt;  [1] 194250838          -&gt;340309688          
 #&gt;  [2] 825459487821619201 -&gt;966825602          
 #&gt;  [3] 1116228559616397312-&gt;3153145782         
@@ -181,7 +181,7 @@
 #&gt;  [8] 2198859787         -&gt;3096758526         
 #&gt; + ... omitted several edges</div><div class='input'>
 <span class='no'>graphml_path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".graphml"</span>)
-<span class='no'>graphml_path</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp5q4bOy/file21f6284f11c4.graphml"</div><div class='input'>
+<span class='no'>graphml_path</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmpiivxoh/file4f1b7a11a27.graphml"</div><div class='input'>
 <span class='fu'>write_graphml</span>(<span class='no'>tweet_graph</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>graphml_path</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

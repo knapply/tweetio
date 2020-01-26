@@ -61,6 +61,8 @@ as_tweet_igraph.proto_net <- function(x, ...) {
   if (!requireNamespace("igraph", quietly = TRUE)) {
     stop("{igraph} package is required for this funcitonality.", call. = FALSE)
   }
+  
+  is_directed <- attr(x, "target_class", exact = TRUE) == "user"
 
   el <- matrix(
     match(c(x$edges$from, x$edges$to), x$nodes$name),
@@ -68,7 +70,8 @@ as_tweet_igraph.proto_net <- function(x, ...) {
   )
   
   out <- igraph::add_edges(
-    igraph::make_empty_graph(n = nrow(x$nodes)),
+    igraph::make_empty_graph(n = nrow(x$nodes),
+                             directed = is_directed),
     el
   )
 

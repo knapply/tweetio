@@ -49,6 +49,8 @@ as_tweet_network <- function(x, ...) {
 
 #' @rdname as_tweet_network
 #' 
+#' @importFrom data.table := %chin%
+#' 
 #' @export
 as_tweet_network.proto_net <- function(x, ...) {
   if (!requireNamespace("network", quietly = TRUE)) {
@@ -56,8 +58,27 @@ as_tweet_network.proto_net <- function(x, ...) {
          call. = FALSE)
   }
   
+  # silence R CMD Check NOTE =============================================================
+  name <- NULL
+  is_actor <- NULL
+  # ======================================================================================
+  
+  if (attr(x, "target_class", exact = TRUE) != "user") {
+    if (!.is_dt(x$nodes)) {
+      x$nodes <- .as_dt(x$nodes)
+    }
+    
+    x$nodes[, is_actor := name %chin% x$edges$from]
+    is_bipartite <- TRUE
+  } else {
+    is_bipartite <- FALSE
+  }
+  
   network::as.network(x = x[["edges"]], vertices = x[["nodes"]],
-                      loops = TRUE, multiple = TRUE)
+                      directed = !is_bipartite,
+                      loops = !is_bipartite,
+                      multiple = TRUE,
+                      bipartite = is_bipartite)
 }
 
 
