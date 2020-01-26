@@ -124,7 +124,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Convert Various Objects to <code>proto_net</code>s</h1>
-    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/networks.R'><code>R/networks.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/proto_net.R'><code>R/proto_net.R</code></a></small>
     <div class="hidden name"><code>as_proto_net.Rd</code></div>
     </div>
 
@@ -137,7 +137,7 @@
   <span class='kw'>target_class</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"user"</span>, <span class='st'>"hashtag"</span>, <span class='st'>"url"</span>, <span class='st'>"media"</span>),
   <span class='kw'>all_status_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"tweetio.as_tibble"</span>, <span class='fl'>FALSE</span>),
+  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(),
   <span class='no'>...</span>
 )</pre>
 
@@ -168,7 +168,7 @@ downstream tasks..</p></td>
     </tr>
     <tr>
       <th>as_tibble</th>
-      <td><p><code>&lt;logical&gt;</code>, Default: <code><a href='https://rdrr.io/r/base/options.html'>getOption("tweetio.as_tibble", FALSE)</a></code>.
+      <td><p><code>&lt;logical&gt;</code>, Default: <code><a href='tweetio_options.html'>tweetio_as_tibble()</a></code>.
 Whether a <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> should be returned. Ignored if the <code>{tibble}</code>
 package is not installed.</p></td>
     </tr>

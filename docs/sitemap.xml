@@ -4,10 +4,13 @@
     <loc>https://knapply.github.io/tweetio/index.html</loc>
   </url>
   <url>
-    <loc>https://knapply.github.io/tweetio/reference/as_igraph.html</loc>
+    <loc>https://knapply.github.io/tweetio/reference/as_proto_net.html</loc>
   </url>
   <url>
-    <loc>https://knapply.github.io/tweetio/reference/as_proto_net.html</loc>
+    <loc>https://knapply.github.io/tweetio/reference/as_tweet_igraph.html</loc>
+  </url>
+  <url>
+    <loc>https://knapply.github.io/tweetio/reference/as_tweet_network.html</loc>
   </url>
   <url>
     <loc>https://knapply.github.io/tweetio/reference/as_tweet_sf.html</loc>
@@ -22,10 +25,16 @@
     <loc>https://knapply.github.io/tweetio/reference/extract_users.html</loc>
   </url>
   <url>
+    <loc>https://knapply.github.io/tweetio/reference/io_campaign_metadata.html</loc>
+  </url>
+  <url>
     <loc>https://knapply.github.io/tweetio/reference/pipe.html</loc>
   </url>
   <url>
     <loc>https://knapply.github.io/tweetio/reference/read_tweets.html</loc>
+  </url>
+  <url>
+    <loc>https://knapply.github.io/tweetio/reference/tweetio_options.html</loc>
   </url>
   <url>
     <loc>https://knapply.github.io/tweetio/reference/write_graphml.html</loc>

@@ -20,6 +20,8 @@
 #' @param x Tweet data frame or `proto_net`.
 #' @param ... Arguments passed to `as_proto_net()`.
 #' 
+#' @seealso [as_proto_net()], [as_tweet_network()]
+#' 
 #' @template author-bk
 #' 
 #' @examples 
@@ -27,24 +29,35 @@
 #' tweet_df <- read_tweets(path_to_tweet_file)
 #' 
 #' tweet_df %>% 
-#'   as_igraph()
+#'   as_tweet_igraph()
 #'   
 #' tweet_df %>% 
 #'   as_proto_net() %>% 
-#'   as_igraph()
+#'   as_tweet_igraph()
 #' 
+#' tweet_df %>% 
+#'   as_tweet_igraph(all_status_data = TRUE)
+#'   
+#' tweet_df %>% 
+#'   as_tweet_igraph(all_user_data = TRUE)
+#'
 #' @export
-as_igraph <- function(x, ...) {
-  UseMethod("as_igraph")
+as_tweet_igraph <- function(x, ...) {
+  UseMethod("as_tweet_igraph")
 }
 
+# TODO deprecate `as_igraph()` in favor of `as_tweet_igraph()`
+#' @rdname as_tweet_igraph
+#' 
+#' @export
+as_igraph <- as_tweet_igraph 
 
-#' @rdname as_igraph
+#' @rdname as_tweet_igraph
 #' 
 #' @importFrom data.table %chin%
 #' 
 #' @export
-as_igraph.proto_net <- function(x, ...) {
+as_tweet_igraph.proto_net <- function(x, ...) {
   if (!requireNamespace("igraph", quietly = TRUE)) {
     stop("{igraph} package is required for this funcitonality.", call. = FALSE)
   }
@@ -58,9 +71,7 @@ as_igraph.proto_net <- function(x, ...) {
     igraph::make_empty_graph(n = nrow(x$nodes)),
     el
   )
-  
-  # x$edges[, -(1:2L)]
-  
+
   igraph::edge_attr(out) <- as.list(x$edges[, -(1L:2L)])
   igraph::vertex_attr(out) <- as.list(x$nodes)
   
@@ -74,10 +85,10 @@ as_igraph.proto_net <- function(x, ...) {
 }
 
 
-#' @rdname as_igraph
+#' @rdname as_tweet_igraph
 #' 
 #' @export
-as_igraph.data.frame <- function(x, ...) {
-  as_igraph(as_proto_net(x, ...))
+as_tweet_igraph.data.frame <- function(x, ...) {
+  as_tweet_igraph(as_proto_net(x, ...))
 }
 

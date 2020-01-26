@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Path to an Example File — example_tweet_file • tweetio</title>
+<title>Twitter-released IO Campaign Metadata — io_campaign_metadata • tweetio</title>
 
 
 <!-- jquery -->
@@ -37,8 +37,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Path to an Example File — example_tweet_file" />
-<meta property="og:description" content="Path to an Example File" />
+<meta property="og:title" content="Twitter-released IO Campaign Metadata — io_campaign_metadata" />
+<meta property="og:description" content="Metadata describing data archives that Twitter believes are part of potentially
+state-backed information operations campaigns." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -123,39 +124,69 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Path to an Example File</h1>
-    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/example_tweet_file.R'><code>R/example_tweet_file.R</code></a></small>
-    <div class="hidden name"><code>example_tweet_file.Rd</code></div>
+    <h1>Twitter-released IO Campaign Metadata</h1>
+    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/io_campaign_metadata.R'><code>R/io_campaign_metadata.R</code></a></small>
+    <div class="hidden name"><code>io_campaign_metadata.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Path to an Example File</p>
+    <p>Metadata describing data archives that Twitter believes are part of potentially
+state-backed information operations campaigns.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>example_tweet_file</span>(<span class='kw'>small</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='no'>io_campaign_metadata</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>small</th>
-      <td><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1L)</a></code>, Default: <code>TRUE</code>.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code><a href='https://rdrr.io/r/base/character.html'>character(1L)</a></code> file path</p>
+    <p>An object of class <code>data.table</code> (inherits from <code>data.frame</code>) with 22 rows and 9 columns.</p>
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p><a href='https://transparency.twitter.com/en/information-operations.html'>https://transparency.twitter.com/en/information-operations.html</a></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Twitter updates the data archives available on a regular basis, so these
+may be out of date. You can help by filing issues at
+<a href='https://github.com/knapply/tweetio/issues'>https://github.com/knapply/tweetio/issues</a>.</p>
+<p>The following information is from Twitter:</p><ul>
+<li><p><em>"Note that by downloading these files, you are accepting the <a href='https://t.co/devpolicy'>Twitter Developer Agreement and Policy</a>."</em></p></li>
+<li><p><em>"These datasets are of a size that a degree of capability for large dataset analysis is required, we hope to support broad analysis by making a public version of these datasets (with some account-specific information hashed) available. You can download the datasets below. No content has been redacted. Specialist researchers can request access to an unhashed version of these datasets, which will be governed by a data use agreement that will include provisions to ensure the data is used within appropriate legal and ethical parameters."</em></p></li>
+<li><p><em>"These datasets include all public, nondeleted Tweets and media (e.g., images and videos) from accounts we believe are connected to state-backed information operations. Tweets deleted by these users prior to their suspension (which are not included in these datasets) generally comprise less than 1% of their overall activity. Note that not all of the accounts we identified as connected to these campaigns actively Tweeted, so the number of accounts represented in the datasets may be less than the total number of accounts listed here."</em></p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>example_tweet_file</span>()</div><div class='output co'>#&gt; [1] "/tmp/RtmpbMioai/temp_libpathb36200190be/tweetio/example-data/api-stream-small.json.gz"</div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>io_campaign_metadata</span>[, <span class='fu'>.</span>(<span class='no'>campaign_name</span>, <span class='no'>date_released</span>, <span class='no'>entities</span>)]</div><div class='output co'>#&gt;             campaign_name date_released                   entities
+#&gt;  1:                   ira    2018-10-01   Internet Research Agency
+#&gt;  2:               iranian    2018-10-01                       Iran
+#&gt;  3:         iran_201901_1    2019-01-01                       Iran
+#&gt;  4:   bangladesh_201901_1    2019-01-01                 Bangladesh
+#&gt;  5:       russia_201901_1    2019-01-01                     Russia
+#&gt;  6:    venezuela_201901_1    2019-01-01                  Venezuela
+#&gt;  7:    venezuela_201901_2    2019-01-01                  Venezuela
+#&gt;  8:    catalonia_201906_1    2019-06-01                  Catalonia
+#&gt;  9:         iran_201906_1    2019-06-01                       Iran
+#&gt; 10:         iran_201906_2    2019-06-01                       Iran
+#&gt; 11:         iran_201906_3    2019-06-01                       Iran
+#&gt; 12:       russia_201906_1    2019-06-01                     Russia
+#&gt; 13:    venezuela_201906_1    2019-06-01                  Venezuela
+#&gt; 14:        china_082019_1    2019-08-01                      China
+#&gt; 15:        china_082019_2    2019-08-01                      China
+#&gt; 16:        china_082019_3    2019-09-01                      China
+#&gt; 17: saudi_arabia_082019_1    2019-09-01               Saudi Arabia
+#&gt; 18:      ecuador_082019_1    2019-09-01                    Ecuador
+#&gt; 19:          uae_082019_1    2019-09-01       United Arab Emirates
+#&gt; 20:        spain_082019_1    2019-09-01                      Spain
+#&gt; 21:    egypt_uae_082019_1    2019-09-01 United Arab Emirates,Egypt
+#&gt; 22:   saudi_arabia_112019    2019-12-01               Saudi Arabia
+#&gt;             campaign_name date_released                   entities</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
+      <li><a href="#format">Format</a></li>
+      <li><a href="#source">Source</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

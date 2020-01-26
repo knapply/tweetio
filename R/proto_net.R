@@ -63,7 +63,7 @@ as_proto_net <- function(tweet_df,
                          target_class = c("user", "hashtag", "url", "media"),
                          all_status_data = FALSE,
                          all_user_data = FALSE,
-                         as_tibble = getOption("tweetio.as_tibble", FALSE),
+                         as_tibble = tweetio_as_tibble(),
                          ...) {
   # silence R CMD Check NOTE =============================================================
   relation <- NULL

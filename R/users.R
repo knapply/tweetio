@@ -89,7 +89,7 @@ user_col_names <- function(tweet_df) {
 #' 
 #' @export
 extract_users <- function(tweet_df, summarize = TRUE, split = FALSE, 
-                          as_tibble = getOption("tweetio.as_tibble", FALSE),
+                          as_tibble = tweetio_as_tibble(),
                           ...) {
   # silence R CMD Check NOTE =============================================================
   .N <- NULL
@@ -97,19 +97,29 @@ extract_users <- function(tweet_df, summarize = TRUE, split = FALSE,
   ..col <- NULL
   user_id <- NULL
   created_at <- NULL
+  screen_name <- NULL
   timestamp_ms <- NULL
   observation_type <- NULL
   # ======================================================================================
   
   if (!.is_dt(tweet_df)) {
-    tweet_df <- data.table(tweet_df)
+    tweet_df <- .as_dt(tweet_df)
   }
   
-  split_users <- lapply(user_col_names(tweet_df), 
-                        function(.x) standardize_cols(tweet_df[, .x, with = FALSE]))
-  split_users <- .map_at(split_users, c("main", "retweet", "quoted", "reply_to"), 
-                         function(.x) .x[!is.na(user_id)])
+  split_users <- .compact(
+    lapply(user_col_names(tweet_df), 
+           function(.x) standardize_cols(tweet_df[, .x, with = FALSE]))
+  )
   
+  split_users <- .map_at(
+    split_users, 
+    intersect(names(split_users), c("main", "retweet", "quoted", "reply_to")),
+    function(.x)  .x[!is.na(user_id)]
+  )
+
+  if (!"screen_name" %chin% names(split_users$mentions)) {
+    split_users$mentions[, screen_name := NA_character_]
+  }
   split_users$mentions <- setDT(
     unnest_entities2_impl(
       tracker = split_users$mentions$created_at,

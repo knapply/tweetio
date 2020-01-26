@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Path to an Example File — example_tweet_file • tweetio</title>
+<title><code>{tweetio}</code> Options — tweetio_options • tweetio</title>
 
 
 <!-- jquery -->
@@ -37,8 +37,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Path to an Example File — example_tweet_file" />
-<meta property="og:description" content="Path to an Example File" />
+<meta property="og:title" content="<code>{tweetio}</code> Options — tweetio_options" />
+<meta property="og:description" content="{tweetio} Options" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -123,39 +123,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Path to an Example File</h1>
-    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/example_tweet_file.R'><code>R/example_tweet_file.R</code></a></small>
-    <div class="hidden name"><code>example_tweet_file.Rd</code></div>
+    <h1><code>{tweetio}</code> Options</h1>
+    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/opts.R'><code>R/opts.R</code></a></small>
+    <div class="hidden name"><code>tweetio_options.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Path to an Example File</p>
+    <p><code>{tweetio}</code> Options</p>
     </div>
 
-    <pre class="usage"><span class='fu'>example_tweet_file</span>(<span class='kw'>small</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>tweetio_options</span>()
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>small</th>
-      <td><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1L)</a></code>, Default: <code>TRUE</code>.</p></td>
-    </tr>
-    </table>
+<span class='fu'>tweetio_as_tibble</span>()
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+<span class='fu'>tweetio_verbose</span>()</pre>
 
-    <p><code><a href='https://rdrr.io/r/base/character.html'>character(1L)</a></code> file path</p>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>example_tweet_file</span>()</div><div class='output co'>#&gt; [1] "/tmp/RtmpbMioai/temp_libpathb36200190be/tweetio/example-data/api-stream-small.json.gz"</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>tweetio_options</span>()</div><div class='output co'>#&gt; $tweetio.as_tibble
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $tweetio.verbose
+#&gt; [1] FALSE
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

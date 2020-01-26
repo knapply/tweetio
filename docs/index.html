@@ -428,9 +428,9 @@
 <div id="tweet-networks" class="section level1">
 <h1 class="hasAnchor">
 <a href="#tweet-networks" class="anchor"></a>Tweet Networks</h1>
-<p>If you want to analyze tweet networks, you can get started immediately using <code><a href="reference/as_igraph.html">tweetio::as_igraph()</a></code>.</p>
+<p>If you want to analyze tweet networks, you can get started immediately using <code><a href="reference/as_tweet_igraph.html">tweetio::as_igraph()</a></code>.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>big_tweet_df <span class="op">%&gt;%</span></span>
-<span id="cb31-2"><a href="#cb31-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>()</span></code></pre></div>
+<span id="cb31-2"><a href="#cb31-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_tweet_igraph.html">as_igraph</a></span>()</span></code></pre></div>
 <div class="sourceCode" id="cb32"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co">#&gt; IGRAPH 18fdb07 DN-- 64172 238713 -- </span></span>
 <span id="cb32-2"><a href="#cb32-2"></a><span class="co">#&gt; + attr: name (v/c), status_id (e/c), relation (e/c)</span></span>
 <span id="cb32-3"><a href="#cb32-3"></a><span class="co">#&gt; + edges from 18fdb07 (vertex names):</span></span>
@@ -445,7 +445,7 @@
 <span id="cb32-12"><a href="#cb32-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
 <p>If you want to take advantage of all the metadata available, you can set <code>all_status_data</code> and/or <code>all_user_data</code> to <code>TRUE</code></p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb33-2"><a href="#cb33-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>(<span class="dt">all_user_data =</span> <span class="ot">TRUE</span>, <span class="dt">all_status_data =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<span id="cb33-2"><a href="#cb33-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_tweet_igraph.html">as_igraph</a></span>(<span class="dt">all_user_data =</span> <span class="ot">TRUE</span>, <span class="dt">all_status_data =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb34"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co">#&gt; IGRAPH c530126 DN-- 64172 238713 -- </span></span>
 <span id="cb34-2"><a href="#cb34-2"></a><span class="co">#&gt; + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name (v/c), location (v/c), description (v/c),</span></span>
 <span id="cb34-3"><a href="#cb34-3"></a><span class="co">#&gt; | url (v/c), protected (v/l), followers_count (v/n), friends_count (v/n), listed_count (v/n),</span></span>
@@ -460,7 +460,7 @@
 <span id="cb34-12"><a href="#cb34-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
 <p>You can also build two-mode networks by specifying the <code>target_class</code> as <code>"hashtag"</code>s, <code>"url"</code>s, or <code>"media"</code>. The returned <code>&lt;igraph&gt;</code> will be set as bipartite following <code>{igraph}</code>’s convention of a <code>logical</code> vertex attribute specifying each’s partition (users are <code>TRUE</code>).</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb35-2"><a href="#cb35-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>(<span class="dt">target_class =</span> <span class="st">"hashtag"</span>)</span></code></pre></div>
+<span id="cb35-2"><a href="#cb35-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_tweet_igraph.html">as_igraph</a></span>(<span class="dt">target_class =</span> <span class="st">"hashtag"</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb36"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co">#&gt; IGRAPH a0b7ba3 DN-B 60417 134468 -- </span></span>
 <span id="cb36-2"><a href="#cb36-2"></a><span class="co">#&gt; + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)</span></span>
 <span id="cb36-3"><a href="#cb36-3"></a><span class="co">#&gt; + edges from a0b7ba3 (vertex names):</span></span>
@@ -474,7 +474,7 @@
 <span id="cb36-11"><a href="#cb36-11"></a><span class="co">#&gt; [29] 1401244394         -&gt;new    1401244394         -&gt;ufc244 452637226          -&gt;ufc244 110374459          -&gt;ufc244</span></span>
 <span id="cb36-12"><a href="#cb36-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb37-2"><a href="#cb37-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>(<span class="dt">target_class =</span> <span class="st">"url"</span>)</span></code></pre></div>
+<span id="cb37-2"><a href="#cb37-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_tweet_igraph.html">as_igraph</a></span>(<span class="dt">target_class =</span> <span class="st">"url"</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb38"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co">#&gt; IGRAPH 1811e9d DN-B 8864 10014 -- </span></span>
 <span id="cb38-2"><a href="#cb38-2"></a><span class="co">#&gt; + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)</span></span>
 <span id="cb38-3"><a href="#cb38-3"></a><span class="co">#&gt; + edges from 1811e9d (vertex names):</span></span>
@@ -487,7 +487,7 @@
 <span id="cb38-10"><a href="#cb38-10"></a><span class="co">#&gt; [7] 1174700278769225730-&gt;https://twitter.com/mitchhorowitz/status/1190809746347085824</span></span>
 <span id="cb38-11"><a href="#cb38-11"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb39-2"><a href="#cb39-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_igraph.html">as_igraph</a></span>(<span class="dt">target_class =</span> <span class="st">"media"</span>)</span></code></pre></div>
+<span id="cb39-2"><a href="#cb39-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_tweet_igraph.html">as_igraph</a></span>(<span class="dt">target_class =</span> <span class="st">"media"</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb40"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="co">#&gt; IGRAPH 4cdf968 DN-B 35704 45448 -- </span></span>
 <span id="cb40-2"><a href="#cb40-2"></a><span class="co">#&gt; + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)</span></span>
 <span id="cb40-3"><a href="#cb40-3"></a><span class="co">#&gt; + edges from 4cdf968 (vertex names):</span></span>
@@ -500,7 +500,7 @@
 <span id="cb40-10"><a href="#cb40-10"></a><span class="co">#&gt; [7] 3223860438         -&gt;http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             </span></span>
 <span id="cb40-11"><a href="#cb40-11"></a><span class="co">#&gt; [8] 158942796          -&gt;http://pbs.twimg.com/ext_tw_video_thumb/1190817246110720000/pu/img/jw75ZV3YmtL2PgXT.jpg</span></span>
 <span id="cb40-12"><a href="#cb40-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
-<p>You’re not stuck with going directly to <code>&lt;igraph&gt;</code> objects though. Underneath the hood, <code><a href="reference/as_igraph.html">as_igraph()</a></code> calls <code><a href="reference/as_proto_net.html">as_proto_net()</a></code>, which builds the edge and node data frames first. <code><a href="reference/as_proto_net.html">as_proto_net()</a></code> is also exported.</p>
+<p>You’re not stuck with going directly to <code>&lt;igraph&gt;</code> objects though. Underneath the hood, <code><a href="reference/as_tweet_igraph.html">as_igraph()</a></code> calls <code><a href="reference/as_proto_net.html">as_proto_net()</a></code>, which builds the edge and node data frames first. <code><a href="reference/as_proto_net.html">as_proto_net()</a></code> is also exported.</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>big_tweet_df <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb41-2"><a href="#cb41-2"></a><span class="st">  </span><span class="kw"><a href="reference/as_proto_net.html">as_proto_net</a></span>(<span class="dt">all_status_data =</span> <span class="ot">TRUE</span>, <span class="dt">all_user_data =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb41-3"><a href="#cb41-3"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(head)</span></code></pre></div>

@@ -18,3 +18,5 @@
 ^test\.graphml$
 ^playground$
 ^\.github$
+^io-campaigns-twitter$
+^playground$

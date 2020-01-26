@@ -16,7 +16,7 @@
 
 .finalize_df <- function(df, as_tibble) {
   if (!as_tibble || !requireNamespace("tibble", quietly = TRUE)) {
-    return(df)
+    return(df[])
   }
   
   original_class <- class(df)
@@ -121,6 +121,22 @@
 .is_dt <- function(x) {
   inherits(x, "data.table")
 }
+
+.file_exists <- function(x) {
+  if (.is_empty(x)) {
+    .stop("`x` is empty, so `file.exists()` doesn't have anything to check.")
+  }
+  file.exists(x)
+}
+
+.is_scalar_atomic <- function(x, template = is.atomic) {
+  template(x) && length(x) == 1L
+}
+
+.is_scalar_chr <- function(x) {
+  .is_scalar_atomic(x, template = is.character)
+}
+
 
 #' @importFrom data.table as.data.table
 .as_dt <- as.data.table
