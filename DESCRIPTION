@@ -26,7 +26,8 @@ Imports:
     jsonify,
     Rcpp,
     stringi,
-    magrittr
+    magrittr,
+    utils
 Suggests:
     covr,
     geojsonsf,
@@ -35,13 +36,14 @@ Suggests:
     knitr,
     future,
     future.apply,
+    network,
     openxlsx,
     rtweet,
     sf,
     testthat (>= 2.1.0),
-    tibble,
-    utils
+    tibble
 Remotes: 
+    knapply/network,
     SymbolixAU/jsonify,
     ycphs/openxlsx
 URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio

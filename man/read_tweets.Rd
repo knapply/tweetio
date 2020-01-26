@@ -7,15 +7,15 @@
 \usage{
 read_tweets(
   file_path,
-  as_tibble = getOption("tweetio.as_tibble", FALSE),
-  verbose = FALSE,
+  as_tibble = tweetio_as_tibble(),
+  verbose = tweetio_verbose(),
   ...
 )
 
 read_tweets_bulk(
   file_path,
-  verbose = FALSE,
-  as_tibble = getOption("tweetio.as_tibble", FALSE),
+  as_tibble = tweetio_as_tibble(),
+  verbose = tweetio_verbose(),
   in_parallel = TRUE,
   strategy = NULL,
   ...
@@ -24,11 +24,12 @@ read_tweets_bulk(
 \arguments{
 \item{file_path}{Path(s) to tweet files.}
 
-\item{as_tibble}{\verb{<logical>}, Default: \code{getOption("tweetio.as_tibble", FALSE)}.
+\item{as_tibble}{\verb{<logical>}, Default: \code{tweetio_as_tibble()}.
 Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the \code{{tibble}}
 package is not installed.}
 
-\item{verbose}{Whether to show diagnostic or progress messages.}
+\item{verbose}{\verb{<logical>}, Default: \code{tweetio_verbose()}.
+Whether to show diagnostic or progress messages.}
 
 \item{...}{Arguments passed to or from other methods.}
 

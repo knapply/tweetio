@@ -8,7 +8,7 @@ extract_users(
   tweet_df,
   summarize = TRUE,
   split = FALSE,
-  as_tibble = getOption("tweetio.as_tibble", FALSE),
+  as_tibble = tweetio_as_tibble(),
   ...
 )
 }
@@ -23,7 +23,7 @@ a single row containing the most recent non-missing values.}
 frames and return a list of those data frames, retaining all instances where each user
 was observed. Ignored if \code{summarize} is \code{TRUE}.}
 
-\item{as_tibble}{\verb{<logical>}, Default: \code{getOption("tweetio.as_tibble", FALSE)}.
+\item{as_tibble}{\verb{<logical>}, Default: \code{tweetio_as_tibble()}.
 Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the \code{{tibble}}
 package is not installed.}
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Write Tweets to Spreadsheets — write_tweet_csv • tweetio</title>
+<title><code>{tweetio}</code> Options — tweetio_options • tweetio</title>
 
 
 <!-- jquery -->
@@ -37,8 +37,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Write Tweets to Spreadsheets — write_tweet_csv" />
-<meta property="og:description" content="Write Tweets to Spreadsheets" />
+<meta property="og:title" content="<code>{tweetio}</code> Options — tweetio_options" />
+<meta property="og:description" content="{tweetio} Options" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -123,71 +123,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Write Tweets to Spreadsheets</h1>
-    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/spreadsheets.R'><code>R/spreadsheets.R</code></a></small>
-    <div class="hidden name"><code>write_tweet_csv.Rd</code></div>
+    <h1><code>{tweetio}</code> Options</h1>
+    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/opts.R'><code>R/opts.R</code></a></small>
+    <div class="hidden name"><code>tweetio_options.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Write Tweets to Spreadsheets</p>
+    <p><code>{tweetio}</code> Options</p>
     </div>
 
-    <pre class="usage"><span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>tweetio_options</span>()
 
-<span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+<span class='fu'>tweetio_as_tibble</span>()
 
-<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>tweetio_verbose</span>()</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>tweet_df</th>
-      <td><p>A data frame of tweets, as obtained by <code><a href='read_tweets.html'>read_tweets()</a></code> or
-one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https://rdrr.io/pkg/rtweet/man/search_tweets.html'>rtweet::search_tweets()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>file_path</th>
-      <td><p>File path to which to write or from which to read.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Arguments passed to or from other methods.</p></td>
-    </tr>
-    <tr>
-      <th>asTable</th>
-      <td><p><code>&lt;logical&gt;</code>, default: <code>TRUE</code>.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='https://Rdatatable.gitlab.io/data.table/reference/fwrite.html'>data.table::fwrite()</a></code></p>
-<p><code><a href='https://rdrr.io/pkg/openxlsx/man/write.xlsx.html'>openxlsx::write.xlsx()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>path_to_tweet_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example_tweet_file.html'>example_tweet_file</a></span>()
-                                                       <span class='co'># first 5 rows</span>
-<span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>)[<span class='fl'>1</span>:<span class='fl'>5</span>, ]
-
-<span class='co'># write comma-separated values files ==================================================</span>
-<span class='no'>target_csv_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".csv"</span>)
-<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp5q4bOy/file21f6378a3746.csv"</div><div class='input'>
-<span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_csv_file</span>)
-
-<span class='co'># write Microsoft Excel files =========================================================</span>
-<span class='no'>target_excel_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xlsx"</span>)
-<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp5q4bOy/file21f61035f3b2.xlsx"</div><div class='input'>
-<span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)
-
-<span class='co'># same as `write_tweet_xlsx()`</span>
-<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>tweetio_options</span>()</div><div class='output co'>#&gt; $tweetio.as_tibble
+#&gt; [1] FALSE
+#&gt; 
+#&gt; $tweetio.verbose
+#&gt; [1] FALSE
+#&gt; </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

@@ -76,12 +76,9 @@
 #' 
 #' @param file_path Path(s) to tweet files.
 #' @template param-verbose
-#' @param ... Arguments passed to or from other methods.
+#' @template param-dots
 #' 
-#' @return 
-#' * Data Frame
-#'   + default: [data.table::data.table()]
-#'   + [tibble::tibble()] if `as_tibble` is `TRUE` and `{tibble}` is installed.
+#' @template return-df
 #' 
 #' @template author-bk
 #' 
@@ -96,8 +93,9 @@
 #' 
 #' @export
 read_tweets <- function(file_path, 
-                        as_tibble = getOption("tweetio.as_tibble", FALSE),
-                        verbose = FALSE, ...) {
+                        as_tibble = tweetio_as_tibble(),
+                        verbose = tweetio_verbose(),
+                        ...) {
   out <- .read_tweets(file_path, verbose, ...)
 
   out <- .finalize_cols(out)
@@ -117,8 +115,9 @@ read_tweets <- function(file_path,
 #' 
 #' @importFrom data.table rbindlist
 #' @export
-read_tweets_bulk <- function(file_path, verbose = FALSE, 
-                             as_tibble = getOption("tweetio.as_tibble", FALSE), 
+read_tweets_bulk <- function(file_path, 
+                             as_tibble = tweetio_as_tibble(),
+                             verbose = tweetio_verbose(), 
                              in_parallel = TRUE, strategy = NULL, ...) {
   if (length(file_path) == 1L) {
     return(read_tweets(file_path))

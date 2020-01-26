@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Write Tweets to Spreadsheets — write_tweet_csv • tweetio</title>
+<title>Twitter-released IO Campaign Metadata — io_campaign_metadata • tweetio</title>
 
 
 <!-- jquery -->
@@ -37,8 +37,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Write Tweets to Spreadsheets — write_tweet_csv" />
-<meta property="og:description" content="Write Tweets to Spreadsheets" />
+<meta property="og:title" content="Twitter-released IO Campaign Metadata — io_campaign_metadata" />
+<meta property="og:description" content="Metadata describing data archives that Twitter believes are part of potentially
+state-backed information operations campaigns." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -123,71 +124,69 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Write Tweets to Spreadsheets</h1>
-    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/spreadsheets.R'><code>R/spreadsheets.R</code></a></small>
-    <div class="hidden name"><code>write_tweet_csv.Rd</code></div>
+    <h1>Twitter-released IO Campaign Metadata</h1>
+    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/io_campaign_metadata.R'><code>R/io_campaign_metadata.R</code></a></small>
+    <div class="hidden name"><code>io_campaign_metadata.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Write Tweets to Spreadsheets</p>
+    <p>Metadata describing data archives that Twitter believes are part of potentially
+state-backed information operations campaigns.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='no'>io_campaign_metadata</span></pre>
 
-<span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
-<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>tweet_df</th>
-      <td><p>A data frame of tweets, as obtained by <code><a href='read_tweets.html'>read_tweets()</a></code> or
-one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https://rdrr.io/pkg/rtweet/man/search_tweets.html'>rtweet::search_tweets()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>file_path</th>
-      <td><p>File path to which to write or from which to read.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Arguments passed to or from other methods.</p></td>
-    </tr>
-    <tr>
-      <th>asTable</th>
-      <td><p><code>&lt;logical&gt;</code>, default: <code>TRUE</code>.</p></td>
-    </tr>
-    </table>
+    <p>An object of class <code>data.table</code> (inherits from <code>data.frame</code>) with 22 rows and 9 columns.</p>
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p><a href='https://transparency.twitter.com/en/information-operations.html'>https://transparency.twitter.com/en/information-operations.html</a></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <div class='dont-index'><p><code><a href='https://Rdatatable.gitlab.io/data.table/reference/fwrite.html'>data.table::fwrite()</a></code></p>
-<p><code><a href='https://rdrr.io/pkg/openxlsx/man/write.xlsx.html'>openxlsx::write.xlsx()</a></code></p></div>
+    <p>Twitter updates the data archives available on a regular basis, so these
+may be out of date. You can help by filing issues at
+<a href='https://github.com/knapply/tweetio/issues'>https://github.com/knapply/tweetio/issues</a>.</p>
+<p>The following information is from Twitter:</p><ul>
+<li><p><em>"Note that by downloading these files, you are accepting the <a href='https://t.co/devpolicy'>Twitter Developer Agreement and Policy</a>."</em></p></li>
+<li><p><em>"These datasets are of a size that a degree of capability for large dataset analysis is required, we hope to support broad analysis by making a public version of these datasets (with some account-specific information hashed) available. You can download the datasets below. No content has been redacted. Specialist researchers can request access to an unhashed version of these datasets, which will be governed by a data use agreement that will include provisions to ensure the data is used within appropriate legal and ethical parameters."</em></p></li>
+<li><p><em>"These datasets include all public, nondeleted Tweets and media (e.g., images and videos) from accounts we believe are connected to state-backed information operations. Tweets deleted by these users prior to their suspension (which are not included in these datasets) generally comprise less than 1% of their overall activity. Note that not all of the accounts we identified as connected to these campaigns actively Tweeted, so the number of accounts represented in the datasets may be less than the total number of accounts listed here."</em></p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>path_to_tweet_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example_tweet_file.html'>example_tweet_file</a></span>()
-                                                       <span class='co'># first 5 rows</span>
-<span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>)[<span class='fl'>1</span>:<span class='fl'>5</span>, ]
-
-<span class='co'># write comma-separated values files ==================================================</span>
-<span class='no'>target_csv_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".csv"</span>)
-<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp5q4bOy/file21f6378a3746.csv"</div><div class='input'>
-<span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_csv_file</span>)
-
-<span class='co'># write Microsoft Excel files =========================================================</span>
-<span class='no'>target_excel_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xlsx"</span>)
-<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp5q4bOy/file21f61035f3b2.xlsx"</div><div class='input'>
-<span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)
-
-<span class='co'># same as `write_tweet_xlsx()`</span>
-<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>io_campaign_metadata</span>[, <span class='fu'>.</span>(<span class='no'>campaign_name</span>, <span class='no'>date_released</span>, <span class='no'>entities</span>)]</div><div class='output co'>#&gt;             campaign_name date_released                   entities
+#&gt;  1:                   ira    2018-10-01   Internet Research Agency
+#&gt;  2:               iranian    2018-10-01                       Iran
+#&gt;  3:         iran_201901_1    2019-01-01                       Iran
+#&gt;  4:   bangladesh_201901_1    2019-01-01                 Bangladesh
+#&gt;  5:       russia_201901_1    2019-01-01                     Russia
+#&gt;  6:    venezuela_201901_1    2019-01-01                  Venezuela
+#&gt;  7:    venezuela_201901_2    2019-01-01                  Venezuela
+#&gt;  8:    catalonia_201906_1    2019-06-01                  Catalonia
+#&gt;  9:         iran_201906_1    2019-06-01                       Iran
+#&gt; 10:         iran_201906_2    2019-06-01                       Iran
+#&gt; 11:         iran_201906_3    2019-06-01                       Iran
+#&gt; 12:       russia_201906_1    2019-06-01                     Russia
+#&gt; 13:    venezuela_201906_1    2019-06-01                  Venezuela
+#&gt; 14:        china_082019_1    2019-08-01                      China
+#&gt; 15:        china_082019_2    2019-08-01                      China
+#&gt; 16:        china_082019_3    2019-09-01                      China
+#&gt; 17: saudi_arabia_082019_1    2019-09-01               Saudi Arabia
+#&gt; 18:      ecuador_082019_1    2019-09-01                    Ecuador
+#&gt; 19:          uae_082019_1    2019-09-01       United Arab Emirates
+#&gt; 20:        spain_082019_1    2019-09-01                      Spain
+#&gt; 21:    egypt_uae_082019_1    2019-09-01 United Arab Emirates,Egypt
+#&gt; 22:   saudi_arabia_112019    2019-12-01               Saudi Arabia
+#&gt;             campaign_name date_released                   entities</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#format">Format</a></li>
+      <li><a href="#source">Source</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

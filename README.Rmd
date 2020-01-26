@@ -29,6 +29,7 @@ options(width = 120)
 
 
 <!-- badges: start -->
+[![Gitter](https://badges.gitter.im/tweetio/community.svg)](https://gitter.im/tweetio/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/knapply/tweetio?branch=master&svg=true)](https://ci.appveyor.com/project/knapply/tweetio)
 [![Travis-CI Build Status](https://travis-ci.org/knapply/tweetio.svg?branch=master)](https://travis-ci.org/knapply/tweetio)
@@ -42,6 +43,8 @@ options(width = 120)
 <!-- badges: end -->
 
 <!-- [![R build status](https://github.com/knapply/tweetio/workflows/R-CMD-check/badge.svg)](https://github.com/knapply/tweetio/actions?workflow=R-CMD-check) -->
+
+
 
 
 
@@ -72,6 +75,18 @@ remotes::install_github("knapply/tweetio")
 library(tweetio)
 options(tweetio.as_tibble = TRUE)
 ```
+
+
+
+
+<!-- # What's New? -->
+
+<!-- ## Easy Access to Twitter-disclosed Information Operations Archives -->
+
+<!-- ```{r} -->
+<!-- io_campaign_metadata -->
+<!-- ``` -->
+
 
 ## Simple Example
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Write Tweets to Spreadsheets — write_tweet_csv • tweetio</title>
+<title>Convert Various Objects to <code>igraph</code> graphs. — as_tweet_igraph • tweetio</title>
 
 
 <!-- jquery -->
@@ -37,8 +37,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Write Tweets to Spreadsheets — write_tweet_csv" />
-<meta property="og:description" content="Write Tweets to Spreadsheets" />
+<meta property="og:title" content="Convert Various Objects to <code>igraph</code> graphs. — as_tweet_igraph" />
+<meta property="og:description" content="Convert Various Objects to igraph graphs." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -123,65 +123,100 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Write Tweets to Spreadsheets</h1>
-    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/spreadsheets.R'><code>R/spreadsheets.R</code></a></small>
-    <div class="hidden name"><code>write_tweet_csv.Rd</code></div>
+    <h1>Convert Various Objects to <code>igraph</code> graphs.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/knapply/tweetio/blob/master/R/igraph.R'><code>R/igraph.R</code></a></small>
+    <div class="hidden name"><code>as_tweet_igraph.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Write Tweets to Spreadsheets</p>
+    <p>Convert Various Objects to <code>igraph</code> graphs.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>as_tweet_igraph</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
-<span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+<span class='fu'>as_igraph</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
-<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='no'>file_path</span>, <span class='kw'>asTable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+<span class='co'># S3 method for proto_net</span>
+<span class='fu'>as_tweet_igraph</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for data.frame</span>
+<span class='fu'>as_tweet_igraph</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tweet_df</th>
-      <td><p>A data frame of tweets, as obtained by <code><a href='read_tweets.html'>read_tweets()</a></code> or
-one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https://rdrr.io/pkg/rtweet/man/search_tweets.html'>rtweet::search_tweets()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>file_path</th>
-      <td><p>File path to which to write or from which to read.</p></td>
+      <th>x</th>
+      <td><p>Tweet data frame or <code>proto_net</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Arguments passed to or from other methods.</p></td>
-    </tr>
-    <tr>
-      <th>asTable</th>
-      <td><p><code>&lt;logical&gt;</code>, default: <code>TRUE</code>.</p></td>
+      <td><p>Arguments passed to <code><a href='as_proto_net.html'>as_proto_net()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://Rdatatable.gitlab.io/data.table/reference/fwrite.html'>data.table::fwrite()</a></code></p>
-<p><code><a href='https://rdrr.io/pkg/openxlsx/man/write.xlsx.html'>openxlsx::write.xlsx()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='as_proto_net.html'>as_proto_net()</a></code>, <code><a href='as_tweet_network.html'>as_tweet_network()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>path_to_tweet_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example_tweet_file.html'>example_tweet_file</a></span>()
-                                                       <span class='co'># first 5 rows</span>
-<span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>)[<span class='fl'>1</span>:<span class='fl'>5</span>, ]
+<span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='no'>path_to_tweet_file</span>)
 
-<span class='co'># write comma-separated values files ==================================================</span>
-<span class='no'>target_csv_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".csv"</span>)
-<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp5q4bOy/file21f6378a3746.csv"</div><div class='input'>
-<span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_csv_file</span>)
-
-<span class='co'># write Microsoft Excel files =========================================================</span>
-<span class='no'>target_excel_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xlsx"</span>)
-<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp5q4bOy/file21f61035f3b2.xlsx"</div><div class='input'>
-<span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)
-
-<span class='co'># same as `write_tweet_xlsx()`</span>
-<span class='fu'>write_tweet_excel</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)</div></pre>
+<span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>as_tweet_igraph</span>()</div><div class='output co'>#&gt; IGRAPH 959017f DN-- 1228 1234 -- 
+#&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
+#&gt; + edges from 959017f (vertex names):
+#&gt;  [1] 194250838          -&gt;340309688          
+#&gt;  [2] 825459487821619201 -&gt;966825602          
+#&gt;  [3] 1116228559616397312-&gt;3153145782         
+#&gt;  [4] 4374655520         -&gt;4167284315         
+#&gt;  [5] 1172885625068036102-&gt;1112877891841343488
+#&gt;  [6] 1132474594583928832-&gt;1217220278         
+#&gt;  [7] 20737729           -&gt;39334221           
+#&gt;  [8] 2198859787         -&gt;3096758526         
+#&gt; + ... omitted several edges</div><div class='input'>
+<span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='as_proto_net.html'>as_proto_net</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>as_tweet_igraph</span>()</div><div class='output co'>#&gt; IGRAPH a0579b6 DN-- 1228 1234 -- 
+#&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
+#&gt; + edges from a0579b6 (vertex names):
+#&gt;  [1] 194250838          -&gt;340309688          
+#&gt;  [2] 825459487821619201 -&gt;966825602          
+#&gt;  [3] 1116228559616397312-&gt;3153145782         
+#&gt;  [4] 4374655520         -&gt;4167284315         
+#&gt;  [5] 1172885625068036102-&gt;1112877891841343488
+#&gt;  [6] 1132474594583928832-&gt;1217220278         
+#&gt;  [7] 20737729           -&gt;39334221           
+#&gt;  [8] 2198859787         -&gt;3096758526         
+#&gt; + ... omitted several edges</div><div class='input'>
+<span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>as_tweet_igraph</span>(<span class='kw'>all_status_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; IGRAPH ce9c43c DN-- 1228 1234 -- 
+#&gt; + attr: name (v/c), status_id (e/c), relation (e/c), created_at (e/n),
+#&gt; | text (e/c), status_url (e/c), source (e/c), is_quote (e/l),
+#&gt; | is_retweeted (e/l), media_url (e/x), media_type (e/x), place_url
+#&gt; | (e/c), place_name (e/c), place_full_name (e/c), place_type (e/c),
+#&gt; | country (e/c), country_code (e/c), bbox_coords (e/x), status_type
+#&gt; | (e/c)
+#&gt; + edges from ce9c43c (vertex names):
+#&gt; [1] 862716349054935040-&gt;845302547686526982
+#&gt; [2] 862716349054935040-&gt;845302547686526982
+#&gt; [3] 862716349054935040-&gt;1579930886        
+#&gt; + ... omitted several edges</div><div class='input'>
+<span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>as_tweet_igraph</span>(<span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; IGRAPH 6a96569 DN-- 1228 1234 -- 
+#&gt; + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name
+#&gt; | (v/c), location (v/c), description (v/c), url (v/c), protected (v/l),
+#&gt; | followers_count (v/n), friends_count (v/n), listed_count (v/n),
+#&gt; | statuses_count (v/n), favourites_count (v/n), account_created_at
+#&gt; | (v/n), verified (v/l), profile_url (v/c), account_lang (v/c),
+#&gt; | profile_banner_url (v/c), profile_image_url (v/c), bbox_coords (v/x),
+#&gt; | status_id (e/c), relation (e/c)
+#&gt; + edges from 6a96569 (vertex names):
+#&gt; [1] 194250838          -&gt;340309688  825459487821619201 -&gt;966825602 
+#&gt; [3] 1116228559616397312-&gt;3153145782 4374655520         -&gt;4167284315
+#&gt; + ... omitted several edges</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

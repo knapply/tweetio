@@ -136,7 +136,7 @@
   <span class='no'>tweet_df</span>,
   <span class='kw'>summarize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>split</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"tweetio.as_tibble"</span>, <span class='fl'>FALSE</span>),
+  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(),
   <span class='no'>...</span>
 )</pre>
 
@@ -161,7 +161,7 @@ was observed. Ignored if <code>summarize</code> is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>as_tibble</th>
-      <td><p><code>&lt;logical&gt;</code>, Default: <code><a href='https://rdrr.io/r/base/options.html'>getOption("tweetio.as_tibble", FALSE)</a></code>.
+      <td><p><code>&lt;logical&gt;</code>, Default: <code><a href='tweetio_options.html'>tweetio_as_tibble()</a></code>.
 Whether a <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> should be returned. Ignored if the <code>{tibble}</code>
 package is not installed.</p></td>
     </tr>
