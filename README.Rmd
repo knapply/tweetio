@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
   warning = FALSE
 )
 
-options(width = 120)
+options(width = 150)
 ```
 
 
@@ -64,7 +64,7 @@ options(width = 120)
 You'll need a C++ compiler. If you're using Windows, that means [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 
 ```{r, eval=FALSE}
-# install.packages("remotes")
+if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
 remotes::install_github("knapply/tweetio")
 ```
 
@@ -73,7 +73,20 @@ remotes::install_github("knapply/tweetio")
 
 ```{r}
 library(tweetio)
+```
+
+`{tweetio}` uses [`{data.table}`](https://rdatatable.gitlab.io/data.table/) internally for performance and stability reasons, but if you're a [`{tidyverse}`](https://www.tidyverse.org/) fan who's accustomed to dealing with `tibble`s, you can set an option so that `tibble`s are _always_ returned.
+
+Because `tibble`s have an incredibly informative and user-friendly `print()` method, we'll set the option for examples. Note that if the `{tibble}` package is not installed, this option is ignored.
+
+```{r}
 options(tweetio.as_tibble = TRUE)
+```
+
+You can check on all available `{tweetio}` options using `tweetio_options()`.
+
+```{r}
+tweetio_options()
 ```
 
 
@@ -94,14 +107,14 @@ First, we'll save a stream of tweets using `rtweet::stream_tweets()`.
 
 ```{r}
 temp_file <- tempfile(fileext = ".json")
-rtweet::stream_tweets(timeout = 15, parse = FALSE, file_name = temp_file)
+rtweet::stream_tweets(timeout = 15, parse = FALSE,
+                      file_name = temp_file)
 ```
 
 We can then pass the file path to `tweetio::read_tweets()` to efficiently parse the data into an `{rtweet}`-style data frame.
 
 ```{r}
 small_rtweet_stream <- read_tweets(temp_file)
-
 small_rtweet_stream
 ```
 
@@ -111,10 +124,6 @@ We're more interested in handling much larger data sets, but for demonstration w
 
 ```{r}
 rtweet_stream_path <- "inst/example-data/api-stream.json.gz"
-
-rtweet_stream_path %>% 
-  file.size() %>% 
-  scales::number_bytes() # 153 Mb before compression
 ```
 
 
@@ -124,48 +133,13 @@ Unfortunately, `rtweet::parse_stream()` may fail parsing streams because the dat
 rtweet::parse_stream(rtweet_stream_path)
 ```
 
-The only way around this is to read the entire file into memory and run some validation routine before parsing, which looks something like this...
-
-```{r}
-rtweet_validate_and_parse <- function(source_file_path, target_file_path) {
-  raw_lines <- readLines(source_file_path)
-  valid_lines <- raw_lines[vapply(raw_lines, jsonify::validate_json, logical(1L))]
-  writeLines(valid_lines, target_file_path)
-  
-  rtweet::parse_stream(target_file_path)
-}
-
-rtweet_stream_path2 <- tempfile(fileext = ".json")
-
-rtweet_validate_and_parse(source_file_path = rtweet_stream_path, 
-                          target_file_path = rtweet_stream_path2)
-```
-
+The only way around this is to read the entire file into memory and run some validation routine before parsing.
 
 Fortunately, `{tweetio}` can handle these situations by validating the JSON before it gets anywhere near R.
 
 ```{r}
-bench::mark(
-  read_tweets(rtweet_stream_path),
-  min_iterations = 3
-)[, 1:9]
-```
-
-
-Ignoring the time it takes to run the above `rtweet_validate_and_parse()` function for `rtweet::parse_stream()` to work, how much faster is `tweetio::read_tweets()`?
-
-```{r, out.width="100%"}
-bench_mark <- bench::mark(
-  rtweet = rtweet::parse_stream(rtweet_stream_path2),
-  tweetio = tweetio::read_tweets(rtweet_stream_path2),
-  check = FALSE,
-  min_iterations = 3,
-  filter_gc = FALSE
-)
-
-bench_mark[, 1:9]
-
-plot(bench_mark)
+tweet_df <- read_tweets(rtweet_stream_path)
+tweet_df
 ```
 
 
@@ -173,13 +147,8 @@ With bigger files, using `rtweet::parse_stream()` is no longer realistic, but th
 
 ```{r}
 big_tweet_stream_path <- "~/ufc-tweet-stream.json.gz"
-big_tweet_stream_path %>%
-  file.size() %>% 
-  scales::number_bytes() # 1.2 Gb before compression
-
-bench::mark(
-  big_tweet_df <- read_tweets(big_tweet_stream_path)
-)[, 1:9]
+big_tweet_df <- read_tweets(big_tweet_stream_path)
+big_tweet_df
 ```
 
 
@@ -188,79 +157,10 @@ bench::mark(
 
 A common practice for handling social media data at scale is to store them in search engine databases like Elasticsearch, but it's (unfortunately) possible that you'll need to work with data dumps.
 
-The data collected from APIs are stored inside a nested JSON object named `"doc"`. `"doc"` is typically embedded in a ton of system metadata, most of which you probably don't care about.
-
-I've encountered two flavors of these schema:
+I've encountered two flavors of these schema (that may be in .gzip files or ZIP archives):
 
 1. .jsonl: newline-delimited JSON
 2. .json: the complete contents of a database dump packed in a JSON array
-
-The .jsonl structure looks something like this:
-
-
-```json
-{"system_metadata_you_dont_care_about":"blahblahblah","more_metadata1":"blahblahblah","more_metadata2":"blahblahblah","more_metadata3":"blahblahblah","more_metadata4":"blahblahblah","more_metadata5":"blahblahblah","doc":{"text":"********************HERE'S THE DATA YOU ACTUALLY WANT********************","id":92108498098018010401,"id_str":"92108498098018010401"},"more_metadata6":"blahblahblah","more_metadata7":"blahblahblah","more_metadata8":"blahblahblah","more_metadata9":"blahblahblah","more_metadata10":"blahblahblah"}
-{"system_metadata_you_dont_care_about":"blahblahblah","more_metadata1":"blahblahblah","more_metadata2":"blahblahblah","more_metadata3":"blahblahblah","more_metadata4":"blahblahblah","more_metadata5":"blahblahblah","doc":{"text":"********************HERE'S THE DATA YOU ACTUALLY WANT********************","id":92108498098018010401,"id_str":"92108498098018010401"},"more_metadata6":"blahblahblah","more_metadata7":"blahblahblah","more_metadata8":"blahblahblah","more_metadata9":"blahblahblah","more_metadata10":"blahblahblah"}
-{"system_metadata_you_dont_care_about":"blahblahblah","more_metadata1":"blahblahblah","more_metadata2":"blahblahblah","more_metadata3":"blahblahblah","more_metadata4":"blahblahblah","more_metadata5":"blahblahblah","doc":{"text":"********************HERE'S THE DATA YOU ACTUALLY WANT********************","id":92108498098018010401,"id_str":"92108498098018010401"},"more_metadata6":"blahblahblah","more_metadata7":"blahblahblah","more_metadata8":"blahblahblah","more_metadata9":"blahblahblah","more_metadata10":"blahblahblah"}
-```
-
-Each line contains a single JSON object resembling the following:
-
-
-```json
-{
-    "system_metadata_you_dont_care_about": "blahblahblah",
-    "more_metadata1": "blahblahblah",
-    "more_metadata2": "blahblahblah",
-    "doc": {
-        "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
-        "id": 92108498098018010401,
-        "id_str": "92108498098018010401",
-        "_text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
-    },
-    "more_metadata6": "blahblahblah",
-    "more_metadata7": "blahblahblah"
-}
-```
-
-The array structure is a complete dump of the file, which looks something like this:
-
-```json
-[
-    {
-        "_id": "e5daf1467d2438e31b11b44a82cbd7f5758ba5a1f1d3ecbcc6e1fc04dc9c7c4d-3016858092318",
-        "_index": "org-77f135f331153568ab7eb0e4c24623a7-default-3769a33b9e88598e38317591e2ee31c3-default-030009",
-        "_score": null,
-        "_source": {
-            "system_metadata_you_dont_care_about": "blahblahblah",
-            "more_metadata1": "blahblahblah",
-            "doc": {
-                "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
-                "id": 92108498098018010401,
-                "id_str": "92108498098018010401",
-                "_text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
-            },
-            "more_metadata6": "blahblahblah"
-        }
-    },
-    {
-        "_id": "e5daf1467d2438e31b11b44a82cbd7f5758ba5a1f1d3ecbcc6e1fc04dc9c7c4d-3016858092318",
-        "_index": "org-77f135f331153568ab7eb0e4c24623a7-default-3769a33b9e88598e38317591e2ee31c3-default-030009",
-        "_score": null,
-        "_source": {
-            "system_metadata_you_dont_care_about": "blahblahblah",
-            "more_metadata1": "blahblahblah",
-            "doc": {
-                "text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
-                "id": 92108498098018010401,
-                "id_str": "92108498098018010401",
-                "_text": "********************HERE'S THE DATA YOU ACTUALLY WANT********************",
-            },
-            "more_metadata6": "blahblahblah"
-        }
-    }
-]
-```
 
 This has three unfortunate consequences:
 
@@ -268,20 +168,16 @@ This has three unfortunate consequences:
 2. You're going to waste most of your time (and memory) getting data into R that you're not going to use.
 3. The data are _very_ tedious to restructure in R (lists of lists of lists of lists of lists...).
 
-`{tweetio}` solves this by parsing everything and building the data frames at the C++ level.
-
+`{tweetio}` solves this by parsing everything and building the data frames at the C++ level. It even takes care of decompression of compressed data fro you.
 
 
 # Spatial Tweets
 
-
 If you have `{sf}` installed, you can use `as_tweet_sf()` to only keep those tweets that contain valid bounding box polygons.
 
 ```{r}
-tweet_sf <- big_tweet_df %>% 
-  as_tweet_sf()
-
-tweet_sf[, "bbox_coords"] %>% head()
+tweet_sf <- as_tweet_sf(big_tweet_df)
+tweet_sf[, "bbox_coords"]
 ```
 
 
@@ -294,20 +190,15 @@ There are currently three columns that can potentially hold bounding boxes:
 You can select which one to use to build your `sf` object by modifying the `geom_col=` parameter (default: `"bbox_coords"`)
 
 ```{r}
-big_tweet_df %>% 
-  as_tweet_sf(geom_col = "quoted_bbox_coords") %>% 
-  .[, "quoted_bbox_coords"] %>% 
-  head()
+as_tweet_sf(big_tweet_df,
+            geom_col = "quoted_bbox_coords")[, "quoted_bbox_coords"]
 ```
 
 You can also build _all_ the supported bounding boxes by setting `geom_col=` to `"all"`.
 
 ```{r}
-all_bboxes <- big_tweet_df %>% 
-  as_tweet_sf(geom_col = "all")
-
-all_bboxes[, c("geometry", "which_geom")] %>% 
-  unique(by = "which_geom")
+all_bboxes <- as_tweet_sf(big_tweet_df, geom_col = "all")
+all_bboxes[, c("which_geom", "geometry")]
 ```
 
 
@@ -324,7 +215,8 @@ sf_for_gg <- sf::st_wrap_dateline(all_bboxes)
 
 ggplot(sf_for_gg) +
   geom_sf(fill = "white", color = "lightgray", data = world) +
-  geom_sf(aes(fill = which_geom, color = which_geom), alpha = 0.15, size = 1, show.legend = TRUE) +
+  geom_sf(aes(fill = which_geom, color = which_geom), 
+          alpha = 0.15, size = 1, show.legend = TRUE) +
   coord_sf(crs = 3857) +
   scale_fill_viridis_d() +
   scale_color_viridis_d() +
@@ -334,44 +226,65 @@ ggplot(sf_for_gg) +
 
 # Tweet Networks
 
-If you want to analyze tweet networks, you can get started immediately using `tweetio::as_igraph()`.
+If you want to analyze tweet networks and have `{igraph}` or `{network}` installed, you can get started immediately using `tweetio::as_tweet_igraph()` or `tweetio::as_tweet_network()`.
+
+* Note: `tweetio::as_tweet_network()` requires a not-yet-accepted PR to [statnet/network](https://github.com/statnet/network), but the functionality is available via the [knapply/network](https://github.com/knapply/network) fork. 
+  + If you installed `{tweetio}` via `remotes::install_github("knapply/tweetio")`, it _should_ have also installed the required version of `{network}`. 
+  + If for some reason you didn't, you can get the required `{network}` fork via `remotes::install_github("knapply/network")`.
+
 
 ```{r}
-big_tweet_df %>%
-  as_igraph()
+tweet_net <- tweet_df[1:5000, ]
+as_tweet_igraph(tweet_net)
+as_tweet_network(tweet_net)
 ```
 
 If you want to take advantage of all the metadata available, you can set `all_status_data` and/or `all_user_data` to `TRUE`
 
 ```{r}
-big_tweet_df %>% 
-  as_igraph(all_user_data = TRUE, all_status_data = TRUE)
+as_tweet_igraph(tweet_net,
+                all_user_data = TRUE, all_status_data = TRUE)
+as_tweet_network(tweet_net,
+                 all_user_data = TRUE, all_status_data = TRUE)
 ```
 
+## Two-Mode Networks
 
-You can also build two-mode networks by specifying the `target_class` as `"hashtag"`s, `"url"`s, or `"media"`. The returned `<igraph>` will be set as bipartite following `{igraph}`'s convention of a `logical` vertex attribute specifying each's partition (users are `TRUE`).
+You can also build two-mode networks by specifying the `target_class` as `"hashtag"`s, `"url"`s, or `"media"`. 
+
+* Returned `<igraph>`s will be set as bipartite following `{igraph}`'s convention of a `logical` vertex attribute specifying each partition. Accounts are always `TRUE`.
+* Returned `<network>`s will be set as bipartite following `{network}`'s convention of ordering the "actors" first, and setting the network-level attribute of "bipartite" as the number of "actors". Accounts are always the "actors".
+
+If bipartite, the returned objects are always set as undirected.
+
+### Users to Hashtags
 
 ```{r}
-big_tweet_df %>% 
-  as_igraph(target_class = "hashtag")
+as_tweet_igraph(tweet_net, target_class = "hashtag")
+as_tweet_network(tweet_net, target_class = "hashtag")
 ```
 
+### Users to URLs
+
 ```{r}
-big_tweet_df %>% 
-  as_igraph(target_class = "url")
+as_tweet_igraph(tweet_net, target_class = "url")
+as_tweet_network(tweet_net, target_class = "url")
 ```
 
+### Users to Media
+
 ```{r}
-big_tweet_df %>% 
-  as_igraph(target_class = "media")
+as_tweet_igraph(tweet_net, target_class = "media")
+as_tweet_network(tweet_net, target_class = "media")
 ```
 
-You're not stuck with going directly to `<igraph>` objects though. Underneath the hood, `as_igraph()` calls `as_proto_net()`, which builds the edge and node data frames first. `as_proto_net()` is also exported.
+## `<proto_net>`
+
+You're not stuck with going directly to `<igraph>`s or `<network>`s though. Underneath the hood, `as_tweet_igraph()` and `as_tweet_network()` use `as_proto_net()` to build a `<proto_net>`, a list of edge and node data frames.
 
 ```{r}
-big_tweet_df %>% 
-  as_proto_net(all_status_data = TRUE, all_user_data = TRUE) %>% 
-  lapply(head)
+as_proto_net(tweet_net,
+             all_status_data = TRUE, all_user_data = TRUE)
 ```
 
 
@@ -394,6 +307,7 @@ big_tweet_df %>%
 - [x] `{rtweet}`-style data frames
 - [x] Spatial Tweets via `{sf}`
 - [x] Tweet networks via `{igraph}`
+- [ ] Tweet networks via `{network}`: currently requires [knapply/network](https://github.com/knapply/network) instead of the CRAN or [official development version](https://github.com/statnet/network) of `{network}`.
 
 
 # Shout Outs
