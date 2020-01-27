@@ -8,6 +8,13 @@
 
 <title>Write Tweets to Spreadsheets — write_tweet_csv • tweetio</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -172,12 +179,12 @@ one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https:/
 
 <span class='co'># write comma-separated values files ==================================================</span>
 <span class='no'>target_csv_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".csv"</span>)
-<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmpiivxoh/file4f1b41469928.csv"</div><div class='input'>
+<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpGqQFC3/file6b9bf3b1125.csv"</div><div class='input'>
 <span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_csv_file</span>)
 
 <span class='co'># write Microsoft Excel files =========================================================</span>
 <span class='no'>target_excel_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xlsx"</span>)
-<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmpiivxoh/file4f1b5b37af8b.xlsx"</div><div class='input'>
+<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpGqQFC3/file6b9b62ba8398.xlsx"</div><div class='input'>
 <span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)
 
 <span class='co'># same as `write_tweet_xlsx()`</span>
