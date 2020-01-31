@@ -1,3 +1,7 @@
+isFALSE <- function(x) {
+  is.logical(x) && length(x) == 1L && !is.na(x) && !x
+}
+
 .head <- function(x, n = 6) {
   # rather than import `utils::head()`
   # `.head()` is used to limit the number of diagnostic lines that are printed in 

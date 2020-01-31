@@ -41,7 +41,8 @@ Suggests:
     rtweet,
     sf,
     testthat (>= 2.1.0),
-    tibble
+    tibble,
+    rmarkdown
 Remotes: 
     knapply/network,
     SymbolixAU/jsonify
