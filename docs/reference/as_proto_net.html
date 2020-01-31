@@ -146,6 +146,26 @@
   <span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(),
   <span class='no'>...</span>
+)
+
+<span class='co'># S3 method for data.frame</span>
+<span class='fu'>as_proto_net</span>(
+  <span class='no'>tweet_df</span>,
+  <span class='kw'>target_class</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"user"</span>, <span class='st'>"hashtag"</span>, <span class='st'>"url"</span>, <span class='st'>"media"</span>),
+  <span class='kw'>all_status_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(),
+  <span class='no'>...</span>
+)
+
+<span class='co'># S3 method for data.table</span>
+<span class='fu'>as_proto_net</span>(
+  <span class='no'>tweet_df</span>,
+  <span class='kw'>target_class</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"user"</span>, <span class='st'>"hashtag"</span>, <span class='st'>"url"</span>, <span class='st'>"media"</span>),
+  <span class='kw'>all_status_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(),
+  <span class='no'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -171,7 +191,7 @@ downstream tasks.</p></td>
       <th>all_user_data</th>
       <td><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1L)</a></code>, Default: <code>FALSE</code>. Whether to attach all relevant
 user data to the <code>nodes</code> data frame, which can then be uses as node attributes for
-downstream tasks..</p></td>
+downstream tasks.</p></td>
     </tr>
     <tr>
       <th>as_tibble</th>
@@ -407,7 +427,7 @@ networks with the maximum amount of attribute data embedded in the graph structu
 #&gt; attr(,"class")
 #&gt; [1] "proto_net"
 #&gt; attr(,"target_class")
-#&gt; [1] "user"</div><div class='input'>  
+#&gt; [1] "user"</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

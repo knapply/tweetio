@@ -50,5 +50,10 @@ test_that("reading rtweet stream works", {
       target_schema
     )
   )
+  
+  expect_s3_class(
+    read_tweets(example_tweet_file(), as_tibble = TRUE, verbose = TRUE),
+    "tbl_df"
+  )
 
 })

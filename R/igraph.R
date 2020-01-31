@@ -18,7 +18,10 @@
 #' Convert Various Objects to `igraph` graphs.
 #' 
 #' @param x Tweet data frame or `proto_net`.
-#' @param ... Arguments passed to `as_proto_net()`.
+#' @template param-target_class
+#' @template param-all_status_data
+#' @template param-all_user_data
+#' @template param-dots
 #' 
 #' @seealso [as_proto_net()], [as_tweet_network()]
 #' 
@@ -42,7 +45,11 @@
 #'   as_tweet_igraph(all_user_data = TRUE)
 #'
 #' @export
-as_tweet_igraph <- function(x, ...) {
+as_tweet_igraph <- function(x,
+                            target_class = c("user", "hashtag", "url", "media"),
+                            all_status_data = FALSE,
+                            all_user_data = FALSE,
+                            ...) {
   UseMethod("as_tweet_igraph")
 }
 
@@ -91,7 +98,18 @@ as_tweet_igraph.proto_net <- function(x, ...) {
 #' @rdname as_tweet_igraph
 #' 
 #' @export
-as_tweet_igraph.data.frame <- function(x, ...) {
-  as_tweet_igraph(as_proto_net(x, ...))
+as_tweet_igraph.data.frame <- function(x,
+                                       target_class = c("user", "hashtag", 
+                                                        "url", "media"),
+                                       all_status_data = FALSE,
+                                       all_user_data = FALSE,
+                                       ...) {
+  init <- as_proto_net(x, target_class = target_class,
+                       all_status_data = all_status_data,
+                       all_user_data = all_user_data,
+                       as_tibble = FALSE,
+                       ...)
+  
+  as_tweet_igraph(init)
 }
 

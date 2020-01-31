@@ -4,14 +4,9 @@
 #' 
 #' 
 #' @template param-tweet_df
-#' @param target_class `character(1L)`, Default: `"user"`. The class of nodes to use as
-#' the second half of each dyad (target/to/head). See Details.
-#' @param all_status_data `logical(1L)`, Default: `FALSE`. Whether to attach all relevant
-#' status data to the `edges` data frame, which can then be used as edge attributes for
-#' downstream tasks.
-#' @param all_user_data `logical(1L)`, Default: `FALSE`. Whether to attach all relevant 
-#' user data to the `nodes` data frame, which can then be uses as node attributes for
-#' downstream tasks..
+#' @template param-target_class
+#' @template param-all_status_data
+#' @template param-all_user_data
 #' @template param-as_tibble
 #' @template param-dots
 #' 
@@ -54,9 +49,6 @@
 #'   
 #' tweet_df %>% 
 #'   as_proto_net(all_status_data = TRUE, all_user_data = TRUE, as_tibble = TRUE)
-#'   
-#' @importFrom data.table %chin% rbindlist setcolorder setDT setnames
-#' @importFrom stringi stri_trans_tolower
 #' 
 #' @export
 as_proto_net <- function(tweet_df, 
@@ -65,15 +57,39 @@ as_proto_net <- function(tweet_df,
                          all_user_data = FALSE,
                          as_tibble = tweetio_as_tibble(),
                          ...) {
+  UseMethod("as_proto_net")
+}
+
+
+#' @rdname as_proto_net
+#' 
+#' @export
+as_proto_net.data.frame <- function(tweet_df, 
+                                    target_class = c("user", "hashtag", "url", "media"),
+                                    all_status_data = FALSE,
+                                    all_user_data = FALSE,
+                                    as_tibble = tweetio_as_tibble(),
+                                    ...) {
+  as_proto_net(.as_dt(tweet_df))
+}
+
+
+#' @rdname as_proto_net
+#' 
+#' @importFrom data.table %chin% rbindlist setcolorder setDT setnames
+#' @importFrom stringi stri_trans_tolower
+#' 
+#' @export
+as_proto_net.data.table <- function(tweet_df, 
+                                    target_class = c("user", "hashtag", "url", "media"),
+                                    all_status_data = FALSE,
+                                    all_user_data = FALSE,
+                                    as_tibble = tweetio_as_tibble(),
+                                    ...) {
   # silence R CMD Check NOTE =============================================================
   relation <- NULL
   to <- NULL
   # ======================================================================================
-  
-  if (!.is_dt(tweet_df)) {
-    tweet_df <- as.data.table(tweet_df)
-  }
-  
   target_class <- match.arg(target_class, c("user", "hashtag", "url", "media"))
   
   target <- switch (target_class,
@@ -82,7 +98,7 @@ as_proto_net <- function(tweet_df,
     url = "urls_expanded_url",
     media = "media_url"
     ,
-    stop("unknown `target_class`", call. = FALSE)
+    .stop("unknown `target_class`")
   )
   
   targets <- list(

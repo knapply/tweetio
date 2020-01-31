@@ -7,18 +7,47 @@
 \alias{as_tweet_igraph.data.frame}
 \title{Convert Various Objects to \code{igraph} graphs.}
 \usage{
-as_tweet_igraph(x, ...)
+as_tweet_igraph(
+  x,
+  target_class = c("user", "hashtag", "url", "media"),
+  all_status_data = FALSE,
+  all_user_data = FALSE,
+  ...
+)
 
-as_igraph(x, ...)
+as_igraph(
+  x,
+  target_class = c("user", "hashtag", "url", "media"),
+  all_status_data = FALSE,
+  all_user_data = FALSE,
+  ...
+)
 
 \method{as_tweet_igraph}{proto_net}(x, ...)
 
-\method{as_tweet_igraph}{data.frame}(x, ...)
+\method{as_tweet_igraph}{data.frame}(
+  x,
+  target_class = c("user", "hashtag", "url", "media"),
+  all_status_data = FALSE,
+  all_user_data = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{Tweet data frame or \code{proto_net}.}
 
-\item{...}{Arguments passed to \code{as_proto_net()}.}
+\item{target_class}{\code{character(1L)}, Default: \code{"user"}. The class of nodes to use as
+the second half of each dyad (target/to/head). See Details.}
+
+\item{all_status_data}{\code{logical(1L)}, Default: \code{FALSE}. Whether to attach all relevant
+status data to the \code{edges} data frame, which can then be used as edge attributes for
+downstream tasks.}
+
+\item{all_user_data}{\code{logical(1L)}, Default: \code{FALSE}. Whether to attach all relevant
+user data to the \code{nodes} data frame, which can then be uses as node attributes for
+downstream tasks.}
+
+\item{...}{Arguments passed to or from other methods.}
 }
 \description{
 Convert Various Objects to \code{igraph} graphs.

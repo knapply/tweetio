@@ -228,23 +228,17 @@ ggplot(sf_for_gg) +
 
 If you want to analyze tweet networks and have `{igraph}` or `{network}` installed, you can get started immediately using `tweetio::as_tweet_igraph()` or `tweetio::as_tweet_network()`.
 
-* Note: `tweetio::as_tweet_network()` requires a not-yet-accepted PR to [statnet/network](https://github.com/statnet/network), but the functionality is available via the [knapply/network](https://github.com/knapply/network) fork. 
-  + If you installed `{tweetio}` via `remotes::install_github("knapply/tweetio")`, it _should_ have also installed the required version of `{network}`. 
-  + If for some reason you didn't, you can get the required `{network}` fork via `remotes::install_github("knapply/network")`.
-
-
 ```{r}
-tweet_net <- tweet_df[1:5000, ]
-as_tweet_igraph(tweet_net)
-as_tweet_network(tweet_net)
+as_tweet_igraph(tweet_df)
+as_tweet_network(tweet_df)
 ```
 
 If you want to take advantage of all the metadata available, you can set `all_status_data` and/or `all_user_data` to `TRUE`
 
 ```{r}
-as_tweet_igraph(tweet_net,
+as_tweet_igraph(tweet_df,
                 all_user_data = TRUE, all_status_data = TRUE)
-as_tweet_network(tweet_net,
+as_tweet_network(tweet_df,
                  all_user_data = TRUE, all_status_data = TRUE)
 ```
 
@@ -260,22 +254,22 @@ If bipartite, the returned objects are always set as undirected.
 ### Users to Hashtags
 
 ```{r}
-as_tweet_igraph(tweet_net, target_class = "hashtag")
-as_tweet_network(tweet_net, target_class = "hashtag")
+as_tweet_igraph(tweet_df, target_class = "hashtag")
+as_tweet_network(tweet_df, target_class = "hashtag")
 ```
 
 ### Users to URLs
 
 ```{r}
-as_tweet_igraph(tweet_net, target_class = "url")
-as_tweet_network(tweet_net, target_class = "url")
+as_tweet_igraph(tweet_df, target_class = "url")
+as_tweet_network(tweet_df, target_class = "url")
 ```
 
 ### Users to Media
 
 ```{r}
-as_tweet_igraph(tweet_net, target_class = "media")
-as_tweet_network(tweet_net, target_class = "media")
+as_tweet_igraph(tweet_df, target_class = "media")
+as_tweet_network(tweet_df, target_class = "media")
 ```
 
 ## `<proto_net>`
@@ -283,7 +277,7 @@ as_tweet_network(tweet_net, target_class = "media")
 You're not stuck with going directly to `<igraph>`s or `<network>`s though. Underneath the hood, `as_tweet_igraph()` and `as_tweet_network()` use `as_proto_net()` to build a `<proto_net>`, a list of edge and node data frames.
 
 ```{r}
-as_proto_net(tweet_net,
+as_proto_net(tweet_df,
              all_status_data = TRUE, all_user_data = TRUE)
 ```
 
@@ -307,7 +301,7 @@ as_proto_net(tweet_net,
 - [x] `{rtweet}`-style data frames
 - [x] Spatial Tweets via `{sf}`
 - [x] Tweet networks via `{igraph}`
-- [ ] Tweet networks via `{network}`: currently requires [knapply/network](https://github.com/knapply/network) instead of the CRAN or [official development version](https://github.com/statnet/network) of `{network}`.
+- [x] Tweet networks via `{network}`
 
 
 # Shout Outs

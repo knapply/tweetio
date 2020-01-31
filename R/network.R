@@ -18,7 +18,10 @@
 #' Convert Various Objects to `network` graphs.
 #' 
 #' @param x Tweet data frame or `proto_net`.
-#' @param ... Arguments passed to `as_proto_net()`.
+#' @template param-target_class
+#' @template param-all_status_data
+#' @template param-all_user_data
+#' @template param-dots
 #' 
 #' @seealso [as_proto_net()], [as_tweet_igraph()]
 #' 
@@ -42,7 +45,11 @@
 #'   as_tweet_network(all_user_data = TRUE)
 #' 
 #' @export
-as_tweet_network <- function(x, ...) {
+as_tweet_network <- function(x, 
+                             target_class = target_class,
+                             all_status_data = all_status_data,
+                             all_user_data = all_user_data, 
+                             ...) {
   UseMethod("as_tweet_network")
 }
 
@@ -50,6 +57,7 @@ as_tweet_network <- function(x, ...) {
 #' @rdname as_tweet_network
 #' 
 #' @importFrom data.table := %chin%
+#' @importFrom utils getFromNamespace
 #' 
 #' @export
 as_tweet_network.proto_net <- function(x, ...) {
@@ -57,6 +65,11 @@ as_tweet_network.proto_net <- function(x, ...) {
     stop("The {network} package is required for this funcitonality.", 
          call. = FALSE)
   }
+  
+  as_nw <- tryCatch(
+    getFromNamespace("as.network.data.frame", ns = "network"),
+    error = function(e) .as.network.data.frame
+  )
   
   # silence R CMD Check NOTE =============================================================
   name <- NULL
@@ -74,18 +87,33 @@ as_tweet_network.proto_net <- function(x, ...) {
     is_bipartite <- FALSE
   }
   
-  network::as.network(x = x[["edges"]], vertices = x[["nodes"]],
-                      directed = !is_bipartite,
-                      loops = !is_bipartite,
-                      multiple = TRUE,
-                      bipartite = is_bipartite)
+  as_nw(
+    x = x[["edges"]], 
+    vertices = x[["nodes"]],
+    directed = !is_bipartite,
+    loops = !is_bipartite,
+    multiple = TRUE,
+    bipartite = is_bipartite
+  )
 }
 
 
 #' @rdname as_tweet_network
 #' 
 #' @export
-as_tweet_network.data.frame <- function(x, ...) {
-  as_tweet_network(as_proto_net(x, ...))
+as_tweet_network.data.frame <- function(x, 
+                                        target_class = c("user", "hashtag", 
+                                                         "url", "media"),
+                                        all_status_data = FALSE,
+                                        all_user_data = FALSE,
+                                        ...) {
+  init <- as_proto_net(x, 
+                       target_class = target_class,
+                       all_status_data = all_status_data,
+                       all_user_data = all_user_data,
+                       as_tibble = FALSE,
+                       ...)
+  
+  as_tweet_network(init)
 }
 

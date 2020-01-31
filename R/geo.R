@@ -45,8 +45,7 @@
 #' @export
 as_tweet_sf <- function(tweet_df, 
                         geom_col = c("bbox_coords", "quoted_bbox_coords",
-                                     "retweet_bbox_coords",
-                                     "ist_complex_value",  "all"), 
+                                     "retweet_bbox_coords", "all"), 
                         as_tibble = tweetio_as_tibble(),
                         .geometry = NULL,
                         ...) {
@@ -58,12 +57,11 @@ as_tweet_sf <- function(tweet_df,
   
   
   if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("The {sf} package is required for this functionality", call. = FALSE)
+    .stop("The {sf} package is required for this functionality")
   }
   
   geom_col <- match.arg(geom_col, c("bbox_coords", "quoted_bbox_coords",
-                                    "retweet_bbox_coords", "ist_complex_value",
-                                    "all"))
+                                    "retweet_bbox_coords","all"))
   
   if (is.null(.geometry)) {
     .geometry <- geom_col
@@ -74,10 +72,9 @@ as_tweet_sf <- function(tweet_df,
   }
   
   if (geom_col == "all") {
-    valid_cols <- c(
-      intersect(c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords"),
-                names(tweet_df)),
-      "ist_complex_value"
+    valid_cols <- intersect(
+      c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords"),
+      names(tweet_df)
     )
   
     out <- lapply(valid_cols, function(.x) {
@@ -99,53 +96,53 @@ as_tweet_sf <- function(tweet_df,
     return(do.call(rbind, .discard(.compact(out), function(.x) nrow(.x) == 0L)))
   }
   
-  if (geom_col == "ist_complex_value") {
-    if (!"metadata" %in% names(tweet_df)) {
-      return(NULL)
-    } else if (!"ist_complex_value" %in% names(tweet_df$metadata[[1L]])) {
-        return(NULL)
-    }
-    
-    if (!requireNamespace("geojsonsf", quietly = TRUE)) {
-      stop("{geojsonsf} is required for this functionality.", call. = FALSE)
-    }
-    
-    rows_to_keep <- .map_lgl(tweet_df$metadata, function(.x) {
-      length(
-        unique( .x$ist_complex_value[ !is.na(.x$ist_complex_value) ] )
-        ) == 1L
-    })
-    
-    if (length(rows_to_keep) == 0L) {
-      return(NULL)
-    }
-    
-    filtered_rows <- tweet_df[rows_to_keep]
-    
-    with_sfc_col <- filtered_rows[
-      , (.geometry) := sf::st_sfc(
-        
-        unlist(
-          
-          lapply(metadata, function(.x) {
-            val <- unique( .x$ist_complex_value[ !is.na(.x$ist_complex_value) ] )
-            geojsonsf::geojson_sfc(val)
-          }),
-          
-          recursive = FALSE,
-          use.names = FALSE
-        ),
-        
-      crs = 4326L
-    )]
-    
-    out <- sf::st_sf(with_sfc_col, stringsAsFactors = FALSE)
-    
-    return(.finalize_df(out, as_tibble = as_tibble))
-  }
+  # if (geom_col == "ist_complex_value") {
+  #   if (!"metadata" %in% names(tweet_df)) {
+  #     return(NULL)
+  #   } else if (!"ist_complex_value" %in% names(tweet_df$metadata[[1L]])) {
+  #       return(NULL)
+  #   }
+  #   
+  #   if (!requireNamespace("geojsonsf", quietly = TRUE)) {
+  #     stop("{geojsonsf} is required for this functionality.", call. = FALSE)
+  #   }
+  #   
+  #   rows_to_keep <- .map_lgl(tweet_df$metadata, function(.x) {
+  #     length(
+  #       unique( .x$ist_complex_value[ !is.na(.x$ist_complex_value) ] )
+  #       ) == 1L
+  #   })
+  #   
+  #   if (length(rows_to_keep) == 0L) {
+  #     return(NULL)
+  #   }
+  #   
+  #   filtered_rows <- tweet_df[rows_to_keep]
+  #   
+  #   with_sfc_col <- filtered_rows[
+  #     , (.geometry) := sf::st_sfc(
+  #       
+  #       unlist(
+  #         
+  #         lapply(metadata, function(.x) {
+  #           val <- unique( .x$ist_complex_value[ !is.na(.x$ist_complex_value) ] )
+  #           geojsonsf::geojson_sfc(val)
+  #         }),
+  #         
+  #         recursive = FALSE,
+  #         use.names = FALSE
+  #       ),
+  #       
+  #     crs = 4326L
+  #   )]
+  #   
+  #   out <- sf::st_sf(with_sfc_col, stringsAsFactors = FALSE)
+  #   
+  #   return(.finalize_df(out, as_tibble = as_tibble))
+  # }
   
   if (!geom_col %chin% names(tweet_df)) {
-    stop(geom_col, " is not a valid column in `tweet_df`.", call. = FALSE)
+    .stop(geom_col, " is not a valid column in `tweet_df`.")
   }
   
   rows_to_keep <- is_valid_bbox(tweet_df[[geom_col]]) 
