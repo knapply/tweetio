@@ -38,14 +38,15 @@ Suggests:
     future.apply,
     network,
     openxlsx,
+    pkgnet,
     rtweet,
     sf,
     testthat (>= 2.1.0),
-    tibble
+    tibble,
+    rmarkdown
 Remotes: 
     knapply/network,
-    SymbolixAU/jsonify,
-    ycphs/openxlsx
+    SymbolixAU/jsonify
 URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio
 BugReports: https://github.com/knapply/tweetio/issues
 Encoding: UTF-8

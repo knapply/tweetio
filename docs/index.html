@@ -66,6 +66,18 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/pkgnet-report.html">tweetio Package Report, by pkgnet</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -148,20 +160,20 @@
 <p>We can then pass the file path to <code><a href="reference/read_tweets.html">tweetio::read_tweets()</a></code> to efficiently parse the data into an <code>{rtweet}</code>-style data frame.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>small_rtweet_stream &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_tweets.html">read_tweets</a></span>(temp_file)</span>
 <span id="cb7-2"><a href="#cb7-2"></a>small_rtweet_stream</span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">#&gt; # A tibble: 750 x 93</span></span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">#&gt; # A tibble: 896 x 93</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt;    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen… is_quote is_retweet hashtags</span></span>
 <span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;     &lt;dttm&gt;              &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;            &lt;lgl&gt;    &lt;lgl&gt;      &lt;list&gt;  </span></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt;  1 215098… 12215702… 2020-01-26 23:07:01 zaitakude1  明日、１… "twit… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    FALSE      &lt;chr [1…</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt;  2 106924… 12215702… 2020-01-26 23:07:01 mijinko_uw  いや、コ… "Twit… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    FALSE      &lt;chr [1…</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt;  3 217262… 12215702… 2020-01-26 23:07:01 Ryan_Reill… @juv… "Twit… 122156955637381… 1915837086       juventutemDC     FALSE    FALSE      &lt;chr [1…</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt;  4 330393… 12215702… 2020-01-26 23:07:01 TERBULA     RT @… "Twit… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    TRUE       &lt;chr [1…</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;  5 886384… 12215702… 2020-01-26 23:07:01 myIightJin  yo N… "Twit… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    FALSE      &lt;chr [1…</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;  6 114423… 12215702… 2020-01-26 23:07:01 su35thunde… @ind… "Twit… 122156700086389… 118427070431889… indian_XD        FALSE    FALSE      &lt;chr [1…</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;  7 723986… 12215702… 2020-01-26 23:07:01 JvmesHoover RT @… "Twee… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    TRUE       &lt;chr [1…</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  8 637250… 12215702… 2020-01-26 23:07:01 nishi_akas… RT @… "feat… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    TRUE       &lt;chr [1…</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  9 122609… 12215702… 2020-01-26 23:07:01 j_rosas88   RT @… "Twit… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    TRUE       &lt;chr [1…</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt; 10 739489… 12215702… 2020-01-26 23:07:01 El_Juanico_ Ya m… "Twit… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    FALSE      &lt;chr [1…</span></span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt; # … with 740 more rows, and 81 more variables: urls_expanded_url &lt;list&gt;, media_url &lt;list&gt;, media_expanded_url &lt;list&gt;, media_type &lt;list&gt;,</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt;  1 633650… 12232610… 2020-01-31 15:05:31 twitkovska  RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    TRUE       &lt;chr [1…</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt;  2 168140… 12232610… 2020-01-31 15:05:31 kirayosika… ドッピオ… twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    FALSE      &lt;chr [1…</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt;  3 215392… 12232610… 2020-01-31 15:05:31 ss3_i       null… twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    FALSE      &lt;chr [1…</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt;  4 745387… 12232610… 2020-01-31 15:05:31 fignoodles  Bussy twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    FALSE      &lt;chr [1…</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;  5 117758… 12232610… 2020-01-31 15:05:31 japan397    え、優心… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    FALSE      &lt;chr [1…</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;  6 857213… 12232610… 2020-01-31 15:05:31 CikkBungaaa RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    TRUE       &lt;chr [1…</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;  7 105623… 12232610… 2020-01-31 15:05:31 hyosminaa   RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    TRUE       &lt;chr [1…</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  8 244649… 12232610… 2020-01-31 15:05:31 reall_pcy92 RT @… Twitt… &lt;NA&gt;             &lt;NA&gt;             &lt;NA&gt;             FALSE    TRUE       &lt;chr [1…</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  9 176276… 12232610… 2020-01-31 15:05:31 arayamas    @Gui… Twitt… 122324827626850… 119613535164083… Guiller32301474  FALSE    FALSE      &lt;chr [1…</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt; 10 111472… 12232610… 2020-01-31 15:05:31 GbzGuada    @reb… Twitt… 122301598922439… 714876006        rebemariiel      FALSE    FALSE      &lt;chr [1…</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt; # … with 886 more rows, and 81 more variables: urls_expanded_url &lt;list&gt;, media_url &lt;list&gt;, media_expanded_url &lt;list&gt;, media_type &lt;list&gt;,</span></span>
 <span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt; #   mentions_user_id &lt;list&gt;, mentions_screen_name &lt;list&gt;, lang &lt;chr&gt;, quoted_status_id &lt;chr&gt;, quoted_text &lt;chr&gt;, quoted_created_at &lt;dttm&gt;,</span></span>
 <span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt; #   quoted_source &lt;chr&gt;, quoted_favorite_count &lt;int&gt;, quoted_retweet_count &lt;int&gt;, quoted_user_id &lt;chr&gt;, quoted_screen_name &lt;chr&gt;, quoted_name &lt;chr&gt;,</span></span>
 <span id="cb8-17"><a href="#cb8-17"></a><span class="co">#&gt; #   quoted_followers_count &lt;int&gt;, quoted_friends_count &lt;int&gt;, quoted_statuses_count &lt;int&gt;, quoted_location &lt;chr&gt;, quoted_description &lt;chr&gt;,</span></span>
@@ -371,19 +383,10 @@
 <h1 class="hasAnchor">
 <a href="#tweet-networks" class="anchor"></a>Tweet Networks</h1>
 <p>If you want to analyze tweet networks and have <code>{igraph}</code> or <code>{network}</code> installed, you can get started immediately using <code><a href="reference/as_tweet_igraph.html">tweetio::as_tweet_igraph()</a></code> or <code><a href="reference/as_tweet_network.html">tweetio::as_tweet_network()</a></code>.</p>
-<ul>
-<li>Note: <code><a href="reference/as_tweet_network.html">tweetio::as_tweet_network()</a></code> requires a not-yet-accepted PR to <a href="https://github.com/statnet/network">statnet/network</a>, but the functionality is available via the <a href="https://github.com/knapply/network">knapply/network</a> fork.
-<ul>
-<li>If you installed <code>{tweetio}</code> via <code><a href="https://rdrr.io/pkg/remotes/man/install_github.html">remotes::install_github("knapply/tweetio")</a></code>, it <em>should</em> have also installed the required version of <code>{network}</code>.</li>
-<li>If for some reason you didn’t, you can get the required <code>{network}</code> fork via <code><a href="https://rdrr.io/pkg/remotes/man/install_github.html">remotes::install_github("knapply/network")</a></code>.</li>
-</ul>
-</li>
-</ul>
-<!-- end list --><div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>tweet_net &lt;-<span class="st"> </span>tweet_df[<span class="dv">1</span><span class="op">:</span><span class="dv">5000</span>, ]</span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="kw"><a href="reference/as_tweet_igraph.html">as_tweet_igraph</a></span>(tweet_net)</span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co">#&gt; IGRAPH fab68bf DN-- 8788 9181 -- </span></span>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw"><a href="reference/as_tweet_igraph.html">as_tweet_igraph</a></span>(tweet_df)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co">#&gt; IGRAPH c7ec1fa DN-- 37519 42191 -- </span></span>
 <span id="cb24-2"><a href="#cb24-2"></a><span class="co">#&gt; + attr: name (v/c), status_id (e/c), relation (e/c)</span></span>
-<span id="cb24-3"><a href="#cb24-3"></a><span class="co">#&gt; + edges from fab68bf (vertex names):</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a><span class="co">#&gt; + edges from c7ec1fa (vertex names):</span></span>
 <span id="cb24-4"><a href="#cb24-4"></a><span class="co">#&gt;  [1] 807195027403259904 -&gt;938662230052052992  247059655          -&gt;609647782           822602638231535617 -&gt;701750402786717696 </span></span>
 <span id="cb24-5"><a href="#cb24-5"></a><span class="co">#&gt;  [4] 1104415177603133444-&gt;1108885040862121985 359294371          -&gt;1034795669645447168 194250838          -&gt;340309688          </span></span>
 <span id="cb24-6"><a href="#cb24-6"></a><span class="co">#&gt;  [7] 1160132819114287105-&gt;3251156738          1064053347164930048-&gt;2430693075          1056020503993888768-&gt;1017892758063702016</span></span>
@@ -393,52 +396,52 @@
 <span id="cb24-10"><a href="#cb24-10"></a><span class="co">#&gt; [19] 997536087978455041 -&gt;1157842598855417856 930455277488562176 -&gt;1135749044213436417 1111005122543472640-&gt;1015912878518493184</span></span>
 <span id="cb24-11"><a href="#cb24-11"></a><span class="co">#&gt; [22] 863499610676973569 -&gt;162219630           1177957168869298177-&gt;1074311333070266369 1071397841623347200-&gt;738529042186440708 </span></span>
 <span id="cb24-12"><a href="#cb24-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw"><a href="reference/as_tweet_network.html">as_tweet_network</a></span>(tweet_net)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw"><a href="reference/as_tweet_network.html">as_tweet_network</a></span>(tweet_df)</span></code></pre></div>
 <div class="sourceCode" id="cb26"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co">#&gt;  Network attributes:</span></span>
-<span id="cb26-2"><a href="#cb26-2"></a><span class="co">#&gt;   vertices = 8788 </span></span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="co">#&gt;   vertices = 37519 </span></span>
 <span id="cb26-3"><a href="#cb26-3"></a><span class="co">#&gt;   directed = TRUE </span></span>
 <span id="cb26-4"><a href="#cb26-4"></a><span class="co">#&gt;   hyper = FALSE </span></span>
 <span id="cb26-5"><a href="#cb26-5"></a><span class="co">#&gt;   loops = TRUE </span></span>
 <span id="cb26-6"><a href="#cb26-6"></a><span class="co">#&gt;   multiple = TRUE </span></span>
 <span id="cb26-7"><a href="#cb26-7"></a><span class="co">#&gt;   bipartite = FALSE </span></span>
-<span id="cb26-8"><a href="#cb26-8"></a><span class="co">#&gt;   total edges= 9181 </span></span>
+<span id="cb26-8"><a href="#cb26-8"></a><span class="co">#&gt;   total edges= 42191 </span></span>
 <span id="cb26-9"><a href="#cb26-9"></a><span class="co">#&gt;     missing edges= 0 </span></span>
-<span id="cb26-10"><a href="#cb26-10"></a><span class="co">#&gt;     non-missing edges= 9181 </span></span>
+<span id="cb26-10"><a href="#cb26-10"></a><span class="co">#&gt;     non-missing edges= 42191 </span></span>
 <span id="cb26-11"><a href="#cb26-11"></a><span class="co">#&gt; </span></span>
 <span id="cb26-12"><a href="#cb26-12"></a><span class="co">#&gt;  Vertex attribute names: </span></span>
 <span id="cb26-13"><a href="#cb26-13"></a><span class="co">#&gt;     vertex.names </span></span>
 <span id="cb26-14"><a href="#cb26-14"></a><span class="co">#&gt; </span></span>
 <span id="cb26-15"><a href="#cb26-15"></a><span class="co">#&gt;  Edge attribute names not shown</span></span></code></pre></div>
 <p>If you want to take advantage of all the metadata available, you can set <code>all_status_data</code> and/or <code>all_user_data</code> to <code>TRUE</code></p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw"><a href="reference/as_tweet_igraph.html">as_tweet_igraph</a></span>(tweet_net,</span>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw"><a href="reference/as_tweet_igraph.html">as_tweet_igraph</a></span>(tweet_df,</span>
 <span id="cb27-2"><a href="#cb27-2"></a>                <span class="dt">all_user_data =</span> <span class="ot">TRUE</span>, <span class="dt">all_status_data =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb28"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co">#&gt; IGRAPH 60a8a82 DN-- 8788 9181 -- </span></span>
-<span id="cb28-2"><a href="#cb28-2"></a><span class="co">#&gt; + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name (v/c), location (v/c), description (v/c), url (v/c), protected</span></span>
-<span id="cb28-3"><a href="#cb28-3"></a><span class="co">#&gt; | (v/l), followers_count (v/n), friends_count (v/n), listed_count (v/n), statuses_count (v/n), favourites_count (v/n),</span></span>
-<span id="cb28-4"><a href="#cb28-4"></a><span class="co">#&gt; | account_created_at (v/n), verified (v/l), profile_url (v/c), account_lang (v/c), profile_banner_url (v/c), profile_image_url (v/c),</span></span>
-<span id="cb28-5"><a href="#cb28-5"></a><span class="co">#&gt; | bbox_coords (v/x), status_id (e/c), relation (e/c), created_at (e/n), text (e/c), status_url (e/c), source (e/c), is_quote (e/l),</span></span>
-<span id="cb28-6"><a href="#cb28-6"></a><span class="co">#&gt; | is_retweeted (e/l), media_url (e/x), media_type (e/x), place_url (e/c), place_name (e/c), place_full_name (e/c), place_type (e/c),</span></span>
-<span id="cb28-7"><a href="#cb28-7"></a><span class="co">#&gt; | country (e/c), country_code (e/c), bbox_coords (e/x), status_type (e/c)</span></span>
-<span id="cb28-8"><a href="#cb28-8"></a><span class="co">#&gt; + edges from 60a8a82 (vertex names):</span></span>
-<span id="cb28-9"><a href="#cb28-9"></a><span class="co">#&gt;  [1] 781269778107248640 -&gt;247653244           781269778107248640 -&gt;247653244           3231805274         -&gt;1151537584352288768</span></span>
-<span id="cb28-10"><a href="#cb28-10"></a><span class="co">#&gt;  [4] 3231805274         -&gt;1151537584352288768 885853778582282240 -&gt;1122135766472118272 885853778582282240 -&gt;1122135766472118272</span></span>
-<span id="cb28-11"><a href="#cb28-11"></a><span class="co">#&gt;  [7] 802405748563030017 -&gt;431633459           802405748563030017 -&gt;431633459           802405748563030017 -&gt;1033152632527892480</span></span>
+<div class="sourceCode" id="cb28"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co">#&gt; IGRAPH ad821ec DN-- 37519 42191 -- </span></span>
+<span id="cb28-2"><a href="#cb28-2"></a><span class="co">#&gt; + attr: name (v/c), status_id (e/c), relation (e/c)</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a><span class="co">#&gt; + edges from ad821ec (vertex names):</span></span>
+<span id="cb28-4"><a href="#cb28-4"></a><span class="co">#&gt;  [1] 807195027403259904 -&gt;938662230052052992  247059655          -&gt;609647782           822602638231535617 -&gt;701750402786717696 </span></span>
+<span id="cb28-5"><a href="#cb28-5"></a><span class="co">#&gt;  [4] 1104415177603133444-&gt;1108885040862121985 359294371          -&gt;1034795669645447168 194250838          -&gt;340309688          </span></span>
+<span id="cb28-6"><a href="#cb28-6"></a><span class="co">#&gt;  [7] 1160132819114287105-&gt;3251156738          1064053347164930048-&gt;2430693075          1056020503993888768-&gt;1017892758063702016</span></span>
+<span id="cb28-7"><a href="#cb28-7"></a><span class="co">#&gt; [10] 1103702847378604032-&gt;414928075           817820347806478341 -&gt;817820347806478341  1046542408438046720-&gt;799246741174386688 </span></span>
+<span id="cb28-8"><a href="#cb28-8"></a><span class="co">#&gt; [13] 933502505115377665 -&gt;729676086632656900  145779984          -&gt;451032248           981315512956268545 -&gt;611972802          </span></span>
+<span id="cb28-9"><a href="#cb28-9"></a><span class="co">#&gt; [16] 84458315           -&gt;19317261            785436504743145472 -&gt;1159057465750818816 2259128973         -&gt;1094486703744606208</span></span>
+<span id="cb28-10"><a href="#cb28-10"></a><span class="co">#&gt; [19] 997536087978455041 -&gt;1157842598855417856 930455277488562176 -&gt;1135749044213436417 1111005122543472640-&gt;1015912878518493184</span></span>
+<span id="cb28-11"><a href="#cb28-11"></a><span class="co">#&gt; [22] 863499610676973569 -&gt;162219630           1177957168869298177-&gt;1074311333070266369 1071397841623347200-&gt;738529042186440708 </span></span>
 <span id="cb28-12"><a href="#cb28-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw"><a href="reference/as_tweet_network.html">as_tweet_network</a></span>(tweet_net,</span>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw"><a href="reference/as_tweet_network.html">as_tweet_network</a></span>(tweet_df,</span>
 <span id="cb29-2"><a href="#cb29-2"></a>                 <span class="dt">all_user_data =</span> <span class="ot">TRUE</span>, <span class="dt">all_status_data =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb30"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="co">#&gt;  Network attributes:</span></span>
-<span id="cb30-2"><a href="#cb30-2"></a><span class="co">#&gt;   vertices = 8788 </span></span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="co">#&gt;   vertices = 37519 </span></span>
 <span id="cb30-3"><a href="#cb30-3"></a><span class="co">#&gt;   directed = TRUE </span></span>
 <span id="cb30-4"><a href="#cb30-4"></a><span class="co">#&gt;   hyper = FALSE </span></span>
 <span id="cb30-5"><a href="#cb30-5"></a><span class="co">#&gt;   loops = TRUE </span></span>
 <span id="cb30-6"><a href="#cb30-6"></a><span class="co">#&gt;   multiple = TRUE </span></span>
 <span id="cb30-7"><a href="#cb30-7"></a><span class="co">#&gt;   bipartite = FALSE </span></span>
-<span id="cb30-8"><a href="#cb30-8"></a><span class="co">#&gt;   total edges= 9181 </span></span>
+<span id="cb30-8"><a href="#cb30-8"></a><span class="co">#&gt;   total edges= 42191 </span></span>
 <span id="cb30-9"><a href="#cb30-9"></a><span class="co">#&gt;     missing edges= 0 </span></span>
-<span id="cb30-10"><a href="#cb30-10"></a><span class="co">#&gt;     non-missing edges= 9181 </span></span>
+<span id="cb30-10"><a href="#cb30-10"></a><span class="co">#&gt;     non-missing edges= 42191 </span></span>
 <span id="cb30-11"><a href="#cb30-11"></a><span class="co">#&gt; </span></span>
 <span id="cb30-12"><a href="#cb30-12"></a><span class="co">#&gt;  Vertex attribute names: </span></span>
-<span id="cb30-13"><a href="#cb30-13"></a><span class="co">#&gt;     account_created_at account_lang bbox_coords description favourites_count followers_count friends_count listed_count location name.y profile_banner_url profile_image_url profile_url protected screen_name statuses_count timestamp_ms url verified vertex.names </span></span>
+<span id="cb30-13"><a href="#cb30-13"></a><span class="co">#&gt;     vertex.names </span></span>
 <span id="cb30-14"><a href="#cb30-14"></a><span class="co">#&gt; </span></span>
 <span id="cb30-15"><a href="#cb30-15"></a><span class="co">#&gt;  Edge attribute names not shown</span></span></code></pre></div>
 <div id="two-mode-networks" class="section level2">
@@ -453,98 +456,99 @@
 <div id="users-to-hashtags" class="section level3">
 <h3 class="hasAnchor">
 <a href="#users-to-hashtags" class="anchor"></a>Users to Hashtags</h3>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="kw"><a href="reference/as_tweet_igraph.html">as_tweet_igraph</a></span>(tweet_net, <span class="dt">target_class =</span> <span class="st">"hashtag"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co">#&gt; IGRAPH e500f03 UN-B 1997 1746 -- </span></span>
-<span id="cb32-2"><a href="#cb32-2"></a><span class="co">#&gt; + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)</span></span>
-<span id="cb32-3"><a href="#cb32-3"></a><span class="co">#&gt; + edges from e500f03 (vertex names):</span></span>
-<span id="cb32-4"><a href="#cb32-4"></a><span class="co">#&gt;  [1] 359294371          --got7_kconth2019          933502505115377665 --investigatebiden         981315512956268545 --셔누                    </span></span>
-<span id="cb32-5"><a href="#cb32-5"></a><span class="co">#&gt;  [4] 767835057620918272 --therookie                781414129          --أحد_المسارحه             781414129          --اليوم_الوطني89          </span></span>
-<span id="cb32-6"><a href="#cb32-6"></a><span class="co">#&gt;  [7] 781414129          --همه_حتى_القمه            1868079872         --wicklowecotrail          1177957168869298177--naamkarannke3saal       </span></span>
-<span id="cb32-7"><a href="#cb32-7"></a><span class="co">#&gt; [10] 2162617110         --watch                    1169328651222913024--श्राद्ध_मत_करना            3112061905         --bardofbloodwinninghearts</span></span>
-<span id="cb32-8"><a href="#cb32-8"></a><span class="co">#&gt; [13] 977237285048668162 --abdl                     307278565          --sampdoriainter           218889555          --sooners                 </span></span>
-<span id="cb32-9"><a href="#cb32-9"></a><span class="co">#&gt; [16] 1173877389241323521--qualitedair              1173877389241323521--qai                      1173877389241323521--pollutionair            </span></span>
-<span id="cb32-10"><a href="#cb32-10"></a><span class="co">#&gt; [19] 861240546316222465 --كلاب_الاحزاب_الفاسدة     4655212832         --ntrundisputedkingoftfi   4655212832         --ntrboxofficeemperor     </span></span>
-<span id="cb32-11"><a href="#cb32-11"></a><span class="co">#&gt; [22] 4655212832         --jaintr                   886236627235999744 --halamadrid               811714585103171584 --mpn                     </span></span>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="kw"><a href="reference/as_tweet_igraph.html">as_tweet_igraph</a></span>(tweet_df, <span class="dt">target_class =</span> <span class="st">"hashtag"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co">#&gt; IGRAPH 348122b DN-- 37519 42191 -- </span></span>
+<span id="cb32-2"><a href="#cb32-2"></a><span class="co">#&gt; + attr: name (v/c), status_id (e/c), relation (e/c)</span></span>
+<span id="cb32-3"><a href="#cb32-3"></a><span class="co">#&gt; + edges from 348122b (vertex names):</span></span>
+<span id="cb32-4"><a href="#cb32-4"></a><span class="co">#&gt;  [1] 807195027403259904 -&gt;938662230052052992  247059655          -&gt;609647782           822602638231535617 -&gt;701750402786717696 </span></span>
+<span id="cb32-5"><a href="#cb32-5"></a><span class="co">#&gt;  [4] 1104415177603133444-&gt;1108885040862121985 359294371          -&gt;1034795669645447168 194250838          -&gt;340309688          </span></span>
+<span id="cb32-6"><a href="#cb32-6"></a><span class="co">#&gt;  [7] 1160132819114287105-&gt;3251156738          1064053347164930048-&gt;2430693075          1056020503993888768-&gt;1017892758063702016</span></span>
+<span id="cb32-7"><a href="#cb32-7"></a><span class="co">#&gt; [10] 1103702847378604032-&gt;414928075           817820347806478341 -&gt;817820347806478341  1046542408438046720-&gt;799246741174386688 </span></span>
+<span id="cb32-8"><a href="#cb32-8"></a><span class="co">#&gt; [13] 933502505115377665 -&gt;729676086632656900  145779984          -&gt;451032248           981315512956268545 -&gt;611972802          </span></span>
+<span id="cb32-9"><a href="#cb32-9"></a><span class="co">#&gt; [16] 84458315           -&gt;19317261            785436504743145472 -&gt;1159057465750818816 2259128973         -&gt;1094486703744606208</span></span>
+<span id="cb32-10"><a href="#cb32-10"></a><span class="co">#&gt; [19] 997536087978455041 -&gt;1157842598855417856 930455277488562176 -&gt;1135749044213436417 1111005122543472640-&gt;1015912878518493184</span></span>
+<span id="cb32-11"><a href="#cb32-11"></a><span class="co">#&gt; [22] 863499610676973569 -&gt;162219630           1177957168869298177-&gt;1074311333070266369 1071397841623347200-&gt;738529042186440708 </span></span>
 <span id="cb32-12"><a href="#cb32-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="kw"><a href="reference/as_tweet_network.html">as_tweet_network</a></span>(tweet_net, <span class="dt">target_class =</span> <span class="st">"hashtag"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="kw"><a href="reference/as_tweet_network.html">as_tweet_network</a></span>(tweet_df, <span class="dt">target_class =</span> <span class="st">"hashtag"</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb34"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co">#&gt;  Network attributes:</span></span>
-<span id="cb34-2"><a href="#cb34-2"></a><span class="co">#&gt;   vertices = 1997 </span></span>
-<span id="cb34-3"><a href="#cb34-3"></a><span class="co">#&gt;   directed = FALSE </span></span>
+<span id="cb34-2"><a href="#cb34-2"></a><span class="co">#&gt;   vertices = 37519 </span></span>
+<span id="cb34-3"><a href="#cb34-3"></a><span class="co">#&gt;   directed = TRUE </span></span>
 <span id="cb34-4"><a href="#cb34-4"></a><span class="co">#&gt;   hyper = FALSE </span></span>
-<span id="cb34-5"><a href="#cb34-5"></a><span class="co">#&gt;   loops = FALSE </span></span>
+<span id="cb34-5"><a href="#cb34-5"></a><span class="co">#&gt;   loops = TRUE </span></span>
 <span id="cb34-6"><a href="#cb34-6"></a><span class="co">#&gt;   multiple = TRUE </span></span>
-<span id="cb34-7"><a href="#cb34-7"></a><span class="co">#&gt;   bipartite = 758 </span></span>
-<span id="cb34-8"><a href="#cb34-8"></a><span class="co">#&gt;   total edges= 1746 </span></span>
+<span id="cb34-7"><a href="#cb34-7"></a><span class="co">#&gt;   bipartite = FALSE </span></span>
+<span id="cb34-8"><a href="#cb34-8"></a><span class="co">#&gt;   total edges= 42191 </span></span>
 <span id="cb34-9"><a href="#cb34-9"></a><span class="co">#&gt;     missing edges= 0 </span></span>
-<span id="cb34-10"><a href="#cb34-10"></a><span class="co">#&gt;     non-missing edges= 1746 </span></span>
+<span id="cb34-10"><a href="#cb34-10"></a><span class="co">#&gt;     non-missing edges= 42191 </span></span>
 <span id="cb34-11"><a href="#cb34-11"></a><span class="co">#&gt; </span></span>
 <span id="cb34-12"><a href="#cb34-12"></a><span class="co">#&gt;  Vertex attribute names: </span></span>
-<span id="cb34-13"><a href="#cb34-13"></a><span class="co">#&gt;     is_actor vertex.names </span></span>
+<span id="cb34-13"><a href="#cb34-13"></a><span class="co">#&gt;     vertex.names </span></span>
 <span id="cb34-14"><a href="#cb34-14"></a><span class="co">#&gt; </span></span>
 <span id="cb34-15"><a href="#cb34-15"></a><span class="co">#&gt;  Edge attribute names not shown</span></span></code></pre></div>
 </div>
 <div id="users-to-urls" class="section level3">
 <h3 class="hasAnchor">
 <a href="#users-to-urls" class="anchor"></a>Users to URLs</h3>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="kw"><a href="reference/as_tweet_igraph.html">as_tweet_igraph</a></span>(tweet_net, <span class="dt">target_class =</span> <span class="st">"url"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb36"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co">#&gt; IGRAPH 5843930 UN-B 1055 546 -- </span></span>
-<span id="cb36-2"><a href="#cb36-2"></a><span class="co">#&gt; + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)</span></span>
-<span id="cb36-3"><a href="#cb36-3"></a><span class="co">#&gt; + edges from 5843930 (vertex names):</span></span>
-<span id="cb36-4"><a href="#cb36-4"></a><span class="co">#&gt; [1] 930455277488562176 --https://twitter.com/valsnudes/status/1177292877946212352                                                                                                                   </span></span>
-<span id="cb36-5"><a href="#cb36-5"></a><span class="co">#&gt; [2] 1111005122543472640--https://twitter.com/LVPibai/status/1177063381607550976                                                                                                                     </span></span>
-<span id="cb36-6"><a href="#cb36-6"></a><span class="co">#&gt; [3] 767835057620918272 --https://www.distractify.com/p/does-officer-bradford-die-in-the-rookie                                                                                                      </span></span>
-<span id="cb36-7"><a href="#cb36-7"></a><span class="co">#&gt; [4] 863499610676973569 --https://twitter.com/sacramentokings/status/1177736590799470592                                                                                                             </span></span>
-<span id="cb36-8"><a href="#cb36-8"></a><span class="co">#&gt; [5] 3859220422         --http://blog.pianetadonna.it/mybeautyblog/tips-tricks-cosmetica-maschera-al-rhum-per-capelli-sfibrati/?utm_source=ReviveOldPost&amp;utm_medium=social&amp;utm_campaign=ReviveOldPost</span></span>
-<span id="cb36-9"><a href="#cb36-9"></a><span class="co">#&gt; [6] 1011668178504540160--https://headlines.yahoo.co.jp/hl?a=20190928-00000148-dal-base                                                                                                              </span></span>
-<span id="cb36-10"><a href="#cb36-10"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw"><a href="reference/as_tweet_network.html">as_tweet_network</a></span>(tweet_net, <span class="dt">target_class =</span> <span class="st">"url"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="kw"><a href="reference/as_tweet_igraph.html">as_tweet_igraph</a></span>(tweet_df, <span class="dt">target_class =</span> <span class="st">"url"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co">#&gt; IGRAPH 4cefdbd DN-- 37519 42191 -- </span></span>
+<span id="cb36-2"><a href="#cb36-2"></a><span class="co">#&gt; + attr: name (v/c), status_id (e/c), relation (e/c)</span></span>
+<span id="cb36-3"><a href="#cb36-3"></a><span class="co">#&gt; + edges from 4cefdbd (vertex names):</span></span>
+<span id="cb36-4"><a href="#cb36-4"></a><span class="co">#&gt;  [1] 807195027403259904 -&gt;938662230052052992  247059655          -&gt;609647782           822602638231535617 -&gt;701750402786717696 </span></span>
+<span id="cb36-5"><a href="#cb36-5"></a><span class="co">#&gt;  [4] 1104415177603133444-&gt;1108885040862121985 359294371          -&gt;1034795669645447168 194250838          -&gt;340309688          </span></span>
+<span id="cb36-6"><a href="#cb36-6"></a><span class="co">#&gt;  [7] 1160132819114287105-&gt;3251156738          1064053347164930048-&gt;2430693075          1056020503993888768-&gt;1017892758063702016</span></span>
+<span id="cb36-7"><a href="#cb36-7"></a><span class="co">#&gt; [10] 1103702847378604032-&gt;414928075           817820347806478341 -&gt;817820347806478341  1046542408438046720-&gt;799246741174386688 </span></span>
+<span id="cb36-8"><a href="#cb36-8"></a><span class="co">#&gt; [13] 933502505115377665 -&gt;729676086632656900  145779984          -&gt;451032248           981315512956268545 -&gt;611972802          </span></span>
+<span id="cb36-9"><a href="#cb36-9"></a><span class="co">#&gt; [16] 84458315           -&gt;19317261            785436504743145472 -&gt;1159057465750818816 2259128973         -&gt;1094486703744606208</span></span>
+<span id="cb36-10"><a href="#cb36-10"></a><span class="co">#&gt; [19] 997536087978455041 -&gt;1157842598855417856 930455277488562176 -&gt;1135749044213436417 1111005122543472640-&gt;1015912878518493184</span></span>
+<span id="cb36-11"><a href="#cb36-11"></a><span class="co">#&gt; [22] 863499610676973569 -&gt;162219630           1177957168869298177-&gt;1074311333070266369 1071397841623347200-&gt;738529042186440708 </span></span>
+<span id="cb36-12"><a href="#cb36-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw"><a href="reference/as_tweet_network.html">as_tweet_network</a></span>(tweet_df, <span class="dt">target_class =</span> <span class="st">"url"</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb38"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co">#&gt;  Network attributes:</span></span>
-<span id="cb38-2"><a href="#cb38-2"></a><span class="co">#&gt;   vertices = 1055 </span></span>
-<span id="cb38-3"><a href="#cb38-3"></a><span class="co">#&gt;   directed = FALSE </span></span>
+<span id="cb38-2"><a href="#cb38-2"></a><span class="co">#&gt;   vertices = 37519 </span></span>
+<span id="cb38-3"><a href="#cb38-3"></a><span class="co">#&gt;   directed = TRUE </span></span>
 <span id="cb38-4"><a href="#cb38-4"></a><span class="co">#&gt;   hyper = FALSE </span></span>
-<span id="cb38-5"><a href="#cb38-5"></a><span class="co">#&gt;   loops = FALSE </span></span>
+<span id="cb38-5"><a href="#cb38-5"></a><span class="co">#&gt;   loops = TRUE </span></span>
 <span id="cb38-6"><a href="#cb38-6"></a><span class="co">#&gt;   multiple = TRUE </span></span>
-<span id="cb38-7"><a href="#cb38-7"></a><span class="co">#&gt;   bipartite = 529 </span></span>
-<span id="cb38-8"><a href="#cb38-8"></a><span class="co">#&gt;   total edges= 546 </span></span>
+<span id="cb38-7"><a href="#cb38-7"></a><span class="co">#&gt;   bipartite = FALSE </span></span>
+<span id="cb38-8"><a href="#cb38-8"></a><span class="co">#&gt;   total edges= 42191 </span></span>
 <span id="cb38-9"><a href="#cb38-9"></a><span class="co">#&gt;     missing edges= 0 </span></span>
-<span id="cb38-10"><a href="#cb38-10"></a><span class="co">#&gt;     non-missing edges= 546 </span></span>
+<span id="cb38-10"><a href="#cb38-10"></a><span class="co">#&gt;     non-missing edges= 42191 </span></span>
 <span id="cb38-11"><a href="#cb38-11"></a><span class="co">#&gt; </span></span>
 <span id="cb38-12"><a href="#cb38-12"></a><span class="co">#&gt;  Vertex attribute names: </span></span>
-<span id="cb38-13"><a href="#cb38-13"></a><span class="co">#&gt;     is_actor vertex.names </span></span>
+<span id="cb38-13"><a href="#cb38-13"></a><span class="co">#&gt;     vertex.names </span></span>
 <span id="cb38-14"><a href="#cb38-14"></a><span class="co">#&gt; </span></span>
-<span id="cb38-15"><a href="#cb38-15"></a><span class="co">#&gt;  Edge attribute names: </span></span>
-<span id="cb38-16"><a href="#cb38-16"></a><span class="co">#&gt;     relation status_id</span></span></code></pre></div>
+<span id="cb38-15"><a href="#cb38-15"></a><span class="co">#&gt;  Edge attribute names not shown</span></span></code></pre></div>
 </div>
 <div id="users-to-media" class="section level3">
 <h3 class="hasAnchor">
 <a href="#users-to-media" class="anchor"></a>Users to Media</h3>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="kw"><a href="reference/as_tweet_igraph.html">as_tweet_igraph</a></span>(tweet_net, <span class="dt">target_class =</span> <span class="st">"media"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb40"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="co">#&gt; IGRAPH abcc5b6 UN-B 2289 1185 -- </span></span>
-<span id="cb40-2"><a href="#cb40-2"></a><span class="co">#&gt; + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)</span></span>
-<span id="cb40-3"><a href="#cb40-3"></a><span class="co">#&gt; + edges from abcc5b6 (vertex names):</span></span>
-<span id="cb40-4"><a href="#cb40-4"></a><span class="co">#&gt;  [1] 247059655          --http://pbs.twimg.com/ext_tw_video_thumb/1177253381737525248/pu/img/tV_OqBoqoueVWHh7.jpg</span></span>
-<span id="cb40-5"><a href="#cb40-5"></a><span class="co">#&gt;  [2] 359294371          --http://pbs.twimg.com/ext_tw_video_thumb/1177999900102950914/pu/img/v28CK1AWPeicgfgN.jpg</span></span>
-<span id="cb40-6"><a href="#cb40-6"></a><span class="co">#&gt;  [3] 1056020503993888768--http://pbs.twimg.com/ext_tw_video_thumb/1177431694372044805/pu/img/N2RNs1VHUxvbUOZZ.jpg</span></span>
-<span id="cb40-7"><a href="#cb40-7"></a><span class="co">#&gt;  [4] 933502505115377665 --http://pbs.twimg.com/ext_tw_video_thumb/1177677156245225473/pu/img/LVpzibdI_HYb-YNU.jpg</span></span>
-<span id="cb40-8"><a href="#cb40-8"></a><span class="co">#&gt;  [5] 84458315           --http://pbs.twimg.com/tweet_video_thumb/EFkfnXkXUAEWd9z.jpg                             </span></span>
-<span id="cb40-9"><a href="#cb40-9"></a><span class="co">#&gt;  [6] 2259128973         --http://pbs.twimg.com/media/EFkWlRwUwAEylYU.jpg                                         </span></span>
-<span id="cb40-10"><a href="#cb40-10"></a><span class="co">#&gt;  [7] 199369785          --http://pbs.twimg.com/media/EFkf2xcX0AAZtWG.png                                         </span></span>
-<span id="cb40-11"><a href="#cb40-11"></a><span class="co">#&gt;  [8] 977619299413168129 --http://pbs.twimg.com/media/EFkf0zdWsAYvlKb.jpg                                         </span></span>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="kw"><a href="reference/as_tweet_igraph.html">as_tweet_igraph</a></span>(tweet_df, <span class="dt">target_class =</span> <span class="st">"media"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="co">#&gt; IGRAPH f4c25ec DN-- 37519 42191 -- </span></span>
+<span id="cb40-2"><a href="#cb40-2"></a><span class="co">#&gt; + attr: name (v/c), status_id (e/c), relation (e/c)</span></span>
+<span id="cb40-3"><a href="#cb40-3"></a><span class="co">#&gt; + edges from f4c25ec (vertex names):</span></span>
+<span id="cb40-4"><a href="#cb40-4"></a><span class="co">#&gt;  [1] 807195027403259904 -&gt;938662230052052992  247059655          -&gt;609647782           822602638231535617 -&gt;701750402786717696 </span></span>
+<span id="cb40-5"><a href="#cb40-5"></a><span class="co">#&gt;  [4] 1104415177603133444-&gt;1108885040862121985 359294371          -&gt;1034795669645447168 194250838          -&gt;340309688          </span></span>
+<span id="cb40-6"><a href="#cb40-6"></a><span class="co">#&gt;  [7] 1160132819114287105-&gt;3251156738          1064053347164930048-&gt;2430693075          1056020503993888768-&gt;1017892758063702016</span></span>
+<span id="cb40-7"><a href="#cb40-7"></a><span class="co">#&gt; [10] 1103702847378604032-&gt;414928075           817820347806478341 -&gt;817820347806478341  1046542408438046720-&gt;799246741174386688 </span></span>
+<span id="cb40-8"><a href="#cb40-8"></a><span class="co">#&gt; [13] 933502505115377665 -&gt;729676086632656900  145779984          -&gt;451032248           981315512956268545 -&gt;611972802          </span></span>
+<span id="cb40-9"><a href="#cb40-9"></a><span class="co">#&gt; [16] 84458315           -&gt;19317261            785436504743145472 -&gt;1159057465750818816 2259128973         -&gt;1094486703744606208</span></span>
+<span id="cb40-10"><a href="#cb40-10"></a><span class="co">#&gt; [19] 997536087978455041 -&gt;1157842598855417856 930455277488562176 -&gt;1135749044213436417 1111005122543472640-&gt;1015912878518493184</span></span>
+<span id="cb40-11"><a href="#cb40-11"></a><span class="co">#&gt; [22] 863499610676973569 -&gt;162219630           1177957168869298177-&gt;1074311333070266369 1071397841623347200-&gt;738529042186440708 </span></span>
 <span id="cb40-12"><a href="#cb40-12"></a><span class="co">#&gt; + ... omitted several edges</span></span></code></pre></div>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="kw"><a href="reference/as_tweet_network.html">as_tweet_network</a></span>(tweet_net, <span class="dt">target_class =</span> <span class="st">"media"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="kw"><a href="reference/as_tweet_network.html">as_tweet_network</a></span>(tweet_df, <span class="dt">target_class =</span> <span class="st">"media"</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb42"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="co">#&gt;  Network attributes:</span></span>
-<span id="cb42-2"><a href="#cb42-2"></a><span class="co">#&gt;   vertices = 2289 </span></span>
-<span id="cb42-3"><a href="#cb42-3"></a><span class="co">#&gt;   directed = FALSE </span></span>
+<span id="cb42-2"><a href="#cb42-2"></a><span class="co">#&gt;   vertices = 37519 </span></span>
+<span id="cb42-3"><a href="#cb42-3"></a><span class="co">#&gt;   directed = TRUE </span></span>
 <span id="cb42-4"><a href="#cb42-4"></a><span class="co">#&gt;   hyper = FALSE </span></span>
-<span id="cb42-5"><a href="#cb42-5"></a><span class="co">#&gt;   loops = FALSE </span></span>
+<span id="cb42-5"><a href="#cb42-5"></a><span class="co">#&gt;   loops = TRUE </span></span>
 <span id="cb42-6"><a href="#cb42-6"></a><span class="co">#&gt;   multiple = TRUE </span></span>
-<span id="cb42-7"><a href="#cb42-7"></a><span class="co">#&gt;   bipartite = 1138 </span></span>
-<span id="cb42-8"><a href="#cb42-8"></a><span class="co">#&gt;   total edges= 1185 </span></span>
+<span id="cb42-7"><a href="#cb42-7"></a><span class="co">#&gt;   bipartite = FALSE </span></span>
+<span id="cb42-8"><a href="#cb42-8"></a><span class="co">#&gt;   total edges= 42191 </span></span>
 <span id="cb42-9"><a href="#cb42-9"></a><span class="co">#&gt;     missing edges= 0 </span></span>
-<span id="cb42-10"><a href="#cb42-10"></a><span class="co">#&gt;     non-missing edges= 1185 </span></span>
+<span id="cb42-10"><a href="#cb42-10"></a><span class="co">#&gt;     non-missing edges= 42191 </span></span>
 <span id="cb42-11"><a href="#cb42-11"></a><span class="co">#&gt; </span></span>
 <span id="cb42-12"><a href="#cb42-12"></a><span class="co">#&gt;  Vertex attribute names: </span></span>
-<span id="cb42-13"><a href="#cb42-13"></a><span class="co">#&gt;     is_actor vertex.names </span></span>
+<span id="cb42-13"><a href="#cb42-13"></a><span class="co">#&gt;     vertex.names </span></span>
 <span id="cb42-14"><a href="#cb42-14"></a><span class="co">#&gt; </span></span>
 <span id="cb42-15"><a href="#cb42-15"></a><span class="co">#&gt;  Edge attribute names not shown</span></span></code></pre></div>
 </div>
@@ -554,46 +558,44 @@
 <a href="#proto_net" class="anchor"></a><code>&lt;proto_net&gt;</code>
 </h2>
 <p>You’re not stuck with going directly to <code>&lt;igraph&gt;</code>s or <code>&lt;network&gt;</code>s though. Underneath the hood, <code><a href="reference/as_tweet_igraph.html">as_tweet_igraph()</a></code> and <code><a href="reference/as_tweet_network.html">as_tweet_network()</a></code> use <code><a href="reference/as_proto_net.html">as_proto_net()</a></code> to build a <code>&lt;proto_net&gt;</code>, a list of edge and node data frames.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="kw"><a href="reference/as_proto_net.html">as_proto_net</a></span>(tweet_net,</span>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="kw"><a href="reference/as_proto_net.html">as_proto_net</a></span>(tweet_df,</span>
 <span id="cb43-2"><a href="#cb43-2"></a>             <span class="dt">all_status_data =</span> <span class="ot">TRUE</span>, <span class="dt">all_user_data =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb44"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="co">#&gt; $edges</span></span>
-<span id="cb44-2"><a href="#cb44-2"></a><span class="co">#&gt; # A tibble: 9,181 x 20</span></span>
-<span id="cb44-3"><a href="#cb44-3"></a><span class="co">#&gt;    from  to    status_id relation created_at          text  status_url source is_quote is_retweeted media_url media_type place_url place_name</span></span>
-<span id="cb44-4"><a href="#cb44-4"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;dttm&gt;              &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;lgl&gt;    &lt;lgl&gt;        &lt;list&gt;    &lt;list&gt;     &lt;chr&gt;     &lt;chr&gt;     </span></span>
-<span id="cb44-5"><a href="#cb44-5"></a><span class="co">#&gt;  1 7812… 2476… 11780083… retweet  2019-09-28 18:07:29 RT @… https://t… Twitt… FALSE    FALSE        &lt;chr [1]&gt; &lt;chr [1]&gt;  &lt;NA&gt;      &lt;NA&gt;      </span></span>
-<span id="cb44-6"><a href="#cb44-6"></a><span class="co">#&gt;  2 7812… 2476… 11780083… mentions 2019-09-28 18:07:29 RT @… https://t… Twitt… FALSE    FALSE        &lt;chr [1]&gt; &lt;chr [1]&gt;  &lt;NA&gt;      &lt;NA&gt;      </span></span>
-<span id="cb44-7"><a href="#cb44-7"></a><span class="co">#&gt;  3 3231… 1151… 11780083… retweet  2019-09-28 18:07:29 RT @… https://t… Twitt… FALSE    FALSE        &lt;chr [1]&gt; &lt;chr [1]&gt;  &lt;NA&gt;      &lt;NA&gt;      </span></span>
-<span id="cb44-8"><a href="#cb44-8"></a><span class="co">#&gt;  4 3231… 1151… 11780083… mentions 2019-09-28 18:07:29 RT @… https://t… Twitt… FALSE    FALSE        &lt;chr [1]&gt; &lt;chr [1]&gt;  &lt;NA&gt;      &lt;NA&gt;      </span></span>
-<span id="cb44-9"><a href="#cb44-9"></a><span class="co">#&gt;  5 8858… 1122… 11780083… retweet  2019-09-28 18:07:29 RT @… https://t… Twitt… FALSE    FALSE        &lt;chr [1]&gt; &lt;chr [1]&gt;  &lt;NA&gt;      &lt;NA&gt;      </span></span>
-<span id="cb44-10"><a href="#cb44-10"></a><span class="co">#&gt;  6 8858… 1122… 11780083… mentions 2019-09-28 18:07:29 RT @… https://t… Twitt… FALSE    FALSE        &lt;chr [1]&gt; &lt;chr [1]&gt;  &lt;NA&gt;      &lt;NA&gt;      </span></span>
-<span id="cb44-11"><a href="#cb44-11"></a><span class="co">#&gt;  7 8024… 4316… 11780083… retweet  2019-09-28 18:07:29 RT @… https://t… Twitt… FALSE    FALSE        &lt;chr [1]&gt; &lt;chr [1]&gt;  &lt;NA&gt;      &lt;NA&gt;      </span></span>
-<span id="cb44-12"><a href="#cb44-12"></a><span class="co">#&gt;  8 8024… 4316… 11780083… mentions 2019-09-28 18:07:29 RT @… https://t… Twitt… FALSE    FALSE        &lt;chr [1]&gt; &lt;chr [1]&gt;  &lt;NA&gt;      &lt;NA&gt;      </span></span>
-<span id="cb44-13"><a href="#cb44-13"></a><span class="co">#&gt;  9 8024… 1033… 11780083… mentions 2019-09-28 18:07:29 RT @… https://t… Twitt… FALSE    FALSE        &lt;chr [1]&gt; &lt;chr [1]&gt;  &lt;NA&gt;      &lt;NA&gt;      </span></span>
-<span id="cb44-14"><a href="#cb44-14"></a><span class="co">#&gt; 10 1082… 2949… 11780083… reply_to 2019-09-28 18:07:29 @BNr… https://t… Twitt… FALSE    FALSE        &lt;chr [1]&gt; &lt;chr [1]&gt;  &lt;NA&gt;      &lt;NA&gt;      </span></span>
-<span id="cb44-15"><a href="#cb44-15"></a><span class="co">#&gt; # … with 9,171 more rows, and 6 more variables: place_full_name &lt;chr&gt;, place_type &lt;chr&gt;, country &lt;chr&gt;, country_code &lt;chr&gt;, bbox_coords &lt;list&gt;,</span></span>
-<span id="cb44-16"><a href="#cb44-16"></a><span class="co">#&gt; #   status_type &lt;chr&gt;</span></span>
-<span id="cb44-17"><a href="#cb44-17"></a><span class="co">#&gt; </span></span>
-<span id="cb44-18"><a href="#cb44-18"></a><span class="co">#&gt; $nodes</span></span>
-<span id="cb44-19"><a href="#cb44-19"></a><span class="co">#&gt; # A tibble: 8,788 x 20</span></span>
-<span id="cb44-20"><a href="#cb44-20"></a><span class="co">#&gt;    name  timestamp_ms        name.y screen_name location description url   protected followers_count friends_count listed_count statuses_count</span></span>
-<span id="cb44-21"><a href="#cb44-21"></a><span class="co">#&gt;    &lt;chr&gt; &lt;dttm&gt;              &lt;chr&gt;  &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt; &lt;lgl&gt;               &lt;int&gt;         &lt;int&gt;        &lt;int&gt;          &lt;int&gt;</span></span>
-<span id="cb44-22"><a href="#cb44-22"></a><span class="co">#&gt;  1 1000… 2019-09-28 18:07:15 flore… florence__t  &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;  FALSE                 580           455            3           7629</span></span>
-<span id="cb44-23"><a href="#cb44-23"></a><span class="co">#&gt;  2 1000… 2019-09-28 18:05:37 Lela🍯 Daniela12x  "Guimar… ig: x.dani… &lt;NA&gt;  NA                   1162           185           NA           8248</span></span>
-<span id="cb44-24"><a href="#cb44-24"></a><span class="co">#&gt;  3 1000… 2019-09-28 18:06:39 Léa    Lea_Lefebv… "bsm "   on s’était… &lt;NA&gt;  FALSE                 224           126            0           7348</span></span>
-<span id="cb44-25"><a href="#cb44-25"></a><span class="co">#&gt;  4 1000… 2019-09-28 18:06:11 joana… aoliveira02 "Lagoa,… since 2002… &lt;NA&gt;  NA                   1914          1914           NA           2566</span></span>
-<span id="cb44-26"><a href="#cb44-26"></a><span class="co">#&gt;  5 1000… 2019-09-28 18:06:51 Laura  tbhidegadfb  &lt;NA&gt;    i wanna ro… &lt;NA&gt;  FALSE                 186           142            0           1015</span></span>
-<span id="cb44-27"><a href="#cb44-27"></a><span class="co">#&gt;  6 1000… 2019-09-28 18:06:34 ✨Xand… AAlexandre…  &lt;NA&gt;    28/03/2019… &lt;NA&gt;  NA                    354           354           NA           6399</span></span>
-<span id="cb44-28"><a href="#cb44-28"></a><span class="co">#&gt;  7 1000… 2019-09-28 18:06:01 &lt;NA&gt;   B_hundred_…  &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;  NA                     NA            NA           NA             NA</span></span>
-<span id="cb44-29"><a href="#cb44-29"></a><span class="co">#&gt;  8 1000… 2019-09-28 18:06:53 &lt;NA&gt;   promos4dom…  &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;  NA                     NA            NA           NA             NA</span></span>
-<span id="cb44-30"><a href="#cb44-30"></a><span class="co">#&gt;  9 1000… 2019-09-28 18:06:52 momoi… kur0p0p     "Ochako… I’m Rose!!… &lt;NA&gt;  FALSE                 168           212            5           7503</span></span>
-<span id="cb44-31"><a href="#cb44-31"></a><span class="co">#&gt; 10 1000… 2019-09-28 18:05:46 LokiD… LDrake666   "Greens… (Male/stra… &lt;NA&gt;  FALSE                 181          5001            0          27831</span></span>
-<span id="cb44-32"><a href="#cb44-32"></a><span class="co">#&gt; # … with 8,778 more rows, and 8 more variables: favourites_count &lt;int&gt;, account_created_at &lt;dttm&gt;, verified &lt;lgl&gt;, profile_url &lt;chr&gt;,</span></span>
-<span id="cb44-33"><a href="#cb44-33"></a><span class="co">#&gt; #   account_lang &lt;chr&gt;, profile_banner_url &lt;chr&gt;, profile_image_url &lt;chr&gt;, bbox_coords &lt;list&gt;</span></span>
-<span id="cb44-34"><a href="#cb44-34"></a><span class="co">#&gt; </span></span>
-<span id="cb44-35"><a href="#cb44-35"></a><span class="co">#&gt; attr(,"class")</span></span>
-<span id="cb44-36"><a href="#cb44-36"></a><span class="co">#&gt; [1] "proto_net"</span></span>
-<span id="cb44-37"><a href="#cb44-37"></a><span class="co">#&gt; attr(,"target_class")</span></span>
-<span id="cb44-38"><a href="#cb44-38"></a><span class="co">#&gt; [1] "user"</span></span></code></pre></div>
+<span id="cb44-2"><a href="#cb44-2"></a><span class="co">#&gt; # A tibble: 42,191 x 4</span></span>
+<span id="cb44-3"><a href="#cb44-3"></a><span class="co">#&gt;    from                to                  status_id           relation</span></span>
+<span id="cb44-4"><a href="#cb44-4"></a><span class="co">#&gt;    &lt;chr&gt;               &lt;chr&gt;               &lt;chr&gt;               &lt;chr&gt;   </span></span>
+<span id="cb44-5"><a href="#cb44-5"></a><span class="co">#&gt;  1 807195027403259904  938662230052052992  1178007813257187328 retweet </span></span>
+<span id="cb44-6"><a href="#cb44-6"></a><span class="co">#&gt;  2 247059655           609647782           1178007813232025601 retweet </span></span>
+<span id="cb44-7"><a href="#cb44-7"></a><span class="co">#&gt;  3 822602638231535617  701750402786717696  1178007813236244481 retweet </span></span>
+<span id="cb44-8"><a href="#cb44-8"></a><span class="co">#&gt;  4 1104415177603133444 1108885040862121985 1178007813236252672 retweet </span></span>
+<span id="cb44-9"><a href="#cb44-9"></a><span class="co">#&gt;  5 359294371           1034795669645447168 1178007813248806912 retweet </span></span>
+<span id="cb44-10"><a href="#cb44-10"></a><span class="co">#&gt;  6 194250838           340309688           1178007813257388032 retweet </span></span>
+<span id="cb44-11"><a href="#cb44-11"></a><span class="co">#&gt;  7 1160132819114287105 3251156738          1178007813257224192 retweet </span></span>
+<span id="cb44-12"><a href="#cb44-12"></a><span class="co">#&gt;  8 1064053347164930048 2430693075          1178007813244608513 retweet </span></span>
+<span id="cb44-13"><a href="#cb44-13"></a><span class="co">#&gt;  9 1056020503993888768 1017892758063702016 1178007813244604417 retweet </span></span>
+<span id="cb44-14"><a href="#cb44-14"></a><span class="co">#&gt; 10 1103702847378604032 414928075           1178007813253206017 retweet </span></span>
+<span id="cb44-15"><a href="#cb44-15"></a><span class="co">#&gt; # … with 42,181 more rows</span></span>
+<span id="cb44-16"><a href="#cb44-16"></a><span class="co">#&gt; </span></span>
+<span id="cb44-17"><a href="#cb44-17"></a><span class="co">#&gt; $nodes</span></span>
+<span id="cb44-18"><a href="#cb44-18"></a><span class="co">#&gt; # A tibble: 37,519 x 1</span></span>
+<span id="cb44-19"><a href="#cb44-19"></a><span class="co">#&gt;    name               </span></span>
+<span id="cb44-20"><a href="#cb44-20"></a><span class="co">#&gt;    &lt;chr&gt;              </span></span>
+<span id="cb44-21"><a href="#cb44-21"></a><span class="co">#&gt;  1 807195027403259904 </span></span>
+<span id="cb44-22"><a href="#cb44-22"></a><span class="co">#&gt;  2 247059655          </span></span>
+<span id="cb44-23"><a href="#cb44-23"></a><span class="co">#&gt;  3 822602638231535617 </span></span>
+<span id="cb44-24"><a href="#cb44-24"></a><span class="co">#&gt;  4 1104415177603133444</span></span>
+<span id="cb44-25"><a href="#cb44-25"></a><span class="co">#&gt;  5 359294371          </span></span>
+<span id="cb44-26"><a href="#cb44-26"></a><span class="co">#&gt;  6 194250838          </span></span>
+<span id="cb44-27"><a href="#cb44-27"></a><span class="co">#&gt;  7 1160132819114287105</span></span>
+<span id="cb44-28"><a href="#cb44-28"></a><span class="co">#&gt;  8 1064053347164930048</span></span>
+<span id="cb44-29"><a href="#cb44-29"></a><span class="co">#&gt;  9 1056020503993888768</span></span>
+<span id="cb44-30"><a href="#cb44-30"></a><span class="co">#&gt; 10 1103702847378604032</span></span>
+<span id="cb44-31"><a href="#cb44-31"></a><span class="co">#&gt; # … with 37,509 more rows</span></span>
+<span id="cb44-32"><a href="#cb44-32"></a><span class="co">#&gt; </span></span>
+<span id="cb44-33"><a href="#cb44-33"></a><span class="co">#&gt; attr(,"class")</span></span>
+<span id="cb44-34"><a href="#cb44-34"></a><span class="co">#&gt; [1] "proto_net"</span></span>
+<span id="cb44-35"><a href="#cb44-35"></a><span class="co">#&gt; attr(,"target_class")</span></span>
+<span id="cb44-36"><a href="#cb44-36"></a><span class="co">#&gt; [1] "user"</span></span></code></pre></div>
 </div>
 </div>
 <div id="progress" class="section level1">
@@ -644,8 +646,9 @@ Spatial Tweets via <code>{sf}</code>
 Tweet networks via <code>{igraph}</code>
 </li>
 <li>
-<input type="checkbox" disabled>
-Tweet networks via <code>{network}</code>: currently requires <a href="https://github.com/knapply/network">knapply/network</a> instead of the CRAN or <a href="https://github.com/statnet/network">official development version</a> of <code>{network}</code>.</li>
+<input type="checkbox" disabled checked>
+Tweet networks via <code>{network}</code>
+</li>
 </ul>
 </div>
 </div>

@@ -104,6 +104,18 @@ each column hold the most recent non-NA/non-empty value." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgnet-report.html">tweetio Package Report, by pkgnet</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -141,7 +153,13 @@ each column hold the most recent non-NA/non-empty value." />
 each column hold the most recent non-<code>NA</code>/non-empty value.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_statuses</span>(<span class='no'>tweet_df</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>extract_statuses</span>(<span class='no'>tweet_df</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(), <span class='no'>...</span>)
+
+<span class='co'># S3 method for data.frame</span>
+<span class='fu'>extract_statuses</span>(<span class='no'>tweet_df</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(), <span class='no'>...</span>)
+
+<span class='co'># S3 method for data.table</span>
+<span class='fu'>extract_statuses</span>(<span class='no'>tweet_df</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(), <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

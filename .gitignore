@@ -10,3 +10,5 @@ src-x64
 test.graphml
 playground
 io-campaigns-twitter
+inst/doc
+.vignettes

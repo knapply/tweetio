@@ -103,6 +103,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgnet-report.html">tweetio Package Report, by pkgnet</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -141,8 +153,7 @@
 
     <pre class="usage"><span class='fu'>as_tweet_sf</span>(
   <span class='no'>tweet_df</span>,
-  <span class='kw'>geom_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bbox_coords"</span>, <span class='st'>"quoted_bbox_coords"</span>, <span class='st'>"retweet_bbox_coords"</span>,
-    <span class='st'>"ist_complex_value"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>geom_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bbox_coords"</span>, <span class='st'>"quoted_bbox_coords"</span>, <span class='st'>"retweet_bbox_coords"</span>, <span class='st'>"all"</span>),
   <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(),
   <span class='kw'>.geometry</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>

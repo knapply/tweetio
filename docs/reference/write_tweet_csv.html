@@ -103,6 +103,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgnet-report.html">tweetio Package Report, by pkgnet</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -179,12 +191,12 @@ one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https:/
 
 <span class='co'># write comma-separated values files ==================================================</span>
 <span class='no'>target_csv_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".csv"</span>)
-<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpGqQFC3/file6b9bf3b1125.csv"</div><div class='input'>
+<span class='no'>target_csv_file</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpJ29XVC/file64c968c9f839.csv"</div><div class='input'>
 <span class='fu'>write_tweet_csv</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_csv_file</span>)
 
 <span class='co'># write Microsoft Excel files =========================================================</span>
 <span class='no'>target_excel_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xlsx"</span>)
-<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpGqQFC3/file6b9b62ba8398.xlsx"</div><div class='input'>
+<span class='no'>target_excel_file</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpJ29XVC/file64c9301eb385.xlsx"</div><div class='input'>
 <span class='fu'>write_tweet_xlsx</span>(<span class='no'>tweet_df</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>target_excel_file</span>)
 
 <span class='co'># same as `write_tweet_xlsx()`</span>

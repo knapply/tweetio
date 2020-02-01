@@ -2,9 +2,29 @@
 % Please edit documentation in R/proto_net.R
 \name{as_proto_net}
 \alias{as_proto_net}
+\alias{as_proto_net.data.frame}
+\alias{as_proto_net.data.table}
 \title{Convert Various Objects to \code{proto_net}s}
 \usage{
 as_proto_net(
+  tweet_df,
+  target_class = c("user", "hashtag", "url", "media"),
+  all_status_data = FALSE,
+  all_user_data = FALSE,
+  as_tibble = tweetio_as_tibble(),
+  ...
+)
+
+\method{as_proto_net}{data.frame}(
+  tweet_df,
+  target_class = c("user", "hashtag", "url", "media"),
+  all_status_data = FALSE,
+  all_user_data = FALSE,
+  as_tibble = tweetio_as_tibble(),
+  ...
+)
+
+\method{as_proto_net}{data.table}(
   tweet_df,
   target_class = c("user", "hashtag", "url", "media"),
   all_status_data = FALSE,
@@ -26,7 +46,7 @@ downstream tasks.}
 
 \item{all_user_data}{\code{logical(1L)}, Default: \code{FALSE}. Whether to attach all relevant
 user data to the \code{nodes} data frame, which can then be uses as node attributes for
-downstream tasks..}
+downstream tasks.}
 
 \item{as_tibble}{\verb{<logical>}, Default: \code{tweetio_as_tibble()}.
 Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the \code{{tibble}}
@@ -82,7 +102,7 @@ tweet_df \%>\%
   
 tweet_df \%>\% 
   as_proto_net(all_status_data = TRUE, all_user_data = TRUE, as_tibble = TRUE)
-  
+
 }
 \author{
 Brendan Knapp \email{brendan.g.knapp@gmail.com}

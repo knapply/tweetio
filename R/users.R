@@ -88,12 +88,42 @@ user_col_names <- function(tweet_df) {
 #' @importFrom data.table data.table is.data.table setcolorder setDT setnames
 #' 
 #' @export
-extract_users <- function(tweet_df, summarize = TRUE, split = FALSE, 
+extract_users <- function(tweet_df, 
+                          summarize = TRUE, 
+                          split = FALSE,
                           as_tibble = tweetio_as_tibble(),
                           ...) {
+  UseMethod("extract_users")
+}
+
+
+#' @rdname extract_users
+#' 
+#' @export
+extract_users.data.frame <- function(tweet_df, 
+                                     summarize = TRUE, 
+                                     split = FALSE,
+                                     as_tibble = tweetio_as_tibble(),
+                                     ...) {
+  extract_users(.as_dt(tweet_df), 
+                summarize = summarize, 
+                split = split, 
+                as_tibble = as_tibble,
+                ...)
+}
+
+
+#' @rdname extract_users
+#' 
+#' @importFrom data.table .N .SD
+#' 
+#' @export
+extract_users.data.table <- function(tweet_df, 
+                                     summarize = TRUE, 
+                                     split = FALSE, 
+                                     as_tibble = tweetio_as_tibble(),
+                                     ...) {
   # silence R CMD Check NOTE =============================================================
-  .N <- NULL
-  .SD <- NULL
   ..col <- NULL
   user_id <- NULL
   created_at <- NULL
@@ -152,6 +182,7 @@ extract_users <- function(tweet_df, summarize = TRUE, split = FALSE,
       if (as_tibble && requireNamespace("tibble", quietly = TRUE)) {
         out <- lapply(out, tibble::as_tibble)
       }
+  
       return(out)
     }
     
