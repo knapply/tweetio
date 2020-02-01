@@ -38,6 +38,7 @@ Suggests:
     future.apply,
     network,
     openxlsx,
+    pkgnet,
     rtweet,
     sf,
     testthat (>= 2.1.0),

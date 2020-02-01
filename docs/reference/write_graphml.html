@@ -103,6 +103,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pkgnet-report.html">tweetio Package Report, by pkgnet</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -175,9 +187,9 @@
 <span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>)
 
 <span class='no'>tweet_graph</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as_tweet_igraph.html'>as_igraph</a></span>(<span class='no'>tweet_df</span>)
-<span class='no'>tweet_graph</span></div><div class='output co'>#&gt; IGRAPH 3b26289 DN-- 1228 1234 -- 
+<span class='no'>tweet_graph</span></div><div class='output co'>#&gt; IGRAPH e351193 DN-- 1228 1234 -- 
 #&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
-#&gt; + edges from 3b26289 (vertex names):
+#&gt; + edges from e351193 (vertex names):
 #&gt;  [1] 194250838          -&gt;340309688          
 #&gt;  [2] 825459487821619201 -&gt;966825602          
 #&gt;  [3] 1116228559616397312-&gt;3153145782         
@@ -188,7 +200,7 @@
 #&gt;  [8] 2198859787         -&gt;3096758526         
 #&gt; + ... omitted several edges</div><div class='input'>
 <span class='no'>graphml_path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".graphml"</span>)
-<span class='no'>graphml_path</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpmzwlLw/file514652e2183e.graphml"</div><div class='input'>
+<span class='no'>graphml_path</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpJ29XVC/file64c94e48e942.graphml"</div><div class='input'>
 <span class='fu'>write_graphml</span>(<span class='no'>tweet_graph</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>graphml_path</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

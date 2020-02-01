@@ -141,12 +141,9 @@
 #' @importFrom data.table as.data.table
 .as_dt <- as.data.table
 
-#' @importFrom data.table copy
+#' @importFrom data.table .SD copy
 #' @importFrom jsonify to_json
 jsonify_list_cols <- function(df, copy = TRUE) {
-  # silence R CMD Check NOTE =============================================================
-  .SD <- NULL
-  # ======================================================================================
   list_cols <- .match_col_names(df, is.list)
   
   if (.is_empty(list_cols)) {

@@ -1,7 +1,8 @@
 pandoc: 2.7.3
 pkgdown: 1.4.1
 pkgdown_sha: ~
-articles: []
+articles:
+  pkgnet-report: pkgnet-report.html
 urls:
   reference: https://knapply.github.io/tweetio/reference
   article: https://knapply.github.io/tweetio/articles
