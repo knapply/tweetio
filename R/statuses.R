@@ -74,6 +74,26 @@ status_col_names <- function(tweet_df) {
 extract_statuses <- function(tweet_df, 
                              as_tibble = tweetio_as_tibble(),
                              ...) {
+  UseMethod("extract_statuses")
+}
+
+
+#' @rdname extract_statuses
+#' 
+#' @export
+extract_statuses.data.frame <- function(tweet_df,
+                                        as_tibble = tweetio_as_tibble(),
+                                        ...) {
+  extract_statuses(.as_dt(tweet_df), as_tibble = as_tibble, ...)
+}
+
+
+#' @rdname extract_statuses
+#' 
+#' @export
+extract_statuses.data.table <- function(tweet_df, 
+                                        as_tibble = tweetio_as_tibble(),
+                                        ...) {
   # silence R CMD Check NOTE =============================================================
   ..x <- NULL
   .SD <- NULL

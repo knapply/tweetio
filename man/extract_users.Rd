@@ -2,9 +2,27 @@
 % Please edit documentation in R/users.R
 \name{extract_users}
 \alias{extract_users}
+\alias{extract_users.data.frame}
+\alias{extract_users.data.table}
 \title{Extract All Users}
 \usage{
 extract_users(
+  tweet_df,
+  summarize = TRUE,
+  split = FALSE,
+  as_tibble = tweetio_as_tibble(),
+  ...
+)
+
+\method{extract_users}{data.frame}(
+  tweet_df,
+  summarize = TRUE,
+  split = FALSE,
+  as_tibble = tweetio_as_tibble(),
+  ...
+)
+
+\method{extract_users}{data.table}(
   tweet_df,
   summarize = TRUE,
   split = FALSE,

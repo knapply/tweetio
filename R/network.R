@@ -14,6 +14,34 @@
 # // You should have received a copy of the GNU General Public License
 # // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+.distribute_vec_attrs <- function(x) {
+  lapply(x, function(.x) {
+    if (is.atomic(.x)) lapply(.x, `attributes<-`, attributes(.x))
+    else .x
+  })
+}
+
+.prep_edge_attrs <- function(edges) {
+  edges <- as.list(edges)
+  
+  edge_attr_names <- names(edges)[-(1:2)]
+  init_vals_eval <- .distribute_vec_attrs(edges[edge_attr_names])
+  
+  list(
+    names_eval = rep(
+      list(as.vector(edge_attr_names, mode = "list")),
+      times = length(edges[[1L]])
+    ),
+    vals_eval = .mapply(list, init_vals_eval, NULL)
+  )
+}
+
+.prep_vertex_attrs <- function(vertices) {
+  vertices <- as.list(vertices)
+  vertices[-1L] <- .distribute_vec_attrs(vertices[-1L])
+  vertices
+}
+
 
 #' Convert Various Objects to `network` graphs.
 #' 
@@ -62,39 +90,53 @@ as_tweet_network <- function(x,
 #' @export
 as_tweet_network.proto_net <- function(x, ...) {
   if (!requireNamespace("network", quietly = TRUE)) {
-    stop("The {network} package is required for this funcitonality.", 
-         call. = FALSE)
+    .stop("The {network} package is required for this funcitonality.")
   }
-  
-  as_nw <- tryCatch(
-    getFromNamespace("as.network.data.frame", ns = "network"),
-    error = function(e) .as.network.data.frame
-  )
-  
+
   # silence R CMD Check NOTE =============================================================
   name <- NULL
   is_actor <- NULL
   # ======================================================================================
   
-  if (attr(x, "target_class", exact = TRUE) != "user") {
-    if (!.is_dt(x$nodes)) {
-      x$nodes <- .as_dt(x$nodes)
-    }
-    
-    x$nodes[, is_actor := name %chin% x$edges$from]
-    is_bipartite <- TRUE
+  if (attr(x, "target_class", exact = TRUE) == "user") {
+    bipartite_arg <- FALSE
+    directed_arg <- TRUE
+    loops_arg <- TRUE
   } else {
-    is_bipartite <- FALSE
+    bipartite_arg <- length(unique(x$edges[[1L]])) # n "actors" (users)
+    directed_arg <- FALSE
+    loops_arg <- FALSE
   }
   
-  as_nw(
-    x = x[["edges"]], 
-    vertices = x[["nodes"]],
-    directed = !is_bipartite,
-    loops = !is_bipartite,
+  edge_attrs <- .prep_edge_attrs(x$edges)
+  
+  out_sources <- lapply(x$edges[[1L]], match, x$nodes[[1L]])
+  out_targets <- lapply(x$edges[[2L]], match, x$nodes[[1L]])
+
+  out <- network::network.initialize(
+    n = nrow(x$nodes),
+    directed = directed_arg,
+    hyper = FALSE,
+    loops = loops_arg,
     multiple = TRUE,
-    bipartite = is_bipartite
+    bipartite = bipartite_arg
   )
+  
+  out <- network::add.edges.network(
+    x = out,
+    tail = out_sources,
+    head = out_targets,
+    names.eval = edge_attrs$names_eval,
+    vals.eval = edge_attrs$vals_eval
+  )
+  
+  out <- network::set.vertex.attribute(
+    x = out,
+    attrname = c("vertex.names", names(x$nodes)[-1L]),
+    value = .prep_vertex_attrs(x$nodes)
+  )
+  
+  out
 }
 
 

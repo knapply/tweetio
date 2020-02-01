@@ -2,9 +2,15 @@
 % Please edit documentation in R/statuses.R
 \name{extract_statuses}
 \alias{extract_statuses}
+\alias{extract_statuses.data.frame}
+\alias{extract_statuses.data.table}
 \title{Extract All Statuses}
 \usage{
 extract_statuses(tweet_df, as_tibble = tweetio_as_tibble(), ...)
+
+\method{extract_statuses}{data.frame}(tweet_df, as_tibble = tweetio_as_tibble(), ...)
+
+\method{extract_statuses}{data.table}(tweet_df, as_tibble = tweetio_as_tibble(), ...)
 }
 \arguments{
 \item{tweet_df}{A data frame of tweets, as obtained by \code{read_tweets()} or

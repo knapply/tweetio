@@ -70,7 +70,12 @@ as_proto_net.data.frame <- function(tweet_df,
                                     all_user_data = FALSE,
                                     as_tibble = tweetio_as_tibble(),
                                     ...) {
-  as_proto_net(.as_dt(tweet_df))
+  as_proto_net(.as_dt(tweet_df), 
+               target_class = target_class,
+               all_status_data = all_status_data,
+               all_user_data = all_user_data,
+               as_tibble = as_tibble,
+               ...)
 }
 
 
