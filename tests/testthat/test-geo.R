@@ -21,22 +21,22 @@ test_that("as_tweet_sf() works", {
   
   expect_identical(
     attr(as_tweet_sf(tweet_df), "sf_column"),
-    "bbox_coords"
+    "geometry"
   )
   
   expect_identical(
     attr(as_tweet_sf(as.data.frame(tweet_df)), "sf_column"),
-    "bbox_coords"
+    "geometry"
   )
   
   expect_identical(
     attr(as_tweet_sf(tweet_df, geom_col = "quoted_bbox_coords"), "sf_column"),
-    "quoted_bbox_coords"
+    "geometry"
   )
   
   expect_identical(
     attr(as_tweet_sf(tweet_df, geom_col = "retweet_bbox_coords"), "sf_column"),
-    "retweet_bbox_coords"
+    "geometry"
   )
   
   expect_identical(

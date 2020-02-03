@@ -173,25 +173,26 @@ This has three unfortunate consequences:
 
 # Spatial Tweets
 
-If you have `{sf}` installed, you can use `as_tweet_sf()` to only keep those tweets that contain valid bounding box polygons.
+If you have `{sf}` installed, you can use `as_tweet_sf()` to only keep those tweets that contain valid bounding box polygons or points.
 
 ```{r}
 tweet_sf <- as_tweet_sf(big_tweet_df)
-tweet_sf[, "bbox_coords"]
+tweet_sf[, "geometry"]
 ```
 
 
-There are currently three columns that can potentially hold bounding boxes:
+There are currently four columns that can potentially hold spatial geometries:
 
-1. `bbox_coords`
-2. `quoted_bbox_coords`
-3. `retweet_bbox_coords`
+1. `"bbox_coords"`
+2. `"quoted_bbox_coords"`
+3. `"retweet_bbox_coords"`
+4. `"geo_coords"`
 
 You can select which one to use to build your `sf` object by modifying the `geom_col=` parameter (default: `"bbox_coords"`)
 
 ```{r}
 as_tweet_sf(big_tweet_df,
-            geom_col = "quoted_bbox_coords")[, "quoted_bbox_coords"]
+            geom_col = "quoted_bbox_coords")[, "geometry"]
 ```
 
 You can also build _all_ the supported bounding boxes by setting `geom_col=` to `"all"`.

@@ -6,24 +6,26 @@
 using namespace Rcpp;
 
 // is_valid_bbox
-Rcpp::LogicalVector is_valid_bbox(const Rcpp::List& bbox_coords);
-RcppExport SEXP _tweetio_is_valid_bbox(SEXP bbox_coordsSEXP) {
+Rcpp::LogicalVector is_valid_bbox(const Rcpp::List& bbox_coords, const bool lon_lat);
+RcppExport SEXP _tweetio_is_valid_bbox(SEXP bbox_coordsSEXP, SEXP lon_latSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::List& >::type bbox_coords(bbox_coordsSEXP);
-    rcpp_result_gen = Rcpp::wrap(is_valid_bbox(bbox_coords));
+    Rcpp::traits::input_parameter< const bool >::type lon_lat(lon_latSEXP);
+    rcpp_result_gen = Rcpp::wrap(is_valid_bbox(bbox_coords, lon_lat));
     return rcpp_result_gen;
 END_RCPP
 }
 // prep_bbox
-Rcpp::List prep_bbox(const Rcpp::List& bbox_coords);
-RcppExport SEXP _tweetio_prep_bbox(SEXP bbox_coordsSEXP) {
+Rcpp::List prep_bbox(const Rcpp::List& bbox_coords, const bool lon_lat);
+RcppExport SEXP _tweetio_prep_bbox(SEXP bbox_coordsSEXP, SEXP lon_latSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::List& >::type bbox_coords(bbox_coordsSEXP);
-    rcpp_result_gen = Rcpp::wrap(prep_bbox(bbox_coords));
+    Rcpp::traits::input_parameter< const bool >::type lon_lat(lon_latSEXP);
+    rcpp_result_gen = Rcpp::wrap(prep_bbox(bbox_coords, lon_lat));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -69,8 +71,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_tweetio_is_valid_bbox", (DL_FUNC) &_tweetio_is_valid_bbox, 1},
-    {"_tweetio_prep_bbox", (DL_FUNC) &_tweetio_prep_bbox, 1},
+    {"_tweetio_is_valid_bbox", (DL_FUNC) &_tweetio_is_valid_bbox, 2},
+    {"_tweetio_prep_bbox", (DL_FUNC) &_tweetio_prep_bbox, 2},
     {"_tweetio_read_tweets_impl", (DL_FUNC) &_tweetio_read_tweets_impl, 2},
     {"_tweetio_unnest_entities_impl", (DL_FUNC) &_tweetio_unnest_entities_impl, 4},
     {"_tweetio_unnest_entities2_impl", (DL_FUNC) &_tweetio_unnest_entities2_impl, 4},

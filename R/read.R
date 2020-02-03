@@ -183,10 +183,11 @@ read_tweets_bulk <- function(file_path,
   proto_tweet_df
 }
 
+
+#' @importFrom data.table .SD
 #' @importFrom stringi stri_extract_first_regex stri_replace_all_regex
-.finalize_cols <- function(proto_tweet_df, ...) {
+.finalize_cols <- function(proto_tweet_df, clean_source_cols = TRUE, ...) {
   # silence R CMD Check NOTE =============================================================
-  .SD <- NULL
   bbox_coords <- NULL
   is_retweet <- NULL
   retweet_status_id <- NULL
@@ -211,53 +212,67 @@ read_tweets_bulk <- function(file_path,
   # there are some occasional control characters that end up in the strings.
   # AFAIK, they are always `\0`, which aren't allowed in XML files.
   # To be on the safe side, all control characters are stripped here.
-  col_with_control_chars <- c(
+  possible_control_char_cols <- c(
     "text", "quoted_text", "quoted_source", "quoted_name", "quoted_location",
     "quoted_description", "retweet_text", "retweet_source", "retweet_location",
     "retweet_description", "name", "location", "description"
   )
-  proto_tweet_df <- proto_tweet_df[
-    , (col_with_control_chars) := lapply(.SD, stri_replace_all_regex, "[[:cntrl:]]", ""),
-    .SDcols = col_with_control_chars
-    ][, is_retweet := !is.na(retweet_status_id)
-      ][, profile_url := paste0("https://twitter.com/i/user/", user_id)
-        ]
+  col_with_control_chars <- intersect(names(proto_tweet_df),
+                                      possible_control_char_cols)
+  if (!.is_empty(col_with_control_chars)) {
+    proto_tweet_df <- proto_tweet_df[
+      , (col_with_control_chars) := lapply(.SD, stri_replace_all_regex,
+                                           "[[:cntrl:]]", ""),
+      .SDcols = col_with_control_chars
+      ]
+  }
+  
+  if ("retweet_status_id" %chin% names(proto_tweet_df)) {
+    proto_tweet_df[, is_retweet := !is.na(retweet_status_id)]
+  }
+  
+  if ("user_id" %chin% names(proto_tweet_df)) {
+    proto_tweet_df[, profile_url := paste0("https://twitter.com/i/user/", user_id)]
+  }
   
   # add status URL columns
   status_url_cols <- c(status_id = "status_url",
                        retweet_status_id = "retweet_status_url",
                        quoted_status_id = "quoted_tweet_url", 
                        reply_to_status_id = "reply_to_status_url") 
-  proto_tweet_df <- proto_tweet_df[, (status_url_cols) := lapply(
-    .SD, function(.x) paste0("https://twitter.com/i/web/status/", .x)
-    ),
-    .SDcols = names(status_url_cols)
-  ]
+  status_url_cols <- status_url_cols[names(status_url_cols) %chin% names(proto_tweet_df)]
+  if (!.is_empty(status_url_cols)) {
+    proto_tweet_df <- proto_tweet_df[, (status_url_cols) := lapply(
+      .SD, function(.x) paste0("https://twitter.com/i/web/status/", .x)
+      ),
+      .SDcols = names(status_url_cols)
+    ]
+  }
   
   # first urls_expanded_url may be the status_url... drop it if so
-  proto_tweet_df[
-    , urls_expanded_url := .map2(
-      urls_expanded_url, status_url, function(.x, .y) {
-        if (!is.na(.x[[1L]]) && .x[[1L]] == .y) {
-          .x[-1L]
-        } else {
-          .x
-        }
-      }
-    )
-  ]
-  
-  # follow {rtweet}'s behavior and strip HTML from `*_source`s
-  source_cols <- intersect(
-    names(proto_tweet_df),
-    c("source", "retweet_source", "quoted_source")
-  )
-  if (length(source_cols) > 0L) {
-    proto_tweet_df[
-      , (source_cols) := lapply(.SD, stri_extract_first_regex,
-                                '(?<=">).*?(?=</a>$)'),
-      .SDcols = source_cols
+  if (all(c("urls_expanded_url", "status_url") %chin% names(proto_tweet_df))) {
+    proto_tweet_df[, urls_expanded_url := .map2(
+      urls_expanded_url, status_url, 
+      function(.x, .y) {
+        if (!is.na(.x[[1L]]) && .x[[1L]] == .y) .x[-1L]
+        else .x
+      })
     ]
+  }
+
+  # follow {rtweet}'s behavior and strip HTML from `*_source`s
+  if (clean_source_cols) {
+    source_cols <- intersect(
+      names(proto_tweet_df),
+      c("source", "retweet_source", "quoted_source")
+    )
+    if (!.is_empty(source_cols)) {
+      proto_tweet_df[
+        , (source_cols) := lapply(.SD, stri_extract_first_regex,
+                                  '(?<=">).*?(?=</a>$)'),
+        .SDcols = source_cols
+      ]
+    }
   }
   
   .set_col_order(proto_tweet_df)[]

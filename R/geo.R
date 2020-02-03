@@ -18,12 +18,15 @@
 #' 
 #' @template param-tweet_df
 #' @param geom_col Which column to use as the active `geometry` column in result:
-#' `"bbox_coords"`, `"quoted_bbox_coords"`,`"retweet_bbox_coords"`, or `"all"`.
+#' `"bbox_coords"`, `"quoted_bbox_coords"`,`"retweet_bbox_coords"`, `"geo_coords"`,
+#' or `"all"`.
+#' @param combine logical(1L), Default: `TRUE`.
+#' Whether to row-bind all geometries into a single [sf::st_sf()] object. If `FALSE`, 
+#' a `list()` of [sf::st_sf()] objects are returned.
 #' @template param-as_tibble
-#' @param .geometry Name of output's geometry column. Intended for internal use only. 
 #' @template param-dots
 #' 
-#' @return [sf::st_sf()] 
+#' @return [sf::st_sf()], or `list()` of [sf::st_sf()] objects if `combine = FALSE` 
 #' 
 #' @template author-bk
 #' 
@@ -39,123 +42,104 @@
 #' tweet_sf <- as_tweet_sf(tweet_df, geom_col = "all", as_tibble = TRUE)
 #' 
 #' tweet_sf[, c("created_at", "text", "which_geom", "geometry")]
-#'
-#' @importFrom data.table %chin% data.table is.data.table
 #' 
 #' @export
 as_tweet_sf <- function(tweet_df, 
                         geom_col = c("bbox_coords", "quoted_bbox_coords",
-                                     "retweet_bbox_coords", "all"), 
+                                     "retweet_bbox_coords", "geo_coords",
+                                     "all"), 
+                        combine = TRUE,
                         as_tibble = tweetio_as_tibble(),
-                        .geometry = NULL,
                         ...) {
-  # silence R CMD Check NOTE
-  geometry <- NULL
-  ..geom_col <- NULL
-  metadata <- NULL
-  ##########################
-  
-  
   if (!requireNamespace("sf", quietly = TRUE)) {
     .stop("The {sf} package is required for this functionality")
   }
   
-  geom_col <- match.arg(geom_col, c("bbox_coords", "quoted_bbox_coords",
-                                    "retweet_bbox_coords","all"))
+  if (!.is_dt(tweet_df)) {
+    tweet_df <- .as_dt(tweet_df)
+  }
   
-  if (is.null(.geometry)) {
-    .geometry <- geom_col
-  }
-
-  if (!is.data.table(tweet_df)) {
-    tweet_df <- data.table(tweet_df)
-  }
+  all_geoms <- c("bbox_coords", "quoted_bbox_coords", 
+                 "retweet_bbox_coords", "geo_coords")
+  
+  geom_col <- match.arg(geom_col, c(all_geoms, "all"))
   
   if (geom_col == "all") {
-    valid_cols <- intersect(
-      c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords"),
-      names(tweet_df)
-    )
+    geom_col <- all_geoms
+  }
+  names(geom_col) <- geom_col
   
-    out <- lapply(valid_cols, function(.x) {
-      res <- as_tweet_sf(tweet_df, .x, as_tibble = as_tibble, .geometry = "geometry", ...)
-      if (!is.null(res) && nrow(res) > 0L) {
-        res[["which_geom"]] <- .x
+  out <- .compact(
+    lapply(geom_col, function(.x) {
+      init <- .as_tweet_sf(tweet_df, geom_col = .x)
+      if (is.null(init)) {
+        return(NULL)
       }
-      res
+      
+      .finalize_df(
+        sf::st_sf(init, stringsAsFactors = FALSE),
+        as_tibble = as_tibble
+      )
     })
+  )
+  
+  if (combine) {
+    out <- do.call(rbind, out)
+  }
+  
+  out
+}
+
+#' @importFrom data.table :=
+.as_tweet_sf <- function(tweet_df, geom_col) {
+  # silence R CMD Check NOTE =============================================================
+  geometry <- NULL
+  which_geom <- NULL
+  ..geom_col <- NULL
+  # ======================================================================================
+  
+  is_point_geom <- geom_col == "geo_coords"
+
+  if (is_point_geom) {
+    valid_rows <- .map_lgl(
+      tweet_df[[geom_col]], 
+      function(.x) length(.x) == 2L && is.double(.x) && all(!is.na(.x))
+    )
+
+  } else {
+    lon_lat <- TRUE
+    valid_rows <- is_valid_bbox(tweet_df[[geom_col]], lon_lat = lon_lat)
     
-    # any_multipolygons <- .map_lgl(out, function(.x) {
-    #   "MULTIPOLYGON" %in% sf::st_geometry(.x)
-    # })
-    # 
-    # if (any_multipolygons) {
-    #   out <- lapply(out, sf::st_cast("MULTIPOLYGON"))
-    # }
+    if (all(!valid_rows)) {
+      lon_lat <- FALSE
+      valid_rows <- is_valid_bbox(tweet_df[[geom_col]], lon_lat = lon_lat) 
+    }
 
-    return(do.call(rbind, .discard(.compact(out), function(.x) nrow(.x) == 0L)))
   }
   
-  # if (geom_col == "ist_complex_value") {
-  #   if (!"metadata" %in% names(tweet_df)) {
-  #     return(NULL)
-  #   } else if (!"ist_complex_value" %in% names(tweet_df$metadata[[1L]])) {
-  #       return(NULL)
-  #   }
-  #   
-  #   if (!requireNamespace("geojsonsf", quietly = TRUE)) {
-  #     stop("{geojsonsf} is required for this functionality.", call. = FALSE)
-  #   }
-  #   
-  #   rows_to_keep <- .map_lgl(tweet_df$metadata, function(.x) {
-  #     length(
-  #       unique( .x$ist_complex_value[ !is.na(.x$ist_complex_value) ] )
-  #       ) == 1L
-  #   })
-  #   
-  #   if (length(rows_to_keep) == 0L) {
-  #     return(NULL)
-  #   }
-  #   
-  #   filtered_rows <- tweet_df[rows_to_keep]
-  #   
-  #   with_sfc_col <- filtered_rows[
-  #     , (.geometry) := sf::st_sfc(
-  #       
-  #       unlist(
-  #         
-  #         lapply(metadata, function(.x) {
-  #           val <- unique( .x$ist_complex_value[ !is.na(.x$ist_complex_value) ] )
-  #           geojsonsf::geojson_sfc(val)
-  #         }),
-  #         
-  #         recursive = FALSE,
-  #         use.names = FALSE
-  #       ),
-  #       
-  #     crs = 4326L
-  #   )]
-  #   
-  #   out <- sf::st_sf(with_sfc_col, stringsAsFactors = FALSE)
-  #   
-  #   return(.finalize_df(out, as_tibble = as_tibble))
-  # }
-  
-  if (!geom_col %chin% names(tweet_df)) {
-    .stop(geom_col, " is not a valid column in `tweet_df`.")
-  }
-  
-  rows_to_keep <- is_valid_bbox(tweet_df[[geom_col]]) 
-  init <- tweet_df[rows_to_keep]
-
-  if (nrow(init) == 0L) {
+  if (all(!valid_rows)) {
     return(NULL)
   }
   
-  init[, (.geometry) := sf::st_sfc(prep_bbox(init[[geom_col]]), crs = 4326L)]
+  init <- tweet_df[valid_rows
+                   ][, geometry := get(geom_col)
+                     ]
+
+  if (is_point_geom) {
+    out <- init[, geometry := sf::st_sfc(
+      lapply(geometry, function(.x) sf::st_point(c(.x[2L:1L]))),
+      crs = 4326L
+      )]
+
+  } else {
+    out <- init[, geometry := sf::st_sfc(
+      prep_bbox(geometry, lon_lat = lon_lat), 
+      crs = 4326L
+    )]
+  }
   
-  out <- sf::st_sf(init, stringsAsFactors = FALSE)
-  
-  .finalize_df(out, as_tibble = as_tibble)
+  out[, which_geom := ..geom_col]
+
+  as.data.frame(out, stringsAsFactors = FALSE)
 }
 
