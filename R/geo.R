@@ -65,10 +65,11 @@ as_tweet_sf <- function(tweet_df,
   geom_col <- match.arg(geom_col, c(all_geoms, "all"))
   
   if (geom_col == "all") {
+
     geom_col <- all_geoms
   }
   names(geom_col) <- geom_col
-  
+
   out <- .compact(
     lapply(geom_col, function(.x) {
       init <- .as_tweet_sf(tweet_df, geom_col = .x)
