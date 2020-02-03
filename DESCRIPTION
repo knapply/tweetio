@@ -31,7 +31,7 @@ Suggests:
     here,
     igraph,
     knitr,
-    future,;
+    future,
     future.apply,
     openxlsx,
     rtweet,
