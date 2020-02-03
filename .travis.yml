@@ -11,6 +11,7 @@ warnings_are_errors: true
 
 os:
   - linux
+  # - osx
 
 jobs:
   include:

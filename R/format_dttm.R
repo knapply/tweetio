@@ -17,7 +17,6 @@
 
 format_dttm <- function(x, time_zone = "UTC", warn = TRUE) {
   if (inherits(x, "POSIXct")) {
-    warning("`x` already inherits from POSIXct.")
     return(x)
   }
   out <- structure(rep(NA_real_, length(x)),

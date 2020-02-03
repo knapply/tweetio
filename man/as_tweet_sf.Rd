@@ -6,9 +6,10 @@
 \usage{
 as_tweet_sf(
   tweet_df,
-  geom_col = c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords", "all"),
+  geom_col = c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords", "geo_coords",
+    "all"),
+  combine = TRUE,
   as_tibble = tweetio_as_tibble(),
-  .geometry = NULL,
   ...
 )
 }
@@ -17,18 +18,21 @@ as_tweet_sf(
 one of \code{{rtweet}}'s collection functions, e.g. \code{\link[rtweet:search_tweets]{rtweet::search_tweets()}}.}
 
 \item{geom_col}{Which column to use as the active \code{geometry} column in result:
-\code{"bbox_coords"}, \code{"quoted_bbox_coords"},\code{"retweet_bbox_coords"}, or \code{"all"}.}
+\code{"bbox_coords"}, \code{"quoted_bbox_coords"},\code{"retweet_bbox_coords"}, \code{"geo_coords"},
+or \code{"all"}.}
+
+\item{combine}{logical(1L), Default: \code{TRUE}.
+Whether to row-bind all geometries into a single \code{\link[sf:st_sf]{sf::st_sf()}} object. If \code{FALSE},
+a \code{list()} of \code{\link[sf:st_sf]{sf::st_sf()}} objects are returned.}
 
 \item{as_tibble}{\verb{<logical>}, Default: \code{tweetio_as_tibble()}.
 Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the \code{{tibble}}
 package is not installed.}
 
-\item{.geometry}{Name of output's geometry column. Intended for internal use only.}
-
 \item{...}{Arguments passed to or from other methods.}
 }
 \value{
-\code{\link[sf:st_sf]{sf::st_sf()}}
+\code{\link[sf:st_sf]{sf::st_sf()}}, or \code{list()} of \code{\link[sf:st_sf]{sf::st_sf()}} objects if \code{combine = FALSE}
 }
 \description{
 Build an \code{sf} Object of Tweets

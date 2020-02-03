@@ -153,9 +153,10 @@
 
     <pre class="usage"><span class='fu'>as_tweet_sf</span>(
   <span class='no'>tweet_df</span>,
-  <span class='kw'>geom_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bbox_coords"</span>, <span class='st'>"quoted_bbox_coords"</span>, <span class='st'>"retweet_bbox_coords"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>geom_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bbox_coords"</span>, <span class='st'>"quoted_bbox_coords"</span>, <span class='st'>"retweet_bbox_coords"</span>, <span class='st'>"geo_coords"</span>,
+    <span class='st'>"all"</span>),
+  <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(),
-  <span class='kw'>.geometry</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -170,17 +171,20 @@ one of <code>{rtweet}</code>'s collection functions, e.g. <code><a href='https:/
     <tr>
       <th>geom_col</th>
       <td><p>Which column to use as the active <code>geometry</code> column in result:
-<code>"bbox_coords"</code>, <code>"quoted_bbox_coords"</code>,<code>"retweet_bbox_coords"</code>, or <code>"all"</code>.</p></td>
+<code>"bbox_coords"</code>, <code>"quoted_bbox_coords"</code>,<code>"retweet_bbox_coords"</code>, <code>"geo_coords"</code>,
+or <code>"all"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>combine</th>
+      <td><p>logical(1L), Default: <code>TRUE</code>.
+Whether to row-bind all geometries into a single <code><a href='https://rdrr.io/pkg/sf/man/sf.html'>sf::st_sf()</a></code> object. If <code>FALSE</code>,
+a <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> of <code><a href='https://rdrr.io/pkg/sf/man/sf.html'>sf::st_sf()</a></code> objects are returned.</p></td>
     </tr>
     <tr>
       <th>as_tibble</th>
       <td><p><code>&lt;logical&gt;</code>, Default: <code><a href='tweetio_options.html'>tweetio_as_tibble()</a></code>.
 Whether a <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code> should be returned. Ignored if the <code>{tibble}</code>
 package is not installed.</p></td>
-    </tr>
-    <tr>
-      <th>.geometry</th>
-      <td><p>Name of output's geometry column. Intended for internal use only.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -190,7 +194,7 @@ package is not installed.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/sf/man/sf.html'>sf::st_sf()</a></code></p>
+    <p><code><a href='https://rdrr.io/pkg/sf/man/sf.html'>sf::st_sf()</a></code>, or <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> of <code><a href='https://rdrr.io/pkg/sf/man/sf.html'>sf::st_sf()</a></code> objects if <code>combine = FALSE</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>path_to_tweet_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example_tweet_file.html'>example_tweet_file</a></span>()
