@@ -52,13 +52,13 @@ jobs:
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), "depends.Rds", version = 2)
         shell: Rscript {0}
 
-      - name: Cache R packages
-        if: runner.os != 'Windows'
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('depends.Rds') }}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-
+#       - name: Cache R packages
+#         if: runner.os != 'Windows'
+#         uses: actions/cache@v1
+#         with:
+#           path: ${{ env.R_LIBS_USER }}
+#           key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('depends.Rds') }}
+#           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
@@ -82,12 +82,6 @@ jobs:
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
-      - name: Upload check results
-        if: failure()
-        uses: actions/upload-artifact@master
-        with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: check
 
       - name: Test coverage
         if: matrix.config.os == 'ubuntu-latest' && matrix.config.r == '3.6'
