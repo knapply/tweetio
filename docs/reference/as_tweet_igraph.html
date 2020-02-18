@@ -206,9 +206,9 @@ downstream tasks.</p></td>
 <span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='no'>path_to_tweet_file</span>)
 
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>as_tweet_igraph</span>()</div><div class='output co'>#&gt; IGRAPH 1773291 DN-- 1228 1234 -- 
+  <span class='fu'>as_tweet_igraph</span>()</div><div class='output co'>#&gt; IGRAPH 9ab2aa1 DN-- 1228 1234 -- 
 #&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
-#&gt; + edges from 1773291 (vertex names):
+#&gt; + edges from 9ab2aa1 (vertex names):
 #&gt;  [1] 194250838          -&gt;340309688          
 #&gt;  [2] 825459487821619201 -&gt;966825602          
 #&gt;  [3] 1116228559616397312-&gt;3153145782         
@@ -220,9 +220,9 @@ downstream tasks.</p></td>
 #&gt; + ... omitted several edges</div><div class='input'>
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='as_proto_net.html'>as_proto_net</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>as_tweet_igraph</span>()</div><div class='output co'>#&gt; IGRAPH 0a7bfe2 DN-- 1228 1234 -- 
+  <span class='fu'>as_tweet_igraph</span>()</div><div class='output co'>#&gt; IGRAPH 3574b90 DN-- 1228 1234 -- 
 #&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
-#&gt; + edges from 0a7bfe2 (vertex names):
+#&gt; + edges from 3574b90 (vertex names):
 #&gt;  [1] 194250838          -&gt;340309688          
 #&gt;  [2] 825459487821619201 -&gt;966825602          
 #&gt;  [3] 1116228559616397312-&gt;3153145782         
@@ -233,20 +233,20 @@ downstream tasks.</p></td>
 #&gt;  [8] 2198859787         -&gt;3096758526         
 #&gt; + ... omitted several edges</div><div class='input'>
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>as_tweet_igraph</span>(<span class='kw'>all_status_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; IGRAPH 2460cbd DN-- 1228 1234 -- 
+  <span class='fu'>as_tweet_igraph</span>(<span class='kw'>all_status_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; IGRAPH 07415a2 DN-- 1228 1234 -- 
 #&gt; + attr: name (v/c), status_id (e/c), relation (e/c), created_at (e/n),
 #&gt; | text (e/c), status_url (e/c), source (e/c), is_quote (e/l),
 #&gt; | is_retweeted (e/l), media_url (e/x), media_type (e/x), place_url
 #&gt; | (e/c), place_name (e/c), place_full_name (e/c), place_type (e/c),
 #&gt; | country (e/c), country_code (e/c), bbox_coords (e/x), status_type
 #&gt; | (e/c)
-#&gt; + edges from 2460cbd (vertex names):
+#&gt; + edges from 07415a2 (vertex names):
 #&gt; [1] 862716349054935040-&gt;845302547686526982
 #&gt; [2] 862716349054935040-&gt;845302547686526982
 #&gt; [3] 862716349054935040-&gt;1579930886        
 #&gt; + ... omitted several edges</div><div class='input'>
 <span class='no'>tweet_df</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>as_tweet_igraph</span>(<span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; IGRAPH a04a1fe DN-- 1228 1234 -- 
+  <span class='fu'>as_tweet_igraph</span>(<span class='kw'>all_user_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; IGRAPH 9158173 DN-- 1228 1234 -- 
 #&gt; + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name
 #&gt; | (v/c), location (v/c), description (v/c), url (v/c), protected (v/l),
 #&gt; | followers_count (v/n), friends_count (v/n), listed_count (v/n),
@@ -254,7 +254,7 @@ downstream tasks.</p></td>
 #&gt; | (v/n), verified (v/l), profile_url (v/c), account_lang (v/c),
 #&gt; | profile_banner_url (v/c), profile_image_url (v/c), bbox_coords (v/x),
 #&gt; | status_id (e/c), relation (e/c)
-#&gt; + edges from a04a1fe (vertex names):
+#&gt; + edges from 9158173 (vertex names):
 #&gt; [1] 194250838          -&gt;340309688  825459487821619201 -&gt;966825602 
 #&gt; [3] 1116228559616397312-&gt;3153145782 4374655520         -&gt;4167284315
 #&gt; + ... omitted several edges</div><div class='input'>

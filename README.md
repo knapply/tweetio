@@ -1,6 +1,23 @@
 `{tweetio}`
 ================
 
+  - [Introduction](#introduction)
+  - [Installation](#installation)
+  - [Usage](#usage)
+      - [Simple Example](#simple-example)
+      - [Performance](#performance)
+      - [Data Dumps](#data-dumps)
+  - [Spatial Tweets](#spatial-tweets)
+  - [Tweet Networks](#tweet-networks)
+      - [Two-Mode Networks](#two-mode-networks)
+      - [`<proto_net>`](#proto_net)
+  - [Progress](#progress)
+      - [Supported Data Inputs](#supported-data-inputs)
+      - [Supported Data Outputs](#supported-data-outputs)
+      - [Structures](#structures)
+  - [Shout Outs](#shout-outs)
+  - [Environment](#environment)
+
 <!-- README.Rmd generates README.md. -->
 
 <!-- badges: start -->
@@ -118,20 +135,20 @@ tiny_rtweet_stream <- read_tweets(temp_file)
 tiny_rtweet_stream
 ```
 
-    #> # A tibble: 673 x 93
+    #> # A tibble: 753 x 93
     #>    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen… is_quote is_retweet hashtags
     #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>            <chr>            <lgl>    <lgl>      <list>  
-    #>  1 111362… 12281364… 2020-02-14 01:58:34 koankitune  RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [2…
-    #>  2 951770… 12281364… 2020-02-14 01:58:34 huntanacon… @240… Twitt… 122813639390323… 951770277603565… huntanaconda     FALSE    FALSE      <chr [1…
-    #>  3 948509… 12281364… 2020-02-14 01:58:34 fahad__650  @fai… Twitt… 122809170470157… 331000792        faisalaljafan    FALSE    FALSE      <chr [1…
-    #>  4 112756… 12281364… 2020-02-14 01:58:34 _harrystyl… @int… Twitt… 122813616814494… 122293944303378… intensodemierd   FALSE    FALSE      <chr [1…
-    #>  5 898906… 12281364… 2020-02-14 01:58:34 kashunco2   RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  6 254312… 12281364… 2020-02-14 01:58:34 deinertdl   VAI … Twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #>  7 970449… 12281364… 2020-02-14 01:58:34 _samisosa   RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  8 984421… 12281364… 2020-02-14 01:58:34 iceskate_s… お出かけ… Twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #>  9 817513… 12281364… 2020-02-14 01:58:34 its_destin… RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #> 10 177414… 12281364… 2020-02-14 01:58:34 canderson8… RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #> # … with 663 more rows, and 81 more variables: urls_expanded_url <list>, media_url <list>, media_expanded_url <list>, media_type <list>,
+    #>  1 832940… 12298077… 2020-02-18 16:39:54 miyatome_s… ほたる「… twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
+    #>  2 968103… 12298077… 2020-02-18 16:39:54 akito_oh    RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
+    #>  3 105321… 12298077… 2020-02-18 16:39:54 Wannaone90… RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
+    #>  4 114125… 12298077… 2020-02-18 16:39:54 chittateen  @eli… Twitt… 122980759191347… 113553052321065… eliencantik      FALSE    FALSE      <chr [1…
+    #>  5 121195… 12298077… 2020-02-18 16:39:54 aurora_mok… @igs… Twitt… 122980593119975… 121122389453261… igsk_auron       FALSE    FALSE      <chr [1…
+    #>  6 121133… 12298077… 2020-02-18 16:39:54 9_o0Oo      @han… Twitt… 122980767784218… 115363487016739… hansolvernonchu  FALSE    FALSE      <chr [1…
+    #>  7 282823… 12298077… 2020-02-18 16:39:54 galaxydrag… RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
+    #>  8 230359… 12298077… 2020-02-18 16:39:54 AyeCassiop… RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [4…
+    #>  9 121132… 12298077… 2020-02-18 16:39:54 coneflower… @teo… Twitt… 122980634207377… 122722548071926… teolzero         FALSE    FALSE      <chr [1…
+    #> 10 122809… 12298077… 2020-02-18 16:39:54 IruTheIruk… @Kin… Twitt… 122979795004325… 960044862992105… Kiniro_Greninja  FALSE    FALSE      <chr [1…
+    #> # … with 743 more rows, and 81 more variables: urls_expanded_url <list>, media_url <list>, media_expanded_url <list>, media_type <list>,
     #> #   mentions_user_id <list>, mentions_screen_name <list>, lang <chr>, quoted_status_id <chr>, quoted_text <chr>, quoted_created_at <dttm>,
     #> #   quoted_source <chr>, quoted_favorite_count <int>, quoted_retweet_count <int>, quoted_user_id <chr>, quoted_screen_name <chr>, quoted_name <chr>,
     #> #   quoted_followers_count <int>, quoted_friends_count <int>, quoted_statuses_count <int>, quoted_location <chr>, quoted_description <chr>,
@@ -170,30 +187,24 @@ res[, 1:9]
     #> # A tibble: 2 x 6
     #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 rtweet         1.2s     1.2s     0.830    39.1MB    11.6 
-    #> 2 tweetio      52.9ms   54.8ms    17.9       1.9MB     1.99
+    #> 1 rtweet        1.39s    1.39s     0.719    39.1MB    10.8 
+    #> 2 tweetio     54.66ms  56.25ms    17.4      1.96MB     1.93
 
 With bigger files, using `rtweet::parse_stream()` is no longer
 realistic, especially if the JSON are invalid.
-
-That’s one of the situations where `tweetio::read_tweets()` can be
-extremely helpful.
 
 ``` r
 big_tweet_stream_path <- "inst/example-data/ufc-tweet-stream.json.gz"
 
 temp_file <- tempfile(fileext = ".json")
 R.utils::gunzip(big_tweet_stream_path, destname = temp_file, remove = FALSE)
-cat("- compressed:", file.size(big_tweet_stream_path) / 1e6, "MB\n")
+
+c(`compressed MB` = file.size(big_tweet_stream_path) / 1e6,
+  `decompressed MB` = file.size(temp_file) / 1e6)
 ```
 
-    #> - compressed: 71.9539 MB
-
-``` r
-cat("- decompressed:", file.size(temp_file) / 1e6, "MB\n")
-```
-
-    #> - decompressed: 681.1141 MB
+    #>   compressed MB decompressed MB 
+    #>         71.9539        681.1141
 
 ``` r
 res <- bench::mark(
@@ -211,25 +222,22 @@ res[, 1:9]
     #> # A tibble: 2 x 6
     #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 rtweet        3.34m    3.34m   0.00499    6.75GB    1.77 
-    #> 2 tweetio       9.04s    9.04s   0.111    234.76MB    0.332
+    #> 1 rtweet        3.56m    3.56m   0.00468    6.75GB    1.65 
+    #> 2 tweetio       9.38s    9.38s   0.107    231.31MB    0.426
 
-Not only is `tweetio::read_tweets()` more efficient, it’s able to
-successfully parse much more of the data (99,422 vs 99,422 rows).
-
-``` r
-`names<-`(dim(rtweet_df), c("nrow", "ncol"))
-```
-
-    #>  nrow  ncol 
-    #> 58459    90
+Not only is `tweetio::read_tweets()` more efficient in time and memory
+usage, it’s able to successfully parse much more of the data.
 
 ``` r
-`names<-`(dim(tweetio_df), c("nrow", "ncol"))
+`rownames<-`(
+  vapply(list(tweetio_df = tweetio_df, rtweet_df = rtweet_df), dim, integer(2L)),
+  c("nrow", "ncol")
+)
 ```
 
-    #>  nrow  ncol 
-    #> 99422    93
+    #>      tweetio_df rtweet_df
+    #> nrow      99422     58459
+    #> ncol         93        90
 
 ## Data Dumps
 
@@ -254,8 +262,8 @@ This has three unfortunate consequences:
     lists of lists of lists…).
 
 `{tweetio}` solves this by parsing everything and building the data
-frames at the C++ level. It even takes care of decompression of
-compressed data fro you.
+frames at the C++ level, including handling GZIP files and ZIP archives
+for you.
 
 # Spatial Tweets
 
@@ -387,9 +395,9 @@ tweet_df <- tweetio_df[1:1e4, ]
 as_tweet_igraph(tweet_df)
 ```
 
-    #> IGRAPH d166c43 DN-- 6265 16373 -- 
+    #> IGRAPH 4b6aaf4 DN-- 6265 16373 -- 
     #> + attr: name (v/c), status_id (e/c), relation (e/c)
-    #> + edges from d166c43 (vertex names):
+    #> + edges from 4b6aaf4 (vertex names):
     #>  [1] 340165454          ->44607937            50229830           ->146322653           1113359075029295106->6446742            
     #>  [4] 3427037277         ->6446742             2426567863         ->6446742             1049130232559620096->6446742            
     #>  [7] 54342307           ->45882011            850484615978602496 ->6446742             3223860438         ->1082759930338258944
@@ -428,14 +436,14 @@ as_tweet_igraph(tweet_df,
                 all_user_data = TRUE, all_status_data = TRUE)
 ```
 
-    #> IGRAPH e2c9281 DN-- 6265 16373 -- 
+    #> IGRAPH 60b6616 DN-- 6265 16373 -- 
     #> + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name (v/c), location (v/c), description (v/c), url (v/c), protected
     #> | (v/l), followers_count (v/n), friends_count (v/n), listed_count (v/n), statuses_count (v/n), favourites_count (v/n),
     #> | account_created_at (v/n), verified (v/l), profile_url (v/c), account_lang (v/c), profile_banner_url (v/c), profile_image_url (v/c),
     #> | bbox_coords (v/x), status_id (e/c), relation (e/c), created_at (e/n), text (e/c), status_url (e/c), source (e/c), is_quote (e/l),
     #> | is_retweeted (e/l), media_url (e/x), media_type (e/x), place_url (e/c), place_name (e/c), place_full_name (e/c), place_type (e/c),
     #> | country (e/c), country_code (e/c), bbox_coords (e/x), status_type (e/c)
-    #> + edges from e2c9281 (vertex names):
+    #> + edges from 60b6616 (vertex names):
     #>  [1] 952042742         ->6446742    952042742         ->6446742    351245806         ->139823781  351245806         ->260581527 
     #>  [5] 351245806         ->139823781  3343775098        ->2172990199 3343775098        ->2172990199 350722244         ->177410033 
     #>  [9] 350722244         ->177410033  839542094624518144->39344374   839542094624518144->146322653  839542094624518144->39344374  
@@ -483,9 +491,9 @@ If bipartite, the returned objects are always set as undirected.
 as_tweet_igraph(tweet_df, target_class = "hashtag")
 ```
 
-    #> IGRAPH 4a58095 UN-B 6665 10571 -- 
+    #> IGRAPH 68a0896 UN-B 6665 10571 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 4a58095 (vertex names):
+    #> + edges from 68a0896 (vertex names):
     #>  [1] 340165454          --ufc244 50229830           --new    50229830           --ufc244 1113359075029295106--ufc244 1120821278410145793--ufc244
     #>  [6] 2945072804         --ufc244 250392181          --ufc244 3427037277         --ufc244 2426567863         --ufc244 1049130232559620096--ufc244
     #> [11] 245455601          --ufc244 895707290          --ufc244 767474462254108674 --ufc244 69783385           --ufc244 850484615978602496 --ufc244
@@ -522,9 +530,9 @@ as_tweet_network(tweet_df, target_class = "hashtag")
 as_tweet_igraph(tweet_df, target_class = "url")
 ```
 
-    #> IGRAPH 3448809 UN-B 1073 1083 -- 
+    #> IGRAPH 32b8bfc UN-B 1073 1083 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 3448809 (vertex names):
+    #> + edges from 32b8bfc (vertex names):
     #> [1] 54342307           --https://twitter.com/jjmast1/status/1190812770951925760                                                              
     #> [2] 822180925467398148 --https://twitter.com/usatoday/status/1190848577171529729                                                             
     #> [3] 1161588424488341504--https://livestreamon.co/ufc244                                                                                      
@@ -561,9 +569,9 @@ as_tweet_network(tweet_df, target_class = "url")
 as_tweet_igraph(tweet_df, target_class = "media")
 ```
 
-    #> IGRAPH c8ae551 UN-B 3340 3509 -- 
+    #> IGRAPH 48a3e5a UN-B 3340 3509 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from c8ae551 (vertex names):
+    #> + edges from 48a3e5a (vertex names):
     #>  [1] 1113359075029295106--http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
     #>  [2] 3427037277         --http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
     #>  [3] 2426567863         --http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
@@ -674,9 +682,7 @@ rotten**, in the best possible way. The underlying data carpentry is so
 seamless that the user doesn’t need to know anything about the horrors
 of Twitter data, which is pretty amazing. If you use `{rtweet}`, you
 probably owe [Michael Kearney](https://twitter.com/kearneymw) some
-[citations](https://github.com/mkearney/rtweet_citations). If he hadn’t
-developed a way to sensibly structure tweet data frames in R,
-`{tweetio}` would’ve never happened.
+[citations](https://github.com/mkearney/rtweet_citations).
 
 `{tweetio}` uses a combination of C++ via
 [`{Rcpp}`](http://www.rcpp.org/), the
@@ -691,3 +697,40 @@ and **R’s not-so-secret super weapon**:
 Major inspiration from [`{ndjson}`](https://gitlab.com/hrbrmstr/ndjson)
 was taken, particularly its use of
 [`Gzstream`](https://www.cs.unc.edu/Research/compgeom/gzstream/).
+
+# Environment
+
+``` r
+sessionInfo()
+```
+
+    #> R version 3.6.2 (2019-12-12)
+    #> Platform: x86_64-pc-linux-gnu (64-bit)
+    #> Running under: Ubuntu 18.04.4 LTS
+    #> 
+    #> Matrix products: default
+    #> BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
+    #> LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
+    #> 
+    #> locale:
+    #>  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=en_US.UTF-8   
+    #>  [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=en_US.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
+    #> [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+    #> 
+    #> attached base packages:
+    #> [1] stats     graphics  grDevices utils     datasets  methods   base     
+    #> 
+    #> other attached packages:
+    #> [1] ggplot2_3.2.1 tweetio_0.1  
+    #> 
+    #> loaded via a namespace (and not attached):
+    #>  [1] network_1.17.0-411  tidyselect_1.0.0    xfun_0.12           purrr_0.3.3         sf_0.8-1            lattice_0.20-38     rnaturalearth_0.1.0
+    #>  [8] colorspace_1.4-1    jsonify_1.0.0004    vctrs_0.2.2         viridisLite_0.3.0   htmltools_0.4.0     yaml_2.2.1          utf8_1.1.4         
+    #> [15] rlang_0.4.4         R.oo_1.23.0         e1071_1.7-3         pillar_1.4.3        withr_2.1.2         glue_1.3.1          DBI_1.1.0.9000     
+    #> [22] R.utils_2.9.2       sp_1.3-2            lifecycle_0.1.0     stringr_1.4.0       rgeos_0.5-2         munsell_0.5.0       gtable_0.3.0       
+    #> [29] R.methodsS3_1.7.1   bench_1.0.4         evaluate_0.14       knitr_1.28          curl_4.3            class_7.3-15        fansi_0.4.1        
+    #> [36] profmem_0.5.0       Rcpp_1.0.3          KernSmooth_2.23-16  readr_1.3.1         openssl_1.4.1       scales_1.1.0        classInt_0.4-2     
+    #> [43] jsonlite_1.6.1      farver_2.0.3        hms_0.5.3           askpass_1.1         digest_0.6.24       stringi_1.4.6       dplyr_0.8.4        
+    #> [50] grid_3.6.2          cli_2.0.1           tools_3.6.2         magrittr_1.5        rtweet_0.7.0        lazyeval_0.2.2      tibble_2.1.3       
+    #> [57] crayon_1.3.4        pkgconfig_2.0.3     data.table_1.12.9   assertthat_0.2.1    rmarkdown_2.1.1     httr_1.4.1          R6_2.4.1           
+    #> [64] igraph_1.2.4.2      units_0.6-5         compiler_3.6.2
