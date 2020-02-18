@@ -65,5 +65,5 @@ tweet_df \%>\%
 \code{\link[=as_proto_net]{as_proto_net()}}, \code{\link[=as_tweet_igraph]{as_tweet_igraph()}}
 }
 \author{
-Brendan Knapp \email{brendan.g.knapp@gmail.com}
+Brendan Knapp \email{brendan.g.knapp@nps.edu}
 }

@@ -31,6 +31,6 @@ The following information is from Twitter:
 io_campaign_metadata[, .(campaign_name, date_released, entities)]
 }
 \author{
-Brendan Knapp \email{brendan.g.knapp@gmail.com}
+Brendan Knapp \email{brendan.g.knapp@nps.edu}
 }
 \keyword{datasets}

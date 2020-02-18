@@ -20,5 +20,5 @@ tweetio_options()
 
 }
 \author{
-Brendan Knapp \email{brendan.g.knapp@gmail.com}
+Brendan Knapp \email{brendan.g.knapp@nps.edu}
 }

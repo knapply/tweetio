@@ -103,18 +103,6 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/pkgnet-report.html">tweetio Package Report, by pkgnet</a>
-    </li>
-  </ul>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -187,9 +175,9 @@
 <span class='no'>tweet_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_tweets.html'>read_tweets</a></span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>)
 
 <span class='no'>tweet_graph</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as_tweet_igraph.html'>as_igraph</a></span>(<span class='no'>tweet_df</span>)
-<span class='no'>tweet_graph</span></div><div class='output co'>#&gt; IGRAPH 52433fa DN-- 1228 1234 -- 
+<span class='no'>tweet_graph</span></div><div class='output co'>#&gt; IGRAPH b339dc0 DN-- 1228 1234 -- 
 #&gt; + attr: name (v/c), status_id (e/c), relation (e/c)
-#&gt; + edges from 52433fa (vertex names):
+#&gt; + edges from b339dc0 (vertex names):
 #&gt;  [1] 194250838          -&gt;340309688          
 #&gt;  [2] 825459487821619201 -&gt;966825602          
 #&gt;  [3] 1116228559616397312-&gt;3153145782         
@@ -200,7 +188,7 @@
 #&gt;  [8] 2198859787         -&gt;3096758526         
 #&gt; + ... omitted several edges</div><div class='input'>
 <span class='no'>graphml_path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".graphml"</span>)
-<span class='no'>graphml_path</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpPv5LOM/file71065270e4f6.graphml"</div><div class='input'>
+<span class='no'>graphml_path</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp7mQb0b/file44f149ecf474.graphml"</div><div class='input'>
 <span class='fu'>write_graphml</span>(<span class='no'>tweet_graph</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>graphml_path</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -211,7 +199,7 @@
     </ul>
 
     <h2>Author</h2>
-    <p>Brendan Knapp <a href='mailto:brendan.g.knapp@gmail.com'>brendan.g.knapp@gmail.com</a></p>
+    <p>Brendan Knapp <a href='mailto:brendan.g.knapp@nps.edu'>brendan.g.knapp@nps.edu</a></p>
   </div>
 </div>
 

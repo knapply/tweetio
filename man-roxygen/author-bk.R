@@ -1,1 +1,1 @@
-#' @author Brendan Knapp \email{brendan.g.knapp@@gmail.com}
+#' @author Brendan Knapp \email{brendan.g.knapp@@nps.edu}

@@ -1,9 +1,9 @@
 Package: tweetio
-Title: Efficient Analytical Routines and I/O for Twitter Data
+Title: Really, Really, Ridiculously Fast I/O, Transformation, and Analytical Routines Twitter Data
 Version: 0.1
 Authors@R: 
     person("Brendan", "Knapp", 
-           email = "brendan.g.knapp@gmail.com", 
+           email = "brendan.g.knapp@nps.edu", 
            role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3284-4972"))
 Description: 
@@ -24,28 +24,24 @@ LinkingTo:
 Imports:
     data.table (>= 1.12.4),
     jsonify,
+    magrittr,
     Rcpp,
     stringi,
-    magrittr,
     utils
 Suggests:
     covr,
-    geojsonsf,
-    here,
     igraph,
     knitr,
     future,
     future.apply,
     network,
     openxlsx,
-    pkgnet,
     rtweet,
     sf,
     testthat (>= 2.1.0),
     tibble,
     rmarkdown
 Remotes: 
-    knapply/network,
     SymbolixAU/jsonify
 URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio
 BugReports: https://github.com/knapply/tweetio/issues

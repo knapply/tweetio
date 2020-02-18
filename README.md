@@ -1,7 +1,7 @@
+`{tweetio}`
+================
 
 <!-- README.Rmd generates README.md. -->
-
-# `{tweetio}`
 
 <!-- badges: start -->
 
@@ -22,7 +22,7 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 status](https://www.r-pkg.org/badges/version/tweetio)](https://cran.r-project.org/package=tweetio)
 [![GitHub code size in
 bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](https://github.com/knapply/tweetio)
-[![HitCount](http://hits.dwyl.io/knapply/tweetio.svg)](http://hits.dwyl.io/knapply/tweetio)
+<!-- [![HitCount](http://hits.dwyl.io/knapply/tweetio.svg)](http://hits.dwyl.io/knapply/tweetio) -->
 <!-- badges: end -->
 
 <!-- [![R build status](https://github.com/knapply/tweetio/workflows/R-CMD-check/badge.svg)](https://github.com/knapply/tweetio/actions?workflow=R-CMD-check) -->
@@ -52,6 +52,7 @@ You’ll need a C++ compiler. If you’re using Windows, that means
 
 ``` r
 if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
+
 remotes::install_github("knapply/tweetio")
 ```
 
@@ -113,24 +114,24 @@ We can then pass the file path to `tweetio::read_tweets()` to
 efficiently parse the data into an `{rtweet}`-style data frame.
 
 ``` r
-small_rtweet_stream <- read_tweets(temp_file)
-small_rtweet_stream
+tiny_rtweet_stream <- read_tweets(temp_file)
+tiny_rtweet_stream
 ```
 
-    #> # A tibble: 604 x 93
+    #> # A tibble: 673 x 93
     #>    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen… is_quote is_retweet hashtags
     #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>            <chr>            <lgl>    <lgl>      <list>  
-    #>  1 226436… 12244621… 2020-02-03 22:38:26 the_zakirah RT @… "Twit… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  2 913066… 12244621… 2020-02-03 22:38:26 ryoganium   芹来なさ… "りょがっ… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #>  3 910615… 12244621… 2020-02-03 22:38:26 catafierro… @mar… "Twit… 122435268266162… 103137304934867… martiitoro_      FALSE    FALSE      <chr [1…
-    #>  4 105178… 12244621… 2020-02-03 22:38:26 nvmpaige    RT @… "Twit… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  5 109710… 12244621… 2020-02-03 22:38:26 djl2eVcddg… @911… "Twit… 122426331082206… 502573398        911ahiru         FALSE    FALSE      <chr [1…
-    #>  6 121653… 12244621… 2020-02-03 22:38:26 slimestopp… Nigg… "Twit… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #>  7 429537… 12244621… 2020-02-03 22:38:26 _samydias   sint… "Twit… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #>  8 108528… 12244621… 2020-02-03 22:38:26 RY_Ray_R    RT @… "Twit… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  9 349610… 12244621… 2020-02-03 22:38:26 mlymarins   n ag… "Twit… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #> 10 803746… 12244621… 2020-02-03 22:38:26 AngeelGodoy atua… "Twit… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #> # … with 594 more rows, and 81 more variables: urls_expanded_url <list>, media_url <list>, media_expanded_url <list>, media_type <list>,
+    #>  1 111362… 12281364… 2020-02-14 01:58:34 koankitune  RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [2…
+    #>  2 951770… 12281364… 2020-02-14 01:58:34 huntanacon… @240… Twitt… 122813639390323… 951770277603565… huntanaconda     FALSE    FALSE      <chr [1…
+    #>  3 948509… 12281364… 2020-02-14 01:58:34 fahad__650  @fai… Twitt… 122809170470157… 331000792        faisalaljafan    FALSE    FALSE      <chr [1…
+    #>  4 112756… 12281364… 2020-02-14 01:58:34 _harrystyl… @int… Twitt… 122813616814494… 122293944303378… intensodemierd   FALSE    FALSE      <chr [1…
+    #>  5 898906… 12281364… 2020-02-14 01:58:34 kashunco2   RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
+    #>  6 254312… 12281364… 2020-02-14 01:58:34 deinertdl   VAI … Twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
+    #>  7 970449… 12281364… 2020-02-14 01:58:34 _samisosa   RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
+    #>  8 984421… 12281364… 2020-02-14 01:58:34 iceskate_s… お出かけ… Twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
+    #>  9 817513… 12281364… 2020-02-14 01:58:34 its_destin… RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
+    #> 10 177414… 12281364… 2020-02-14 01:58:34 canderson8… RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
+    #> # … with 663 more rows, and 81 more variables: urls_expanded_url <list>, media_url <list>, media_expanded_url <list>, media_type <list>,
     #> #   mentions_user_id <list>, mentions_screen_name <list>, lang <chr>, quoted_status_id <chr>, quoted_text <chr>, quoted_created_at <dttm>,
     #> #   quoted_source <chr>, quoted_favorite_count <int>, quoted_retweet_count <int>, quoted_user_id <chr>, quoted_screen_name <chr>, quoted_name <chr>,
     #> #   quoted_followers_count <int>, quoted_friends_count <int>, quoted_statuses_count <int>, quoted_location <chr>, quoted_description <chr>,
@@ -146,104 +147,89 @@ small_rtweet_stream
     #> #   quoted_country <chr>, quoted_country_code <chr>, quoted_bbox_coords <list>, timestamp_ms <dttm>, contributors_enabled <lgl>,
     #> #   retweet_status_url <chr>, quoted_tweet_url <chr>, reply_to_status_url <chr>
 
-## Scaling Up
+## Performance
 
-We’re more interested in handling much larger data sets, but for
-demonstration we’ll use a file of a reasonable size that was obtained
-using `rtweet::stream_tweets()`.
-
-``` r
-rtweet_stream_path <- "inst/example-data/api-stream.json.gz"
-```
-
-Unfortunately, `rtweet::parse_stream()` may fail parsing streams because
-the data returned may not be valid JSON.
+`rtweet::parse_stream()` is totally sufficient for smaller files (as
+long as the returned data are valid JSON), but `tweetio::read_tweets()`
+is *much* faster.
 
 ``` r
-rtweet::parse_stream(rtweet_stream_path)
+small_rtweet_stream <- "inst/example-data/api-stream-small.json.gz"
+
+res <- bench::mark(
+  rtweet = rtweet::parse_stream(small_rtweet_stream),
+  tweetio = tweetio::read_tweets(small_rtweet_stream)
+  ,
+  check = FALSE,
+  filter_gc = FALSE
+)
+
+res[, 1:9]
 ```
 
-    #> Error: parse error: after array element, I expect ',' or ']'
-    #>           736405012481"},"timestamp_ms":"1569693801061"}}{"created_at"
-    #>                      (right here) ------^
-
-The only way around this is to read the entire file into memory and run
-some validation routine before parsing.
-
-Fortunately, `{tweetio}` can handle these situations by validating the
-JSON before it gets anywhere near R.
-
-``` r
-tweet_df <- read_tweets(rtweet_stream_path)
-tweet_df
-```
-
-    #> # A tibble: 22,760 x 93
-    #>    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen… is_quote is_retweet hashtags
-    #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>            <chr>            <lgl>    <lgl>      <list>  
-    #>  1 807195… 11780078… 2019-09-28 18:05:23 ykaoi0327   "RT … Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  2 114393… 11780078… 2019-09-28 18:05:23 yowasugi723 "@Di… Twitt… 117771450591824… 113811437998190… DiNozzo_123      FALSE    FALSE      <chr [1…
-    #>  3 247059… 11780078… 2019-09-28 18:05:23 itsauroras… "RT … Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  4 822602… 11780078… 2019-09-28 18:05:23 Darrell894… "RT … Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  5 797200… 11780078… 2019-09-28 18:05:23 NastyWoman… "@Br… Twitt… 117796816033668… 21833728         Brasilmagic      FALSE    FALSE      <chr [1…
-    #>  6 110779… 11780078… 2019-09-28 18:05:23 DeshaunAwe… "met… twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #>  7 110441… 11780078… 2019-09-28 18:05:23 diamondy_u  "RT … Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  8 359294… 11780078… 2019-09-28 18:05:23 piyakat28   "RT … Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  9 194250… 11780078… 2019-09-28 18:05:23 Stgo_centro "RT … Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #> 10 116013… 11780078… 2019-09-28 18:05:23 119lonwi_y… "RT … Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #> # … with 22,750 more rows, and 81 more variables: urls_expanded_url <list>, media_url <list>, media_expanded_url <list>, media_type <list>,
-    #> #   mentions_user_id <list>, mentions_screen_name <list>, lang <chr>, quoted_status_id <chr>, quoted_text <chr>, quoted_created_at <dttm>,
-    #> #   quoted_source <chr>, quoted_favorite_count <int>, quoted_retweet_count <int>, quoted_user_id <chr>, quoted_screen_name <chr>, quoted_name <chr>,
-    #> #   quoted_followers_count <int>, quoted_friends_count <int>, quoted_statuses_count <int>, quoted_location <chr>, quoted_description <chr>,
-    #> #   quoted_verified <lgl>, retweet_status_id <chr>, retweet_text <chr>, retweet_created_at <dttm>, retweet_source <chr>,
-    #> #   retweet_favorite_count <int>, retweet_retweet_count <int>, retweet_user_id <chr>, retweet_screen_name <chr>, retweet_name <chr>,
-    #> #   retweet_followers_count <int>, retweet_friends_count <int>, retweet_statuses_count <int>, retweet_location <chr>, retweet_description <chr>,
-    #> #   retweet_verified <lgl>, place_url <chr>, place_name <chr>, place_full_name <chr>, place_type <chr>, country <chr>, country_code <chr>,
-    #> #   bbox_coords <list>, status_url <chr>, name <chr>, location <chr>, description <chr>, url <chr>, protected <lgl>, followers_count <int>,
-    #> #   friends_count <int>, listed_count <int>, statuses_count <int>, favourites_count <int>, account_created_at <dttm>, verified <lgl>,
-    #> #   profile_url <chr>, account_lang <chr>, profile_banner_url <chr>, profile_image_url <chr>, is_retweeted <lgl>, retweet_place_url <chr>,
-    #> #   retweet_place_name <chr>, retweet_place_full_name <chr>, retweet_place_type <chr>, retweet_country <chr>, retweet_country_code <chr>,
-    #> #   retweet_bbox_coords <list>, quoted_place_url <chr>, quoted_place_name <chr>, quoted_place_full_name <chr>, quoted_place_type <chr>,
-    #> #   quoted_country <chr>, quoted_country_code <chr>, quoted_bbox_coords <list>, timestamp_ms <dttm>, contributors_enabled <lgl>,
-    #> #   retweet_status_url <chr>, quoted_tweet_url <chr>, reply_to_status_url <chr>
+    #> # A tibble: 2 x 6
+    #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
+    #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+    #> 1 rtweet         1.2s     1.2s     0.830    39.1MB    11.6 
+    #> 2 tweetio      52.9ms   54.8ms    17.9       1.9MB     1.99
 
 With bigger files, using `rtweet::parse_stream()` is no longer
-realistic, but that’s where `tweetio::read_tweets()` can help.
+realistic, especially if the JSON are invalid.
+
+That’s one of the situations where `tweetio::read_tweets()` can be
+extremely helpful.
 
 ``` r
-big_tweet_stream_path <- "~/ufc-tweet-stream.json.gz"
-big_tweet_df <- read_tweets(big_tweet_stream_path)
-big_tweet_df
+big_tweet_stream_path <- "inst/example-data/ufc-tweet-stream.json.gz"
+
+temp_file <- tempfile(fileext = ".json")
+R.utils::gunzip(big_tweet_stream_path, destname = temp_file, remove = FALSE)
+cat("- compressed:", file.size(big_tweet_stream_path) / 1e6, "MB\n")
 ```
 
-    #> # A tibble: 140,368 x 93
-    #>    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen… is_quote is_retweet hashtags
-    #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>            <chr>            <lgl>    <lgl>      <list>  
-    #>  1 340165… 11908502… 2019-11-03 04:36:36 M_Ahmad07   RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  2 502298… 11908502… 2019-11-03 04:36:36 Willcan     RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [2…
-    #>  3 111335… 11908502… 2019-11-03 04:36:36 heroXclass  RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  4 112082… 11908502… 2019-11-03 04:36:36 alicea561   Man … Twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #>  5 294507… 11908502… 2019-11-03 04:36:36 JustinCull… Brut… Twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #>  6 250392… 11908502… 2019-11-03 04:36:36 jppppppxo   the … Twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #>  7 342703… 11908502… 2019-11-03 04:36:36 JonasParad… RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  8 242656… 11908502… 2019-11-03 04:36:36 js_cuellar  RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  9 104913… 11908502… 2019-11-03 04:36:36 SHREWDCOLTS RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #> 10 245455… 11908502… 2019-11-03 04:36:36 PaulWhittl… WoW … Twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #> # … with 140,358 more rows, and 81 more variables: urls_expanded_url <list>, media_url <list>, media_expanded_url <list>, media_type <list>,
-    #> #   mentions_user_id <list>, mentions_screen_name <list>, lang <chr>, quoted_status_id <chr>, quoted_text <chr>, quoted_created_at <dttm>,
-    #> #   quoted_source <chr>, quoted_favorite_count <int>, quoted_retweet_count <int>, quoted_user_id <chr>, quoted_screen_name <chr>, quoted_name <chr>,
-    #> #   quoted_followers_count <int>, quoted_friends_count <int>, quoted_statuses_count <int>, quoted_location <chr>, quoted_description <chr>,
-    #> #   quoted_verified <lgl>, retweet_status_id <chr>, retweet_text <chr>, retweet_created_at <dttm>, retweet_source <chr>,
-    #> #   retweet_favorite_count <int>, retweet_retweet_count <int>, retweet_user_id <chr>, retweet_screen_name <chr>, retweet_name <chr>,
-    #> #   retweet_followers_count <int>, retweet_friends_count <int>, retweet_statuses_count <int>, retweet_location <chr>, retweet_description <chr>,
-    #> #   retweet_verified <lgl>, place_url <chr>, place_name <chr>, place_full_name <chr>, place_type <chr>, country <chr>, country_code <chr>,
-    #> #   bbox_coords <list>, status_url <chr>, name <chr>, location <chr>, description <chr>, url <chr>, protected <lgl>, followers_count <int>,
-    #> #   friends_count <int>, listed_count <int>, statuses_count <int>, favourites_count <int>, account_created_at <dttm>, verified <lgl>,
-    #> #   profile_url <chr>, account_lang <chr>, profile_banner_url <chr>, profile_image_url <chr>, is_retweeted <lgl>, retweet_place_url <chr>,
-    #> #   retweet_place_name <chr>, retweet_place_full_name <chr>, retweet_place_type <chr>, retweet_country <chr>, retweet_country_code <chr>,
-    #> #   retweet_bbox_coords <list>, quoted_place_url <chr>, quoted_place_name <chr>, quoted_place_full_name <chr>, quoted_place_type <chr>,
-    #> #   quoted_country <chr>, quoted_country_code <chr>, quoted_bbox_coords <list>, timestamp_ms <dttm>, contributors_enabled <lgl>,
-    #> #   retweet_status_url <chr>, quoted_tweet_url <chr>, reply_to_status_url <chr>
+    #> - compressed: 71.9539 MB
+
+``` r
+cat("- decompressed:", file.size(temp_file) / 1e6, "MB\n")
+```
+
+    #> - decompressed: 681.1141 MB
+
+``` r
+res <- bench::mark(
+  rtweet = rtweet_df <- rtweet::parse_stream(big_tweet_stream_path),
+  tweetio = tweetio_df <- tweetio::read_tweets(big_tweet_stream_path)
+  ,
+  filter_gc = FALSE,
+  check = FALSE,
+  iterations = 1
+)
+
+res[, 1:9]
+```
+
+    #> # A tibble: 2 x 6
+    #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
+    #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+    #> 1 rtweet        3.34m    3.34m   0.00499    6.75GB    1.77 
+    #> 2 tweetio       9.04s    9.04s   0.111    234.76MB    0.332
+
+Not only is `tweetio::read_tweets()` more efficient, it’s able to
+successfully parse much more of the data (99,422 vs 99,422 rows).
+
+``` r
+`names<-`(dim(rtweet_df), c("nrow", "ncol"))
+```
+
+    #>  nrow  ncol 
+    #> 58459    90
+
+``` r
+`names<-`(dim(tweetio_df), c("nrow", "ncol"))
+```
+
+    #>  nrow  ncol 
+    #> 99422    93
 
 ## Data Dumps
 
@@ -277,17 +263,17 @@ If you have `{sf}` installed, you can use `as_tweet_sf()` to only keep
 those tweets that contain valid bounding box polygons or points.
 
 ``` r
-tweet_sf <- as_tweet_sf(big_tweet_df)
+tweet_sf <- as_tweet_sf(tweetio_df)
 tweet_sf[, "geometry"]
 ```
 
-    #> Simple feature collection with 2204 features and 0 fields
+    #> Simple feature collection with 1804 features and 0 fields
     #> geometry type:  POLYGON
     #> dimension:      XY
     #> bbox:           xmin: -158.048 ymin: -50.35726 xmax: 175.5507 ymax: 61.4262
     #> epsg (SRID):    4326
     #> proj4string:    +proj=longlat +datum=WGS84 +no_defs
-    #> # A tibble: 2,204 x 1
+    #> # A tibble: 1,804 x 1
     #>                                                                                        geometry
     #>                                                                                   <POLYGON [°]>
     #>  1 ((-90.23761 29.96836, -90.23761 30.03413, -90.11965 30.03413, -90.11965 29.96836, -90.237...
@@ -300,7 +286,7 @@ tweet_sf[, "geometry"]
     #>  8 ((-118.4485 33.97688, -118.4485 34.03514, -118.3695 34.03514, -118.3695 33.97688, -118.44...
     #>  9 ((-97.66262 27.57851, -97.66262 27.89579, -97.20223 27.89579, -97.20223 27.57851, -97.662...
     #> 10 ((-118.6684 33.70454, -118.6684 34.33704, -118.1554 34.33704, -118.1554 33.70454, -118.66...
-    #> # … with 2,194 more rows
+    #> # … with 1,794 more rows
 
 There are currently four columns that can potentially hold spatial
 geometries:
@@ -314,17 +300,17 @@ You can select which one to use to build your `sf` object by modifying
 the `geom_col=` parameter (default: `"bbox_coords"`)
 
 ``` r
-as_tweet_sf(big_tweet_df,
+as_tweet_sf(tweetio_df,
             geom_col = "quoted_bbox_coords")[, "geometry"]
 ```
 
-    #> Simple feature collection with 1254 features and 0 fields
+    #> Simple feature collection with 736 features and 0 fields
     #> geometry type:  POLYGON
     #> dimension:      XY
     #> bbox:           xmin: -124.849 ymin: -27.76744 xmax: 153.3179 ymax: 60.29791
     #> epsg (SRID):    4326
     #> proj4string:    +proj=longlat +datum=WGS84 +no_defs
-    #> # A tibble: 1,254 x 1
+    #> # A tibble: 736 x 1
     #>                                                                                        geometry
     #>                                                                                   <POLYGON [°]>
     #>  1 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...
@@ -337,23 +323,23 @@ as_tweet_sf(big_tweet_df,
     #>  8 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...
     #>  9 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...
     #> 10 ((-73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.99354 40.75075, -73.993...
-    #> # … with 1,244 more rows
+    #> # … with 726 more rows
 
 You can also build *all* the supported bounding boxes by setting
 `geom_col=` to `"all"`.
 
 ``` r
-all_bboxes <- as_tweet_sf(big_tweet_df, geom_col = "all")
+all_bboxes <- as_tweet_sf(tweetio_df, geom_col = "all")
 all_bboxes[, c("which_geom", "geometry")]
 ```
 
-    #> Simple feature collection with 7428 features and 1 field
+    #> Simple feature collection with 5107 features and 1 field
     #> geometry type:  POLYGON
     #> dimension:      XY
     #> bbox:           xmin: -158.048 ymin: -50.35726 xmax: 175.5507 ymax: 61.4262
     #> epsg (SRID):    4326
     #> proj4string:    +proj=longlat +datum=WGS84 +no_defs
-    #> # A tibble: 7,428 x 2
+    #> # A tibble: 5,107 x 2
     #>    which_geom                                                                                      geometry
     #>    <chr>                                                                                      <POLYGON [°]>
     #>  1 bbox_coords ((-90.23761 29.96836, -90.23761 30.03413, -90.11965 30.03413, -90.11965 29.96836, -90.237...
@@ -366,7 +352,7 @@ all_bboxes[, c("which_geom", "geometry")]
     #>  8 bbox_coords ((-118.4485 33.97688, -118.4485 34.03514, -118.3695 34.03514, -118.3695 33.97688, -118.44...
     #>  9 bbox_coords ((-97.66262 27.57851, -97.66262 27.89579, -97.20223 27.89579, -97.20223 27.57851, -97.662...
     #> 10 bbox_coords ((-118.6684 33.70454, -118.6684 34.33704, -118.1554 34.33704, -118.1554 33.70454, -118.66...
-    #> # … with 7,418 more rows
+    #> # … with 5,097 more rows
 
 From there, you can easily use the data like any other `{sf}` object.
 
@@ -376,9 +362,7 @@ library(ggplot2)
 world <- rnaturalearth::ne_countries(returnclass = "sf")
 world <- world[world$continent != "Antarctica", ]
 
-sf_for_gg <- sf::st_wrap_dateline(all_bboxes)
-
-ggplot(sf_for_gg) +
+ggplot(all_bboxes) +
   geom_sf(fill = "white", color = "lightgray", data = world) +
   geom_sf(aes(fill = which_geom, color = which_geom), 
           alpha = 0.15, size = 1, show.legend = TRUE) +
@@ -389,7 +373,7 @@ ggplot(sf_for_gg) +
         panel.background = element_rect(fill = "#daf3ff"))
 ```
 
-<img src="man/figures/unnamed-chunk-15-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/unnamed-chunk-16-1.png" style="display: block; margin: auto;" />
 
 # Tweet Networks
 
@@ -398,20 +382,22 @@ installed, you can get started immediately using
 `tweetio::as_tweet_igraph()` or `tweetio::as_tweet_network()`.
 
 ``` r
+tweet_df <- tweetio_df[1:1e4, ]
+
 as_tweet_igraph(tweet_df)
 ```
 
-    #> IGRAPH 8fcd2c0 DN-- 37519 42191 -- 
+    #> IGRAPH d166c43 DN-- 6265 16373 -- 
     #> + attr: name (v/c), status_id (e/c), relation (e/c)
-    #> + edges from 8fcd2c0 (vertex names):
-    #>  [1] 807195027403259904 ->938662230052052992  247059655          ->609647782           822602638231535617 ->701750402786717696 
-    #>  [4] 1104415177603133444->1108885040862121985 359294371          ->1034795669645447168 194250838          ->340309688          
-    #>  [7] 1160132819114287105->3251156738          1064053347164930048->2430693075          1056020503993888768->1017892758063702016
-    #> [10] 1103702847378604032->414928075           817820347806478341 ->817820347806478341  1046542408438046720->799246741174386688 
-    #> [13] 933502505115377665 ->729676086632656900  145779984          ->451032248           981315512956268545 ->611972802          
-    #> [16] 84458315           ->19317261            785436504743145472 ->1159057465750818816 2259128973         ->1094486703744606208
-    #> [19] 997536087978455041 ->1157842598855417856 930455277488562176 ->1135749044213436417 1111005122543472640->1015912878518493184
-    #> [22] 863499610676973569 ->162219630           1177957168869298177->1074311333070266369 1071397841623347200->738529042186440708 
+    #> + edges from d166c43 (vertex names):
+    #>  [1] 340165454          ->44607937            50229830           ->146322653           1113359075029295106->6446742            
+    #>  [4] 3427037277         ->6446742             2426567863         ->6446742             1049130232559620096->6446742            
+    #>  [7] 54342307           ->45882011            850484615978602496 ->6446742             3223860438         ->1082759930338258944
+    #> [10] 1128691062225219584->327117944           158942796          ->1148290116349095936 421186669          ->1062738433716686848
+    #> [13] 781608484257214464 ->6446742             2519063076         ->146322653           361935609          ->6446742            
+    #> [16] 822180925467398148 ->32522055            1107856314875695105->166751745           766650582409109505 ->39349894           
+    #> [19] 1401244394         ->146322653           1161588424488341504->1160955424297721858 1095592508095119366->6446742            
+    #> [22] 468454269          ->6446742             3151950054         ->29275869            38842139           ->1062738433716686848
     #> + ... omitted several edges
 
 ``` r
@@ -419,15 +405,15 @@ as_tweet_network(tweet_df)
 ```
 
     #>  Network attributes:
-    #>   vertices = 37519 
+    #>   vertices = 6265 
     #>   directed = TRUE 
     #>   hyper = FALSE 
     #>   loops = TRUE 
     #>   multiple = TRUE 
     #>   bipartite = FALSE 
-    #>   total edges= 42191 
+    #>   total edges= 16373 
     #>     missing edges= 0 
-    #>     non-missing edges= 42191 
+    #>     non-missing edges= 16373 
     #> 
     #>  Vertex attribute names: 
     #>     vertex.names 
@@ -442,17 +428,17 @@ as_tweet_igraph(tweet_df,
                 all_user_data = TRUE, all_status_data = TRUE)
 ```
 
-    #> IGRAPH d778a10 DN-- 37519 42191 -- 
+    #> IGRAPH e2c9281 DN-- 6265 16373 -- 
     #> + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name (v/c), location (v/c), description (v/c), url (v/c), protected
     #> | (v/l), followers_count (v/n), friends_count (v/n), listed_count (v/n), statuses_count (v/n), favourites_count (v/n),
     #> | account_created_at (v/n), verified (v/l), profile_url (v/c), account_lang (v/c), profile_banner_url (v/c), profile_image_url (v/c),
     #> | bbox_coords (v/x), status_id (e/c), relation (e/c), created_at (e/n), text (e/c), status_url (e/c), source (e/c), is_quote (e/l),
     #> | is_retweeted (e/l), media_url (e/x), media_type (e/x), place_url (e/c), place_name (e/c), place_full_name (e/c), place_type (e/c),
     #> | country (e/c), country_code (e/c), bbox_coords (e/x), status_type (e/c)
-    #> + edges from d778a10 (vertex names):
-    #>  [1] 1127923340457328641->1108212412828643329 1127923340457328641->1108212412828643329 985712132061782016 ->1563080580         
-    #>  [4] 985712132061782016 ->1563080580          1099623728         ->1453388311          1099623728         ->1453388311         
-    #>  [7] 964554517          ->1071987743742279681 964554517          ->1071987743742279681 1129579078300753920->1139827523305426945
+    #> + edges from e2c9281 (vertex names):
+    #>  [1] 952042742         ->6446742    952042742         ->6446742    351245806         ->139823781  351245806         ->260581527 
+    #>  [5] 351245806         ->139823781  3343775098        ->2172990199 3343775098        ->2172990199 350722244         ->177410033 
+    #>  [9] 350722244         ->177410033  839542094624518144->39344374   839542094624518144->146322653  839542094624518144->39344374  
     #> + ... omitted several edges
 
 ``` r
@@ -461,15 +447,15 @@ as_tweet_network(tweet_df,
 ```
 
     #>  Network attributes:
-    #>   vertices = 37519 
+    #>   vertices = 6265 
     #>   directed = TRUE 
     #>   hyper = FALSE 
     #>   loops = TRUE 
     #>   multiple = TRUE 
     #>   bipartite = FALSE 
-    #>   total edges= 42191 
+    #>   total edges= 16373 
     #>     missing edges= 0 
-    #>     non-missing edges= 42191 
+    #>     non-missing edges= 16373 
     #> 
     #>  Vertex attribute names: 
     #>     account_created_at account_lang bbox_coords description favourites_count followers_count friends_count listed_count location name.y profile_banner_url profile_image_url profile_url protected screen_name statuses_count timestamp_ms url verified vertex.names 
@@ -497,17 +483,17 @@ If bipartite, the returned objects are always set as undirected.
 as_tweet_igraph(tweet_df, target_class = "hashtag")
 ```
 
-    #> IGRAPH 32d647e UN-B 7522 7174 -- 
+    #> IGRAPH 4a58095 UN-B 6665 10571 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 32d647e (vertex names):
-    #>  [1] 359294371          --got7_kconth2019          933502505115377665 --investigatebiden         981315512956268545 --셔누                    
-    #>  [4] 767835057620918272 --therookie                781414129          --أحد_المسارحه             781414129          --اليوم_الوطني89          
-    #>  [7] 781414129          --همه_حتى_القمه            1868079872         --wicklowecotrail          1177957168869298177--naamkarannke3saal       
-    #> [10] 2162617110         --watch                    1169328651222913024--श्राद्ध_मत_करना            3112061905         --bardofbloodwinninghearts
-    #> [13] 977237285048668162 --abdl                     307278565          --sampdoriainter           218889555          --sooners                 
-    #> [16] 1173877389241323521--qualitedair              1173877389241323521--qai                      1173877389241323521--pollutionair            
-    #> [19] 861240546316222465 --كلاب_الاحزاب_الفاسدة     4655212832         --ntrundisputedkingoftfi   4655212832         --ntrboxofficeemperor     
-    #> [22] 4655212832         --jaintr                   886236627235999744 --halamadrid               811714585103171584 --mpn                     
+    #> + edges from 4a58095 (vertex names):
+    #>  [1] 340165454          --ufc244 50229830           --new    50229830           --ufc244 1113359075029295106--ufc244 1120821278410145793--ufc244
+    #>  [6] 2945072804         --ufc244 250392181          --ufc244 3427037277         --ufc244 2426567863         --ufc244 1049130232559620096--ufc244
+    #> [11] 245455601          --ufc244 895707290          --ufc244 767474462254108674 --ufc244 69783385           --ufc244 850484615978602496 --ufc244
+    #> [16] 3223860438         --ufc244 518350072          --ufc244 1128691062225219584--ufc244 158942796          --ufc244 421186669          --ufc244
+    #> [21] 781608484257214464 --ufc244 854129173937491968 --ufc244 2519063076         --new    2519063076         --ufc244 361935609          --ufc244
+    #> [26] 822180925467398148 --ufc244 1107856314875695105--ufc244 766650582409109505 --ufc244 1401244394         --new    1401244394         --ufc244
+    #> [31] 452637226          --ufc244 110374459          --ufc244 1156089078535921665--ufc244 334189052          --ufc244 357793694          --ufc244
+    #> [36] 3145789100         --ufc244 4848229454         --ufc244 276788997          --ufc244 1095592508095119366--ufc244 1049130232559620096--ufc244
     #> + ... omitted several edges
 
 ``` r
@@ -515,15 +501,15 @@ as_tweet_network(tweet_df, target_class = "hashtag")
 ```
 
     #>  Network attributes:
-    #>   vertices = 7522 
+    #>   vertices = 6665 
     #>   directed = FALSE 
     #>   hyper = FALSE 
     #>   loops = FALSE 
     #>   multiple = TRUE 
-    #>   bipartite = 3185 
-    #>   total edges= 7174 
+    #>   bipartite = 6157 
+    #>   total edges= 10571 
     #>     missing edges= 0 
-    #>     non-missing edges= 7174 
+    #>     non-missing edges= 10571 
     #> 
     #>  Vertex attribute names: 
     #>     vertex.names 
@@ -536,15 +522,17 @@ as_tweet_network(tweet_df, target_class = "hashtag")
 as_tweet_igraph(tweet_df, target_class = "url")
 ```
 
-    #> IGRAPH 7631559 UN-B 4442 2382 -- 
+    #> IGRAPH 3448809 UN-B 1073 1083 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 7631559 (vertex names):
-    #> [1] 930455277488562176 --https://twitter.com/valsnudes/status/1177292877946212352                                                                                                                   
-    #> [2] 1111005122543472640--https://twitter.com/LVPibai/status/1177063381607550976                                                                                                                     
-    #> [3] 767835057620918272 --https://www.distractify.com/p/does-officer-bradford-die-in-the-rookie                                                                                                      
-    #> [4] 863499610676973569 --https://twitter.com/sacramentokings/status/1177736590799470592                                                                                                             
-    #> [5] 3859220422         --http://blog.pianetadonna.it/mybeautyblog/tips-tricks-cosmetica-maschera-al-rhum-per-capelli-sfibrati/?utm_source=ReviveOldPost&utm_medium=social&utm_campaign=ReviveOldPost
-    #> [6] 1011668178504540160--https://headlines.yahoo.co.jp/hl?a=20190928-00000148-dal-base                                                                                                              
+    #> + edges from 3448809 (vertex names):
+    #> [1] 54342307           --https://twitter.com/jjmast1/status/1190812770951925760                                                              
+    #> [2] 822180925467398148 --https://twitter.com/usatoday/status/1190848577171529729                                                             
+    #> [3] 1161588424488341504--https://livestreamon.co/ufc244                                                                                      
+    #> [4] 1020289868231036929--https://twitter.com/sososfm/status/1190817388176035840                                                              
+    #> [5] 222715765          --http://is.gd/BDIHaF                                                                                                 
+    #> [6] 700295730          --https://twitter.com/Karlos_ch/status/1190830330703499266                                                            
+    #> [7] 1174700278769225730--https://twitter.com/mitchhorowitz/status/1190809746347085824                                                        
+    #> [8] 1888701283         --https://www.rawstory.com/2019/11/trump-brutally-mocked-for-getting-booed-like-hell-every-time-he-goes-out-in-public/
     #> + ... omitted several edges
 
 ``` r
@@ -552,15 +540,15 @@ as_tweet_network(tweet_df, target_class = "url")
 ```
 
     #>  Network attributes:
-    #>   vertices = 4442 
+    #>   vertices = 1073 
     #>   directed = FALSE 
     #>   hyper = FALSE 
     #>   loops = FALSE 
     #>   multiple = TRUE 
-    #>   bipartite = 2296 
-    #>   total edges= 2382 
+    #>   bipartite = 825 
+    #>   total edges= 1083 
     #>     missing edges= 0 
-    #>     non-missing edges= 2382 
+    #>     non-missing edges= 1083 
     #> 
     #>  Vertex attribute names: 
     #>     vertex.names 
@@ -573,17 +561,17 @@ as_tweet_network(tweet_df, target_class = "url")
 as_tweet_igraph(tweet_df, target_class = "media")
 ```
 
-    #> IGRAPH 8b7baa5 UN-B 10126 5446 -- 
+    #> IGRAPH c8ae551 UN-B 3340 3509 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 8b7baa5 (vertex names):
-    #>  [1] 247059655          --http://pbs.twimg.com/ext_tw_video_thumb/1177253381737525248/pu/img/tV_OqBoqoueVWHh7.jpg
-    #>  [2] 359294371          --http://pbs.twimg.com/ext_tw_video_thumb/1177999900102950914/pu/img/v28CK1AWPeicgfgN.jpg
-    #>  [3] 1056020503993888768--http://pbs.twimg.com/ext_tw_video_thumb/1177431694372044805/pu/img/N2RNs1VHUxvbUOZZ.jpg
-    #>  [4] 933502505115377665 --http://pbs.twimg.com/ext_tw_video_thumb/1177677156245225473/pu/img/LVpzibdI_HYb-YNU.jpg
-    #>  [5] 84458315           --http://pbs.twimg.com/tweet_video_thumb/EFkfnXkXUAEWd9z.jpg                             
-    #>  [6] 2259128973         --http://pbs.twimg.com/media/EFkWlRwUwAEylYU.jpg                                         
-    #>  [7] 199369785          --http://pbs.twimg.com/media/EFkf2xcX0AAZtWG.png                                         
-    #>  [8] 977619299413168129 --http://pbs.twimg.com/media/EFkf0zdWsAYvlKb.jpg                                         
+    #> + edges from c8ae551 (vertex names):
+    #>  [1] 1113359075029295106--http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
+    #>  [2] 3427037277         --http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
+    #>  [3] 2426567863         --http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
+    #>  [4] 1049130232559620096--http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
+    #>  [5] 767474462254108674 --http://pbs.twimg.com/tweet_video_thumb/EIa_-hyX0AA7j1o.jpg                             
+    #>  [6] 850484615978602496 --http://pbs.twimg.com/media/EIa--ZTXUAEP7PH.jpg                                         
+    #>  [7] 3223860438         --http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
+    #>  [8] 158942796          --http://pbs.twimg.com/ext_tw_video_thumb/1190817246110720000/pu/img/jw75ZV3YmtL2PgXT.jpg
     #> + ... omitted several edges
 
 ``` r
@@ -591,15 +579,15 @@ as_tweet_network(tweet_df, target_class = "media")
 ```
 
     #>  Network attributes:
-    #>   vertices = 10126 
+    #>   vertices = 3340 
     #>   directed = FALSE 
     #>   hyper = FALSE 
     #>   loops = FALSE 
     #>   multiple = TRUE 
-    #>   bipartite = 5222 
-    #>   total edges= 5446 
+    #>   bipartite = 2809 
+    #>   total edges= 3509 
     #>     missing edges= 0 
-    #>     non-missing edges= 5446 
+    #>     non-missing edges= 3509 
     #> 
     #>  Vertex attribute names: 
     #>     vertex.names 
@@ -614,42 +602,42 @@ though. Underneath the hood, `as_tweet_igraph()` and
 list of edge and node data frames.
 
 ``` r
-as_proto_net(tweet_df,
+as_proto_net(tweetio_df,
              all_status_data = TRUE, all_user_data = TRUE)
 ```
 
     #> $edges
-    #> # A tibble: 42,191 x 20
+    #> # A tibble: 181,842 x 20
     #>    from  to    status_id relation created_at          text  status_url source is_quote is_retweeted media_url media_type place_url place_name
     #>    <chr> <chr> <chr>     <chr>    <dttm>              <chr> <chr>      <chr>  <lgl>    <lgl>        <list>    <list>     <chr>     <chr>     
-    #>  1 1127… 1108… 11780103… retweet  2019-09-28 18:15:22 RT @… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  2 1127… 1108… 11780103… mentions 2019-09-28 18:15:22 RT @… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  3 9857… 1563… 11780103… retweet  2019-09-28 18:15:22 RT @… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  4 9857… 1563… 11780103… mentions 2019-09-28 18:15:22 RT @… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  5 1099… 1453… 11780103… reply_to 2019-09-28 18:15:22 @has… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  6 1099… 1453… 11780103… mentions 2019-09-28 18:15:22 @has… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  7 9645… 1071… 11780103… retweet  2019-09-28 18:15:22 RT @… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  8 9645… 1071… 11780103… mentions 2019-09-28 18:15:22 RT @… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  9 1129… 1139… 11780103… reply_to 2019-09-28 18:15:22 @age… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #> 10 1129… 1139… 11780103… mentions 2019-09-28 18:15:22 @age… https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #> # … with 42,181 more rows, and 6 more variables: place_full_name <chr>, place_type <chr>, country <chr>, country_code <chr>, bbox_coords <list>,
+    #>  1 1717… 2605… 11908699… retweet  2019-11-03 05:55:01 "RT … https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  2 1717… 2605… 11908699… mentions 2019-11-03 05:55:01 "RT … https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  3 2338… 3700… 11908699… retweet  2019-11-03 05:55:01 "RT … https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  4 2338… 3700… 11908699… mentions 2019-11-03 05:55:01 "RT … https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  5 7568… 1062… 11908699… retweet  2019-11-03 05:55:01 "RT … https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  6 7568… 1062… 11908699… mentions 2019-11-03 05:55:01 "RT … https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  7 2899… 6446… 11908699… retweet  2019-11-03 05:55:01 "RT … https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  8 2899… 6446… 11908699… mentions 2019-11-03 05:55:01 "RT … https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  9 2899… 5218… 11908699… mentions 2019-11-03 05:55:01 "RT … https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #> 10 7889… 1667… 11908699… retweet  2019-11-03 05:55:01 "RT … https://t… Twitt… FALSE    FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #> # … with 181,832 more rows, and 6 more variables: place_full_name <chr>, place_type <chr>, country <chr>, country_code <chr>, bbox_coords <list>,
     #> #   status_type <chr>
     #> 
     #> $nodes
-    #> # A tibble: 37,519 x 20
+    #> # A tibble: 50,863 x 20
     #>    name  timestamp_ms        name.y screen_name location description url   protected followers_count friends_count listed_count statuses_count
     #>    <chr> <dttm>              <chr>  <chr>       <chr>    <chr>       <chr> <lgl>               <int>         <int>        <int>          <int>
-    #>  1 1000… 2019-09-28 18:14:16 ©️0️⃣STA  _costinhaaa "Portug… CERCI BOY … <NA>  NA                    262           262           NA           2477
-    #>  2 1000… 2019-09-28 18:10:12 Maria… mariana_rgr  <NA>    <NA>        <NA>  NA                    118           118           NA           1169
-    #>  3 1000… 2019-09-28 18:07:15 flore… florence__t  <NA>    <NA>        <NA>  FALSE                 580           455            3           7629
-    #>  4 1000… 2019-09-28 18:08:38 Lela🍯 Daniela12x  "Guimar… ig: x.dani… <NA>  NA                   1164          1164           NA           8248
-    #>  5 1000… 2019-09-28 18:13:19 𝖒𝖆𝖗𝖎𝖆  Mcfbb_      "Viseu,… @fcporto 💙 <NA>  FALSE                 167           213            1          17786
-    #>  6 1000… 2019-09-28 18:10:14 Bapt🔴… BaptCorre1  "Brest,… @Portos130… <NA>  FALSE                 500            76            1           3710
-    #>  7 1000… 2019-09-28 18:13:30 Alexa… AlexLopezM… "Colomb… Senador de… <NA>  NA                  31976         31976           NA          19805
-    #>  8 1000… 2019-09-28 18:06:39 Léa    Lea_Lefebv… "bsm "   on s’était… <NA>  FALSE                 224           126            0           7348
-    #>  9 1000… 2019-09-28 18:12:52 R 🥀   ritaddvaz   "Portal… <NA>        http… FALSE                 330           312            0          29865
-    #> 10 1000… 2019-09-28 18:09:47 Subro… subrotosir… "Kanchr… Be Yoursel… <NA>  FALSE                  53           437            0           1739
-    #> # … with 37,509 more rows, and 8 more variables: favourites_count <int>, account_created_at <dttm>, verified <lgl>, profile_url <chr>,
+    #>  1 1000… 2019-11-03 04:53:06 ᴇʟ ᴊᴜ… Urbeaner_   "Colora… UCCS ‘21 |… <NA>  FALSE                 158           250            3          16695
+    #>  2 1000… 2019-11-03 05:24:27 adrie… a2rien_     "DTM 😇" <NA>        <NA>  FALSE                 161           124            0           1046
+    #>  3 1000… 2019-11-03 05:08:38 Adee   SailorSlim  "Freepo… Instagram:… <NA>  FALSE                  54            24            0           1571
+    #>  4 1000… 2019-11-03 05:13:37 me, m… Amanda8728… "Usa "   take your … <NA>  FALSE                  28           243            0            982
+    #>  5 1000… 2019-11-03 04:49:04 hoodi… eghoops1    "htx"    shoot hoop… http… FALSE                 838           258           27          63978
+    #>  6 1000… 2019-11-03 05:19:56 Dylan… CieslikDyl… "Oak Ri… Aspiring B… <NA>  FALSE                  38           137            0           2853
+    #>  7 1000… 2019-11-03 04:37:22 ThomT… ThomThom715  <NA>    <NA>        <NA>  FALSE                   3            30            0           1358
+    #>  8 1000… 2019-11-03 05:01:53 Conor… CnrKgh2809  "Irelan… •Liverpool… <NA>  FALSE                  70           769            0           1935
+    #>  9 1000… 2019-11-03 04:55:38 Straw… JorgeAReyn… "Hollis… WORK HARD,… <NA>  FALSE                  20           396            0            789
+    #> 10 1000… 2019-11-03 04:52:11 Rocio  rociofbaby  "Texas"  27 ♊️ A•L•… <NA>  FALSE                 464           629            3          21483
+    #> # … with 50,853 more rows, and 8 more variables: favourites_count <int>, account_created_at <dttm>, verified <lgl>, profile_url <chr>,
     #> #   account_lang <chr>, profile_banner_url <chr>, profile_image_url <chr>, bbox_coords <list>
     #> 
     #> attr(,"class")

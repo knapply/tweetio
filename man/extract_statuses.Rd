@@ -34,5 +34,5 @@ extract_statuses(tweet_df, as_tibble = TRUE)
 
 }
 \author{
-Brendan Knapp \email{brendan.g.knapp@gmail.com}
+Brendan Knapp \email{brendan.g.knapp@nps.edu}
 }

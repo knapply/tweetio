@@ -52,5 +52,5 @@ write_tweet_excel(tweet_df, file_path = target_excel_file)
 \code{\link[openxlsx:write.xlsx]{openxlsx::write.xlsx()}}
 }
 \author{
-Brendan Knapp \email{brendan.g.knapp@gmail.com}
+Brendan Knapp \email{brendan.g.knapp@nps.edu}
 }
