@@ -1,7 +1,10 @@
 ---
+title: "`{tweetio}`"
 output:
   github_document:
     html_preview: true
+    toc: true
+    toc_level: 2
   html_document:
     keep_md: yes
 always_allow_html: yes
@@ -25,9 +28,6 @@ options(width = 150)
 ```
 
 
-# `{tweetio}`
-
-
 <!-- badges: start -->
 [![Gitter](https://badges.gitter.im/tweetio/community.svg)](https://gitter.im/tweetio/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
@@ -39,7 +39,7 @@ options(width = 150)
 [![Depends](https://img.shields.io/badge/Depends-GNU_R>=3.3-blue.svg)](https://www.r-project.org/)
 [![CRAN status](https://www.r-pkg.org/badges/version/tweetio)](https://cran.r-project.org/package=tweetio)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](https://github.com/knapply/tweetio)
-[![HitCount](http://hits.dwyl.io/knapply/tweetio.svg)](http://hits.dwyl.io/knapply/tweetio)
+<!-- [![HitCount](http://hits.dwyl.io/knapply/tweetio.svg)](http://hits.dwyl.io/knapply/tweetio) -->
 <!-- badges: end -->
 
 <!-- [![R build status](https://github.com/knapply/tweetio/workflows/R-CMD-check/badge.svg)](https://github.com/knapply/tweetio/actions?workflow=R-CMD-check) -->
@@ -65,6 +65,7 @@ You'll need a C++ compiler. If you're using Windows, that means [Rtools](https:/
 
 ```{r, eval=FALSE}
 if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
+
 remotes::install_github("knapply/tweetio")
 ```
 
@@ -114,43 +115,76 @@ rtweet::stream_tweets(timeout = 15, parse = FALSE,
 We can then pass the file path to `tweetio::read_tweets()` to efficiently parse the data into an `{rtweet}`-style data frame.
 
 ```{r}
-small_rtweet_stream <- read_tweets(temp_file)
-small_rtweet_stream
+tiny_rtweet_stream <- read_tweets(temp_file)
+tiny_rtweet_stream
 ```
 
-## Scaling Up
 
-We're more interested in handling much larger data sets, but for demonstration we'll use a file of a reasonable size that was obtained using `rtweet::stream_tweets()`. 
+## Performance
+
+`rtweet::parse_stream()` is totally sufficient for smaller files (as long as the returned data are valid JSON), but `tweetio::read_tweets()` is _much_ faster.
 
 ```{r}
-rtweet_stream_path <- "inst/example-data/api-stream.json.gz"
+small_rtweet_stream <- "inst/example-data/api-stream-small.json.gz"
+
+res <- bench::mark(
+  rtweet = rtweet::parse_stream(small_rtweet_stream),
+  tweetio = tweetio::read_tweets(small_rtweet_stream)
+  ,
+  check = FALSE,
+  filter_gc = FALSE
+)
+
+res[, 1:9]
 ```
 
+With bigger files, using `rtweet::parse_stream()` is no longer realistic, especially if the JSON are invalid. 
 
-Unfortunately, `rtweet::parse_stream()` may fail parsing streams because the data returned may not be valid JSON.
+That’s one of the situations where `tweetio::read_tweets()` can be extremely helpful.
 
-```{r, error=TRUE}
-rtweet::parse_stream(rtweet_stream_path)
+```{r, echo=FALSE, eval=FALSE}
+# big_tweet_stream_path <- "~/ufc-tweet-stream.json.gz"
+# 
+# raw_lines <- readLines(big_tweet_stream_path)
+# valid_lines <- purrr::map_lgl(raw_lines,
+#                               ~ jsonify::validate_json(.x) && jsonlite::validate(.x))
+# writeLines(raw_lines[valid_lines][1:100000], "inst/example-data/ufc-tweet-stream.json")
+# R.utils::gzip("inst/example-data/ufc-tweet-stream.json",
+#               "inst/example-data/ufc-tweet-stream.json.gz",
+#               remove = FALSE, overwrite = TRUE)
 ```
-
-The only way around this is to read the entire file into memory and run some validation routine before parsing.
-
-Fortunately, `{tweetio}` can handle these situations by validating the JSON before it gets anywhere near R.
 
 ```{r}
-tweet_df <- read_tweets(rtweet_stream_path)
-tweet_df
+big_tweet_stream_path <- "inst/example-data/ufc-tweet-stream.json.gz"
+
+temp_file <- tempfile(fileext = ".json")
+R.utils::gunzip(big_tweet_stream_path, destname = temp_file, remove = FALSE)
+cat("- compressed:", file.size(big_tweet_stream_path) / 1e6, "MB\n")
+
+cat("- decompressed:", file.size(temp_file) / 1e6, "MB\n")
 ```
 
-
-With bigger files, using `rtweet::parse_stream()` is no longer realistic, but that's where `tweetio::read_tweets()` can help.
 
 ```{r}
-big_tweet_stream_path <- "~/ufc-tweet-stream.json.gz"
-big_tweet_df <- read_tweets(big_tweet_stream_path)
-big_tweet_df
+res <- bench::mark(
+  rtweet = rtweet_df <- rtweet::parse_stream(big_tweet_stream_path),
+  tweetio = tweetio_df <- tweetio::read_tweets(big_tweet_stream_path)
+  ,
+  filter_gc = FALSE,
+  check = FALSE,
+  iterations = 1
+)
+
+res[, 1:9]
 ```
 
+Not only is `tweetio::read_tweets()` more efficient, it's able to successfully parse much more of the data (`r scales::comma(nrow(tweetio_df))` vs `r scales::comma(nrow(tweetio_df))` rows).
+
+
+```{r}
+`names<-`(dim(rtweet_df), c("nrow", "ncol"))
+`names<-`(dim(tweetio_df), c("nrow", "ncol"))
+```
 
 
 ## Data Dumps
@@ -176,7 +210,7 @@ This has three unfortunate consequences:
 If you have `{sf}` installed, you can use `as_tweet_sf()` to only keep those tweets that contain valid bounding box polygons or points.
 
 ```{r}
-tweet_sf <- as_tweet_sf(big_tweet_df)
+tweet_sf <- as_tweet_sf(tweetio_df)
 tweet_sf[, "geometry"]
 ```
 
@@ -191,14 +225,14 @@ There are currently four columns that can potentially hold spatial geometries:
 You can select which one to use to build your `sf` object by modifying the `geom_col=` parameter (default: `"bbox_coords"`)
 
 ```{r}
-as_tweet_sf(big_tweet_df,
+as_tweet_sf(tweetio_df,
             geom_col = "quoted_bbox_coords")[, "geometry"]
 ```
 
 You can also build _all_ the supported bounding boxes by setting `geom_col=` to `"all"`.
 
 ```{r}
-all_bboxes <- as_tweet_sf(big_tweet_df, geom_col = "all")
+all_bboxes <- as_tweet_sf(tweetio_df, geom_col = "all")
 all_bboxes[, c("which_geom", "geometry")]
 ```
 
@@ -212,9 +246,7 @@ library(ggplot2)
 world <- rnaturalearth::ne_countries(returnclass = "sf")
 world <- world[world$continent != "Antarctica", ]
 
-sf_for_gg <- sf::st_wrap_dateline(all_bboxes)
-
-ggplot(sf_for_gg) +
+ggplot(all_bboxes) +
   geom_sf(fill = "white", color = "lightgray", data = world) +
   geom_sf(aes(fill = which_geom, color = which_geom), 
           alpha = 0.15, size = 1, show.legend = TRUE) +
@@ -230,6 +262,8 @@ ggplot(sf_for_gg) +
 If you want to analyze tweet networks and have `{igraph}` or `{network}` installed, you can get started immediately using `tweetio::as_tweet_igraph()` or `tweetio::as_tweet_network()`.
 
 ```{r}
+tweet_df <- tweetio_df[1:1e4, ]
+
 as_tweet_igraph(tweet_df)
 as_tweet_network(tweet_df)
 ```
@@ -278,7 +312,7 @@ as_tweet_network(tweet_df, target_class = "media")
 You're not stuck with going directly to `<igraph>`s or `<network>`s though. Underneath the hood, `as_tweet_igraph()` and `as_tweet_network()` use `as_proto_net()` to build a `<proto_net>`, a list of edge and node data frames.
 
 ```{r}
-as_proto_net(tweet_df,
+as_proto_net(tweetio_df,
              all_status_data = TRUE, all_user_data = TRUE)
 ```
 

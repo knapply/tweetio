@@ -37,5 +37,5 @@ write_graphml(tweet_graph, file_path = graphml_path)
 
 }
 \author{
-Brendan Knapp \email{brendan.g.knapp@gmail.com}
+Brendan Knapp \email{brendan.g.knapp@nps.edu}
 }

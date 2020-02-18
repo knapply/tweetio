@@ -22,3 +22,5 @@
 ^playground$
 ^man/favicon$
 ^\.vignettes$
+^inst/example-data/ufc-tweet-stream\.json$
+^inst/example-data/ufc-tweet-stream\.json\.gz$

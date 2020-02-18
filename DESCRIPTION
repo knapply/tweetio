@@ -1,9 +1,9 @@
 Package: tweetio
-Title: Efficient Analytical Routines and I/O for Twitter Data
+Title: Really, Really, Ridiculously Fast I/O, Transformation, and Analytical Routines Twitter Data
 Version: 0.1
 Authors@R: 
     person("Brendan", "Knapp", 
-           email = "brendan.g.knapp@gmail.com", 
+           email = "brendan.g.knapp@nps.edu", 
            role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3284-4972"))
 Description: 
