@@ -30,7 +30,6 @@ Imports:
     utils
 Suggests:
     covr,
-    geojsonsf,
     igraph,
     knitr,
     future,
