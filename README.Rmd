@@ -4,7 +4,7 @@ output:
   github_document:
     html_preview: true
     toc: true
-    toc_level: 2
+    toc_depth: 2
   html_document:
     keep_md: yes
 always_allow_html: yes
@@ -140,8 +140,6 @@ res[, 1:9]
 
 With bigger files, using `rtweet::parse_stream()` is no longer realistic, especially if the JSON are invalid. 
 
-That’s one of the situations where `tweetio::read_tweets()` can be extremely helpful.
-
 ```{r, echo=FALSE, eval=FALSE}
 # big_tweet_stream_path <- "~/ufc-tweet-stream.json.gz"
 # 
@@ -159,9 +157,9 @@ big_tweet_stream_path <- "inst/example-data/ufc-tweet-stream.json.gz"
 
 temp_file <- tempfile(fileext = ".json")
 R.utils::gunzip(big_tweet_stream_path, destname = temp_file, remove = FALSE)
-cat("- compressed:", file.size(big_tweet_stream_path) / 1e6, "MB\n")
 
-cat("- decompressed:", file.size(temp_file) / 1e6, "MB\n")
+c(`compressed MB` = file.size(big_tweet_stream_path) / 1e6,
+  `decompressed MB` = file.size(temp_file) / 1e6)
 ```
 
 
@@ -178,12 +176,14 @@ res <- bench::mark(
 res[, 1:9]
 ```
 
-Not only is `tweetio::read_tweets()` more efficient, it's able to successfully parse much more of the data (`r scales::comma(nrow(tweetio_df))` vs `r scales::comma(nrow(tweetio_df))` rows).
+Not only is `tweetio::read_tweets()` more efficient in time and memory usage, it's able to successfully parse much more of the data.
 
 
 ```{r}
-`names<-`(dim(rtweet_df), c("nrow", "ncol"))
-`names<-`(dim(tweetio_df), c("nrow", "ncol"))
+`rownames<-`(
+  vapply(list(tweetio_df = tweetio_df, rtweet_df = rtweet_df), dim, integer(2L)),
+  c("nrow", "ncol")
+)
 ```
 
 
@@ -202,7 +202,7 @@ This has three unfortunate consequences:
 2. You're going to waste most of your time (and memory) getting data into R that you're not going to use.
 3. The data are _very_ tedious to restructure in R (lists of lists of lists of lists of lists...).
 
-`{tweetio}` solves this by parsing everything and building the data frames at the C++ level. It even takes care of decompression of compressed data fro you.
+`{tweetio}` solves this by parsing everything and building the data frames at the C++ level, including handling GZIP files and ZIP archives for you.
 
 
 # Spatial Tweets
@@ -341,7 +341,7 @@ as_proto_net(tweetio_df,
 
 # Shout Outs
 
- The [`{rtweet}`](https://rtweet.info/) package __spoils R users rotten__, in the best possible way. The underlying data carpentry is so seamless that the user doesn't need to know anything about the horrors of Twitter data, which is pretty amazing. If you use `{rtweet}`, you probably owe [Michael Kearney](https://twitter.com/kearneymw) some [citations](https://github.com/mkearney/rtweet_citations). If he hadn't developed a way to sensibly structure tweet data frames in R, `{tweetio}` would've never happened.
+ The [`{rtweet}`](https://rtweet.info/) package __spoils R users rotten__, in the best possible way. The underlying data carpentry is so seamless that the user doesn't need to know anything about the horrors of Twitter data, which is pretty amazing. If you use `{rtweet}`, you probably owe [Michael Kearney](https://twitter.com/kearneymw) some [citations](https://github.com/mkearney/rtweet_citations).
  
 
 `{tweetio}` uses a combination of C++ via [`{Rcpp}`](http://www.rcpp.org/), the [`rapidjson`](http://rapidjson.org/) C++ library (made available by [`{rapidjsonr}`](https://cran.r-project.org/web/packages/rapidjsonr/index.html)), [`{jsonify}`](https://cran.r-project.org/web/packages/jsonify/index.html)) for an R-level interface to `rapidjson`, [`{RcppProgress}`](https://cran.r-project.org/web/packages/RcppProgress/index.html)), and __R's not-so-secret super weapon__: [`{data.table}`](https://rdatatable.gitlab.io/data.table/).
@@ -349,4 +349,9 @@ as_proto_net(tweetio_df,
 Major inspiration from [`{ndjson}`](https://gitlab.com/hrbrmstr/ndjson) was taken, particularly its use of [`Gzstream`](https://www.cs.unc.edu/Research/compgeom/gzstream/).
 
 
+# Environment
+
+```{r}
+sessionInfo()
+```
 
