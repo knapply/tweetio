@@ -24,14 +24,13 @@ LinkingTo:
 Imports:
     data.table (>= 1.12.4),
     jsonify,
+    magrittr,
     Rcpp,
     stringi,
-    magrittr,
     utils
 Suggests:
     covr,
     geojsonsf,
-    here,
     igraph,
     knitr,
     future,
@@ -45,7 +44,6 @@ Suggests:
     tibble,
     rmarkdown
 Remotes: 
-    knapply/network,
     SymbolixAU/jsonify
 URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio
 BugReports: https://github.com/knapply/tweetio/issues
