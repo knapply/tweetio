@@ -42,7 +42,6 @@
 #' write_graphml(tweet_graph, file_path = graphml_path) 
 #' 
 #' @importFrom data.table fifelse
-#' @importFrom jsonify to_json
 #' 
 #' @export
 write_graphml <- function(g, file_path, na_numbers_as = -1,

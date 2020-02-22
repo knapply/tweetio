@@ -9,6 +9,10 @@ prep_bbox <- function(bbox_coords, lon_lat = TRUE) {
     .Call(`_tweetio_prep_bbox`, bbox_coords, lon_lat)
 }
 
+inherit_test <- function() {
+    .Call(`_tweetio_inherit_test`)
+}
+
 read_tweets_impl <- function(file_path, verbose = FALSE) {
     .Call(`_tweetio_read_tweets_impl`, file_path, verbose)
 }

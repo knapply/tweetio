@@ -29,6 +29,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// inherit_test
+Rcpp::List inherit_test();
+RcppExport SEXP _tweetio_inherit_test() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(inherit_test());
+    return rcpp_result_gen;
+END_RCPP
+}
 // read_tweets_impl
 Rcpp::List read_tweets_impl(const std::string& file_path, const bool verbose);
 RcppExport SEXP _tweetio_read_tweets_impl(SEXP file_pathSEXP, SEXP verboseSEXP) {
@@ -73,6 +83,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_tweetio_is_valid_bbox", (DL_FUNC) &_tweetio_is_valid_bbox, 2},
     {"_tweetio_prep_bbox", (DL_FUNC) &_tweetio_prep_bbox, 2},
+    {"_tweetio_inherit_test", (DL_FUNC) &_tweetio_inherit_test, 0},
     {"_tweetio_read_tweets_impl", (DL_FUNC) &_tweetio_read_tweets_impl, 2},
     {"_tweetio_unnest_entities_impl", (DL_FUNC) &_tweetio_unnest_entities_impl, 4},
     {"_tweetio_unnest_entities2_impl", (DL_FUNC) &_tweetio_unnest_entities2_impl, 4},

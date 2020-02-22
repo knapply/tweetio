@@ -142,8 +142,10 @@
 .as_dt <- as.data.table
 
 #' @importFrom data.table .SD copy
-#' @importFrom jsonify to_json
 jsonify_list_cols <- function(df, copy = TRUE) {
+  if (!requireNamespace("jsonify", quietly = TRUE)) {
+    stop("{jsonify} is required for this functionality.", call. = FALSE)
+  }
   list_cols <- .match_col_names(df, is.list)
   
   if (.is_empty(list_cols)) {
@@ -156,7 +158,7 @@ jsonify_list_cols <- function(df, copy = TRUE) {
 
   df[, (list_cols) := lapply(.SD, .map_chr, function(.x) {
     .x[is.na(.x)] <- ""
-    to_json(.x, unbox = TRUE)
+    jsonify::to_json(.x, unbox = TRUE)
     }),
     .SDcols = list_cols
   ]

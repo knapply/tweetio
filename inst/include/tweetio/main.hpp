@@ -35,7 +35,9 @@
 #include <tweetio/typedefs.hpp>
 #include <tweetio/utils.hpp>
 #include <tweetio/json.hpp>
-#include <tweetio/structures.hpp>
+#include <tweetio/TweetDF.hpp>
+#include <tweetio/PulseTweetDF.hpp>
+// #include <tweetio/structures.hpp>
 #include <tweetio/progressbar.hpp>
 
 

@@ -39,7 +39,7 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 status](https://www.r-pkg.org/badges/version/tweetio)](https://cran.r-project.org/package=tweetio)
 [![GitHub code size in
 bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](https://github.com/knapply/tweetio)
-<!-- [![HitCount](http://hits.dwyl.io/knapply/tweetio.svg)](http://hits.dwyl.io/knapply/tweetio) -->
+[![HitCount](http://hits.dwyl.io/knapply/tweetio.svg)](http://hits.dwyl.io/knapply/tweetio)
 <!-- badges: end -->
 
 <!-- [![R build status](https://github.com/knapply/tweetio/workflows/R-CMD-check/badge.svg)](https://github.com/knapply/tweetio/actions?workflow=R-CMD-check) -->
@@ -135,20 +135,20 @@ tiny_rtweet_stream <- read_tweets(temp_file)
 tiny_rtweet_stream
 ```
 
-    #> # A tibble: 753 x 93
+    #> # A tibble: 694 x 93
     #>    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen… is_quote is_retweet hashtags
     #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>            <chr>            <lgl>    <lgl>      <list>  
-    #>  1 832940… 12298077… 2020-02-18 16:39:54 miyatome_s… ほたる「… twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
-    #>  2 968103… 12298077… 2020-02-18 16:39:54 akito_oh    RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  3 105321… 12298077… 2020-02-18 16:39:54 Wannaone90… RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  4 114125… 12298077… 2020-02-18 16:39:54 chittateen  @eli… Twitt… 122980759191347… 113553052321065… eliencantik      FALSE    FALSE      <chr [1…
-    #>  5 121195… 12298077… 2020-02-18 16:39:54 aurora_mok… @igs… Twitt… 122980593119975… 121122389453261… igsk_auron       FALSE    FALSE      <chr [1…
-    #>  6 121133… 12298077… 2020-02-18 16:39:54 9_o0Oo      @han… Twitt… 122980767784218… 115363487016739… hansolvernonchu  FALSE    FALSE      <chr [1…
-    #>  7 282823… 12298077… 2020-02-18 16:39:54 galaxydrag… RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
-    #>  8 230359… 12298077… 2020-02-18 16:39:54 AyeCassiop… RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [4…
-    #>  9 121132… 12298077… 2020-02-18 16:39:54 coneflower… @teo… Twitt… 122980634207377… 122722548071926… teolzero         FALSE    FALSE      <chr [1…
-    #> 10 122809… 12298077… 2020-02-18 16:39:54 IruTheIruk… @Kin… Twitt… 122979795004325… 960044862992105… Kiniro_Greninja  FALSE    FALSE      <chr [1…
-    #> # … with 743 more rows, and 81 more variables: urls_expanded_url <list>, media_url <list>, media_expanded_url <list>, media_type <list>,
+    #>  1 104023… 12306173… 2020-02-20 22:16:43 Majimagoro… インスタ… Twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
+    #>  2 332620… 12306173… 2020-02-20 22:16:43 butanyanko… 中○まさ… Twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
+    #>  3 103098… 12306173… 2020-02-20 22:16:43 kanaetai24… 叶え隊の… twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
+    #>  4 190325… 12306173… 2020-02-20 22:16:43 pino_1227   いや電車… Twitt… <NA>             <NA>             <NA>             FALSE    FALSE      <chr [1…
+    #>  5 732191… 12306173… 2020-02-20 22:16:43 kanaderuaio RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
+    #>  6 926171… 12306173… 2020-02-20 22:16:43 hattorisan… @_wa… Twitt… 123061137079145… 100763436711024… _wancolo_        FALSE    FALSE      <chr [1…
+    #>  7 736555… 12306173… 2020-02-20 22:16:43 Ioz_jm      @BTS… Twitt… 123061687683048… 335141638        BTS_twt          FALSE    FALSE      <chr [1…
+    #>  8 110043… 12306173… 2020-02-20 22:16:43 LoyalSexyO… @Ars… Twitt… 123061708257380… 2911603066       Arsenalfc_max    FALSE    FALSE      <chr [1…
+    #>  9 121432… 12306173… 2020-02-20 22:16:43 CkYcuEc5al… RT @… Twitt… <NA>             <NA>             <NA>             FALSE    TRUE       <chr [1…
+    #> 10 114969… 12306173… 2020-02-20 22:16:43 pdp8l       @mdp… Twitt… 123059623115773… 882979087714844… mdpepperart      FALSE    FALSE      <chr [1…
+    #> # … with 684 more rows, and 81 more variables: urls_expanded_url <list>, media_url <list>, media_expanded_url <list>, media_type <list>,
     #> #   mentions_user_id <list>, mentions_screen_name <list>, lang <chr>, quoted_status_id <chr>, quoted_text <chr>, quoted_created_at <dttm>,
     #> #   quoted_source <chr>, quoted_favorite_count <int>, quoted_retweet_count <int>, quoted_user_id <chr>, quoted_screen_name <chr>, quoted_name <chr>,
     #> #   quoted_followers_count <int>, quoted_friends_count <int>, quoted_statuses_count <int>, quoted_location <chr>, quoted_description <chr>,
@@ -187,8 +187,8 @@ res[, 1:9]
     #> # A tibble: 2 x 6
     #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 rtweet        1.39s    1.39s     0.719    39.1MB    10.8 
-    #> 2 tweetio     54.66ms  56.25ms    17.4      1.96MB     1.93
+    #> 1 rtweet        1.27s    1.27s     0.790    39.1MB    11.1 
+    #> 2 tweetio      53.6ms  56.82ms    17.4      1.93MB     1.93
 
 With bigger files, using `rtweet::parse_stream()` is no longer
 realistic, especially if the JSON are invalid.
@@ -222,8 +222,8 @@ res[, 1:9]
     #> # A tibble: 2 x 6
     #>   expression      min   median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-    #> 1 rtweet        3.56m    3.56m   0.00468    6.75GB    1.65 
-    #> 2 tweetio       9.38s    9.38s   0.107    231.31MB    0.426
+    #> 1 rtweet        3.31m    3.31m   0.00504    6.75GB    1.78 
+    #> 2 tweetio       8.91s    8.91s   0.112    239.31MB    0.337
 
 Not only is `tweetio::read_tweets()` more efficient in time and memory
 usage, it’s able to successfully parse much more of the data.
@@ -395,9 +395,9 @@ tweet_df <- tweetio_df[1:1e4, ]
 as_tweet_igraph(tweet_df)
 ```
 
-    #> IGRAPH 4b6aaf4 DN-- 6265 16373 -- 
+    #> IGRAPH 0339e8b DN-- 6265 16373 -- 
     #> + attr: name (v/c), status_id (e/c), relation (e/c)
-    #> + edges from 4b6aaf4 (vertex names):
+    #> + edges from 0339e8b (vertex names):
     #>  [1] 340165454          ->44607937            50229830           ->146322653           1113359075029295106->6446742            
     #>  [4] 3427037277         ->6446742             2426567863         ->6446742             1049130232559620096->6446742            
     #>  [7] 54342307           ->45882011            850484615978602496 ->6446742             3223860438         ->1082759930338258944
@@ -436,14 +436,14 @@ as_tweet_igraph(tweet_df,
                 all_user_data = TRUE, all_status_data = TRUE)
 ```
 
-    #> IGRAPH 60b6616 DN-- 6265 16373 -- 
+    #> IGRAPH e0d7488 DN-- 6265 16373 -- 
     #> + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name (v/c), location (v/c), description (v/c), url (v/c), protected
     #> | (v/l), followers_count (v/n), friends_count (v/n), listed_count (v/n), statuses_count (v/n), favourites_count (v/n),
     #> | account_created_at (v/n), verified (v/l), profile_url (v/c), account_lang (v/c), profile_banner_url (v/c), profile_image_url (v/c),
     #> | bbox_coords (v/x), status_id (e/c), relation (e/c), created_at (e/n), text (e/c), status_url (e/c), source (e/c), is_quote (e/l),
     #> | is_retweeted (e/l), media_url (e/x), media_type (e/x), place_url (e/c), place_name (e/c), place_full_name (e/c), place_type (e/c),
     #> | country (e/c), country_code (e/c), bbox_coords (e/x), status_type (e/c)
-    #> + edges from 60b6616 (vertex names):
+    #> + edges from e0d7488 (vertex names):
     #>  [1] 952042742         ->6446742    952042742         ->6446742    351245806         ->139823781  351245806         ->260581527 
     #>  [5] 351245806         ->139823781  3343775098        ->2172990199 3343775098        ->2172990199 350722244         ->177410033 
     #>  [9] 350722244         ->177410033  839542094624518144->39344374   839542094624518144->146322653  839542094624518144->39344374  
@@ -491,9 +491,9 @@ If bipartite, the returned objects are always set as undirected.
 as_tweet_igraph(tweet_df, target_class = "hashtag")
 ```
 
-    #> IGRAPH 68a0896 UN-B 6665 10571 -- 
+    #> IGRAPH 54abe87 UN-B 6665 10571 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 68a0896 (vertex names):
+    #> + edges from 54abe87 (vertex names):
     #>  [1] 340165454          --ufc244 50229830           --new    50229830           --ufc244 1113359075029295106--ufc244 1120821278410145793--ufc244
     #>  [6] 2945072804         --ufc244 250392181          --ufc244 3427037277         --ufc244 2426567863         --ufc244 1049130232559620096--ufc244
     #> [11] 245455601          --ufc244 895707290          --ufc244 767474462254108674 --ufc244 69783385           --ufc244 850484615978602496 --ufc244
@@ -530,9 +530,9 @@ as_tweet_network(tweet_df, target_class = "hashtag")
 as_tweet_igraph(tweet_df, target_class = "url")
 ```
 
-    #> IGRAPH 32b8bfc UN-B 1073 1083 -- 
+    #> IGRAPH d779d38 UN-B 1073 1083 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 32b8bfc (vertex names):
+    #> + edges from d779d38 (vertex names):
     #> [1] 54342307           --https://twitter.com/jjmast1/status/1190812770951925760                                                              
     #> [2] 822180925467398148 --https://twitter.com/usatoday/status/1190848577171529729                                                             
     #> [3] 1161588424488341504--https://livestreamon.co/ufc244                                                                                      
@@ -569,9 +569,9 @@ as_tweet_network(tweet_df, target_class = "url")
 as_tweet_igraph(tweet_df, target_class = "media")
 ```
 
-    #> IGRAPH 48a3e5a UN-B 3340 3509 -- 
+    #> IGRAPH 1266c9b UN-B 3340 3509 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), relation (e/c)
-    #> + edges from 48a3e5a (vertex names):
+    #> + edges from 1266c9b (vertex names):
     #>  [1] 1113359075029295106--http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
     #>  [2] 3427037277         --http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             
     #>  [3] 2426567863         --http://pbs.twimg.com/tweet_video_thumb/EIa_t4bXYAEFVGR.jpg                             

@@ -21,7 +21,7 @@
 namespace tweetio {
 
 template<typename stream_T>
-size_t count_lines(const std::string& file_path) {
+R_xlen_t count_lines(const std::string& file_path) {
   stream_T in_file;
   in_file.open( file_path.c_str() );
   
@@ -61,6 +61,7 @@ int count_digits(const int x) {
   // constexpr R_xlen_t x16 = 1e16;
   // constexpr R_xlen_t x17 = 1e17;
   // constexpr R_xlen_t x18 = 1e18;  
+
 
   if (x < x1) {
     return 1;
@@ -107,33 +108,19 @@ int count_digits(const int x) {
 }
 
 
-void finalize_df(Rcpp::List& x, const vec_chr& col_names, const int& n_rows) {
-  const int n_digits = count_digits(n_rows);
+// void finalize_df(Rcpp::List& x, const vec_chr& col_names, const int& n_rows) {
+//   const int n_digits = count_digits(n_rows);
 
-  vec_chr row_names(n_rows);
-  for (int i = 0; i < n_rows; ++i) {
-      char name[n_digits];
-      sprintf(&(name[0]), "%d", i);
-      row_names[i] = name;
-  }
+//   vec_chr row_names(n_rows);
+//   for (int i = 0; i < n_rows; ++i) {
+//       char name[n_digits];
+//       sprintf(&(name[0]), "%d", i);
+//       row_names[i] = name;
+//   }
 
-  x.attr("names") = col_names;
-  x.attr("row.names") = row_names;
-  x.attr("class") = vec_chr{"tbl_df", "tbl", "data.frame"};
-}
-
-
-// vec_chr strip_controls(vec_chr x) {
-//   return stri_replace_all_regex(
-//     x, vec_chr("[[:cntrl:]]"), vec_chr("")
-//   );
-// }
-
-
-// vec_chr extract_source(vec_chr x) {
-//   return stri_extract_first_regex(
-//     x, vec_chr("(?<=>).*?(?=</a>$)")
-//   );
+//   x.attr("names") = col_names;
+//   x.attr("row.names") = row_names;
+//   x.attr("class") = vec_chr{"tbl_df", "tbl", "data.frame"};
 // }
 
 

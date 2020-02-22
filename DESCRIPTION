@@ -23,7 +23,6 @@ LinkingTo:
     RcppProgress
 Imports:
     data.table (>= 1.12.4),
-    jsonify,
     magrittr,
     Rcpp,
     stringi,
@@ -31,6 +30,7 @@ Imports:
 Suggests:
     covr,
     igraph,
+    jsonify,
     knitr,
     future,
     future.apply,

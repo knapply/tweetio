@@ -19,6 +19,10 @@
 #include "gzstream.h"
 
 
+// using namespace tweetio;
+
+// #include "tweetio/TweetDF.hpp"
+
 enum class TweetFileType {
   unknown,
   twitter_api_stream,
@@ -26,12 +30,12 @@ enum class TweetFileType {
   pulse_array
 };
 
-int count_lines(const std::string& file_path) {
+R_xlen_t count_lines(const std::string& file_path) {
   igzstream in_file;
   in_file.open( file_path.c_str() );
   
   std::string line_string;
-  int out = 0;
+  R_xlen_t out = 0;
   while ( std::getline(in_file, line_string) ) {
     if ( !line_string.empty() ) {
       out++;
@@ -109,8 +113,9 @@ Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(const std::string& file_
   igzstream in_file;
   in_file.open( file_path.c_str() );
 
-  tweetio::TweetDF tweets(n_lines);
-  tweetio::PulseMeta metadata(n_lines);
+  tweetio::PulseTweetDF tweets(n_lines);
+  // tweetio::TweetDF tweets(n_lines);
+  // tweetio::PulseMeta metadata(n_lines);
 
   
   while ( std::getline(in_file, line_string) ) {
@@ -130,16 +135,18 @@ Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(const std::string& file_
     }
     
     tweets.push( doc );
-    metadata.push(parsed_json);
+    // metadata.push(parsed_json);
   }
 
-  using Rcpp::_;
-  Rcpp::List out = Rcpp::List::create(
-    _["tweets"] = tweets.to_r(),
-    _["metadata"] = metadata.to_r()
-  );  
+  // using Rcpp::_;
+  // Rcpp::List out = Rcpp::List::create(
+  //   _["tweets"] = tweets.to_r(),
+  //   _["metadata"] = metadata.to_r()
+  // );  
 
-  out.attr("has_metadata") = true;
+  // out.attr("has_metadata") = true;
+
+  Rcpp::List out = tweets.to_r();
 
   return out;
 }
@@ -163,11 +170,10 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path,
     Rcpp::stop("parsing error");
   }
 
-  const int n( parsed_json.Size() );
+  const R_xlen_t n( parsed_json.Size() );
 
-
-  tweetio::TweetDF tweets(n);
-  tweetio::PulseMeta metadata(n);
+  tweetio::PulseTweetDF tweets(n);
+  // tweetio::PulseMeta metadata(n);
   tweetio::Progress progress(n, verbose);
 
   for ( const auto& val : parsed_json.GetArray() ) {
@@ -181,21 +187,22 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path,
     }
 
     tweets.push(doc);
-    metadata.push(val["_source"]);
+    // metadata.push(val["_source"]);
 
   }
 
-  using Rcpp::_;
-  Rcpp::List out = Rcpp::List::create(
-    _["tweets"] = tweets.to_r(),
-    _["metadata"] = metadata.to_r()
-  );  
+  // using Rcpp::_;
+  // Rcpp::List out = Rcpp::List::create(
+  //   _["tweets"] = tweets.to_r(),
+  //   _["metadata"] = metadata.to_r()
+  // );  
 
-  out.attr("has_metadata") = true;
+  // out.attr("has_metadata") = true;
 
   // Rcpp::Rcout << "\n" << std::endl;
-  return out;
+  return tweets.to_r();
 }
+
 
 
 template<>
@@ -214,10 +221,10 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& fil
   }
   in_file.close();
 
-  const auto n = raw_json.size();
+  const R_xlen_t n = raw_json.size();
 
   tweetio::TweetDF tweets(n);
-  tweetio::PulseMeta metadata(n);
+  // tweetio::PulseMeta metadata(n);
   tweetio::Progress progress(n, verbose);
 
   for (const auto& line : raw_json) {
@@ -233,10 +240,10 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& fil
 
   }
   
-  Rcpp::List out = tweets.to_r();
-  out.attr("has_metadata") = false;
+  // Rcpp::List out = tweets.to_r();
+  // out.attr("has_metadata") = false;
   
-  return out;
+  return tweets.to_r();
 }
 
 

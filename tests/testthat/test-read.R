@@ -38,17 +38,17 @@ test_that("reading rtweet stream works", {
                         quoted_place_full_name = "character", quoted_place_type = "character", 
                         quoted_country = "character", quoted_country_code = "character", 
                         quoted_bbox_coords = "list", timestamp_ms = c("POSIXct", 
-                                                                      "POSIXt"), contributors_enabled = "logical", retweet_status_url = "character", 
+                                                                      "POSIXt"), 
+                        contributors_enabled = "logical", retweet_status_url = "character", 
                         quoted_tweet_url = "character", reply_to_status_url = "character")
     
   
   test_df <- read_tweets(example_tweet_file())
 
   expect_true(
-    identical(
-      lapply(test_df, class),
-      target_schema
-    )
+    length(
+      setdiff(lapply(test_df, class), target_schema)
+    ) == 0L
   )
   
   expect_s3_class(

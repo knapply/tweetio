@@ -1,5 +1,5 @@
 test_that("as_tweet_sf() works", {
-  tweet_df <- read_tweets(example_tweet_file())
+  tweet_df <- read_tweets(example_tweet_file(small = TRUE))
   
   expect_s3_class(
     as_tweet_sf(tweet_df),
