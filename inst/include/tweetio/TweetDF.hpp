@@ -7,7 +7,7 @@
 namespace tweetio {
 
 class TweetDF {
-    public:
+    protected:
     R_xlen_t i_all = 0;
 
     vec_int quoted_favorite_count;
@@ -111,12 +111,9 @@ class TweetDF {
     Rcpp::List quoted_bbox_coords;
     Rcpp::List retweet_bbox_coords;
 
-    // public:
-    TweetDF();
-    // ~TweetDF() {};
 
-    R_xlen_t get_i_all() { return i_all; };
-
+    public:
+    TweetDF() = default;
 
     TweetDF(const R_xlen_t& n_vals) {
         user_id                      = vec_chr(n_vals, NA_STRING);
@@ -221,11 +218,7 @@ class TweetDF {
     };
 
 
-    void push(const rapidjson::Value& x) {
-        // status_id[i_all]  =   get_chr2(status_id[i_all], x["id_str"] );
-        // user_id[i_all]  =   get_chr2(user_id[i_all], x["user"]["id_str"] );
-        // created_at[i_all] = get_chr2(created_at[i_all], x["created_at"] );
-
+    R_xlen_t push(const rapidjson::Value& x) {
         user_id[i_all]                     = get_chr( x["user"]["id_str"] );
         status_id[i_all]                   = get_chr( x["id_str"] );
         created_at[i_all]                  = get_chr( x["created_at"] );
@@ -337,9 +330,8 @@ class TweetDF {
         timestamp_ms[i_all]                = get_timestamp_ms( x["timestamp_ms"] );
         contributors_enabled[i_all]        = get_lgl( x["user"]["countributors_enabled"] );
 
-
-
         i_all++;
+        return i_all;
     }; // TweetDF.push()
 
     vec_int get_seq_out() {
@@ -461,16 +453,7 @@ class TweetDF {
     Rcpp::List to_r() {
         Rcpp::List cols = build_list();
 
-        const int n_digits = count_digits(i_all);
-        vec_chr row_names(i_all);
-        for (int i = 0; i < i_all; ++i) {
-            char name[n_digits];
-            sprintf(&(name[0]), "%d", i);
-            row_names[i] = name;
-        }
-
-        cols.attr("row.names") = row_names;
-        cols.attr("class") = vec_chr{"data.frame"};
+        finalize_df(cols, i_all);
 
         return cols;
     }; // TweetDF.to_r()

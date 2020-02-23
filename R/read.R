@@ -59,14 +59,18 @@
   file_path <- path.expand(file_path)
   
   init <- read_tweets_impl(file_path, verbose)
+  
+  setDT(init)
+  
+  init
 
-  if (attr(init, "has_metadata", exact = TRUE)) {
-    setDT(init$tweets
-          )[, metadata := init[["metadata"]]
-            ][]
-  } else {
-    setDT(init)[]
-  }
+  # if (attr(init, "has_metadata", exact = TRUE)) {
+  #   setDT(init$tweets
+  #         )[, metadata := init[["metadata"]]
+  #           ][]
+  # } else {
+  #   setDT(init)[]
+  # }
 }
 
 

@@ -35,12 +35,8 @@ inline Rcpp::String finalize_chr(const rapidjson::Value& x) {
 }
 
 inline Rcpp::String get_chr(const rapidjson::Value& x) {
-  if (x.IsString()) {
-    return finalize_chr(x);
-  }
-  return NA_STRING;
+  return x.IsString() ? finalize_chr(x) : NA_STRING;
 }
-
 
 
 // inline void get_chr2(Rcpp::String init, const rapidjson::Value& x) {

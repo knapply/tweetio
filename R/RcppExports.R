@@ -17,6 +17,10 @@ read_tweets_impl <- function(file_path, verbose = FALSE) {
     .Call(`_tweetio_read_tweets_impl`, file_path, verbose)
 }
 
+read_tweets_bulk2 <- function(file_path, verbose = FALSE) {
+    .Call(`_tweetio_read_tweets_bulk2`, file_path, verbose)
+}
+
 unnest_entities_impl <- function(tracker, source, target, col_names) {
     .Call(`_tweetio_unnest_entities_impl`, tracker, source, target, col_names)
 }

@@ -108,20 +108,19 @@ int count_digits(const int x) {
 }
 
 
-// void finalize_df(Rcpp::List& x, const vec_chr& col_names, const int& n_rows) {
-//   const int n_digits = count_digits(n_rows);
+void finalize_df(Rcpp::List& x, const int& n_rows) {
+  const int n_digits = count_digits(n_rows);
 
-//   vec_chr row_names(n_rows);
-//   for (int i = 0; i < n_rows; ++i) {
-//       char name[n_digits];
-//       sprintf(&(name[0]), "%d", i);
-//       row_names[i] = name;
-//   }
+  vec_chr row_names(n_rows);
+  for (int i = 0; i < n_rows; ++i) {
+      char name[n_digits];
+      sprintf(&(name[0]), "%d", i);
+      row_names[i] = name;
+  }
 
-//   x.attr("names") = col_names;
-//   x.attr("row.names") = row_names;
-//   x.attr("class") = vec_chr{"tbl_df", "tbl", "data.frame"};
-// }
+  x.attr("row.names") = row_names;
+  x.attr("class") = vec_chr{"data.table", "data.frame"};
+}
 
 
 } // namesapce tweetio
