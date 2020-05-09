@@ -35,11 +35,15 @@ inline Rcpp::String finalize_chr(const rapidjson::Value& x) {
 }
 
 inline Rcpp::String get_chr(const rapidjson::Value& x) {
-  if ( x.IsString() ) {
-    return finalize_chr(x);
-  }
-  return NA_STRING;
+  return x.IsString() ? finalize_chr(x) : NA_STRING;
 }
+
+inline void set_chr(vec_chr& init, const int index,  const rapidjson::Value& val) {
+  if (val.IsString()) {
+    init[index] = val.GetString();
+  }
+}
+
 
 inline double get_timestamp_ms(const rapidjson::Value& x) {
   if ( !x.IsString() ) {
@@ -69,26 +73,22 @@ inline Rcpp::String get_chr_check(const rapidjson::Value& a, const rapidjson::Va
 }
 
 
+
 inline int get_int(const rapidjson::Value& x) {
-  if ( x.IsInt() ) {
-    return x.GetInt();
-  }
-  return NA_INTEGER;
+  return x.IsInt() ? x.GetInt() : NA_INTEGER;
 }
 
+// inline int64_t get_int64(const rapidjson::Value& x) {
+//   return x.IsInt64() ? x.GetInt64() : INT64_MIN;
+// }
+
 inline double get_dbl(const rapidjson::Value& x) {
-  if ( x.IsNumber() ) {
-    return x.GetDouble();
-  }
-  return NA_REAL;
+  return x.IsNumber() ? x.GetDouble() : NA_REAL;
 }
 
 
 inline bool get_lgl(const rapidjson::Value& x) {
-  if ( x.IsBool() ) {
-    return x.GetBool();
-  }
-  return NA_LOGICAL;
+  return x.IsBool() ? x.GetBool() : NA_LOGICAL;
 }
 
 
@@ -126,20 +126,18 @@ inline vec_dbl get_bbox(const rapidjson::Value& x) {
   }
 
   const auto bbox = x.GetArray();
-  vec_dbl out(8);
 
-  out[0] = bbox[0].GetArray()[0].GetArray()[0].GetDouble();
-  out[1] = bbox[0].GetArray()[0].GetArray()[1].GetDouble();
-
-  out[2] = bbox[0].GetArray()[1].GetArray()[0].GetDouble();
-  out[3] = bbox[0].GetArray()[1].GetArray()[1].GetDouble();
-
-  out[4] = bbox[0].GetArray()[2].GetArray()[0].GetDouble();
-  out[5] = bbox[0].GetArray()[2].GetArray()[1].GetDouble();
-
-  out[6] = bbox[0].GetArray()[3].GetArray()[0].GetDouble();
-  out[7] = bbox[0].GetArray()[3].GetArray()[1].GetDouble();
-
+  const auto out = vec_dbl::create(
+    bbox[0].GetArray()[0].GetArray()[0].GetDouble(),
+    bbox[0].GetArray()[1].GetArray()[0].GetDouble(),
+    bbox[0].GetArray()[2].GetArray()[0].GetDouble(),
+    bbox[0].GetArray()[3].GetArray()[0].GetDouble(),
+    
+    bbox[0].GetArray()[0].GetArray()[1].GetDouble(),
+    bbox[0].GetArray()[1].GetArray()[1].GetDouble(),
+    bbox[0].GetArray()[2].GetArray()[1].GetDouble(),
+    bbox[0].GetArray()[3].GetArray()[1].GetDouble()
+  );
 
   return out;
 }

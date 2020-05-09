@@ -4,7 +4,9 @@
 \name{io_campaign_metadata}
 \alias{io_campaign_metadata}
 \title{Twitter-released IO Campaign Metadata}
-\format{An object of class \code{data.table} (inherits from \code{data.frame}) with 22 rows and 9 columns.}
+\format{
+An object of class \code{data.table} (inherits from \code{data.frame}) with 22 rows and 9 columns.
+}
 \source{
 \url{https://transparency.twitter.com/en/information-operations.html}
 }

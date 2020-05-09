@@ -43,5 +43,4 @@ test_that("as_tweet_sf() works", {
     attr(as_tweet_sf(tweet_df, geom_col = "all"), "sf_column"),
     "geometry"
   )
-  
 })

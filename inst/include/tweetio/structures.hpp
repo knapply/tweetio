@@ -1,20 +1,3 @@
-// Copyright (C) 2019 Brendan Knapp
-// This file is part of tweetio.
-// 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-
 #ifndef TWEETIO_STRUCTURES_H
 #define TWEETIO_STRUCTURES_H
 
@@ -138,117 +121,107 @@ class TweetDF {
     };
 
 
-    TweetDF(const int n_vals) {
-        this->user_id                      = vec_chr(n_vals, NA_STRING);
-        this->status_id                    = vec_chr(n_vals, NA_STRING);
-        this->created_at                   = vec_chr(n_vals, NA_STRING);
-        this->screen_name                  = vec_chr(n_vals, NA_STRING);
-        this->text                         = vec_chr(n_vals, NA_STRING);
-        this->source                       = vec_chr(n_vals, NA_STRING);
-        this->reply_to_status_id           = vec_chr(n_vals, NA_STRING);
-        this->reply_to_user_id             = vec_chr(n_vals, NA_STRING);
-        this->reply_to_screen_name         = vec_chr(n_vals, NA_STRING);
-        this->is_quote                     = vec_lgl(n_vals, NA_LOGICAL);
-        this->is_retweeted                 = vec_lgl(n_vals, NA_LOGICAL);
-
-        this->hashtags                     = Rcpp::List( n_vals, vec_chr(0) );
-        this->urls_expanded_url            = Rcpp::List( n_vals, vec_chr(0) );
-
-        this->media_expanded_url           = Rcpp::List( n_vals, vec_chr(0) );
-        this->media_url                    = Rcpp::List( n_vals, vec_chr(0) );
-        this->media_expanded_url           = Rcpp::List( n_vals, vec_chr(0) );
-        this->media_type                   = Rcpp::List(n_vals, NA_STRING);
-
-        this->mentions_user_id             = Rcpp::List( n_vals, vec_chr(0) );
-        this->mentions_screen_name         = Rcpp::List( n_vals, vec_chr(0) );
-
-        this->lang                         = vec_chr(n_vals, NA_STRING);
-
-        this->quoted_status_id             = vec_chr(n_vals, NA_STRING); 
-        this->quoted_text                  = vec_chr(n_vals, NA_STRING); 
-        this->quoted_created_at            = vec_chr(n_vals, NA_STRING); 
-        this->quoted_source                = vec_chr(n_vals, NA_STRING); 
-        this->quoted_favorite_count        = vec_int(n_vals, NA_INTEGER); 
-        this->quoted_retweet_count         = vec_int(n_vals, NA_INTEGER); 
-        this->quoted_user_id               = vec_chr(n_vals, NA_STRING); 
-        this->quoted_screen_name           = vec_chr(n_vals, NA_STRING); 
-        this->quoted_name                  = vec_chr(n_vals, NA_STRING); 
-        this->quoted_followers_count       = vec_int(n_vals, NA_INTEGER); 
-        this->quoted_friends_count         = vec_int(n_vals, NA_INTEGER); 
-        this->quoted_statuses_count        = vec_int(n_vals, NA_INTEGER); 
-        this->quoted_location              = vec_chr(n_vals, NA_STRING);
-        this->quoted_description           = vec_chr(n_vals, NA_STRING);
-        this->quoted_verified              = vec_lgl(n_vals, NA_LOGICAL);
-
-        this->retweet_status_id            = vec_chr(n_vals, NA_STRING);
-        this->retweet_text                 = vec_chr(n_vals, NA_STRING);
-        this->retweet_created_at           = vec_chr(n_vals, NA_STRING);
-        this->retweet_source               = vec_chr(n_vals, NA_STRING);
-        this->retweet_favorite_count       = vec_int(n_vals, NA_INTEGER);
-        this->retweet_retweet_count        = vec_int(n_vals, NA_INTEGER);
-        this->retweet_user_id              = vec_chr(n_vals, NA_STRING);
-        this->retweet_screen_name          = vec_chr(n_vals, NA_STRING);
-        this->retweet_name                 = vec_chr(n_vals, NA_STRING);
-        this->retweet_followers_count      = vec_int(n_vals, NA_INTEGER);
-        this->retweet_friends_count        = vec_int(n_vals, NA_INTEGER);
-        this->retweet_statuses_count       = vec_int(n_vals, NA_INTEGER);
-        this->retweet_location             = vec_chr(n_vals, NA_STRING);
-        this->retweet_description          = vec_chr(n_vals, NA_STRING);
-        this->retweet_verified             = vec_lgl(n_vals, NA_LOGICAL);
-
-        this->place_url                    = vec_chr(n_vals, NA_STRING);
-        this->place_name                   = vec_chr(n_vals, NA_STRING);
-        this->place_full_name              = vec_chr(n_vals, NA_STRING);
-        this->place_type                   = vec_chr(n_vals, NA_STRING);
-        this->country                      = vec_chr(n_vals, NA_STRING);
-        this->country_code                 = vec_chr(n_vals, NA_STRING);
-        this->bbox_coords                  = Rcpp::List( n_vals, vec_dbl(0) );
-
-        this->retweet_place_url            = vec_chr(n_vals, NA_STRING);
-        this->retweet_place_name           = vec_chr(n_vals, NA_STRING);
-        this->retweet_place_full_name      = vec_chr(n_vals, NA_STRING);
-        this->retweet_place_type           = vec_chr(n_vals, NA_STRING);
-        this->retweet_country              = vec_chr(n_vals, NA_STRING);
-        this->retweet_country_code         = vec_chr(n_vals, NA_STRING);
-        this->retweet_bbox_coords          = Rcpp::List( n_vals, vec_dbl(0) );
-
-        this->quoted_place_url            = vec_chr(n_vals, NA_STRING);
-        this->quoted_place_name           = vec_chr(n_vals, NA_STRING);
-        this->quoted_place_full_name      = vec_chr(n_vals, NA_STRING);
-        this->quoted_place_type           = vec_chr(n_vals, NA_STRING);
-        this->quoted_country              = vec_chr(n_vals, NA_STRING);
-        this->quoted_country_code         = vec_chr(n_vals, NA_STRING);
-        this->quoted_bbox_coords          = Rcpp::List( n_vals, vec_dbl(0) );
-
-        this->name                         = vec_chr(n_vals, NA_STRING);
-        this->location                     = vec_chr(n_vals, NA_STRING);
-        this->description                  = vec_chr(n_vals, NA_STRING);
-        this->url                          = vec_chr(n_vals, NA_STRING);
-        this->protected_                   = vec_lgl(n_vals, NA_LOGICAL);
-        this->followers_count              = vec_int(n_vals, NA_INTEGER);
-        this->friends_count                = vec_int(n_vals, NA_INTEGER);
-        this->listed_count                 = vec_int(n_vals, NA_INTEGER);
-        this->statuses_count               = vec_int(n_vals, NA_INTEGER);
-        this->favourites_count             = vec_int(n_vals, NA_INTEGER);
-        this->account_created_at           = vec_chr(n_vals, NA_STRING);
-        this->verified                     = vec_lgl(n_vals, NA_LOGICAL);
-        this->account_lang                 = vec_chr(n_vals, NA_STRING);
-        this->profile_banner_url           = vec_chr(n_vals, NA_STRING);
-        this->profile_image_url            = vec_chr(n_vals, NA_STRING);
-        this->timestamp_ms                 = vec_dbl(n_vals, NA_REAL);
-        this->contributors_enabled         = vec_lgl(n_vals, NA_LOGICAL);
-
-    };
+    TweetDF(const int n_vals) :
+        user_id(n_vals, NA_STRING),
+        status_id(n_vals, NA_STRING),
+        created_at(n_vals, NA_STRING),
+        screen_name(n_vals, NA_STRING),
+        text(n_vals, NA_STRING),
+        source(n_vals, NA_STRING),
+        reply_to_status_id(n_vals, NA_STRING),
+        reply_to_user_id(n_vals, NA_STRING),
+        reply_to_screen_name(n_vals, NA_STRING),
+        is_quote(n_vals, NA_LOGICAL),
+        is_retweeted(n_vals, NA_LOGICAL),
+        hashtags( n_vals, vec_chr(0) ),
+        urls_expanded_url( n_vals, vec_chr(0) ),
+        media_url( n_vals, vec_chr(0) ),
+        media_expanded_url( n_vals, vec_chr(0) ),
+        media_type(n_vals, NA_STRING),
+        mentions_user_id( n_vals, vec_chr(0)),
+        mentions_screen_name( n_vals, vec_chr(0) ),
+        lang(n_vals, NA_STRING),
+        quoted_status_id(n_vals, NA_STRING),
+        quoted_text(n_vals, NA_STRING),
+        quoted_created_at(n_vals, NA_STRING),
+        quoted_source(n_vals, NA_STRING),
+        quoted_favorite_count(n_vals, NA_INTEGER),
+        quoted_retweet_count(n_vals, NA_INTEGER),
+        quoted_user_id(n_vals, NA_STRING),
+        quoted_screen_name(n_vals, NA_STRING),
+        quoted_name(n_vals, NA_STRING),
+        quoted_followers_count(n_vals, NA_INTEGER),
+        quoted_friends_count(n_vals, NA_INTEGER),
+        quoted_statuses_count(n_vals, NA_INTEGER),
+        quoted_location(n_vals, NA_STRING),
+        quoted_description(n_vals, NA_STRING),
+        quoted_verified(n_vals, NA_LOGICAL),
+        retweet_status_id(n_vals, NA_STRING),
+        retweet_text(n_vals, NA_STRING),
+        retweet_created_at(n_vals, NA_STRING),
+        retweet_source(n_vals, NA_STRING),
+        retweet_favorite_count(n_vals, NA_INTEGER),
+        retweet_retweet_count(n_vals, NA_INTEGER),
+        retweet_user_id(n_vals, NA_STRING),
+        retweet_screen_name(n_vals, NA_STRING),
+        retweet_name(n_vals, NA_STRING),
+        retweet_followers_count(n_vals, NA_INTEGER),
+        retweet_friends_count(n_vals, NA_INTEGER),
+        retweet_statuses_count(n_vals, NA_INTEGER),
+        retweet_location(n_vals, NA_STRING),
+        retweet_description(n_vals, NA_STRING),
+        retweet_verified(n_vals, NA_LOGICAL),
+        place_url(n_vals, NA_STRING),
+        place_name(n_vals, NA_STRING),
+        place_full_name(n_vals, NA_STRING),
+        place_type(n_vals, NA_STRING),
+        country(n_vals, NA_STRING),
+        country_code(n_vals, NA_STRING),
+        bbox_coords( n_vals, vec_dbl(0) ),
+        retweet_place_url(n_vals, NA_STRING),
+        retweet_place_name(n_vals, NA_STRING),
+        retweet_place_full_name(n_vals, NA_STRING),
+        retweet_place_type(n_vals, NA_STRING),
+        retweet_country(n_vals, NA_STRING),
+        retweet_country_code(n_vals, NA_STRING),
+        retweet_bbox_coords( n_vals, vec_dbl(0) ),
+        quoted_place_url(n_vals, NA_STRING),
+        quoted_place_name(n_vals, NA_STRING),
+        quoted_place_full_name(n_vals, NA_STRING),
+        quoted_place_type(n_vals, NA_STRING),
+        quoted_country(n_vals, NA_STRING),
+        quoted_country_code(n_vals, NA_STRING),
+        quoted_bbox_coords( n_vals, vec_dbl(0)),
+        name(n_vals, NA_STRING),
+        location(n_vals, NA_STRING),
+        description(n_vals, NA_STRING),
+        url(n_vals, NA_STRING),
+        protected_(n_vals, NA_LOGICAL),
+        followers_count(n_vals, NA_INTEGER),
+        friends_count(n_vals, NA_INTEGER),
+        listed_count(n_vals, NA_INTEGER),
+        statuses_count(n_vals, NA_INTEGER),
+        favourites_count(n_vals, NA_INTEGER),
+        account_created_at(n_vals, NA_STRING),
+        verified(n_vals, NA_LOGICAL),
+        account_lang(n_vals, NA_STRING),
+        profile_banner_url(n_vals, NA_STRING),
+        profile_image_url(n_vals, NA_STRING),
+        timestamp_ms(n_vals, NA_REAL),
+        contributors_enabled(n_vals, NA_LOGICAL)
+        {};
 
 
     void push(const rapidjson::Value& x) {
         // this->status_id[this->current_index]  =   get_chr2(this->status_id[this->current_index], x["id_str"] );
         // this->user_id[this->current_index]  =   get_chr2(this->user_id[this->current_index], x["user"]["id_str"] );
         // this->created_at[this->current_index] = get_chr2(this->created_at[this->current_index], x["created_at"] );
-
-        this->user_id[this->current_index]                     = get_chr( x["user"]["id_str"] );
-        this->status_id[this->current_index]                   = get_chr( x["id_str"] );
-        this->created_at[this->current_index]                  = get_chr( x["created_at"] );
+        set_chr(user_id, current_index, x["user"]["id_str"]);
+        // this->user_id[this->current_index]                     = get_chr( x["user"]["id_str"] );
+        // this->status_id[this->current_index]                   = get_chr( x["id_str"] );
+        set_chr(status_id, current_index, x["id_str"]);
+        set_chr(created_at, current_index, x["created_at"]);
+        // this->created_at[this->current_index]                  = get_chr( x["created_at"] );
         this->screen_name[this->current_index]                 = get_chr( x["user"]["screen_name"] );
         this->text[this->current_index]                        = get_chr_check( x["extended_tweet"]["full_text"], x["text"] );
         this->source[this->current_index]                      = get_chr( x["source"] );

@@ -2,12 +2,32 @@
 % Please edit documentation in R/geo.R
 \name{as_tweet_sf}
 \alias{as_tweet_sf}
+\alias{as_tweet_sf.data.frame}
+\alias{as_tweet_sf.data.table}
 \title{Build an \code{sf} Object of Tweets}
 \usage{
 as_tweet_sf(
   tweet_df,
-  geom_col = c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords", "geo_coords",
-    "all"),
+  geom_col = c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords",
+    "geo_coords", "all"),
+  combine = TRUE,
+  as_tibble = tweetio_as_tibble(),
+  ...
+)
+
+\method{as_tweet_sf}{data.frame}(
+  tweet_df,
+  geom_col = c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords",
+    "geo_coords", "all"),
+  combine = TRUE,
+  as_tibble = tweetio_as_tibble(),
+  ...
+)
+
+\method{as_tweet_sf}{data.table}(
+  tweet_df,
+  geom_col = c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords",
+    "geo_coords", "all"),
   combine = TRUE,
   as_tibble = tweetio_as_tibble(),
   ...
@@ -49,7 +69,6 @@ rwtweet_bbox_cooords <- as_tweet_sf(tweet_df, geom_col = "retweet_bbox_coords")
 tweet_sf <- as_tweet_sf(tweet_df, geom_col = "all", as_tibble = TRUE)
 
 tweet_sf[, c("created_at", "text", "which_geom", "geometry")]
-
 }
 \author{
 Brendan Knapp \email{brendan.g.knapp@nps.edu}

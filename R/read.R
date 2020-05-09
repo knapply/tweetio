@@ -184,6 +184,7 @@ read_tweets_bulk <- function(file_path,
 }
 
 
+#' @importFrom bit64 as.integer64
 #' @importFrom data.table .SD fifelse
 #' @importFrom stringi stri_extract_first_regex stri_replace_all_regex
 .finalize_cols <- function(proto_tweet_df, clean_source_cols = TRUE, ...) {
@@ -207,6 +208,27 @@ read_tweets_bulk <- function(file_path,
   if (length(dttm_cols)) {
     proto_tweet_df[, (dttm_cols) := lapply(.SD, format_dttm),
                    .SDcols = dttm_cols]
+  }
+  
+  atomic_id_cols <- intersect(
+    names(proto_tweet_df),
+    c("user_id", "status_id",
+      "reply_to_status_id", "reply_to_user_id",
+      "quoted_status_id", "quoted_user_id", 
+      "retweet_status_id", "retweet_user_id")
+  )
+  if (length(atomic_id_cols)) {
+    proto_tweet_df[, (atomic_id_cols) := lapply(.SD, as.integer64),
+                   .SDcols = atomic_id_cols]
+  }
+  
+  list_id_cols <- intersect(
+    names(proto_tweet_df),
+    c("mentions_user_id")
+  )
+  if (length(list_id_cols)) {
+    proto_tweet_df[, (list_id_cols) := lapply(.SD, lapply, as.integer64),
+                   .SDcols = list_id_cols]
   }
   
   # there are some occasional control characters that end up in the strings.
@@ -241,10 +263,12 @@ read_tweets_bulk <- function(file_path,
                        quoted_status_id = "quoted_tweet_url", 
                        reply_to_status_id = "reply_to_status_url") 
   status_url_cols <- status_url_cols[names(status_url_cols) %chin% names(proto_tweet_df)]
-  if (!.is_empty(status_url_cols)) {
+  if (length(status_url_cols)) {
     proto_tweet_df <- proto_tweet_df[
       , (status_url_cols) := lapply(.SD, function(.x) {
-        fifelse(is.na(.x), .x, paste0("https://twitter.com/i/web/status/", .x))
+        fifelse(is.na(.x), 
+                as.character(.x),
+                paste0("https://twitter.com/i/web/status/", .x))
       }),
       .SDcols = names(status_url_cols)
     ]
