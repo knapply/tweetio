@@ -68,7 +68,7 @@ class PulseTweetDF : protected TweetDF {
 
         for (int i = 0; i < i_all; ++i) {
             vec_chr length_tester = rule_type[i];
-            const auto n_rows = length_tester.length();
+            const auto n_rows = length_tester.size();
             
             if (n_rows == 0) {
                 meta_col[i] = R_NilValue;
@@ -97,7 +97,7 @@ class PulseTweetDF : protected TweetDF {
         finalize_df(cols, i_all);
 
         return cols;
-
+        
     }; // PulseTweetDF.to_r()
 };
 

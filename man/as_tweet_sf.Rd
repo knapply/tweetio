@@ -6,8 +6,8 @@
 \usage{
 as_tweet_sf(
   tweet_df,
-  geom_col = c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords", "geo_coords",
-    "all"),
+  geom_col = c("bbox_coords", "quoted_bbox_coords", "retweet_bbox_coords",
+    "geo_coords", "all"),
   combine = TRUE,
   as_tibble = tweetio_as_tibble(),
   ...

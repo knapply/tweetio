@@ -29,6 +29,25 @@ enum class TweetFileType {
   pulse_array
 };
 
+
+void verbose_msg(const TweetFileType tweet_file_type, const int n) {
+  if (tweet_file_type == TweetFileType::twitter_api_stream) {
+      tweetio::msg("- schema detected: Twitter API");
+
+  } else if (tweet_file_type == TweetFileType::pulse_nested_doc) {
+      tweetio::msg("- schema detected: Pulse (nested \"doc\")");
+
+  } else if (tweet_file_type == TweetFileType::pulse_array) {
+      tweetio::msg("- schema detected: Pulse array");
+
+  } else {
+      Rcpp::stop("something went wrong...");
+  }
+
+  tweetio::msg("- # of lines/objects found: " + std::to_string(n));
+}
+
+
 R_xlen_t count_lines(const std::string& file_path) {
   igzstream in_file;
   in_file.open(file_path.c_str());
@@ -102,10 +121,11 @@ template <>
 Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(
     const std::string& file_path,
     const bool verbose) {
-  if (verbose) tweetio::msg("- schema detected: Pulse, nested-doc");
-
   const auto n_lines = count_lines(file_path);
-  if (verbose) tweetio::msg("- # of lines found: " + std::to_string(n_lines) + "\n");
+
+  if (verbose) {
+    verbose_msg(TweetFileType::pulse_nested_doc, n_lines);
+  }
 
   tweetio::Progress progress(n_lines, verbose);
 
@@ -141,8 +161,7 @@ Rcpp::List read_tweets<TweetFileType::pulse_nested_doc>(
 template <>
 Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path,
                                                    const bool verbose) {
-  if (verbose)
-    tweetio::msg("schema detected: Pulse, array\n");
+
 
   igzstream in_file;
   in_file.open(file_path.c_str());
@@ -158,7 +177,11 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path,
     Rcpp::stop("parsing error");
   }
 
-  const R_xlen_t n(parsed_json.Size());
+  const auto n = parsed_json.Size();
+
+  if (verbose) {
+    verbose_msg(TweetFileType::pulse_nested_doc, n);
+  }
 
   tweetio::PulseTweetDF tweets(n);
   tweetio::Progress progress(n, verbose);
@@ -181,12 +204,7 @@ Rcpp::List read_tweets<TweetFileType::pulse_array>(const std::string& file_path,
 }
 
 template <>
-Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(
-    const std::string& file_path,
-    const bool verbose) {
-  if (verbose)
-    tweetio::msg("schema detected: Twitter API\n");
-
+Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(const std::string& file_path, const bool verbose) {
   std::string line_string;
   std::vector<std::string> raw_json;
 
@@ -200,6 +218,10 @@ Rcpp::List read_tweets<TweetFileType::twitter_api_stream>(
   in_file.close();
 
   const R_xlen_t n = raw_json.size();
+
+  if (verbose) {
+    verbose_msg(TweetFileType::twitter_api_stream, n);
+  }
 
   tweetio::TweetDF tweets(n);
   tweetio::Progress progress(n, verbose);
@@ -244,12 +266,34 @@ Rcpp::List read_tweets_impl(const std::string& file_path,
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // [[Rcpp::export]]
 Rcpp::List read_tweets_bulk2(const std::vector<std::string>& file_path,
                             const bool verbose = false) {
+  const int n_files = file_path.size();
+
   TweetFileType tracker = TweetFileType::unknown;
-  for (const auto& v : file_path) {
-    const auto temp = detect_file_type(v);
+  #pragma omp parallel for shared(tracker)
+  for (int i = 0; i < n_files; ++i) {
+    const auto temp = detect_file_type(file_path[i]);
     if (tracker != TweetFileType::unknown && temp != tracker) {
       Rcpp::stop("bad file");
     } else {
@@ -257,32 +301,28 @@ Rcpp::List read_tweets_bulk2(const std::vector<std::string>& file_path,
     }
   }
 
-  int n_files = file_path.size();
-  int n_lines = 0;
-  #pragma omp parallel for shared(file_path) reduction(+: n_lines)
+  std::vector<int> n_lines(n_files, 0);
+  int n_total_lines = 0;
+  #pragma omp parallel for shared(file_path) reduction(+: n_total_lines)
   for (int i = 0; i < n_files; ++i) {
-    n_lines += count_lines(file_path[i]);
+    n_lines[i] = count_lines(file_path[i]);
+    n_total_lines += n_lines[i];
   }
-  
-  if (verbose) tweetio::msg("- # of lines found: " + std::to_string(n_lines) + "\n");
 
-  tweetio::Progress progress(n_lines, verbose);
+  if (verbose) {
+    verbose_msg(TweetFileType::twitter_api_stream, n_total_lines);
+  }
+  tweetio::Progress progress(n_total_lines, verbose);
 
-  if (tracker != TweetFileType::twitter_api_stream) {
-
-    tweetio::PulseTweetDF tweets(n_lines);
-
-    #pragma omp for simd
+  if (tracker == TweetFileType::twitter_api_stream) {
+    tweetio::TweetDF tweets(n_total_lines);
     for (int i = 0; i < n_files; ++i) {
       igzstream in_file;
       std::string line_string;
       in_file.open(file_path[i].c_str());
-      
-      // Rcpp::Rcout << f << std::endl;
 
       while (std::getline(in_file, line_string)) {
         progress.increment();
-        
 
         if (line_string.empty()) {
           continue;
@@ -292,13 +332,11 @@ Rcpp::List read_tweets_bulk2(const std::vector<std::string>& file_path,
         parsed_json.Parse(line_string.c_str());
         const auto& doc = parsed_json["doc"];
 
-        if (doc.FindMember("id_str") == doc.MemberEnd()) {
+        if (parsed_json.FindMember("id_str") == doc.MemberEnd()) {
           continue;
         }
 
-        const auto& meta = parsed_json["meta"];
-
-        tweets.push(doc, meta);
+        tweets.push(parsed_json);
       }
 
       in_file.close();
@@ -307,7 +345,36 @@ Rcpp::List read_tweets_bulk2(const std::vector<std::string>& file_path,
     return tweets.to_r();
   }
 
-  return Rcpp::List::create();
+  tweetio::PulseTweetDF tweets(n_total_lines);
+  for (int i = 0; i < n_files; ++i) {
+    igzstream in_file;
+    std::string line_string;
+    in_file.open(file_path[i].c_str());
+
+    while (std::getline(in_file, line_string)) {
+      progress.increment();
+      
+      if (line_string.empty()) {
+        continue;
+      }
+
+      rapidjson::Document parsed_json;
+      parsed_json.Parse(line_string.c_str());
+      const auto& doc = parsed_json["doc"];
+
+      if (doc.FindMember("id_str") == doc.MemberEnd()) {
+        continue;
+      }
+
+      const auto& meta = parsed_json["meta"];
+
+      tweets.push(doc, meta);
+    }
+
+    in_file.close();
+  }
+
+  return tweets.to_r();
 }
 
 /*** R

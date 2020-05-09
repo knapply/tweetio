@@ -14,6 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+
+#define TWEETIO_STD_CONTAINERS
+
 #ifndef TWEETIO_TYPEDEFS_H
 #define TWEETIO_TYPEDEFS_H
 
@@ -21,11 +24,32 @@
 
 namespace tweetio {
 
+// #ifdef TWEETIO_STD_CONTAINERS
+
+// typedef std::vector<double> vec_dbl;
+// typedef std::vector<std::string>  vec_chr;
+// typedef std::vector<bool>  vec_lgl;
+// typedef std::vector<int>  vec_int;
+// // typedef std::vector> vec_lst;
+
+// #define na_chr "NA"
+// #define na_lgl INT_MIN
+// #define na_int INT_MIN
+// #define na_dbl DBL_MIN
+
+// #else
+
 typedef Rcpp::Vector<REALSXP> vec_dbl;
 typedef Rcpp::Vector<STRSXP>  vec_chr;
 typedef Rcpp::Vector<LGLSXP>  vec_lgl;
 typedef Rcpp::Vector<INTSXP>  vec_int;
 
+#define na_chr NA_STRING
+#define na_lgl NA_LOGICAL
+#define na_int NA_INTEGER
+#define na_dbl NA_REAL
+
+// #endif
 
 } // namespace tweetio
 

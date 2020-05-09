@@ -340,9 +340,9 @@ finish_df <- function(out) {
   out
 }
 
-suppressMessages(library(furrr, quietly = TRUE, warn.conflicts = FALSE))
-plan(multiprocess)
-suppressMessages(library(data.table, warn.conflicts = FALSE))
+# suppressMessages(library(furrr, quietly = TRUE, warn.conflicts = FALSE))
+# plan(multiprocess)
+# suppressMessages(library(data.table, warn.conflicts = FALSE))
 
 print.data.table <- function(x, ...) print(tibble::as_tibble(x), ...)
 raw_dir <- "~/Documents/IO_FILES"
@@ -355,7 +355,7 @@ cat(sprintf("\t- start: %s", start <- Sys.time()),
     "\n")
 
 suppressMessages(
-  big_init <- future_map(raw_files, read3, .progress = TRUE)
+  big_init <- lapply(raw_files, read)
 )
 big_test <- #finish_df(
   rbindlist(big_init, use.names = TRUE, idcol = ".campaign")
