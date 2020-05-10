@@ -4,7 +4,6 @@
 \alias{tweetio_options}
 \alias{tweetio_as_tibble}
 \alias{tweetio_verbose}
-\alias{tweetio_int64_ids}
 \title{\code{{tweetio}} Options}
 \usage{
 tweetio_options()
@@ -12,8 +11,6 @@ tweetio_options()
 tweetio_as_tibble()
 
 tweetio_verbose()
-
-tweetio_int64_ids()
 }
 \description{
 \code{{tweetio}} Options
