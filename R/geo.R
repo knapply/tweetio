@@ -162,6 +162,7 @@ as_tweet_sf.data.table <- function(tweet_df,
   )
 }
 
+#' @importFrom data.table between
 .prep_sf_polygons <- function(tweet_df, geom_col) {
   # silence R CMD Check NOTE ===================================================
   geometry <- NULL
@@ -169,7 +170,13 @@ as_tweet_sf.data.table <- function(tweet_df,
   
   valid_rows <- .map_lgl(
     tweet_df[[geom_col]],
-    function(.x) length(.x) == 8L && is.double(.x) && !any(is.na(.x))
+    function(.x) {
+      length(.x) == 8L && 
+        is.double(.x) &&
+        !any(is.na(.x)) &&
+        all(between(.x[c(1L, 3L, 5L, 7L)], -179, 179)) &&
+        all(between(.x[c(2L, 4L, 6L, 8L)], -89, 89))
+    }
   )
 
   # styler: off

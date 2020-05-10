@@ -42,31 +42,22 @@ inline int count_digits(const T x) {
     return count_digits(-x);
   }
 
-  constexpr T x1 = 1e1;
-  constexpr T x2 = 1e2;
-  constexpr T x3 = 1e3;
-  constexpr T x4 = 1e4;
-  constexpr T x5 = 1e5;
-  constexpr T x6 = 1e6;
-  constexpr T x7 = 1e7;
-  constexpr T x8 = 1e8;
-  constexpr T x9 = 1e9;
-
-  return x < x1
+  return x < 1e1
              ? 1
-             : x < x2
+             : x < 1e2
                    ? 2
-                   : x < x3
+                   : x < 1e3
                          ? 3
-                         : x < x4
+                         : x < 1e4
                                ? 4
-                               : x < x5
+                               : x < 1e5
                                      ? 5
-                                     : x < x6
+                                     : x < 1e6
                                            ? 6
-                                           : x < x7
+                                           : x < 1e7
                                                  ? 7
-                                                 : x < x8 ? 8 : x < x9 ? 9 : 10;
+                                                 : x < 1e8 ? 8
+                                                           : x < 1e9 ? 9 : 10;
 }
 
 void finalize_df(Rcpp::List& x, const vec_chr& col_names, const int n_rows) {

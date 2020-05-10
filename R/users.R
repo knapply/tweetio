@@ -131,10 +131,8 @@ extract_users.data.table <- function(tweet_df,
   timestamp_ms <- NULL
   observation_type <- NULL
   # ======================================================================================
-  
-  if (!.is_dt(tweet_df)) {
-    tweet_df <- .as_dt(tweet_df)
-  }
+  use_int64 <- requireNamespace("bit64", quietly = TRUE) &&
+    bit64::is.integer64(tweet_df[["user_id"]])
   
   split_users <- .compact(
     lapply(user_col_names(tweet_df), 
@@ -158,6 +156,9 @@ extract_users.data.table <- function(tweet_df,
       col_names = c("user_id", "screen_name", "created_at")
     )
   )
+  if (use_int64) {
+    split_users$mentions[, user_id := bit64::as.integer64(user_id)]
+  }
   
   if (!summarize && split) {
     split_users <- .imap(split_users, function(.x, .y) {

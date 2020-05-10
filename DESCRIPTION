@@ -29,7 +29,6 @@ Imports:
     stringi,
     utils
 Suggests:
-    bit64,
     covr,
     igraph,
     knitr,

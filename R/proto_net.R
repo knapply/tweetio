@@ -91,50 +91,54 @@ as_proto_net.data.table <- function(tweet_df,
                                     all_user_data = FALSE,
                                     as_tibble = tweetio_as_tibble(),
                                     ...) {
-  # silence R CMD Check NOTE =============================================================
-  relation <- NULL
+  # # silence R CMD Check NOTE =============================================================
+  # relation <- NULL
   to <- NULL
-  # ======================================================================================
+  # # ======================================================================================
   target_class <- match.arg(target_class, c("user", "hashtag", "url", "media"))
+  # 
+  # target <- switch (target_class,
+  #   user = "user_id",
+  #   hashtag = "hashtags",
+  #   url = "urls_expanded_url",
+  #   media = "media_url"
+  #   ,
+  #   .stop("unknown `target_class`")
+  # )
+  # 
+  # targets <- list(
+  #   main = if (target_class == "user") NULL else target,
+  #   retweet = sprintf("retweet_%s", target),
+  #   reply_to = sprintf("reply_to_%s", target),
+  #   quoted = sprintf("quoted_%s", target),
+  #   mentions = sprintf("mentions_%s", target)
+  # )
+  # targets <- .keep(.compact(targets), function(.x) .x %chin% names(tweet_df))
+  # 
+  # edge_by_status_type <- .imap(targets, function(.x, .y) {
+  #   edge_cols <- c("user_id", .x, "status_id")
+  #   
+  #   res <- tweet_df[!is.na(get(.x)), edge_cols, with = FALSE]
+  #   
+  #   setnames(res, c("from", "to", "status_id"))
+  #   
+  #   if (is.list(res[["to"]])) {
+  #     res <- setDT(
+  #       .unnest_entities_impl(
+  #         tracker = res[["status_id"]],
+  #         source = res[["from"]],
+  #         target = res[["to"]],
+  #         col_names = c("from", "to", "status_id")
+  #       )
+  #     )
+  #   }
+  #   
+  #   unique(res[, relation := if (.y == "main") "uses" else .y])
+  # })
+  # 
+  # edges <- rbindlist(edge_by_status_type, use.names = TRUE)
   
-  target <- switch (target_class,
-    user = "user_id",
-    hashtag = "hashtags",
-    url = "urls_expanded_url",
-    media = "media_url"
-    ,
-    .stop("unknown `target_class`")
-  )
-  
-  targets <- list(
-    main = if (target_class == "user") NULL else target,
-    retweet = paste0("retweet_", target),
-    reply_to = paste0("reply_to_", target),
-    quoted = paste0("quoted_", target),
-    mentions = paste0("mentions_", target)
-  )
-  targets <- .keep(.compact(targets), function(.x) .x %chin% names(tweet_df))
-  
-  edge_by_status_type <- .imap(targets, function(.x, .y) {
-    edge_cols <- c("user_id", .x, "status_id")
-    
-    res <- tweet_df[!is.na(get(.x)), edge_cols, with = FALSE]
-    
-    setnames(res, c("from", "to", "status_id"))
-    
-    if (is.list(res[["to"]])) {
-      res <- setDT(
-        unnest_entities_impl(tracker = res[["status_id"]],
-                             source = res[["from"]],
-                             target = res[["to"]],
-                             col_names = c("from", "to", "status_id"))
-      )
-    }
-    
-    unique(res[, relation := if (.y == "main") "uses" else .y])
-  })
-  
-  edges <- rbindlist(edge_by_status_type, use.names = TRUE)
+  edges <- .init_edges(tweet_df, target_class)
   
   if (all_status_data) {
     edges <- edges[extract_statuses(tweet_df, as_tibble = FALSE),
@@ -171,3 +175,51 @@ as_proto_net.data.table <- function(tweet_df,
   )
 }
 
+.init_edges <- function(tweet_df, target_class) {
+  # silence R CMD Check NOTE =============================================================
+  relation <- NULL
+  # to <- NULL
+  # ======================================================================================
+  target <- switch (target_class,
+                    user = "user_id",
+                    hashtag = "hashtags",
+                    url = "urls_expanded_url",
+                    media = "media_url"
+                    ,
+                    .stop("unknown `target_class`")
+  )
+  
+  targets <- list(
+    main = if (target_class == "user") NULL else target,
+    retweet = sprintf("retweet_%s", target),
+    reply_to = sprintf("reply_to_%s", target),
+    quoted = sprintf("quoted_%s", target),
+    mentions = sprintf("mentions_%s", target)
+  )
+  targets <- .keep(.compact(targets), function(.x) .x %chin% names(tweet_df))
+  
+  edge_by_status_type <- .imap(targets, function(.x, .y) {
+    edge_cols <- c("user_id", .x, "status_id")
+    
+    res <- tweet_df[!is.na(get(.x)), edge_cols, with = FALSE]
+    
+    setnames(res, c("from", "to", "status_id"))
+    
+    if (is.list(res[["to"]])) {
+      res <- setDT(
+        unnest_entities_impl(
+          tracker = res[["status_id"]],
+          source = res[["from"]],
+          target = res[["to"]],
+          col_names = c("from", "to", "status_id")
+        )
+      )
+    }
+    
+    unique(
+      res[, relation := if (.y == "main") "uses" else .y]
+    )
+  })
+  
+  rbindlist(edge_by_status_type, use.names = TRUE)
+}

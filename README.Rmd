@@ -166,19 +166,21 @@ c(`compressed MB` = file.size(big_tweet_stream_path) / 1e6,
 ```{r}
 res <- bench::mark(
   # rtweet = rtweet_df <- rtweet::parse_stream(big_tweet_stream_path),
-  tweetio = tweetio_df <- read_tweets(big_tweet_stream_path)
-  ,
+  tweetio = tweetio_df1 <- read_tweets(big_tweet_stream_path),
+  tweetio = tweetio_df2 <- read_tweets(big_tweet_stream_path, int64_ids = TRUE),
   filter_gc = FALSE,
   check = FALSE,
-  iterations = 1
+  iterations = 3
 )
 
 res[, 1:9]
 ```
 
 ```{r, eval=FALSE, echo=FALSE}
-pryr::object_size(tweetio_df)
-tweetio_df %>% tibble::as_tibble()
+pryr::object_size(tweetio_df1)
+pryr::object_size(tweetio_df2)
+tweetio_df1 %>% tibble::as_tibble()
+tweetio_df2 %>% tibble::as_tibble()
 ```
 
 
