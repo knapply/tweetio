@@ -8,112 +8,94 @@ namespace tweetio {
 
 class TweetDF {
     int current_index = 0;
-
-    vec_int quoted_favorite_count;
-    vec_int quoted_retweet_count;
-    vec_int quoted_followers_count;
-    vec_int quoted_friends_count;
-    vec_int quoted_statuses_count;
-
-    vec_int retweet_followers_count;
-    vec_int retweet_friends_count;
-    vec_int retweet_statuses_count;
-    vec_int retweet_favorite_count;
-    vec_int retweet_retweet_count;
-
-    vec_int followers_count;
-    vec_int friends_count;
-    vec_int listed_count;
-    vec_int statuses_count;
-    vec_int favourites_count;
-
-    vec_lgl is_quote;
-    vec_lgl is_retweeted;
-
-    vec_lgl retweet_verified;
-
-    vec_lgl quoted_verified;
-    vec_lgl protected_;                           // `protected` is a C++ reserved keyword
-    vec_lgl verified;
-    vec_lgl contributors_enabled;
-
-    vec_chr user_id;
-    // vec_dbl user_id;
-    vec_chr status_id;
-    // std::vector<int64_t> status_id;
-
-    vec_chr created_at;
-    vec_chr screen_name;
-    vec_chr text;
-    vec_chr source;
-
-    vec_chr reply_to_status_id;
-    vec_chr reply_to_user_id;
-    vec_chr reply_to_screen_name;
     
-    vec_chr lang;
-    vec_chr retweet_status_id;
-
-    vec_chr place_url;
-    vec_chr place_name;
-    vec_chr place_full_name;
-    vec_chr place_type;
-    vec_chr country;
-    vec_chr country_code;
-
-    vec_chr retweet_text;
-    vec_chr retweet_created_at;
-    vec_chr retweet_source;
-    vec_chr retweet_user_id;
-    vec_chr retweet_screen_name;
-    vec_chr retweet_name;
-    vec_chr retweet_location;
-    vec_chr retweet_description;
-    vec_chr retweet_place_url;
-    vec_chr retweet_place_name;
-    vec_chr retweet_place_full_name;
-    vec_chr retweet_place_type;
-    vec_chr retweet_country;
-    vec_chr retweet_country_code;
-
-    vec_chr quoted_status_id;
-    vec_chr quoted_text;
-    vec_chr quoted_created_at;
-    vec_chr quoted_source;
-    vec_chr quoted_user_id;
-    vec_chr quoted_screen_name;
-    vec_chr quoted_name;
-    vec_chr quoted_location;
-    vec_chr quoted_description;
-    vec_chr quoted_place_url;
-    vec_chr quoted_place_name;
-    vec_chr quoted_place_full_name;
-    vec_chr quoted_place_type;
-    vec_chr quoted_country;
-    vec_chr quoted_country_code;
-
-    vec_chr name;
-    vec_chr location;
-    vec_chr description;
-    vec_chr url;
     vec_chr account_created_at;
     vec_chr account_lang;
-    vec_chr profile_banner_url;
-    vec_chr profile_image_url;
-    vec_dbl timestamp_ms;
-
+    Rcpp::List bbox_coords;
+    vec_lgl contributors_enabled;
+    vec_chr country_code;
+    vec_chr country;
+    vec_chr created_at;
+    vec_chr description;
+    vec_int favourites_count;
+    vec_int followers_count;
+    vec_int friends_count;
     Rcpp::List hashtags;
-    Rcpp::List urls_expanded_url;
-    Rcpp::List media_url;
+    vec_lgl is_quote;
+    vec_lgl is_retweeted;
+    vec_chr lang;
+    vec_int listed_count;
+    vec_chr location;
     Rcpp::List media_expanded_url;
     Rcpp::List media_type;
-    Rcpp::List mentions_user_id;
+    Rcpp::List media_url;
     Rcpp::List mentions_screen_name;
-    Rcpp::List bbox_coords;
+    Rcpp::List mentions_user_id;
+    vec_chr name;
+    vec_chr place_full_name;
+    vec_chr place_name;
+    vec_chr place_type;
+    vec_chr place_url;
+    vec_chr profile_banner_url;
+    vec_chr profile_image_url;
+    vec_lgl protected_;
     Rcpp::List quoted_bbox_coords;
+    vec_chr quoted_country_code;
+    vec_chr quoted_country;
+    vec_chr quoted_created_at;
+    vec_chr quoted_description;
+    vec_int quoted_favorite_count;
+    vec_int quoted_followers_count;
+    vec_int quoted_friends_count;
+    vec_chr quoted_location;
+    vec_chr quoted_name;
+    vec_chr quoted_place_full_name;
+    vec_chr quoted_place_name;
+    vec_chr quoted_place_type;
+    vec_chr quoted_place_url;
+    vec_int quoted_retweet_count;
+    vec_chr quoted_screen_name;
+    vec_chr quoted_source;
+    vec_chr quoted_status_id;
+    vec_int quoted_statuses_count;
+    vec_chr quoted_text;
+    vec_chr quoted_user_id;
+    vec_lgl quoted_verified;
+    vec_chr reply_to_screen_name;
+    vec_chr reply_to_status_id;
+    vec_chr reply_to_user_id;
     Rcpp::List retweet_bbox_coords;
-
-
+    vec_chr retweet_country_code;
+    vec_chr retweet_country;
+    vec_chr retweet_created_at;
+    vec_chr retweet_description;
+    vec_int retweet_favorite_count;
+    vec_int retweet_followers_count;
+    vec_int retweet_friends_count;
+    vec_chr retweet_location;
+    vec_chr retweet_name;
+    vec_chr retweet_place_full_name;
+    vec_chr retweet_place_name;
+    vec_chr retweet_place_type;
+    vec_chr retweet_place_url;
+    vec_int retweet_retweet_count;
+    vec_chr retweet_screen_name;
+    vec_chr retweet_source;
+    vec_chr retweet_status_id;
+    vec_int retweet_statuses_count;
+    vec_chr retweet_text;
+    vec_chr retweet_user_id;
+    vec_lgl retweet_verified;
+    vec_chr screen_name;
+    vec_chr source;
+    vec_chr status_id;
+    vec_int statuses_count;
+    vec_chr text;
+    vec_dbl timestamp_ms;
+    vec_chr url;
+    Rcpp::List urls_expanded_url;
+    vec_chr user_id;
+    vec_lgl verified;
 
     public:
     // TweetDF() {};
@@ -125,93 +107,93 @@ class TweetDF {
 
 
     TweetDF(const int n_vals) :
-        user_id(n_vals, NA_STRING),
-        status_id(n_vals, NA_STRING),
-        created_at(n_vals, NA_STRING),
-        screen_name(n_vals, NA_STRING),
-        text(n_vals, NA_STRING),
-        source(n_vals, NA_STRING),
-        reply_to_status_id(n_vals, NA_STRING),
-        reply_to_user_id(n_vals, NA_STRING),
-        reply_to_screen_name(n_vals, NA_STRING),
-        is_quote(n_vals, NA_LOGICAL),
-        is_retweeted(n_vals, NA_LOGICAL),
-        hashtags( n_vals, NA_STRING ),
-        urls_expanded_url(n_vals, NA_STRING),
-        media_url(n_vals, NA_STRING),
-        media_expanded_url(n_vals, NA_STRING),
-        media_type(n_vals, NA_STRING),
-        mentions_user_id( n_vals, NA_STRING),
-        mentions_screen_name( n_vals, NA_STRING),
-        lang(n_vals, NA_STRING),
-        quoted_status_id(n_vals, NA_STRING),
-        quoted_text(n_vals, NA_STRING),
-        quoted_created_at(n_vals, NA_STRING),
-        quoted_source(n_vals, NA_STRING),
-        quoted_favorite_count(n_vals, NA_INTEGER),
-        quoted_retweet_count(n_vals, NA_INTEGER),
-        quoted_user_id(n_vals, NA_STRING),
-        quoted_screen_name(n_vals, NA_STRING),
-        quoted_name(n_vals, NA_STRING),
-        quoted_followers_count(n_vals, NA_INTEGER),
-        quoted_friends_count(n_vals, NA_INTEGER),
-        quoted_statuses_count(n_vals, NA_INTEGER),
-        quoted_location(n_vals, NA_STRING),
-        quoted_description(n_vals, NA_STRING),
-        quoted_verified(n_vals, NA_LOGICAL),
-        retweet_status_id(n_vals, NA_STRING),
-        retweet_text(n_vals, NA_STRING),
-        retweet_created_at(n_vals, NA_STRING),
-        retweet_source(n_vals, NA_STRING),
-        retweet_favorite_count(n_vals, NA_INTEGER),
-        retweet_retweet_count(n_vals, NA_INTEGER),
-        retweet_user_id(n_vals, NA_STRING),
-        retweet_screen_name(n_vals, NA_STRING),
-        retweet_name(n_vals, NA_STRING),
-        retweet_followers_count(n_vals, NA_INTEGER),
-        retweet_friends_count(n_vals, NA_INTEGER),
-        retweet_statuses_count(n_vals, NA_INTEGER),
-        retweet_location(n_vals, NA_STRING),
-        retweet_description(n_vals, NA_STRING),
-        retweet_verified(n_vals, NA_LOGICAL),
-        place_url(n_vals, NA_STRING),
-        place_name(n_vals, NA_STRING),
-        place_full_name(n_vals, NA_STRING),
-        place_type(n_vals, NA_STRING),
-        country(n_vals, NA_STRING),
-        country_code(n_vals, NA_STRING),
+        account_created_at(n_vals, NA_STRING),
+        account_lang(n_vals, NA_STRING),
         bbox_coords( n_vals, vec_dbl(0) ),
-        retweet_place_url(n_vals, NA_STRING),
-        retweet_place_name(n_vals, NA_STRING),
-        retweet_place_full_name(n_vals, NA_STRING),
-        retweet_place_type(n_vals, NA_STRING),
-        retweet_country(n_vals, NA_STRING),
-        retweet_country_code(n_vals, NA_STRING),
-        retweet_bbox_coords( n_vals, vec_dbl(0) ),
-        quoted_place_url(n_vals, NA_STRING),
-        quoted_place_name(n_vals, NA_STRING),
-        quoted_place_full_name(n_vals, NA_STRING),
-        quoted_place_type(n_vals, NA_STRING),
-        quoted_country(n_vals, NA_STRING),
-        quoted_country_code(n_vals, NA_STRING),
-        quoted_bbox_coords( n_vals, vec_dbl(0)),
-        name(n_vals, NA_STRING),
-        location(n_vals, NA_STRING),
+        contributors_enabled(n_vals, NA_LOGICAL),
+        country_code(n_vals, NA_STRING),
+        country(n_vals, NA_STRING),
+        created_at(n_vals, NA_STRING),
         description(n_vals, NA_STRING),
-        url(n_vals, NA_STRING),
-        protected_(n_vals, NA_LOGICAL),
+        favourites_count(n_vals, NA_INTEGER),
         followers_count(n_vals, NA_INTEGER),
         friends_count(n_vals, NA_INTEGER),
+        hashtags( n_vals, NA_STRING ),
+        is_quote(n_vals, NA_LOGICAL),
+        is_retweeted(n_vals, NA_LOGICAL),
+        lang(n_vals, NA_STRING),
         listed_count(n_vals, NA_INTEGER),
-        statuses_count(n_vals, NA_INTEGER),
-        favourites_count(n_vals, NA_INTEGER),
-        account_created_at(n_vals, NA_STRING),
-        verified(n_vals, NA_LOGICAL),
-        account_lang(n_vals, NA_STRING),
+        location(n_vals, NA_STRING),
+        media_expanded_url(n_vals, NA_STRING),
+        media_type(n_vals, NA_STRING),
+        media_url(n_vals, NA_STRING),
+        mentions_screen_name( n_vals, NA_STRING),
+        mentions_user_id( n_vals, NA_STRING),
+        name(n_vals, NA_STRING),
+        place_full_name(n_vals, NA_STRING),
+        place_name(n_vals, NA_STRING),
+        place_type(n_vals, NA_STRING),
+        place_url(n_vals, NA_STRING),
         profile_banner_url(n_vals, NA_STRING),
         profile_image_url(n_vals, NA_STRING),
+        protected_(n_vals, NA_LOGICAL),
+        quoted_bbox_coords( n_vals, vec_dbl(0)),
+        quoted_country_code(n_vals, NA_STRING),
+        quoted_country(n_vals, NA_STRING),
+        quoted_created_at(n_vals, NA_STRING),
+        quoted_description(n_vals, NA_STRING),
+        quoted_favorite_count(n_vals, NA_INTEGER),
+        quoted_followers_count(n_vals, NA_INTEGER),
+        quoted_friends_count(n_vals, NA_INTEGER),
+        quoted_location(n_vals, NA_STRING),
+        quoted_name(n_vals, NA_STRING),
+        quoted_place_full_name(n_vals, NA_STRING),
+        quoted_place_name(n_vals, NA_STRING),
+        quoted_place_type(n_vals, NA_STRING),
+        quoted_place_url(n_vals, NA_STRING),
+        quoted_retweet_count(n_vals, NA_INTEGER),
+        quoted_screen_name(n_vals, NA_STRING),
+        quoted_source(n_vals, NA_STRING),
+        quoted_status_id(n_vals, NA_STRING),
+        quoted_statuses_count(n_vals, NA_INTEGER),
+        quoted_text(n_vals, NA_STRING),
+        quoted_user_id(n_vals, NA_STRING),
+        quoted_verified(n_vals, NA_LOGICAL),
+        reply_to_screen_name(n_vals, NA_STRING),
+        reply_to_status_id(n_vals, NA_STRING),
+        reply_to_user_id(n_vals, NA_STRING),
+        retweet_bbox_coords( n_vals, vec_dbl(0) ),
+        retweet_country_code(n_vals, NA_STRING),
+        retweet_country(n_vals, NA_STRING),
+        retweet_created_at(n_vals, NA_STRING),
+        retweet_description(n_vals, NA_STRING),
+        retweet_favorite_count(n_vals, NA_INTEGER),
+        retweet_followers_count(n_vals, NA_INTEGER),
+        retweet_friends_count(n_vals, NA_INTEGER),
+        retweet_location(n_vals, NA_STRING),
+        retweet_name(n_vals, NA_STRING),
+        retweet_place_full_name(n_vals, NA_STRING),
+        retweet_place_name(n_vals, NA_STRING),
+        retweet_place_type(n_vals, NA_STRING),
+        retweet_place_url(n_vals, NA_STRING),
+        retweet_retweet_count(n_vals, NA_INTEGER),
+        retweet_screen_name(n_vals, NA_STRING),
+        retweet_source(n_vals, NA_STRING),
+        retweet_status_id(n_vals, NA_STRING),
+        retweet_statuses_count(n_vals, NA_INTEGER),
+        retweet_text(n_vals, NA_STRING),
+        retweet_user_id(n_vals, NA_STRING),
+        retweet_verified(n_vals, NA_LOGICAL),
+        screen_name(n_vals, NA_STRING),
+        source(n_vals, NA_STRING),
+        status_id(n_vals, NA_STRING),
+        statuses_count(n_vals, NA_INTEGER),
+        text(n_vals, NA_STRING),
         timestamp_ms(n_vals, NA_REAL),
-        contributors_enabled(n_vals, NA_LOGICAL)
+        url(n_vals, NA_STRING),
+        urls_expanded_url(n_vals, NA_STRING),
+        user_id(n_vals, NA_STRING),
+        verified(n_vals, NA_LOGICAL)
         {};
 
 
