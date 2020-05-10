@@ -1,19 +1,18 @@
 // Copyright (C) 2019 Brendan Knapp
 // This file is part of tweetio.
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 
 #ifndef TWEETIO_JSON_H
 #define TWEETIO_JSON_H
@@ -23,12 +22,12 @@
 namespace tweetio {
 
 inline Rcpp::String finalize_chr(const rapidjson::Value& x) {
-  std::string res = x.GetString();
-    // std::remove(std::begin(res), std::end(res), '\0');
+  const std::string res = x.GetString();
+  // std::remove(std::begin(res), std::end(res), '\0');
 
   if (res.find_first_not_of(' ') != std::string::npos) {
-    Rcpp::String out( res.c_str() );
-    return out;
+    return Rcpp::String(
+        res.c_str());  // wrapping here preserves encoding on Windows
   }
 
   return NA_STRING;
@@ -38,23 +37,24 @@ inline Rcpp::String get_chr(const rapidjson::Value& x) {
   return x.IsString() ? finalize_chr(x) : NA_STRING;
 }
 
-inline void set_chr(vec_chr& init, const int index,  const rapidjson::Value& val) {
+inline void set_chr(vec_chr& init,
+                    const int index,
+                    const rapidjson::Value& val) {
   if (val.IsString()) {
-    init[index] = val.GetString();
+    init[index] = finalize_chr(val);
   }
 }
-
 
 inline double get_timestamp_ms(const rapidjson::Value& x) {
-  if ( !x.IsString() ) {
+  if (!x.IsString()) {
     return NA_REAL;
   }
-  auto init = x.GetString();
-  return std::atof(init) / 1000;
+
+  return std::atof(x.GetString()) / 1000;
 }
 
-
-// inline Rcpp::String get_chr2(const Rcpp::String& target, const rapidjson::Value& x) {
+// inline Rcpp::String get_chr2(const Rcpp::String& target, const
+// rapidjson::Value& x) {
 //   if (x.IsString()) {
 //     return Rcpp::String( x.GetString() ) ;
 //   } else {
@@ -62,58 +62,79 @@ inline double get_timestamp_ms(const rapidjson::Value& x) {
 //   }
 // }
 
-inline Rcpp::String get_chr_check(const rapidjson::Value& a, const rapidjson::Value& b) {
-  if (a.IsString() ) {
+inline Rcpp::String get_chr_check(const rapidjson::Value& a,
+                                  const rapidjson::Value& b) {
+  if (a.IsString()) {
     return finalize_chr(a);
   }
-  if ( b.IsString() ) {
+  if (b.IsString()) {
     return finalize_chr(b);
   }
   return NA_STRING;
 }
 
-
+inline void set_chr_check(vec_chr& init,
+                          const int index,
+                          const rapidjson::Value& a,
+                          const rapidjson::Value& b) {
+  if (a.IsString()) {
+    init[index] = finalize_chr(a);
+  } else if (b.IsString()) {
+    init[index] = finalize_chr(b);
+  }
+}
 
 inline int get_int(const rapidjson::Value& x) {
   return x.IsInt() ? x.GetInt() : NA_INTEGER;
 }
 
-// inline int64_t get_int64(const rapidjson::Value& x) {
-//   return x.IsInt64() ? x.GetInt64() : INT64_MIN;
-// }
+inline void set_int64(vec_dbl& init,
+                      const int index,
+                      const rapidjson::Value& x) {
+  if (x.IsInt64()) {
+    init[index] = x.GetInt64();
+  }
+}
 
 inline double get_dbl(const rapidjson::Value& x) {
   return x.IsNumber() ? x.GetDouble() : NA_REAL;
 }
 
-
 inline bool get_lgl(const rapidjson::Value& x) {
   return x.IsBool() ? x.GetBool() : NA_LOGICAL;
 }
 
+inline void set_lgl(vec_lgl& init, const int index, const rapidjson::Value& x) {
+  if (x.IsBool()) {
+    init[index] = x.GetBool();
+  }
+}
 
-inline vec_chr map_entities(const rapidjson::Value& x, const std::string& entity, const std::string& inner_name) {
-  const int ext_n = x["extended_tweet"]["entities"][ entity.c_str() ].Size();
-  const int reg_n = x["entities"][ entity.c_str() ].Size();
+inline vec_chr map_entities(const rapidjson::Value& x,
+                            const std::string& entity,
+                            const std::string& inner_name) {
+  const int ext_n = x["extended_tweet"]["entities"][entity.c_str()].Size();
+  const int reg_n = x["entities"][entity.c_str()].Size();
 
   if (ext_n == 0 && reg_n == 0) {
-    return vec_chr{NA_STRING};
+    return vec_chr::create(NA_STRING);
   }
 
   if (ext_n != 0) {
-    const rapidjson::Value& entities = x["extended_tweet"]["entities"][ entity.c_str() ];
+    const rapidjson::Value& entities =
+        x["extended_tweet"]["entities"][entity.c_str()];
     vec_chr out(ext_n);
     for (int i = 0; i < ext_n; ++i) {
-      out[i] = get_chr( entities[i][ inner_name.c_str() ] );
+      out[i] = get_chr(entities[i][inner_name.c_str()]);
     }
 
     return out;
-  } 
-  
-  const rapidjson::Value& entities = x["entities"][ entity.c_str() ];
+  }
+
+  const rapidjson::Value& entities = x["entities"][entity.c_str()];
   vec_chr out(reg_n);
   for (int i = 0; i < reg_n; ++i) {
-    out[i] = get_chr( entities[i][ inner_name.c_str() ] );
+    out[i] = get_chr(entities[i][inner_name.c_str()]);
   }
 
   return out;
@@ -127,23 +148,22 @@ inline vec_dbl get_bbox(const rapidjson::Value& x) {
 
   const auto bbox = x.GetArray();
 
-  const auto out = vec_dbl::create(
-    bbox[0].GetArray()[0].GetArray()[0].GetDouble(),
-    bbox[0].GetArray()[1].GetArray()[0].GetDouble(),
-    bbox[0].GetArray()[2].GetArray()[0].GetDouble(),
-    bbox[0].GetArray()[3].GetArray()[0].GetDouble(),
-    
-    bbox[0].GetArray()[0].GetArray()[1].GetDouble(),
-    bbox[0].GetArray()[1].GetArray()[1].GetDouble(),
-    bbox[0].GetArray()[2].GetArray()[1].GetDouble(),
-    bbox[0].GetArray()[3].GetArray()[1].GetDouble()
-  );
+  const auto out =
+      vec_dbl::create(bbox[0].GetArray()[0].GetArray()[0].GetDouble(),
+                      bbox[0].GetArray()[1].GetArray()[0].GetDouble(),
+                      bbox[0].GetArray()[2].GetArray()[0].GetDouble(),
+                      bbox[0].GetArray()[3].GetArray()[0].GetDouble(),
+
+                      bbox[0].GetArray()[0].GetArray()[1].GetDouble(),
+                      bbox[0].GetArray()[1].GetArray()[1].GetDouble(),
+                      bbox[0].GetArray()[2].GetArray()[1].GetDouble(),
+                      bbox[0].GetArray()[3].GetArray()[1].GetDouble());
 
   return out;
 }
 
-
-inline Rcpp::List get_meta_results(const rapidjson::Value& x, const std::string& outer_name) {
+inline Rcpp::List get_meta_results(const rapidjson::Value& x,
+                                   const std::string& outer_name) {
   const auto default_val = Rcpp::List(vec_chr{NA_STRING});
 
   const auto top_level = x[outer_name.c_str()].GetArray();
@@ -165,16 +185,15 @@ inline Rcpp::List get_meta_results(const rapidjson::Value& x, const std::string&
 
   vec_chr out(out_n);
   for (int i = 0; i < out_n; ++i) {
-    out[i] = get_chr( res[i] );
+    out[i] = get_chr(res[i]);
   }
 
   return Rcpp::List(out);
 }
 
-
-inline vec_chr get_nested_meta_results(const rapidjson::Value& x, 
-                                       const std::string& outer_name, 
-                                       const std::string& inner_name, 
+inline vec_chr get_nested_meta_results(const rapidjson::Value& x,
+                                       const std::string& outer_name,
+                                       const std::string& inner_name,
                                        const bool is_metadata = false) {
   const auto default_val = vec_chr{NA_STRING};
 
@@ -183,13 +202,13 @@ inline vec_chr get_nested_meta_results(const rapidjson::Value& x,
   if (!top_level.IsArray() || top_level.GetArray().Size() == 0) {
     return default_val;
   }
-  
+
   const auto& target = top_level[0].GetObject()["results"];
   if (!target.IsArray() || target.GetArray().Size() == 0) {
     return default_val;
   }
 
-  if ( !target.IsArray() ) {
+  if (!target.IsArray()) {
     return default_val;
   }
 
@@ -205,34 +224,32 @@ inline vec_chr get_nested_meta_results(const rapidjson::Value& x,
     const auto& results_obj = target[i];
 
     if (is_metadata) {
-      if ( !results_obj["metadata"].IsObject() ) {
+      if (!results_obj["metadata"].IsObject()) {
         out[i] = NA_STRING;
         continue;
       }
 
       const auto& metadata = results_obj["metadata"].GetObject();
-      out[i] = get_chr( metadata[ inner_name.c_str() ] );
+      out[i] = get_chr(metadata[inner_name.c_str()]);
       continue;
     }
 
-    if ( !results_obj.IsObject() ) {
-      out[i] = NA_STRING;
-      continue;
-    } 
-    
-    if (results_obj.FindMember( inner_name.c_str() ) == results_obj.MemberEnd()) {
+    if (!results_obj.IsObject()) {
       out[i] = NA_STRING;
       continue;
     }
 
-    out[i] = get_chr( results_obj[inner_name.c_str()] );
+    if (results_obj.FindMember(inner_name.c_str()) == results_obj.MemberEnd()) {
+      out[i] = NA_STRING;
+      continue;
+    }
+
+    out[i] = get_chr(results_obj[inner_name.c_str()]);
   }
 
   return out;
 }
 
-
-
-} // namespace tweetio
+}  // namespace tweetio
 
 #endif

@@ -125,6 +125,10 @@ as_tweet_sf.data.table <- function(tweet_df,
 
 
 .prep_sf_points <- function(tweet_df, geom_col) {
+  # silence R CMD Check NOTE ===================================================
+  geometry <- NULL
+  # ============================================================================
+  
   valid_rows <- .map_lgl(
     tweet_df[[geom_col]],
     function(.x) length(.x) == 2L && is.double(.x) && !any(is.na(.x))
@@ -159,6 +163,10 @@ as_tweet_sf.data.table <- function(tweet_df,
 }
 
 .prep_sf_polygons <- function(tweet_df, geom_col) {
+  # silence R CMD Check NOTE ===================================================
+  geometry <- NULL
+  # ============================================================================
+  
   valid_rows <- .map_lgl(
     tweet_df[[geom_col]],
     function(.x) length(.x) == 8L && is.double(.x) && !any(is.na(.x))

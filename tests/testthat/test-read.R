@@ -55,5 +55,17 @@ test_that("reading rtweet stream works", {
     read_tweets(example_tweet_file(), as_tibble = TRUE, verbose = TRUE),
     "tbl_df"
   )
+  
+  int64_id_schema <- target_schema
+  int64_id_schema[
+    grepl("_id", names(int64_id_schema)) & int64_id_schema != "list"
+    ] <- "integer64"
+  
+  expect_true(
+    identical(
+      lapply(read_tweets(example_tweet_file(), int64_ids = TRUE), class),
+      int64_id_schema
+    )
+  )
 
 })

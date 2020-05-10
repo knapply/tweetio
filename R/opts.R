@@ -9,7 +9,8 @@
 tweetio_options <- function() {
   list(
     tweetio.as_tibble = tweetio_as_tibble(),
-    tweetio.verbose = tweetio_verbose()
+    tweetio.verbose = tweetio_verbose(),
+    tweetio.int64_ids = tweetio_int64_ids()
   )
 }
 
@@ -26,4 +27,12 @@ tweetio_as_tibble <- function() {
 #' @export
 tweetio_verbose <- function() {
   getOption("tweetio.verbose", FALSE)
+}
+
+
+#' @rdname tweetio_options
+#' 
+#' @export
+tweetio_int64_ids <- function() {
+  getOption("tweetio.int64_ids", FALSE)
 }

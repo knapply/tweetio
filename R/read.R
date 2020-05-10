@@ -1,23 +1,3 @@
-# // Copyright (C) 2019 Brendan Knapp
-# // This file is part of tweetio.
-# // 
-# // This program is free software: you can redistribute it and/or modify
-# // it under the terms of the GNU General Public License as published by
-# // the Free Software Foundation, either version 3 of the License, or
-# // (at your option) any later version.
-# // 
-# // This program is distributed in the hope that it will be useful,
-# // but WITHOUT ANY WARRANTY; without even the implied warranty of
-# // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# // GNU General Public License for more details.
-# // 
-# // You should have received a copy of the GNU General Public License
-# // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-
-
-#' @template author-bk
-#' 
 #' @importFrom data.table := setDT
 .read_tweets <- function(file_path, verbose, ...) {
   # silence R CMD Check NOTE =============================================================
@@ -95,10 +75,11 @@
 read_tweets <- function(file_path, 
                         as_tibble = tweetio_as_tibble(),
                         verbose = tweetio_verbose(),
+                        int64_ids = tweetio_int64_ids(),
                         ...) {
   out <- .read_tweets(file_path, verbose, ...)
 
-  out <- .finalize_cols(out)
+  out <- .finalize_cols(out, int64_ids = int64_ids)
 
   .finalize_df(out, as_tibble = as_tibble)
 }
@@ -112,12 +93,14 @@ read_tweets <- function(file_path,
 #' @param strategy Default: `NULL`. argument passed to `future::plan()`'s `strategy` parameter.
 #'   If `NULL`, `future::multiprocess` is used. Ignored if `{future}` or `{future.apply}` are not installed.
 #' @template param-as_tibble
+#' @template param-int64_ids
 #' 
 #' @importFrom data.table rbindlist
 #' @export
 read_tweets_bulk <- function(file_path, 
                              as_tibble = tweetio_as_tibble(),
                              verbose = tweetio_verbose(), 
+                             int64_ids = tweetio_int64_ids(),
                              in_parallel = TRUE, strategy = NULL, ...) {
   if (length(file_path) == 1L) {
     return(read_tweets(file_path))
@@ -138,7 +121,7 @@ read_tweets_bulk <- function(file_path,
   
   out <- rbindlist(init, use.names = TRUE, fill = TRUE)
   
-  out <- .finalize_cols(out)
+  out <- .finalize_cols(out, int64_ids = int64_ids)
   
   .finalize_df(out, as_tibble = as_tibble)
 }
@@ -184,10 +167,11 @@ read_tweets_bulk <- function(file_path,
 }
 
 
-#' @importFrom bit64 as.integer64
 #' @importFrom data.table .SD fifelse
 #' @importFrom stringi stri_extract_first_regex stri_replace_all_regex
-.finalize_cols <- function(proto_tweet_df, clean_source_cols = TRUE, ...) {
+.finalize_cols <- function(proto_tweet_df, 
+                           clean_source_cols = TRUE, 
+                           int64_ids, ...) {
   # silence R CMD Check NOTE =============================================================
   bbox_coords <- NULL
   is_retweet <- NULL
@@ -209,28 +193,7 @@ read_tweets_bulk <- function(file_path,
     proto_tweet_df[, (dttm_cols) := lapply(.SD, format_dttm),
                    .SDcols = dttm_cols]
   }
-  
-  atomic_id_cols <- intersect(
-    names(proto_tweet_df),
-    c("user_id", "status_id",
-      "reply_to_status_id", "reply_to_user_id",
-      "quoted_status_id", "quoted_user_id", 
-      "retweet_status_id", "retweet_user_id")
-  )
-  if (length(atomic_id_cols)) {
-    proto_tweet_df[, (atomic_id_cols) := lapply(.SD, as.integer64),
-                   .SDcols = atomic_id_cols]
-  }
-  
-  list_id_cols <- intersect(
-    names(proto_tweet_df),
-    c("mentions_user_id")
-  )
-  if (length(list_id_cols)) {
-    proto_tweet_df[, (list_id_cols) := lapply(.SD, lapply, as.integer64),
-                   .SDcols = list_id_cols]
-  }
-  
+
   # there are some occasional control characters that end up in the strings.
   # AFAIK, they are always `\0`, which aren't allowed in XML files.
   # To be on the safe side, all control characters are stripped here.
@@ -266,9 +229,7 @@ read_tweets_bulk <- function(file_path,
   if (length(status_url_cols)) {
     proto_tweet_df <- proto_tweet_df[
       , (status_url_cols) := lapply(.SD, function(.x) {
-        fifelse(is.na(.x), 
-                as.character(.x),
-                paste0("https://twitter.com/i/web/status/", .x))
+        fifelse(is.na(.x), .x, paste0("https://twitter.com/i/web/status/", .x))
       }),
       .SDcols = names(status_url_cols)
     ]
@@ -297,6 +258,29 @@ read_tweets_bulk <- function(file_path,
                                   '(?<=">).*?(?=</a>$)'),
         .SDcols = source_cols
       ]
+    }
+  }
+  
+  if (int64_ids && requireNamespace("bit64", quietly = TRUE)) {
+    atomic_id_cols <- intersect(
+      names(proto_tweet_df),
+      c("user_id", "status_id",
+        "reply_to_status_id", "reply_to_user_id",
+        "quoted_status_id", "quoted_user_id",
+        "retweet_status_id", "retweet_user_id")
+    )
+    if (length(atomic_id_cols)) {
+      proto_tweet_df[, (atomic_id_cols) := lapply(.SD, bit64::as.integer64),
+                     .SDcols = atomic_id_cols]
+    }
+    
+    list_id_cols <- intersect(
+      names(proto_tweet_df),
+      c("mentions_user_id")
+    )
+    if (length(list_id_cols)) {
+      proto_tweet_df[, (list_id_cols) := lapply(.SD, lapply, bit64::as.integer64),
+                     .SDcols = list_id_cols]
     }
   }
   

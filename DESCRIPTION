@@ -22,7 +22,6 @@ LinkingTo:
     Rcpp, 
     RcppProgress
 Imports:
-    bit64,
     data.table (>= 1.12.4),
     jsonify,
     magrittr,
@@ -30,6 +29,7 @@ Imports:
     stringi,
     utils
 Suggests:
+    bit64,
     covr,
     igraph,
     knitr,

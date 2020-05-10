@@ -26,6 +26,7 @@ typedef Rcpp::Vector<STRSXP>  vec_chr;
 typedef Rcpp::Vector<LGLSXP>  vec_lgl;
 typedef Rcpp::Vector<INTSXP>  vec_int;
 
+#define NA_INTEGER64 LLONG_MIN
 
 } // namespace tweetio
 

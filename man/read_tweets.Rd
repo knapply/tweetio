@@ -9,6 +9,7 @@ read_tweets(
   file_path,
   as_tibble = tweetio_as_tibble(),
   verbose = tweetio_verbose(),
+  int64_ids = tweetio_int64_ids(),
   ...
 )
 
@@ -16,6 +17,7 @@ read_tweets_bulk(
   file_path,
   as_tibble = tweetio_as_tibble(),
   verbose = tweetio_verbose(),
+  int64_ids = tweetio_int64_ids(),
   in_parallel = TRUE,
   strategy = NULL,
   ...
@@ -30,6 +32,10 @@ package is not installed.}
 
 \item{verbose}{\verb{<logical>}, Default: \code{tweetio_verbose()}.
 Whether to show diagnostic or progress messages.}
+
+\item{int64_ids}{\verb{<logical>}, Default: \code{tweetio_int64_ids()}.
+Whether to cast ID variables (\code{user_id}, \code{status_id}, etc.) to
+\code{bit64::integer64()}s. Ignored if \code{{bit64}} is not isntalled.}
 
 \item{...}{Arguments passed to or from other methods.}
 

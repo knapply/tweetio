@@ -38,7 +38,10 @@ class TweetDF {
     vec_lgl contributors_enabled;
 
     vec_chr user_id;
+    // vec_dbl user_id;
     vec_chr status_id;
+    // std::vector<int64_t> status_id;
+
     vec_chr created_at;
     vec_chr screen_name;
     vec_chr text;
@@ -114,7 +117,7 @@ class TweetDF {
 
     public:
     // TweetDF() {};
-    ~TweetDF() {};
+    // ~TweetDF() {};
 
     int get_current_index() {
         return this->current_index;
@@ -133,13 +136,13 @@ class TweetDF {
         reply_to_screen_name(n_vals, NA_STRING),
         is_quote(n_vals, NA_LOGICAL),
         is_retweeted(n_vals, NA_LOGICAL),
-        hashtags( n_vals, vec_chr(0) ),
-        urls_expanded_url( n_vals, vec_chr(0) ),
-        media_url( n_vals, vec_chr(0) ),
-        media_expanded_url( n_vals, vec_chr(0) ),
+        hashtags( n_vals, NA_STRING ),
+        urls_expanded_url(n_vals, NA_STRING),
+        media_url(n_vals, NA_STRING),
+        media_expanded_url(n_vals, NA_STRING),
         media_type(n_vals, NA_STRING),
-        mentions_user_id( n_vals, vec_chr(0)),
-        mentions_screen_name( n_vals, vec_chr(0) ),
+        mentions_user_id( n_vals, NA_STRING),
+        mentions_screen_name( n_vals, NA_STRING),
         lang(n_vals, NA_STRING),
         quoted_status_id(n_vals, NA_STRING),
         quoted_text(n_vals, NA_STRING),
@@ -213,23 +216,19 @@ class TweetDF {
 
 
     void push(const rapidjson::Value& x) {
-        // this->status_id[this->current_index]  =   get_chr2(this->status_id[this->current_index], x["id_str"] );
-        // this->user_id[this->current_index]  =   get_chr2(this->user_id[this->current_index], x["user"]["id_str"] );
-        // this->created_at[this->current_index] = get_chr2(this->created_at[this->current_index], x["created_at"] );
+        // set_chr(, current_index, );
         set_chr(user_id, current_index, x["user"]["id_str"]);
-        // this->user_id[this->current_index]                     = get_chr( x["user"]["id_str"] );
-        // this->status_id[this->current_index]                   = get_chr( x["id_str"] );
         set_chr(status_id, current_index, x["id_str"]);
         set_chr(created_at, current_index, x["created_at"]);
-        // this->created_at[this->current_index]                  = get_chr( x["created_at"] );
-        this->screen_name[this->current_index]                 = get_chr( x["user"]["screen_name"] );
-        this->text[this->current_index]                        = get_chr_check( x["extended_tweet"]["full_text"], x["text"] );
-        this->source[this->current_index]                      = get_chr( x["source"] );
-        this->reply_to_status_id[this->current_index]          = get_chr( x["in_reply_to_status_id_str"] );
-        this->reply_to_user_id[this->current_index]            = get_chr( x["in_reply_to_user_id_str"] );
-        this->reply_to_screen_name[this->current_index]        = get_chr( x["in_reply_to_screen_name"] );
-        this->is_quote[this->current_index]                    = get_lgl( x["is_quote_status"] );
-        this->is_retweeted[this->current_index]                = get_lgl( x["retweeted"] );
+        set_chr(screen_name, current_index, x["user"]["screen_name"]);
+        set_chr_check(text, current_index, x["extended_tweet"]["full_text"], x["text"]);
+        
+        set_chr(source, current_index, x["source"]);
+        set_chr(reply_to_status_id, current_index, x["in_reply_to_status_id_str"]);
+        set_chr(reply_to_user_id, current_index, x["in_reply_to_user_id_str"]);
+        set_chr(reply_to_screen_name, current_index, x["in_reply_to_screen_name"]);
+        set_lgl(is_quote, current_index, x["is_quote_status"]);
+        set_lgl(is_retweeted, current_index, x["retweeted"]);
 
         this->hashtags[this->current_index]                    = map_entities(x, "hashtags", "text");
         this->urls_expanded_url[this->current_index]           = map_entities(x, "urls", "expanded_url");
@@ -241,9 +240,8 @@ class TweetDF {
         this->mentions_user_id[this->current_index]            = map_entities(x, "user_mentions", "id_str");
         this->mentions_screen_name[this->current_index]        = map_entities(x, "user_mentions", "screen_name");
 
-        this->lang[this->current_index]                        = get_chr( x["lang"] );
-
-        this->quoted_status_id[this->current_index]            = get_chr( x["quoted_status_id_str"] );
+        set_chr(lang, current_index, x["lang"]);
+        set_chr(quoted_status_id, current_index, x["quoted_status_id_str"]);
         this->quoted_text[this->current_index]                 = get_chr_check( x["quoted_status"]["extended_tweet"]["full_text"], x["quoted_status"]["text"] );
         this->quoted_created_at[this->current_index]           = get_chr( x["quoted_status"]["created_at"] );
         this->quoted_source[this->current_index]               = get_chr( x["quoted_status"]["source"] );
@@ -428,8 +426,9 @@ class TweetDF {
 
         constexpr int n_cols = 87;
         Rcpp::List columns(n_cols);
-        columns[0]   = this->user_id[seq_out];
-        columns[1]   = this->status_id[seq_out];
+
+        columns[0]   = user_id[seq_out];
+        columns[1]   = status_id[seq_out];
         columns[2]   = this->created_at[seq_out];
         columns[3]   = this->screen_name[seq_out];
         columns[4]   = this->text[seq_out];

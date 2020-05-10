@@ -129,7 +129,7 @@ small_rtweet_stream <- "inst/example-data/api-stream-small.json.gz"
 
 res <- bench::mark(
   rtweet = rtweet::parse_stream(small_rtweet_stream),
-  tweetio = tweetio::read_tweets(small_rtweet_stream)
+  tweetio = read_tweets(small_rtweet_stream)
   ,
   check = FALSE,
   filter_gc = FALSE
@@ -165,8 +165,8 @@ c(`compressed MB` = file.size(big_tweet_stream_path) / 1e6,
 
 ```{r}
 res <- bench::mark(
-  rtweet = rtweet_df <- rtweet::parse_stream(big_tweet_stream_path),
-  tweetio = tweetio_df <- tweetio::read_tweets(big_tweet_stream_path)
+  # rtweet = rtweet_df <- rtweet::parse_stream(big_tweet_stream_path),
+  tweetio = tweetio_df <- read_tweets(big_tweet_stream_path)
   ,
   filter_gc = FALSE,
   check = FALSE,
@@ -175,6 +175,12 @@ res <- bench::mark(
 
 res[, 1:9]
 ```
+
+```{r, eval=FALSE, echo=FALSE}
+pryr::object_size(tweetio_df)
+tweetio_df %>% tibble::as_tibble()
+```
+
 
 Not only is `tweetio::read_tweets()` more efficient in time and memory usage, it's able to successfully parse much more of the data.
 
