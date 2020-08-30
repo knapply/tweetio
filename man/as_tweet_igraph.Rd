@@ -74,5 +74,5 @@ tweet_df \%>\%
 \code{\link[=as_proto_net]{as_proto_net()}}, \code{\link[=as_tweet_network]{as_tweet_network()}}
 }
 \author{
-Brendan Knapp \email{brendan.g.knapp@nps.edu}
+Brendan Knapp \email{brendan.g.knapp@gmail.com}
 }

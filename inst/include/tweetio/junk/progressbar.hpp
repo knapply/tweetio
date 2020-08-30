@@ -40,7 +40,7 @@ namespace tweetio {
 
 
 
-void msg(std::string x, bool appendLF = true) { 
+inline void msg(std::string x, bool appendLF = true) { 
     Rcpp::Function msg("message"); 
     msg(x, Rcpp::_["appendLF"] = appendLF);
 }

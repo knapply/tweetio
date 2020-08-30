@@ -65,5 +65,5 @@ split_users[vapply(split_users, function(.x) nrow(.x) > 5, logical(1L))][1:3]
 
 }
 \author{
-Brendan Knapp \email{brendan.g.knapp@nps.edu}
+Brendan Knapp \email{brendan.g.knapp@gmail.com}
 }

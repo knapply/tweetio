@@ -43,54 +43,54 @@ int count_lines(const std::string& file_path) {
 }
 
 
-TweetFileType detect_file_type(const std::string& file_path) {
-  igzstream in_file;
-  in_file.open( file_path.c_str() );
+// TweetFileType detect_file_type(const std::string& file_path) {
+//   igzstream in_file;
+//   in_file.open( file_path.c_str() );
 
-  char first_char = in_file.peek();
-  if (first_char == '[') {
-    in_file.close();
-    return TweetFileType::pulse_array;
-  }
-  if (first_char == '{') {
-    first_char = in_file.get();
-    const char second_char = in_file.peek();
-    if (second_char != '"') {
-      Rcpp::stop("Unknown file schema.");
-    }
-  }
+//   char first_char = in_file.peek();
+//   if (first_char == '[') {
+//     in_file.close();
+//     return TweetFileType::pulse_array;
+//   }
+//   if (first_char == '{') {
+//     first_char = in_file.get();
+//     const char second_char = in_file.peek();
+//     if (second_char != '"') {
+//       Rcpp::stop("Unknown file schema.");
+//     }
+//   }
 
-  // can't use in_file.seekg() on igzstream, so reset if character consumed
-  in_file.close();
-  in_file.open( file_path.c_str() );
+//   // can't use in_file.seekg() on igzstream, so reset if character consumed
+//   in_file.close();
+//   in_file.open( file_path.c_str() );
   
-  std::string line_string;
-  rapidjson::Document test_parse;
-  rapidjson::ParseResult parse_successful;
-  while ( std::getline(in_file, line_string) ) {
-    if ( !line_string.empty() ) {
-      parse_successful = test_parse.Parse( line_string.c_str() );
-      if (parse_successful) {
-        break;
-      }
-    }
-  }
-  in_file.close();
+//   std::string line_string;
+//   rapidjson::Document test_parse;
+//   rapidjson::ParseResult parse_successful;
+//   while ( std::getline(in_file, line_string) ) {
+//     if ( !line_string.empty() ) {
+//       parse_successful = test_parse.Parse( line_string.c_str() );
+//       if (parse_successful) {
+//         break;
+//       }
+//     }
+//   }
+//   in_file.close();
   
-  if ( !parse_successful ) {
-    Rcpp::stop("File does not contain any valid JSON.");
-  }
+//   if ( !parse_successful ) {
+//     Rcpp::stop("File does not contain any valid JSON.");
+//   }
 
-  if ( test_parse["id_str"].IsString() || test_parse["delete"]["status"]["id_str"].IsString() ) {
-    return TweetFileType::twitter_api_stream;
-  }
+//   if ( test_parse["id_str"].IsString() || test_parse["delete"]["status"]["id_str"].IsString() ) {
+//     return TweetFileType::twitter_api_stream;
+//   }
 
-  if ( test_parse["doc"].IsObject() ) {
-    return TweetFileType::pulse_nested_doc;
-  }
+//   if ( test_parse["doc"].IsObject() ) {
+//     return TweetFileType::pulse_nested_doc;
+//   }
 
-  Rcpp::stop("Unknown file schema.");
-}
+//   Rcpp::stop("Unknown file schema.");
+// }
 
 
 template<TweetFileType>

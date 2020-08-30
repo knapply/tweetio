@@ -9,8 +9,8 @@ prep_bbox <- function(bbox_coords, lon_lat = TRUE) {
     .Call(`_tweetio_prep_bbox`, bbox_coords, lon_lat)
 }
 
-read_tweets_impl <- function(file_path, verbose = FALSE) {
-    .Call(`_tweetio_read_tweets_impl`, file_path, verbose)
+.read_tweets <- function(file_paths, reserve, verbose, batch_size, doc_pointer = "") {
+    .Call(`_tweetio_read_tweets`, file_paths, reserve, verbose, batch_size, doc_pointer)
 }
 
 unnest_entities_impl <- function(tracker, source, target, col_names) {

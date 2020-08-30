@@ -132,10 +132,6 @@ extract_users.data.table <- function(tweet_df,
   observation_type <- NULL
   # ======================================================================================
   
-  if (!.is_dt(tweet_df)) {
-    tweet_df <- .as_dt(tweet_df)
-  }
-  
   split_users <- .compact(
     lapply(user_col_names(tweet_df), 
            function(.x) standardize_cols(tweet_df[, .x, with = FALSE]))

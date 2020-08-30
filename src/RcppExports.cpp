@@ -29,15 +29,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// read_tweets_impl
-Rcpp::List read_tweets_impl(const std::string& file_path, const bool verbose);
-RcppExport SEXP _tweetio_read_tweets_impl(SEXP file_pathSEXP, SEXP verboseSEXP) {
+// read_tweets
+SEXP read_tweets(const std::vector<std::string>& file_paths, const double reserve, const bool verbose, double batch_size, const std::string doc_pointer);
+RcppExport SEXP _tweetio_read_tweets(SEXP file_pathsSEXP, SEXP reserveSEXP, SEXP verboseSEXP, SEXP batch_sizeSEXP, SEXP doc_pointerSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string& >::type file_path(file_pathSEXP);
+    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type file_paths(file_pathsSEXP);
+    Rcpp::traits::input_parameter< const double >::type reserve(reserveSEXP);
     Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_tweets_impl(file_path, verbose));
+    Rcpp::traits::input_parameter< double >::type batch_size(batch_sizeSEXP);
+    Rcpp::traits::input_parameter< const std::string >::type doc_pointer(doc_pointerSEXP);
+    rcpp_result_gen = Rcpp::wrap(read_tweets(file_paths, reserve, verbose, batch_size, doc_pointer));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -73,7 +76,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_tweetio_is_valid_bbox", (DL_FUNC) &_tweetio_is_valid_bbox, 2},
     {"_tweetio_prep_bbox", (DL_FUNC) &_tweetio_prep_bbox, 2},
-    {"_tweetio_read_tweets_impl", (DL_FUNC) &_tweetio_read_tweets_impl, 2},
+    {"_tweetio_read_tweets", (DL_FUNC) &_tweetio_read_tweets, 5},
     {"_tweetio_unnest_entities_impl", (DL_FUNC) &_tweetio_unnest_entities_impl, 4},
     {"_tweetio_unnest_entities2_impl", (DL_FUNC) &_tweetio_unnest_entities2_impl, 4},
     {NULL, NULL, 0}

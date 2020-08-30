@@ -108,10 +108,10 @@ as_proto_net.data.table <- function(tweet_df,
   
   targets <- list(
     main = if (target_class == "user") NULL else target,
-    retweet = paste0("retweet_", target),
-    reply_to = paste0("reply_to_", target),
-    quoted = paste0("quoted_", target),
-    mentions = paste0("mentions_", target)
+    retweet = sprintf("retweet_%s", target),
+    reply_to = sprintf("reply_to_%s", target),
+    quoted = sprintf("quoted_%s", target),
+    mentions = sprintf("mentions_%s", target)
   )
   targets <- .keep(.compact(targets), function(.x) .x %chin% names(tweet_df))
   
@@ -129,6 +129,11 @@ as_proto_net.data.table <- function(tweet_df,
                              target = res[["to"]],
                              col_names = c("from", "to", "status_id"))
       )
+      
+      if (target_class == "user") {
+        res[, from := bit64::as.integer64(from)] # TODO fix this at C++ level?
+        res[, to := bit64::as.integer64(to)]
+      }
     }
     
     unique(res[, relation := if (.y == "main") "uses" else .y])

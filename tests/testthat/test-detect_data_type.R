@@ -5,19 +5,19 @@ test_that("detecting data type works", {
   normal1 <- "{\"delete\":{\"status\":{\"id\":565342480917602305,\"id_str\":\"565342480917602305\",\"user_id\":1666065217,\"user_id_str\":\"1666065217\"},\"timestamp_ms\":\"1569693799718\"}}"
   write(normal1, temp_file)
   
-  # expect_equal(
-  #   nrow(read_tweets(temp_file)),
-  #   0
-  # )
+  expect_equal(
+    nrow(read_tweets(temp_file)),
+    0
+  )
   
   # "regular" status from API stream
-  normal2 <- '{"id_str":"1178007813257388032"}'
+  normal2 <- '{"id":1178007813257388032}'
   write(normal2, temp_file)
   expect_error(
     nrow(read_tweets(temp_file)),
     NA
   )
-  
+
   # zip file
   expect_error(
     nrow(read_tweets(system.file("example-data/test.zip", package = "tweetio"))),
@@ -25,23 +25,22 @@ test_that("detecting data type works", {
   )
 
   # Elasticsearch .jsonl tweet
-  nested_doc <- '{"doc":{"id_str":"1178007813257388032"}}'
+  nested_doc <- '{"doc":{"id":1178007813257388032}}'
   write(nested_doc, temp_file)
   expect_equal(
-    nrow(read_tweets(temp_file)),
+    nrow(.read_tweets(temp_file)),
     1
   )
   
   # Elasticsearch .jsonl non-tweet
   nested_doc <- '{"junk":[],"doc":{"kind":"test"}}'
   write(nested_doc, temp_file)
-  expect_equal(
-    nrow(read_tweets(temp_file)),
-    0
+  expect_error(
+    read_tweets(temp_file)
   )
   
   # Elasticsearch .json array tweet
-  nested_doc <- '[{"_source":{"doc":{"id_str":"1178007813257388032"}}},{"_source":{"doc":{"id_str":"1178007813257388032"}}}]'
+  nested_doc <- '[{"_source":{"doc":{"id":1178007813257388032}}},{"_source":{"doc":{id:1178007813257388032}}}]'
   write(nested_doc, temp_file)
   expect_equal(
     nrow(read_tweets(temp_file)),

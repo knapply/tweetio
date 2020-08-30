@@ -1,240 +1,181 @@
-// Copyright (C) 2019 Brendan Knapp
-// This file is part of tweetio.
-// 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#ifndef TWEETIO__JSON_HPP
+#define TWEETIO__JSON_HPP
 
 
-#ifndef TWEETIO_JSON_H
-#define TWEETIO_JSON_H
+// #include <boost/lexical_cast.hpp>
+// #include <boost/date_time.hpp>
 
-#include <rapidjson/document.h>
+#include <chrono>
+
+#include "common.hpp"
+
 
 namespace tweetio {
 
-inline Rcpp::String finalize_chr(const rapidjson::Value& x) {
-  std::string res = x.GetString();
-    // std::remove(std::begin(res), std::end(res), '\0');
-
-  if (res.find_first_not_of(' ') != std::string::npos) {
-    Rcpp::String out( res.c_str() );
-    return out;
+template <typename T, typename result_T> inline T to(result_T&& x) {
+  if (!x.error()) {
+    if (x.first.template is<uint64_t>() && !x.first.template is<int64_t>()) {
+      Rcpp::Rcout << "uint64_t found!!!!!!!!!!!!!!!!!" << std::endl;
+    }
+    if constexpr (std::is_same_v<T, std::string>) {
+      if (auto [res, err] = x.template get<std::string_view>(); !err) {
+        return std::string(res);
+      }
+    } else if constexpr (std::is_same_v<T, int>) {
+      if (auto [res, err] = x.template get<int64_t>(); !err) {
+        return static_cast<int>(res);
+      }
+    } else {
+      if (auto [res, err] = x.template get<T>(); !err) {
+        return res;
+      }
+    }
   }
-
-  return NA_STRING;
-}
-
-inline Rcpp::String get_chr(const rapidjson::Value& x) {
-  if ( x.IsString() ) {
-    return finalize_chr(x);
-  }
-  return NA_STRING;
-}
-
-inline double get_timestamp_ms(const rapidjson::Value& x) {
-  if ( !x.IsString() ) {
-    return NA_REAL;
-  }
-  auto init = x.GetString();
-  return std::atof(init) / 1000;
+  return mold_na<T>();
 }
 
 
-// inline Rcpp::String get_chr2(const Rcpp::String& target, const rapidjson::Value& x) {
-//   if (x.IsString()) {
-//     return Rcpp::String( x.GetString() ) ;
-//   } else {
-//     return target;
-//   }
-// }
-
-inline Rcpp::String get_chr_check(const rapidjson::Value& a, const rapidjson::Value& b) {
-  if (a.IsString() ) {
-    return finalize_chr(a);
-  }
-  if ( b.IsString() ) {
-    return finalize_chr(b);
-  }
-  return NA_STRING;
-}
-
-
-inline int get_int(const rapidjson::Value& x) {
-  if ( x.IsInt() ) {
-    return x.GetInt();
-  }
-  return NA_INTEGER;
-}
-
-inline double get_dbl(const rapidjson::Value& x) {
-  if ( x.IsNumber() ) {
-    return x.GetDouble();
+inline double
+to_timestamp_ms(simdjson::simdjson_result<simdjson::dom::element> x) {
+  if (!x.error() && x.first.is<std::string_view>()) {
+    return std::atof(x.first.get<const char*>().take_value());
   }
   return NA_REAL;
 }
 
 
-inline bool get_lgl(const rapidjson::Value& x) {
-  if ( x.IsBool() ) {
-    return x.GetBool();
-  }
-  return NA_LOGICAL;
-}
-
-
-inline vec_chr map_entities(const rapidjson::Value& x, const std::string& entity, const std::string& inner_name) {
-  const int ext_n = x["extended_tweet"]["entities"][ entity.c_str() ].Size();
-  const int reg_n = x["entities"][ entity.c_str() ].Size();
-
-  if (ext_n == 0 && reg_n == 0) {
-    return vec_chr{NA_STRING};
-  }
-
-  if (ext_n != 0) {
-    const rapidjson::Value& entities = x["extended_tweet"]["entities"][ entity.c_str() ];
-    vec_chr out(ext_n);
-    for (int i = 0; i < ext_n; ++i) {
-      out[i] = get_chr( entities[i][ inner_name.c_str() ] );
-    }
-
-    return out;
-  } 
-  
-  const rapidjson::Value& entities = x["entities"][ entity.c_str() ];
-  vec_chr out(reg_n);
-  for (int i = 0; i < reg_n; ++i) {
-    out[i] = get_chr( entities[i][ inner_name.c_str() ] );
-  }
-
-  return out;
-}
-
-
-inline vec_dbl get_bbox(const rapidjson::Value& x) {
-  if (x.Size() == 0) {
-    return vec_dbl(0);
-  }
-
-  const auto bbox = x.GetArray();
-  vec_dbl out(8);
-
-  out[0] = bbox[0].GetArray()[0].GetArray()[0].GetDouble();
-  out[1] = bbox[0].GetArray()[0].GetArray()[1].GetDouble();
-
-  out[2] = bbox[0].GetArray()[1].GetArray()[0].GetDouble();
-  out[3] = bbox[0].GetArray()[1].GetArray()[1].GetDouble();
-
-  out[4] = bbox[0].GetArray()[2].GetArray()[0].GetDouble();
-  out[5] = bbox[0].GetArray()[2].GetArray()[1].GetDouble();
-
-  out[6] = bbox[0].GetArray()[3].GetArray()[0].GetDouble();
-  out[7] = bbox[0].GetArray()[3].GetArray()[1].GetDouble();
-
-
-  return out;
-}
-
-
-inline Rcpp::List get_meta_results(const rapidjson::Value& x, const std::string& outer_name) {
-  const auto default_val = Rcpp::List(vec_chr{NA_STRING});
-
-  const auto top_level = x[outer_name.c_str()].GetArray();
-  if (top_level.Size() == 0) {
-    return default_val;
-  }
-  const auto target = top_level[0].GetObject();
-
-  const auto results = target.FindMember("results");
-  if (results == target.MemberEnd()) {
-    return default_val;
-  }
-
-  const auto res = results->value.GetArray();
-  const int out_n = res.Size();
-  if (out_n == 0) {
-    return default_val;
-  }
-
-  vec_chr out(out_n);
-  for (int i = 0; i < out_n; ++i) {
-    out[i] = get_chr( res[i] );
-  }
-
-  return Rcpp::List(out);
-}
-
-
-inline vec_chr get_nested_meta_results(const rapidjson::Value& x, 
-                                       const std::string& outer_name, 
-                                       const std::string& inner_name, 
-                                       const bool is_metadata = false) {
-  const auto default_val = vec_chr{NA_STRING};
-
-  const auto& top_level = x[outer_name.c_str()];
-
-  if (!top_level.IsArray() || top_level.GetArray().Size() == 0) {
-    return default_val;
-  }
-  
-  const auto& target = top_level[0].GetObject()["results"];
-  if (!target.IsArray() || target.GetArray().Size() == 0) {
-    return default_val;
-  }
-
-  if ( !target.IsArray() ) {
-    return default_val;
-  }
-
-  const auto& results = target.GetArray();
-  const int out_n = results.Size();
-  if (out_n == 0) {
-    return default_val;
-  }
-
-  vec_chr out(out_n);
-
-  for (int i = 0; i < out_n; ++i) {
-    const auto& results_obj = target[i];
-
-    if (is_metadata) {
-      if ( !results_obj["metadata"].IsObject() ) {
-        out[i] = NA_STRING;
-        continue;
+inline double
+to_created_at(simdjson::simdjson_result<simdjson::dom::element> x) {
+  if (!x.error() && x.first.is<std::string_view>()) {
+    if (auto sv = x.get<std::string_view>().take_value(); sv.size() == 30) {
+      std::tm            ptm{};
+      std::istringstream ss(sv.data());
+      //   ss.imbue(std::locale("en_US.UTF-8"));
+      ss >> std::get_time(&ptm, "%a %b %d %H:%M:%S +0000 %Y");
+      if (!ss.fail()) {
+        return static_cast<double>(
+            std::chrono::duration_cast<std::chrono::seconds>(
+                std::chrono::system_clock::from_time_t(std::mktime(&ptm))
+                    .time_since_epoch())
+                .count());
       }
-
-      const auto& metadata = results_obj["metadata"].GetObject();
-      out[i] = get_chr( metadata[ inner_name.c_str() ] );
-      continue;
     }
-
-    if ( !results_obj.IsObject() ) {
-      out[i] = NA_STRING;
-      continue;
-    } 
-    
-    if (results_obj.FindMember( inner_name.c_str() ) == results_obj.MemberEnd()) {
-      out[i] = NA_STRING;
-      continue;
-    }
-
-    out[i] = get_chr( results_obj[inner_name.c_str()] );
   }
-
-  return out;
+  return NA_REAL;
 }
 
+inline std::vector<std::string>
+get_entities(simdjson::dom::element  x,
+             const std::string_view& entity,
+             const std::string_view& inner_name) {
+  for (auto loc : std::array<std::string_view, 2>{"/extended_tweet/entities",
+                                                  "/entities"}) {
+    if (auto [array, error] =
+            x.at_pointer(loc).at_pointer(entity).get<simdjson::dom::array>();
+        !error) {
+      auto out = std::vector<std::string>();
+      for (auto element : array) {
+        out.emplace_back(to<std::string>(element.at_pointer(inner_name)));
+      }
+      return out;
+    }
+  }
+
+  return vec_str();
+}
+
+
+template <typename... Ts>
+inline std::string find_chr(simdjson::dom::element x, Ts... targets) {
+  for (auto&& loc : {std::forward<Ts>(targets)...}) {
+    if (auto [element, error] = x.at_pointer(loc); !error) {
+      if (auto [res, err] = element.template get<std::string_view>(); !err) {
+        return std::string(res);
+      }
+    }
+  }
+  return "";
+}
+
+
+// inline std::string find_chr2(simdjson::dom::element x,
+//                              std::vector<std::string_view> targets) {
+//   for (auto&& loc : targets) {
+//     if (auto [element, error] = x.at_pointer(loc); !error) {
+//       if (auto [res, err] = element.template get<std::string_view>(); !err) {
+//         return std::string(res);
+//       }
+//     }
+//   }
+//   return "";
+// }
+
+// template <typename element_T, typename... Ts>
+// inline std::string find_chr2(element_T x, Ts... targets) {
+//   for (auto&& loc : {std::forward<Ts>(targets)...}) {
+//     if (auto [element, error] = x.at_pointer(loc); !error) {
+//       if (auto [res, err] = element.template get<std::string_view>(); !err) {
+//         return std::string(res);
+//       }
+//     }
+//   }
+//   return "";
+// }
+
+/**
+ * @brief Get the bbox object, but set up to become an R (column-major) matrix
+downstream.
+ *
+{
+  "coordinates": [ // <<<<<< `get_bbox()` starts here
+    [
+      [
+        -74.026675,
+        40.683935
+      ],
+      [
+        -74.026675,
+        40.877483
+      ],
+      [
+        -73.910408,
+        40.877483
+      ],
+      [
+        -73.910408,
+        40.3935
+      ]
+    ]
+  ]
+}
+ *
+ */
+inline vec_dbl get_bbox(simdjson::simdjson_result<simdjson::dom::element> x) {
+  if (!x.error()) {
+    if (auto [array1, array1_error] = x.first.get<simdjson::dom::array>();
+        !array1_error && std::size(array1) == 1) {
+      if (auto [array2, array2_error] =
+              (*std::begin(array1)).get<simdjson::dom::array>();
+          !array2_error && std::size(array2) == 4) {
+        vec_dbl     out(8);
+        std::size_t j = 0;
+        for (auto array3 : array2) {
+          std::size_t i = 0;
+          for (auto element : array3.get<simdjson::dom::array>().first) {
+            out[i + j] = element.get<double>().take_value();
+            i += 4;
+          }
+          j++;
+        }
+        return out;
+      }
+    }
+  }
+  return vec_dbl{NA_REAL};
+}
 
 
 } // namespace tweetio
+
 
 #endif

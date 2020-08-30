@@ -1,35 +1,22 @@
-// Copyright (C) 2019 Brendan Knapp
-// This file is part of tweetio.
-// 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#ifndef TWEETIO__UTILS_HPP
+#define TWEETIO__UTILS_HPP
 
+#include "common.hpp"
 
-#ifndef TWEETIO_UTILS_H
-#define TWEETIO_UTILS_H
+#include <filesystem>
+namespace fs = std::filesystem;
 
 namespace tweetio {
 
-template<typename stream_T>
-size_t count_lines(const std::string& file_path) {
-  stream_T in_file;
-  in_file.open( file_path.c_str() );
-  
-  std::size_t out = 0;
-  std::string line;
 
-  while (std::getline(in_file, line) ) {
-    ++out;
+template <typename stream_T>
+inline constexpr auto n_lines(const std::string_view& file_path) -> std::size_t {
+  stream_T in_file;
+  in_file.open(std::string(file_path).c_str());
+
+  auto out = std::size_t(0ULL);
+  while (std::getline(in_file, std::string())) {
+    out++;
   }
 
   in_file.close();
@@ -38,107 +25,97 @@ size_t count_lines(const std::string& file_path) {
 }
 
 
-int count_digits(const int x) {
-  if (x < 0) {
-    return count_digits(-x);
+template <typename stream_T>
+inline auto read_lines(const std::string_view& file_path) -> std::vector<simdjson::padded_string> {
+  stream_T in_file;
+  in_file.open(std::string(file_path).c_str());
+
+  constexpr std::size_t n   = 100'000ULL;
+  auto                  out = std::vector<simdjson::padded_string>();
+  out.reserve(n);
+
+  auto line = std::string();
+  while (std::getline(in_file, line)) {
+    out.emplace_back(std::move(line));
   }
 
-  constexpr int x1  = 1e1;
-  constexpr int x2  = 1e2;
-  constexpr int x3  = 1e3;
-  constexpr int x4  = 1e4;
-  constexpr int x5  = 1e5;
-  constexpr int x6  = 1e6;
-  constexpr int x7  = 1e7;
-  constexpr int x8  = 1e8;
-  constexpr int x9  = 1e9;
-  // constexpr R_xlen_t x10 = 1e10;
-  // constexpr R_xlen_t x11 = 1e11;
-  // constexpr R_xlen_t x12 = 1e12;
-  // constexpr R_xlen_t x13 = 1e13;
-  // constexpr R_xlen_t x14 = 1e14;
-  // constexpr R_xlen_t x15 = 1e15;
-  // constexpr R_xlen_t x16 = 1e16;
-  // constexpr R_xlen_t x17 = 1e17;
-  // constexpr R_xlen_t x18 = 1e18;  
+  in_file.close();
 
-  if (x < x1) {
-    return 1;
-  } else if (x < x2) {
-    return 2;
-  } else if (x < x3) {
-    return 3;
-  } else if (x < x4) {
-    return 4;
-  } else if (x < x5) {
-    return 5;
-  } else if (x < x6) {
-    return 6;
-  } else if (x < x7) {
-    return 7;
-  } else if (x < x8) {
-    return 8;
-  } else if (x < x9) {
-    return 9;
-  } else {
-    return 10;
-  }
-  // else if (x < x10) {
-  //   return 10;
-  // } else if (x < x11) {
-  //   return 11;
-  // } else if (x < x12) {
-  //   return 12;
-  // } else if (x < x13) {
-  //   return 13;
-  // } else if (x < x14) {
-  //   return 14;
-  // } else if (x < x15) {
-  //   return 15;
-  // } else if (x < x16) {
-  //   return 16;
-  // } else if (x < x17) {
-  //   return 17;
-  // } else if (x < x18) {
-  //   return 18;
-  // } else {
-  //   return 19;
-  // }
+  return out;
 }
 
 
-void finalize_df(Rcpp::List& x, const vec_chr& col_names, const int& n_rows) {
-  const int n_digits = count_digits(n_rows);
-
-  vec_chr row_names(n_rows);
-  for (int i = 0; i < n_rows; ++i) {
-      char name[n_digits];
-      sprintf(&(name[0]), "%d", i);
-      row_names[i] = name;
-  }
-
-  x.attr("names") = col_names;
-  x.attr("row.names") = row_names;
-  x.attr("class") = vec_chr{"tbl_df", "tbl", "data.frame"};
+inline auto is_gz_file(const std::string_view& file_path) -> bool {
+  return fs::path(file_path).extension() == ".gz";
 }
 
 
-// vec_chr strip_controls(vec_chr x) {
-//   return stri_replace_all_regex(
-//     x, vec_chr("[[:cntrl:]]"), vec_chr("")
-//   );
+// template <typename stream_T>
+// inline auto detect_file_type(const std::string& file_path) -> File_Type {
+//   stream_T in_file;
+//   in_file.open(file_path.c_str());
+
+//   auto first_char = in_file.peek();
+//   if (first_char == '[') {
+//     return File_Type::array_nested_doc;
+//   }
+//   if (first_char == '{') {
+//     first_char             = in_file.get();
+//     const char second_char = in_file.peek();
+//     if (second_char != '"') {
+//       Rcpp::stop("Unknown file schema.");
+//     }
+//   }
+
+//   // can't use in_file.seekg() on igzstream, so reset if character consumed
+//   in_file.close();
+//   in_file.open(file_path.c_str());
+
+//   std::string           line_string;
+//   simdjson::dom::parser parser;
+
+//   bool parse_successful(false);
+//   while (std::getline(in_file, line_string)) {
+//     if (!line_string.empty()) {
+//       if (auto [parsed, error] = parser.parse(line_string); !error) {
+//         if (auto [id, error] = parsed.at("id");
+//             !error && id.type() == simdjson::dom::element_type::INT64) {
+//           in_file.close();
+//           return File_Type::twitter_api_stream;
+//         }
+
+//         if (auto [id, error] = parsed.at("delete/status/id");
+//             !error && id.type() == simdjson::dom::element_type::INT64) {
+//           in_file.close();
+//           return File_Type::twitter_api_stream;
+//         }
+
+//         if (auto [id, error] = parsed.at("doc/id");
+//             !error && id.type() == simdjson::dom::element_type::INT64) {
+//           in_file.close();
+//           return File_Type::nested_doc;
+//         }
+
+//         if (auto [id, error] = parsed.at("doc/_source/id");
+//             !error && id.type() == simdjson::dom::element_type::INT64) {
+//           in_file.close();
+//           return File_Type::array_nested_doc;
+//         }
+//         parse_successful = true;
+//       }
+//     }
+//   }
+
+//   if (!parse_successful) {
+//     in_file.close();
+//     Rcpp::stop("File does not contain any valid JSON.");
+//   }
+//   in_file.close();
+//   Rcpp::stop("Unknown file schema.");
 // }
 
 
-// vec_chr extract_source(vec_chr x) {
-//   return stri_extract_first_regex(
-//     x, vec_chr("(?<=>).*?(?=</a>$)")
-//   );
-// }
-
-
-} // namesapce tweetio
-
+} // namespace tweetio
 
 
 #endif
