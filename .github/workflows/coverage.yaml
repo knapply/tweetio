@@ -37,6 +37,7 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("curl", dependencies = TRUE)
           remotes::install_cran("covr", dependencies = TRUE)
+          remotes::install_local()
 
 
       - name: Test coverage
