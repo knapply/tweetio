@@ -23,6 +23,8 @@ jobs:
           - { os: macOS-latest }
         r:
           - 4.0
+          - 'release'
+          - 'dev'
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -83,7 +85,6 @@ jobs:
         env:
           _R_CHECK_CRAN_INCOMING_: false
         run: |
-          RcppSimdJson:::.exceptions_enabled()
           rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
 
       - name: Upload Results
