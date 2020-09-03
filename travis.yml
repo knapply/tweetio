@@ -1,0 +1,41 @@
+# Travis configuration guide for R language:
+#   https://docs.travis-ci.com/user/languages/r/
+#   https://github.com/craigcitro/r-travis/wiki/Porting-to-native-R-support-in-Travis
+
+
+language: r
+sudo: required
+cache: packages
+
+warnings_are_errors: true
+
+os:
+  - linux
+
+jobs:
+  include:
+    - name: gcc-8
+      env: CXX11="g++-8" CXX17="g++-8" CC="gcc-8"
+
+
+
+install:
+  - sudo apt-get update -y
+  - sudo apt-get install g++-8 -y
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/${CC} 60 --slave /usr/bin/g++ g++ /usr/bin/${CXX17}
+  - g++ --version
+
+addons:
+  apt:
+    packages:
+      - libudunits2-dev
+      - libgdal-dev
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo ldconfig; fi
+  - R -e 'install.packages("rgdal", repos="http://R-Forge.R-project.org")'
+  - R -e 'install.packages("remotes")'
+  - R -e 'remotes::install_local(dependencies = TRUE)'
+
+after_success:
+  - Rscript -e 'covr::codecov()'

@@ -119,9 +119,9 @@ jobs:
           name: ${{ matrix.config.os }}-r${{ matrix.r }}-results
           path: check
 
-      - name: Coverage
-        if: matrix.config.os == 'ubuntu-latest' && matrix.r == 'release' && matrix.config.compiler == 'g++-8'
-        shell: Rscript {0}
-        run: |
-          remotes::install_cran("covr", dependencies = TRUE)
-          covr::codecov()
+      # - name: Coverage
+      #   if: matrix.config.os == 'ubuntu-latest' && matrix.r == 'release' && matrix.config.compiler == 'g++-8'
+      #   shell: Rscript {0}
+      #   run: |
+      #     remotes::install_cran("covr")
+      #     covr::codecov()
