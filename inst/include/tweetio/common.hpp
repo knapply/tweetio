@@ -18,8 +18,8 @@
 #include <filesystem>
 namespace fs = std::filesystem;
 #else
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
+#include "third-party/ghc/filesystem.hpp"
+namespace fs = ghc::filesystem;
 #endif
 
 
