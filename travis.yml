@@ -14,16 +14,8 @@ os:
 
 jobs:
   include:
-    - name: gcc-8
+    - r: release
       env: CXX11="g++-8" CXX17="g++-8" CC="gcc-8"
-
-
-
-install:
-  - sudo apt-get update -y
-  - sudo apt-get install g++-8 -y
-  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/${CC} 60 --slave /usr/bin/g++ g++ /usr/bin/${CXX17}
-  - g++ --version
 
 addons:
   apt:
@@ -32,7 +24,11 @@ addons:
       - libgdal-dev
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo ldconfig; fi
+  - sudo apt-get update -y
+  - sudo apt-get install g++-8 -y
+  - sudo ldconfig
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/${CC} 60 --slave /usr/bin/g++ g++ /usr/bin/${CXX17}
+  - g++ --version
   - R -e 'install.packages("rgdal", repos="http://R-Forge.R-project.org")'
   - R -e 'install.packages("remotes")'
   - R -e 'remotes::install_local(dependencies = TRUE)'
