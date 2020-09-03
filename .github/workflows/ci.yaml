@@ -18,7 +18,7 @@ jobs:
           - { os: ubuntu-latest, compiler_name: clang, compiler: clang-9, run: clang++-9 }
           - { os: ubuntu-latest, compiler_name: clang, compiler: clang-10, run: clang++-10 }
           - { os: windows-latest }
-          - { os: macOS-latest }
+          # - { os: macOS-latest }
         r:
           - 'release'
           - 'dev'

@@ -118,8 +118,6 @@ as_proto_net.data.table <- function(tweet_df,
 
     res <- tweet_df[!is.na(get(.x)), edge_cols, with = FALSE]
 
-    # setnames(res, c("from", "to", "status_id", "created_at"))
-
     if (is.list(res[[.x]])) {
       res <- .unnest_edges(
         user_id = res[["user_id"]],
