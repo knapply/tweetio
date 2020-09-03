@@ -58,7 +58,7 @@ jobs:
           mkdir -p ~/.R/
           echo $'CXX1X=${{ matrix.config.run }}\nCXX17=${{ matrix.config.run }}\nCXX14=${{ matrix.config.run }}\nCXX11=${{ matrix.config.run }}' >> ~/.R/Makevars
 
-      - name: Spatial Dependencies
+      - name: Linux Spatial Dependencies
         if: runner.os == 'Linux'
         run: |
           sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
@@ -69,27 +69,12 @@ jobs:
             libgeos-dev \
             libproj-dev
 
-      - name: Brew and macOS config
+      - name: macOS Spatial Dependencies
         if: runner.os == 'macOS'
         run: |
-          brew install pkg-config
-          brew install udunits
-          brew install gdal
-          cat <<EOT >> .Renviron
-          PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/
-          PROJ_LIB=/usr/local/opt/proj/share/proj/
-          # for installing XML package from source
-          XML_CONFIG=/usr/local/opt/libxml2/bin/xml2-config
-          EOT
-          cat <<EOT >> .Rprofile
-          r <- getOption("repos")
-          r["CRAN"] <- "https://cran.rstudio.com"
-          r["rccp_drat"] <- "https://RcppCore.github.io/drat"
-          config_args <- c("sf" = "--with-proj-lib=/usr/local/lib/", "rgdal" = "--with-proj-lib=/usr/local/lib/ --with-proj-include=/usr/local/include/")
-          options(configure.args = config_args,
-                  install.packages.compile.from.source = "yes",
-                  repos = r)
-          EOT
+          brew install pkg-config \
+            udunits \
+            gdal
 
       - name: Prep R
         shell: Rscript {0}
@@ -97,6 +82,11 @@ jobs:
           if (!requireNamespace('remotes', quietly = TRUE)) install.packages('remotes')
           remotes::install_local(dependencies = TRUE, force = TRUE)
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+
+      - name: Prep macOS R
+        if: runner.os == 'macOS'
+        run: install.packages("rgdal", type = "source")
+        shell: Rscript {0}
 
       # - name: Cache R
       #   uses: actions/cache@v1
