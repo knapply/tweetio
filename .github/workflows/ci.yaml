@@ -69,12 +69,10 @@ jobs:
             libgeos-dev \
             libproj-dev
 
-      # - name: macOS Spatial Dependencies
-      #   if: runner.os == 'macOS'
-      #   run: |
-      #     brew install pkg-config \
-      #       udunits \
-      #       gdal
+      - name: macOS Dependencies
+        if: runner.os == 'macOS'
+        run: |
+          brew upgrade llvm
 
       - name: Prep R
         shell: Rscript {0}
@@ -85,15 +83,16 @@ jobs:
 
       - name: Prep macOS R
         if: runner.os == 'macOS'
-        run: install.packages("rgdal", type = "source")
         shell: Rscript {0}
+        run: |
+          install.packages("rgdal", type = "source")
 
-      - name: Cache R
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ matrix.config.os }}-r-${{ matrix.config.r }}-2-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ matrix.config.os }}-r-${{ matrix.config.r }}-2-
+      # - name: Cache R
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: ${{ env.R_LIBS_USER }}
+      #     key: ${{ matrix.config.os }}-r-${{ matrix.config.r }}-2-${{ hashFiles('.github/depends.Rds') }}
+      #     restore-keys: ${{ matrix.config.os }}-r-${{ matrix.config.r }}-2-
 
       - name: Session Info
         shell: Rscript {0}
