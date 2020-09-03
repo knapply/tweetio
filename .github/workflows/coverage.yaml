@@ -37,7 +37,7 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sudo apt-get install ${{ matrix.config.compiler }} -y
           mkdir -p ~/.R/
-          echo $'CXX1X=g++-8\nCXX17=${{ matrix.config.compiler }}\nCXX14=${{ matrix.config.compiler }}\nCXX11=${{ matrix.config.compiler }}' >> ~/.R/Makevars
+          echo $'CXX1X=${{ matrix.config.compiler }}\nCXX17=${{ matrix.config.compiler }}\nCXX14=${{ matrix.config.compiler }}\nCXX11=${{ matrix.config.compiler }}' >> ~/.R/Makevars
 
 
       - name: Prep R
