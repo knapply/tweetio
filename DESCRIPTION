@@ -31,7 +31,7 @@ Suggests:
     jsonify,
     knitr,
     network,
-    rmarkdown
+    rmarkdown,
     rtweet,
     sf,
     testthat (>= 2.1.0),
