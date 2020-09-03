@@ -1,9 +1,9 @@
 on: push
 
-name: CI
+name: R-CMD-check
 
 jobs:
-  GCC:
+  R-CMD-check:
     runs-on: ${{ matrix.config.os }}
     name: ${{ matrix.config.os }}, R-${{ matrix.r }} ${{ matrix.config.compiler }}
     strategy:
@@ -80,8 +80,8 @@ jobs:
         shell: Rscript {0}
         run: |
           if (!requireNamespace('remotes', quietly = TRUE)) install.packages('remotes')
-          remotes::install_local(dependencies = TRUE, force = TRUE)
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("rcmdcheck")
 
       - name: Prep macOS R
         if: runner.os == 'macOS'
