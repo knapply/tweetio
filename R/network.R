@@ -43,18 +43,20 @@
 #' path_to_tweet_file <- example_tweet_file()
 #' tweet_df <- read_tweets(path_to_tweet_file)
 #'
-#' tweet_df %>%
-#'   as_tweet_network()
+#' if (!requireNamespace("network", quietly = TRUE)) {
+#'   tweet_df %>%
+#'     as_tweet_network()
 #'
-#' tweet_df %>%
-#'   as_proto_net() %>%
-#'   as_tweet_network()
+#'   tweet_df %>%
+#'     as_proto_net() %>%
+#'     as_tweet_network()
 #'
-#' tweet_df %>%
-#'   as_tweet_network(all_status_data = TRUE)
+#'   tweet_df %>%
+#'     as_tweet_network(all_status_data = TRUE)
 #'
-#' tweet_df %>%
-#'   as_tweet_network(all_user_data = TRUE)
+#'   tweet_df %>%
+#'     as_tweet_network(all_user_data = TRUE)
+#' }
 #'
 #' @export
 as_tweet_network <- function(x,

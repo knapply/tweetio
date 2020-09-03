@@ -17,13 +17,15 @@
 #'
 #' tweet_df <- read_tweets(file_path = path_to_tweet_file)
 #'
-#' tweet_graph <- as_igraph(tweet_df)
-#' tweet_graph
+#' if (!requireNamespace("igraph", quietly = TRUE)) {
+#'   tweet_graph <- as_igraph(tweet_df)
+#'   tweet_graph
 #'
-#' graphml_path <- tempfile(fileext = ".graphml")
-#' graphml_path
+#'   graphml_path <- tempfile(fileext = ".graphml")
+#'   graphml_path
 #'
-#' write_graphml(tweet_graph, file_path = graphml_path)
+#'   write_graphml(tweet_graph, file_path = graphml_path)
+#' }
 #'
 #' @importFrom data.table fifelse
 #'
