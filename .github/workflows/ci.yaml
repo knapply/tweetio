@@ -69,13 +69,13 @@ jobs:
             libgeos-dev \
             libproj-dev
 
-      - name: macOS Dependencies
-        if: runner.os == 'macOS'
-        run: |
-          brew install llvm@9
-          echo 'export PATH="/usr/local/opt/llvm@9/bin:$PATH"' >> /Users/runner/.bash_profile
-          export LDFLAGS="-L/usr/local/opt/llvm@9/lib"
-          export CPPFLAGS="-I/usr/local/opt/llvm@9/include"
+      # - name: macOS Dependencies
+      #   if: runner.os == 'macOS'
+      #   run: |
+      #     brew install llvm@9
+      #     echo 'export PATH="/usr/local/opt/llvm@9/bin:$PATH"' >> /Users/runner/.bash_profile
+      #     export LDFLAGS="-L/usr/local/opt/llvm@9/lib"
+      #     export CPPFLAGS="-I/usr/local/opt/llvm@9/include"
 
       - name: Prep R
         shell: Rscript {0}
