@@ -10,11 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: ubuntu-latest, compiler_name: g++, compiler: g++-7, run: g++-7 }
           - { os: ubuntu-latest, compiler_name: g++, compiler: g++-8, run: g++-8 }
           - { os: ubuntu-latest, compiler_name: g++, compiler: g++-9, run: g++-9 }
           - { os: ubuntu-latest, compiler_name: g++, compiler: g++-10, run: g++-10 }
-          - { os: ubuntu-latest, compiler_name: clang, compiler: clang-6.0, run: clang++-6.0 }
           - { os: ubuntu-latest, compiler_name: clang, compiler: clang-7, run: clang++-7 }
           - { os: ubuntu-latest, compiler_name: clang, compiler: clang-8, run: clang++-8 }
           - { os: ubuntu-latest, compiler_name: clang, compiler: clang-9, run: clang++-9 }
