@@ -6,6 +6,11 @@ name: coverage
 jobs:
   coverage:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config:
+          - { compiler: g++-8 }
+
     steps:
       - uses: actions/checkout@v2
 
@@ -29,6 +34,11 @@ jobs:
             libgdal-dev \
             libgeos-dev \
             libproj-dev
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sudo apt-get install ${{ matrix.config.compiler }} -y
+          mkdir -p ~/.R/
+          echo $'CXX1X=g++-8\nCXX17=${{ matrix.config.compiler }}\nCXX14=${{ matrix.config.compiler }}\nCXX11=${{ matrix.config.compiler }}' >> ~/.R/Makevars
+
 
       - name: Prep R
         shell: Rscript {0}

@@ -1,3 +1,3 @@
 CXX_STD      = CXX17
 PKG_CPPFLAGS = -I../inst/include/ -DSTRICT_R_HEADERS $(SHLIB_OPENMP_CXXFLAGS)
-PKG_LIBS     = -L. -lz -lpthread -lstdc++fs -stdlib=libc++ -pthread  $(SHLIB_OPENMP_CXXFLAGS)
+PKG_LIBS     = -L. -lz -lpthread -lstdc++fs  -pthread  $(SHLIB_OPENMP_CXXFLAGS)

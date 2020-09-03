@@ -25,13 +25,6 @@ namespace fs = std::experimental::filesystem;
 
 namespace tweetio {
 
-// enum class File_Type : int {
-//   qcr = 0,
-// //   nested_doc = 1,
-// //   array_nested_doc = 2,
-// //   pantera = 3,
-// };
-
 
 static inline constexpr auto NA_INTEGER64 =
     LLONG_MIN; // std::numeric_limits<int64_t>::min();
@@ -77,26 +70,6 @@ template <typename iter_T> inline SEXP as_dttm(iter_T first, iter_T last) {
 
 
 } // namespace tweetio
-
-
-// #include <fstream>
-// #include "third-party/simdjson/simdjson.h"
-// #include <charconv>
-
-
-// namespace tweetio {
-
-
-// static inline constexpr int64_t NA_INTEGER64 = LLONG_MIN;
-// static inline constexpr bool IS_CLEAN = true;
-// static inline constexpr bool IS_DIRTY = false;
-// static inline constexpr bool VERBOSE = true;
-// static inline constexpr bool QUIET = false;
-// // static inline constexpr bool IS_GZ           = true;
-// // static inline constexpr bool IS_NOT_GZ       = false;
-
-
-// } // namespace tweetio
 
 
 #endif

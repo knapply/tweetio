@@ -72,7 +72,7 @@ jobs:
       - name: macOS Dependencies
         if: runner.os == 'macOS'
         run: |
-          brew upgrade llvm
+          brew install llvm@9
 
       - name: Prep R
         shell: Rscript {0}
