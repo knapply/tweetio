@@ -29,9 +29,7 @@ Suggests:
     covr,
     igraph,
     jsonify,
-    knitr,
     network,
-    rmarkdown,
     rtweet,
     sf,
     testthat (>= 2.1.0),
@@ -40,6 +38,6 @@ URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio
 BugReports: https://github.com/knapply/tweetio/issues
 Encoding: UTF-8
 LazyData: yes
+ByteCompile: true
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
-VignetteBuilder: knitr
