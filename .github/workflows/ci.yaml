@@ -120,7 +120,7 @@ jobs:
           path: check
 
       - name: Coverage
-        if: matrix.config.os == 'ubuntu-latest' && matrix.config.r == 'release' && matrix.config.compiler == 'g++-8'
+        if: matrix.config.os == 'ubuntu-latest' && matrix.r == 'release' && matrix.config.compiler == 'g++-8'
         shell: Rscript {0}
         run: |
           remotes::install_cran("covr", dependencies = TRUE)
