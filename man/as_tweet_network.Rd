@@ -4,7 +4,7 @@
 \alias{as_tweet_network}
 \alias{as_tweet_network.proto_net}
 \alias{as_tweet_network.data.frame}
-\title{Convert Various Objects to \code{network} graphs.}
+\title{Convert tweets to \code{network} graphs.}
 \usage{
 as_tweet_network(
   x,
@@ -41,24 +41,26 @@ downstream tasks.}
 \item{...}{Arguments passed to or from other methods.}
 }
 \description{
-Convert Various Objects to \code{network} graphs.
+Convert tweets to \code{network} graphs.
 }
 \examples{
 path_to_tweet_file <- example_tweet_file()
 tweet_df <- read_tweets(path_to_tweet_file)
 
-tweet_df \%>\%
-  as_tweet_network()
+if (requireNamespace("network", quietly = TRUE)) {
+  tweet_df \%>\%
+    as_tweet_network()
 
-tweet_df \%>\%
-  as_proto_net() \%>\%
-  as_tweet_network()
+  tweet_df \%>\%
+    as_proto_net() \%>\%
+    as_tweet_network()
 
-tweet_df \%>\%
-  as_tweet_network(all_status_data = TRUE)
+  tweet_df \%>\%
+    as_tweet_network(all_status_data = TRUE)
 
-tweet_df \%>\%
-  as_tweet_network(all_user_data = TRUE)
+  tweet_df \%>\%
+    as_tweet_network(all_user_data = TRUE)
+}
 
 }
 \seealso{

@@ -42,13 +42,15 @@ path_to_tweet_file <- example_tweet_file()
 
 tweet_df <- read_tweets(file_path = path_to_tweet_file)
 
-bbox_coords <- as_tweet_sf(tweet_df)
+if (requireNamespace("sf", quietly = TRUE)) {
+  bbox_coords <- as_tweet_sf(tweet_df)
 
-rwtweet_bbox_cooords <- as_tweet_sf(tweet_df, geom_col = "retweet_bbox_coords")
+  rwtweet_bbox_cooords <- as_tweet_sf(tweet_df, geom_col = "retweet_bbox_coords")
 
-tweet_sf <- as_tweet_sf(tweet_df, geom_col = "all", as_tibble = TRUE)
+  tweet_sf <- as_tweet_sf(tweet_df, geom_col = "all", as_tibble = TRUE)
 
-tweet_sf[, c("created_at", "text", "which_geom", "geometry")]
+  tweet_sf[, c("created_at", "text", "which_geom", "geometry")]
+}
 
 }
 \author{
