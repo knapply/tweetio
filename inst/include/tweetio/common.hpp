@@ -17,12 +17,9 @@
 #ifdef __cpp_lib_filesystem
 #include <filesystem>
 namespace fs = std::filesystem;
-#elif defined(_WIN32)
-#include <experimental/filesystem>
-using fs = std::experimental::filesystem;
 #else
-#include "third-party/ghc/filesystem.hpp"
-namespace fs = ghc::filesystem;
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
 #endif
 
 
