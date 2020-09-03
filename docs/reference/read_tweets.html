@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -46,7 +50,6 @@
 
 <meta property="og:title" content="Read Tweets into a Data Frame — read_tweets" />
 <meta property="og:description" content="Go from a file of raw tweet data to a convenient, {rtweet}-style data frame." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -74,7 +77,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -88,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tweetio</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2</span>
       </span>
     </div>
 
@@ -142,16 +145,7 @@
     <pre class="usage"><span class='fu'>read_tweets</span>(
   <span class='no'>file_path</span>,
   <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(),
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_verbose</a></span>(),
-  <span class='no'>...</span>
-)
-
-<span class='fu'>read_tweets_bulk</span>(
-  <span class='no'>file_path</span>,
-  <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_as_tibble</a></span>(),
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_verbose</a></span>(),
-  <span class='kw'>in_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>strategy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='tweetio_options.html'>tweetio_verbose</a></span>() <span class='kw'>||</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>file_path</span>) <span class='kw'>&gt;=</span> <span class='fl'>3L</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -177,16 +171,6 @@ Whether to show diagnostic or progress messages.</p></td>
       <th>...</th>
       <td><p>Arguments passed to or from other methods.</p></td>
     </tr>
-    <tr>
-      <th>in_parallel</th>
-      <td><p>Default: <code>TRUE</code>. Whether to use <code><a href='https://rdrr.io/pkg/future.apply/man/future_lapply.html'>future.apply::future_lapply()</a></code>
-to process the files in parallel. Ignored if <code>{future}</code> or <code>{future.apply}</code> are not installed.</p></td>
-    </tr>
-    <tr>
-      <th>strategy</th>
-      <td><p>Default: <code>NULL</code>. argument passed to <code><a href='https://rdrr.io/pkg/future/man/plan.html'>future::plan()</a></code>'s <code>strategy</code> parameter.
-If <code>NULL</code>, <code><a href='https://rdrr.io/pkg/future/man/multiprocess.html'>future::multiprocess</a></code> is used. Ignored if <code>{future}</code> or <code>{future.apply}</code> are not installed.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -201,70 +185,72 @@ If <code>NULL</code>, <code><a href='https://rdrr.io/pkg/future/man/multiprocess
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>path_to_tweet_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example_tweet_file.html'>example_tweet_file</a></span>()
-
+    <pre class="examples"><div class='input'>(<span class='no'>path_to_tweet_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='example_tweet_file.html'>example_tweet_file</a></span>())</div><div class='output co'>#&gt; [1] "/home/brendan/R/x86_64-pc-linux-gnu-library/4.0/tweetio/example-data/api-stream-small.json.gz"</div><div class='input'>
 <span class='no'>tweet_data.table</span> <span class='kw'>&lt;-</span> <span class='fu'>read_tweets</span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>)
-
-<span class='no'>tweet_tibble</span> <span class='kw'>&lt;-</span> <span class='fu'>read_tweets</span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='no'>tweet_tibble</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 681 x 93</span><span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>tweet_data.table</span>, <span class='kw'>class</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>trunc.cols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;                 user_id           status_id          created_at    screen_name
+#&gt;                  &lt;char&gt;              &lt;char&gt;              &lt;POSc&gt;         &lt;char&gt;
+#&gt;   1:          194250838 1178007813257388032 2019-09-29 02:05:23    Stgo_centro
+#&gt;   2: 825459487821619201 1178007817426370560 2019-09-29 02:05:24 taylorxkassidy
+#&gt;   3:          218889555 1178007817460039683 2019-09-29 02:05:24      markaduck
+#&gt;   4:          401300296 1178007821641584641 2019-09-29 02:05:25        unmario
+#&gt;   5:         2949080443 1178007821654351873 2019-09-29 02:05:25    ALmardoza21
+#&gt;  ---                                                                          
+#&gt; 677:          184839698 1178010304678174720 2019-09-29 02:15:17     shayrauhl_
+#&gt; 678: 999998613836189697 1178010308855701506 2019-09-29 02:15:18        NThezoe
+#&gt; 679:         3688803513 1178010317256871936 2019-09-29 02:15:20 dippolitowilma
+#&gt; 680:           14533495 1178010317239939072 2019-09-29 02:15:20           DLUX
+#&gt; 681: 862716349054935040 1178010325641240577 2019-09-29 02:15:22 DerrickMayamba
+#&gt; 80 variables not shown: [text &lt;char&gt;, source &lt;char&gt;, reply_to_status_id &lt;char&gt;, reply_to_user_id &lt;char&gt;, reply_to_screen_name &lt;char&gt;, is_quote &lt;lgcl&gt;, is_retweeted &lt;lgcl&gt;, lang &lt;char&gt;, name &lt;char&gt;, location &lt;char&gt;, ...]</div><div class='input'>
+<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"tibble"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='fu'>read_tweets</span>(<span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>path_to_tweet_file</span>, <span class='kw'>as_tibble</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+}</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 681 x 84</span><span>
 #&gt;    user_id status_id created_at          screen_name text  source
 #&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 194250… 11780078… 2019-09-28 </span><span style='color: #949494;'>18:05:23</span><span> Stgo_centro </span><span style='color: #949494;'>"</span><span>RT … Twitt…
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 825459… 11780078… 2019-09-28 </span><span style='color: #949494;'>18:05:24</span><span> taylorxkas… </span><span style='color: #949494;'>"</span><span>RT … Twitt…
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 218889… 11780078… 2019-09-28 </span><span style='color: #949494;'>18:05:24</span><span> markaduck   </span><span style='color: #949494;'>"</span><span>@_C… Twitt…
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 401300… 11780078… 2019-09-28 </span><span style='color: #949494;'>18:05:25</span><span> unmario     </span><span style='color: #949494;'>"</span><span>Fot… Insta…
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 294908… 11780078… 2019-09-28 </span><span style='color: #949494;'>18:05:25</span><span> ALmardoza21 </span><span style='color: #949494;'>"</span><span>@Es… Twitt…
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 111622… 11780078… 2019-09-28 </span><span style='color: #949494;'>18:05:27</span><span> singhbhrme… </span><span style='color: #949494;'>"</span><span>RT … Twitt…
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 231344… 11780078… 2019-09-28 </span><span style='color: #949494;'>18:05:27</span><span> barbimoral… </span><span style='color: #949494;'>"</span><span>Mi … Twitt…
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 437465… 11780078… 2019-09-28 </span><span style='color: #949494;'>18:05:27</span><span> javii_sotoo </span><span style='color: #949494;'>"</span><span>RT … Twitt…
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 117288… 11780078… 2019-09-28 </span><span style='color: #949494;'>18:05:29</span><span> nLfRH1      </span><span style='color: #949494;'>"</span><span>RT … Twitt…
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 113247… 11780078… 2019-09-28 </span><span style='color: #949494;'>18:05:30</span><span> bexxxv97    </span><span style='color: #949494;'>"</span><span>RT … Twitt…
-#&gt; </span><span style='color: #949494;'># … with 671 more rows, and 87 more variables: reply_to_status_id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   reply_to_user_id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, reply_to_screen_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, is_quote </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
-#&gt; #   is_retweet </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, hashtags </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, urls_expanded_url </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>,
-#&gt; #   media_url </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, media_expanded_url </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, media_type </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>,
-#&gt; #   mentions_user_id </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, mentions_screen_name </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, lang </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   quoted_status_id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_text </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_created_at </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #949494;'>,
-#&gt; #   quoted_source </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_favorite_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,
-#&gt; #   quoted_retweet_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, quoted_user_id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_screen_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   quoted_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_followers_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,
-#&gt; #   quoted_friends_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, quoted_statuses_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,
-#&gt; #   quoted_location </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_description </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_verified </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
-#&gt; #   retweet_status_id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_text </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_created_at </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #949494;'>,
-#&gt; #   retweet_source </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_favorite_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,
-#&gt; #   retweet_retweet_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, retweet_user_id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   retweet_screen_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   retweet_followers_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, retweet_friends_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,
-#&gt; #   retweet_statuses_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, retweet_location </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   retweet_description </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_verified </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, place_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   place_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, place_full_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, place_type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, country </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   country_code </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, bbox_coords </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, status_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   location </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, description </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, protected </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
-#&gt; #   followers_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, friends_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, listed_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,
-#&gt; #   statuses_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, favourites_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, account_created_at </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #949494;'>,
-#&gt; #   verified </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, profile_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, account_lang </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   profile_banner_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, profile_image_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, is_retweeted </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
-#&gt; #   retweet_place_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_place_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   retweet_place_full_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_place_type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   retweet_country </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_country_code </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   retweet_bbox_coords </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, quoted_place_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   quoted_place_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_place_full_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   quoted_place_type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_country </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_country_code </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
-#&gt; #   quoted_bbox_coords </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, timestamp_ms </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #949494;'>, contributors_enabled </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,
-#&gt; #   retweet_status_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_tweet_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, reply_to_status_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 194250… 11780078… 2019-09-29 </span><span style='color: #949494;'>02:05:23</span><span> Stgo_centro </span><span style='color: #949494;'>"</span><span>RT … </span><span style='color: #949494;'>"</span><span>&lt;a h…
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 825459… 11780078… 2019-09-29 </span><span style='color: #949494;'>02:05:24</span><span> taylorxkas… </span><span style='color: #949494;'>"</span><span>RT … </span><span style='color: #949494;'>"</span><span>&lt;a h…
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 218889… 11780078… 2019-09-29 </span><span style='color: #949494;'>02:05:24</span><span> markaduck   </span><span style='color: #949494;'>"</span><span>@_C… </span><span style='color: #949494;'>"</span><span>&lt;a h…
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 401300… 11780078… 2019-09-29 </span><span style='color: #949494;'>02:05:25</span><span> unmario     </span><span style='color: #949494;'>"</span><span>Fot… </span><span style='color: #949494;'>"</span><span>&lt;a h…
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 294908… 11780078… 2019-09-29 </span><span style='color: #949494;'>02:05:25</span><span> ALmardoza21 </span><span style='color: #949494;'>"</span><span>@Es… </span><span style='color: #949494;'>"</span><span>&lt;a h…
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 111622… 11780078… 2019-09-29 </span><span style='color: #949494;'>02:05:27</span><span> singhbhrme… </span><span style='color: #949494;'>"</span><span>RT … </span><span style='color: #949494;'>"</span><span>&lt;a h…
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 231344… 11780078… 2019-09-29 </span><span style='color: #949494;'>02:05:27</span><span> barbimoral… </span><span style='color: #949494;'>"</span><span>Mi … </span><span style='color: #949494;'>"</span><span>&lt;a h…
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 437465… 11780078… 2019-09-29 </span><span style='color: #949494;'>02:05:27</span><span> javii_sotoo </span><span style='color: #949494;'>"</span><span>RT … </span><span style='color: #949494;'>"</span><span>&lt;a h…
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 117288… 11780078… 2019-09-29 </span><span style='color: #949494;'>02:05:29</span><span> nLfRH1      </span><span style='color: #949494;'>"</span><span>RT … </span><span style='color: #949494;'>"</span><span>&lt;a h…
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 113247… 11780078… 2019-09-29 </span><span style='color: #949494;'>02:05:30</span><span> bexxxv97    </span><span style='color: #949494;'>"</span><span>RT … </span><span style='color: #949494;'>"</span><span>&lt;a h…
+#&gt; </span><span style='color: #949494;'># … with 671 more rows, and 78 more variables: reply_to_status_id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   reply_to_user_id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, reply_to_screen_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, is_quote </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   is_retweeted </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, lang </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, location </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   description </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, protected </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, followers_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   friends_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, listed_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, statuses_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   favourites_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, account_created_at </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #949494;'>, verified </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   account_lang </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, profile_banner_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, profile_image_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   contributors_enabled </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #949494;'>, hashtags </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, urls_expanded_url </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   media_url </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, media_type </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, mentions_user_id </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   mentions_screen_name </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, quoted_status_id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_text </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   quoted_created_at </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #949494;'>, quoted_source </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_favorite_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   quoted_quoted_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, quoted_user_id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_screen_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   quoted_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_followers_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   quoted_friends_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, quoted_statuses_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   quoted_location </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_description </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_status_id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   retweet_text </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_created_at </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #949494;'>, retweet_source </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   retweet_favorite_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, retweet_retweet_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   retweet_user_id </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_screen_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   retweet_followers_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, retweet_friends_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   retweet_statuses_count </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span style='color: #949494;'>, retweet_location </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   retweet_description </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, place_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, place_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   place_full_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, place_type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, country </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, country_code </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   bbox_coords </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, quoted_place_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_place_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   quoted_place_full_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_place_type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   quoted_country </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_country_code </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, quoted_bbox_coords </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   retweet_place_url </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_place_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   retweet_place_full_name </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_place_type </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   retweet_country </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>, retweet_country_code </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,</span><span>
+#&gt; </span><span style='color: #949494;'>#   retweet_bbox_coords </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span style='color: #949494;'>, campaign_ids </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span></div><div class='input'>
 </div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Brendan Knapp <a href='mailto:brendan.g.knapp@nps.edu'>brendan.g.knapp@nps.edu</a></p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -275,7 +261,7 @@ If <code>NULL</code>, <code><a href='https://rdrr.io/pkg/future/man/multiprocess
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

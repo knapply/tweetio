@@ -1,31 +1,15 @@
-# // Copyright (C) 2019 Brendan Knapp
-# // This file is part of tweetio.
-# // 
-# // This program is free software: you can redistribute it and/or modify
-# // it under the terms of the GNU General Public License as published by
-# // the Free Software Foundation, either version 3 of the License, or
-# // (at your option) any later version.
-# // 
-# // This program is distributed in the hope that it will be useful,
-# // but WITHOUT ANY WARRANTY; without even the implied warranty of
-# // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# // GNU General Public License for more details.
-# // 
-# // You should have received a copy of the GNU General Public License
-# // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 .finalize_df <- function(df, as_tibble) {
   if (!as_tibble || !requireNamespace("tibble", quietly = TRUE)) {
     return(df[])
   }
-  
+
   original_class <- class(df)
   df <- tibble::as_tibble(df)
 
   if (original_class[[1L]] == "sf" && requireNamespace("sf", quietly = TRUE)) {
     df <- sf::st_as_sf(df)
   }
-  
+
   df
 }
 
@@ -33,8 +17,11 @@
   if (is.null(lhs)) rhs else lhs
 }
 
+#' @importFrom data.table setattr
 .as_posixct <- function(x, .tz = "UTC", .class = c("POSIXct", "POSIXt")) {
-  structure(x, class = .class, tzone = .tz)
+  setattr(x, "class", .class)
+  setattr(x, "tzone", .tz)
+  x
 }
 
 .map_template <- function(.x, .f, .template, ...) {
@@ -55,14 +42,6 @@
 .map2_lgl <- function(.x, .y, .f, ...) {
   as.vector(.map2(.x, .y, .f, ...), mode = "logical")
 }
-
-# .map3 <- function(.x, .y, .z, .f, ...) {
-  # mapply(.f, .x, .y, .z, MoreArgs = list(...), SIMPLIFY = FALSE)
-# }
-
-# .map3_lgl <- function(.x, .y, .z, .f, ...) {
-  # as.vector(.map3(.x, .y, .z, .f, ...), "logical")
-# }
 
 .imap <- function(.x, .f, ...) {
   nm <- names(.x) %||% seq_along(.x)
@@ -105,26 +84,22 @@
   .keep2(names(.x), .x, .p, ...)
 }
 
-
-# .is_atomic_with_non_nas <- function(x) {
-  # is.atomic(x) && any(!is.na(x))
-# }
-
 .set_names <- function(x, y = x) {
   `names<-`(x, y)
 }
 
 .is_empty <- function(x) {
-  length(x) == 0L 
+  length(x) == 0L
 }
 
 .is_dt <- function(x) {
   inherits(x, "data.table")
 }
 
+
 .file_exists <- function(x) {
   if (.is_empty(x)) {
-    .stop("`x` is empty, so `file.exists()` doesn't have anything to check.")
+    stop("`x` is empty, so `file.exists()` doesn't have anything to check.", call. = FALSE)
   }
   file.exists(x)
 }
@@ -142,21 +117,24 @@
 .as_dt <- as.data.table
 
 #' @importFrom data.table .SD copy
-#' @importFrom jsonify to_json
 jsonify_list_cols <- function(df, copy = TRUE) {
-  list_cols <- .match_col_names(df, is.list)
-  
-  if (.is_empty(list_cols)) {
-    return(df)
+  if (!requireNamespace("jsonify", quietly = TRUE)) {
+    stop("{jsonify} is required for this functionality.", call. = FALSE) # nocov
   }
-  
+
+  list_cols <- .match_col_names(df, is.list)
+
+  if (.is_empty(list_cols)) {
+    return(df) # nocov
+  }
+
   if (copy) {
     df <- copy(df)
   }
 
   df[, (list_cols) := lapply(.SD, .map_chr, function(.x) {
     .x[is.na(.x)] <- ""
-    to_json(.x, unbox = TRUE)
+    jsonify::to_json(.x, unbox = TRUE)
     }),
     .SDcols = list_cols
   ]

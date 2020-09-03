@@ -8,14 +8,15 @@ read_tweets(
   file_path,
   as_tibble = tweetio_as_tibble(),
   verbose = tweetio_verbose() || length(file_path) >= 3L,
-  reserve = length(file_path) * 1e+05,
-  batch_size = 1e+06 * 1.5,
-  doc_pointer = "",
   ...
 )
 }
 \arguments{
 \item{file_path}{Path(s) to tweet files.}
+
+\item{as_tibble}{\verb{<logical>}, Default: \code{tweetio_as_tibble()}.
+Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the \code{{tibble}}
+package is not installed.}
 
 \item{verbose}{\verb{<logical>}, Default: \code{tweetio_verbose()}.
 Whether to show diagnostic or progress messages.}
@@ -35,13 +36,14 @@ Whether to show diagnostic or progress messages.}
 Go from a file of raw tweet data to a convenient, \code{{rtweet}}-style data frame.
 }
 \examples{
-path_to_tweet_file <- example_tweet_file()
+(path_to_tweet_file <- example_tweet_file())
 
 tweet_data.table <- read_tweets(file_path = path_to_tweet_file)
+print(tweet_data.table, class = TRUE, trunc.cols = TRUE)
 
-tweet_tibble <- read_tweets(file_path = path_to_tweet_file, as_tibble = TRUE)
-
-tweet_tibble
+if (requireNamespace("tibble", quietly = TRUE)) {
+  read_tweets(file_path = path_to_tweet_file, as_tibble = TRUE)
+}
 
 }
 \author{

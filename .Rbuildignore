@@ -24,3 +24,6 @@
 ^\.vignettes$
 ^inst/example-data/ufc-tweet-stream\.json$
 ^inst/example-data/ufc-tweet-stream\.json\.gz$
+^\.clang-format$
+^inst/example-data/test-data$
+.covrignore

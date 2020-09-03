@@ -29,16 +29,13 @@ options(width = 150)
 
 
 <!-- badges: start -->
-[![Gitter](https://badges.gitter.im/tweetio/community.svg)](https://gitter.im/tweetio/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/knapply/tweetio?branch=master&svg=true)](https://ci.appveyor.com/project/knapply/tweetio)
 [![Travis-CI Build Status](https://travis-ci.org/knapply/tweetio.svg?branch=master)](https://travis-ci.org/knapply/tweetio)
 [![Codecov test coverage](https://codecov.io/gh/knapply/tweetio/branch/master/graph/badge.svg)](https://codecov.io/gh/knapply/tweetio?branch=master)
 [![GitHub last commit](https://img.shields.io/github/last-commit/knapply/tweetio.svg)](https://github.com/knapply/tweetio/commits/master)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Depends](https://img.shields.io/badge/Depends-GNU_R>=3.3-blue.svg)](https://www.r-project.org/)
-[![CRAN status](https://www.r-pkg.org/badges/version/tweetio)](https://cran.r-project.org/package=tweetio)
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/knapply/tweetio.svg)](https://github.com/knapply/tweetio)
+[![Depends](https://img.shields.io/badge/Depends-GNU_R>=4.0-blue.svg)](https://www.r-project.org/)
 <!-- [![HitCount](http://hits.dwyl.io/knapply/tweetio.svg)](http://hits.dwyl.io/knapply/tweetio) -->
 <!-- badges: end -->
 
@@ -132,58 +129,21 @@ res <- bench::mark(
   tweetio = tweetio::read_tweets(small_rtweet_stream)
   ,
   check = FALSE,
-  filter_gc = FALSE
-)
-
-res[, 1:9]
-```
-
-With bigger files, using `rtweet::parse_stream()` is no longer realistic, especially if the JSON are invalid. 
-
-```{r, echo=FALSE, eval=FALSE}
-# big_tweet_stream_path <- "~/ufc-tweet-stream.json.gz"
-# 
-# raw_lines <- readLines(big_tweet_stream_path)
-# valid_lines <- purrr::map_lgl(raw_lines,
-#                               ~ jsonify::validate_json(.x) && jsonlite::validate(.x))
-# writeLines(raw_lines[valid_lines][1:100000], "inst/example-data/ufc-tweet-stream.json")
-# R.utils::gzip("inst/example-data/ufc-tweet-stream.json",
-#               "inst/example-data/ufc-tweet-stream.json.gz",
-#               remove = FALSE, overwrite = TRUE)
-```
-
-```{r}
-big_tweet_stream_path <- "inst/example-data/ufc-tweet-stream.json.gz"
-
-temp_file <- tempfile(fileext = ".json")
-R.utils::gunzip(big_tweet_stream_path, destname = temp_file, remove = FALSE)
-
-c(`compressed MB` = file.size(big_tweet_stream_path) / 1e6,
-  `decompressed MB` = file.size(temp_file) / 1e6)
-```
-
-
-```{r}
-res <- bench::mark(
-  rtweet = rtweet_df <- rtweet::parse_stream(big_tweet_stream_path),
-  tweetio = tweetio_df <- tweetio::read_tweets(big_tweet_stream_path)
-  ,
   filter_gc = FALSE,
-  check = FALSE,
-  iterations = 1
+  relative = TRUE
 )
 
 res[, 1:9]
 ```
 
-Not only is `tweetio::read_tweets()` more efficient in time and memory usage, it's able to successfully parse much more of the data.
-
+With bigger files, using `rtweet::parse_stream()` is no longer realistic, especially if the JSON are invalid, but _big_ tweet data sets are where `{tweetio}` can help.
 
 ```{r}
-`rownames<-`(
-  vapply(list(tweetio_df = tweetio_df, rtweet_df = rtweet_df), dim, integer(2L)),
-  c("nrow", "ncol")
-)
+many_files <- dir("inst/example-data/", full.names = TRUE, recursive = TRUE)
+scales::number_bytes(sum(file.size(many_files)))
+
+big_df <- read_tweets(many_files)
+big_df
 ```
 
 
@@ -191,18 +151,13 @@ Not only is `tweetio::read_tweets()` more efficient in time and memory usage, it
 
 A common practice for handling social media data at scale is to store them in search engine databases like Elasticsearch, but it's (unfortunately) possible that you'll need to work with data dumps.
 
-I've encountered two flavors of these schema (that may be in .gzip files or ZIP archives):
-
-1. .jsonl: newline-delimited JSON
-2. .json: the complete contents of a database dump packed in a JSON array
-
 This has three unfortunate consequences:
 
-1. Packages that were purpose-built to work directly with `{rtweet}`'s data frames can't play along with your data.
+1. Routines that were purpose-built to work directly with `{rtweet}`'s data frames can't play along with your data.
 2. You're going to waste most of your time (and memory) getting data into R that you're not going to use.
 3. The data are _very_ tedious to restructure in R (lists of lists of lists of lists of lists...).
 
-`{tweetio}` solves this by parsing everything and building the data frames at the C++ level, including handling GZIP files and ZIP archives for you.
+`{tweetio}` solves this by parsing everything and building the data frames at the C++ level, including handling GZIP files for you.
 
 
 # Spatial Tweets
@@ -210,8 +165,8 @@ This has three unfortunate consequences:
 If you have `{sf}` installed, you can use `as_tweet_sf()` to only keep those tweets that contain valid bounding box polygons or points.
 
 ```{r}
-tweet_sf <- as_tweet_sf(tweetio_df)
-tweet_sf[, "geometry"]
+tweet_sf <- as_tweet_sf(big_df)
+tweet_sf$geometry
 ```
 
 
@@ -225,14 +180,13 @@ There are currently four columns that can potentially hold spatial geometries:
 You can select which one to use to build your `sf` object by modifying the `geom_col=` parameter (default: `"bbox_coords"`)
 
 ```{r}
-as_tweet_sf(tweetio_df,
-            geom_col = "quoted_bbox_coords")[, "geometry"]
+as_tweet_sf(big_df, geom_col = "retweet_bbox_coords")$geometry
 ```
 
 You can also build _all_ the supported bounding boxes by setting `geom_col=` to `"all"`.
 
 ```{r}
-all_bboxes <- as_tweet_sf(tweetio_df, geom_col = "all")
+all_bboxes <- as_tweet_sf(big_df, geom_col = "all")
 all_bboxes[, c("which_geom", "geometry")]
 ```
 
@@ -246,13 +200,16 @@ library(ggplot2)
 world <- rnaturalearth::ne_countries(returnclass = "sf")
 world <- world[world$continent != "Antarctica", ]
 
+all_bboxes <- all_bboxes[order(sf::st_area(all_bboxes$geometry), decreasing = TRUE), ]
+
 ggplot(all_bboxes) +
   geom_sf(fill = "white", color = "lightgray", data = world) +
-  geom_sf(aes(fill = which_geom, color = which_geom), 
-          alpha = 0.15, size = 1, show.legend = TRUE) +
+  geom_sf(aes(fill = which_geom), color = "black" ,
+          alpha = 0.1, size = 0.1, show.legend = TRUE) +
   coord_sf(crs = 3857) +
   scale_fill_viridis_d() +
   scale_color_viridis_d() +
+  theme_void() +
   theme(legend.title = element_blank(), legend.position = "top",
         panel.background = element_rect(fill = "#daf3ff"))
 ```
@@ -262,18 +219,16 @@ ggplot(all_bboxes) +
 If you want to analyze tweet networks and have `{igraph}` or `{network}` installed, you can get started immediately using `tweetio::as_tweet_igraph()` or `tweetio::as_tweet_network()`.
 
 ```{r}
-tweet_df <- tweetio_df[1:1e4, ]
-
-as_tweet_igraph(tweet_df)
-as_tweet_network(tweet_df)
+as_tweet_igraph(big_df)
+as_tweet_network(big_df[1:1e4, ])
 ```
 
 If you want to take advantage of all the metadata available, you can set `all_status_data` and/or `all_user_data` to `TRUE`
 
 ```{r}
-as_tweet_igraph(tweet_df,
+as_tweet_igraph(big_df,
                 all_user_data = TRUE, all_status_data = TRUE)
-as_tweet_network(tweet_df,
+as_tweet_network(big_df[1:1e4, ],
                  all_user_data = TRUE, all_status_data = TRUE)
 ```
 
@@ -289,22 +244,22 @@ If bipartite, the returned objects are always set as undirected.
 ### Users to Hashtags
 
 ```{r}
-as_tweet_igraph(tweet_df, target_class = "hashtag")
-as_tweet_network(tweet_df, target_class = "hashtag")
+as_tweet_igraph(big_df, target_class = "hashtag")
+as_tweet_network(big_df[1:1e4, ], target_class = "hashtag")
 ```
 
 ### Users to URLs
 
 ```{r}
-as_tweet_igraph(tweet_df, target_class = "url")
-as_tweet_network(tweet_df, target_class = "url")
+as_tweet_igraph(big_df, target_class = "url")
+as_tweet_network(big_df[1:1e4, ], target_class = "url")
 ```
 
 ### Users to Media
 
 ```{r}
-as_tweet_igraph(tweet_df, target_class = "media")
-as_tweet_network(tweet_df, target_class = "media")
+as_tweet_igraph(big_df, target_class = "media")
+as_tweet_network(big_df[1:1e4, ], target_class = "media")
 ```
 
 ## `<proto_net>`
@@ -312,7 +267,7 @@ as_tweet_network(tweet_df, target_class = "media")
 You're not stuck with going directly to `<igraph>`s or `<network>`s though. Underneath the hood, `as_tweet_igraph()` and `as_tweet_network()` use `as_proto_net()` to build a `<proto_net>`, a list of edge and node data frames.
 
 ```{r}
-as_proto_net(tweetio_df,
+as_proto_net(big_df,
              all_status_data = TRUE, all_user_data = TRUE)
 ```
 
@@ -321,14 +276,14 @@ as_proto_net(tweetio_df,
 
 ### Supported Data Inputs
 
-- [x] Twitter API streams: .json, .json.gz
-- [x] API to Elasticsearch data dump (JSON Array): .json, .json.gz
-- [x] API to Elasticsearch data dump (line-delimited JSON): .jsonl, .jsonl.gz
+- [x] Twitter Streaming API (NDJSON/JSONL)
+- [x] Twitter REST API (/statuses)
+- [x] API to Elasticsearch-style document arrays (`/_source/doc`)
+- [x] API to Elasticsearch-style NDJSON/JSONL (`/doc`)
 
 ### Supported Data Outputs
 
 - [x] CSV
-- [x] Excel
 - [x] Gephi-friendly GraphML
 
 ### Structures
@@ -337,21 +292,3 @@ as_proto_net(tweetio_df,
 - [x] Spatial Tweets via `{sf}`
 - [x] Tweet networks via `{igraph}`
 - [x] Tweet networks via `{network}`
-
-
-# Shout Outs
-
- The [`{rtweet}`](https://rtweet.info/) package __spoils R users rotten__, in the best possible way. The underlying data carpentry is so seamless that the user doesn't need to know anything about the horrors of Twitter data, which is pretty amazing. If you use `{rtweet}`, you probably owe [Michael Kearney](https://twitter.com/kearneymw) some [citations](https://github.com/mkearney/rtweet_citations).
- 
-
-`{tweetio}` uses a combination of C++ via [`{Rcpp}`](http://www.rcpp.org/), the [`rapidjson`](http://rapidjson.org/) C++ library (made available by [`{rapidjsonr}`](https://cran.r-project.org/web/packages/rapidjsonr/index.html)), [`{jsonify}`](https://cran.r-project.org/web/packages/jsonify/index.html)) for an R-level interface to `rapidjson`, [`{RcppProgress}`](https://cran.r-project.org/web/packages/RcppProgress/index.html)), and __R's not-so-secret super weapon__: [`{data.table}`](https://rdatatable.gitlab.io/data.table/).
-
-Major inspiration from [`{ndjson}`](https://gitlab.com/hrbrmstr/ndjson) was taken, particularly its use of [`Gzstream`](https://www.cs.unc.edu/Research/compgeom/gzstream/).
-
-
-# Environment
-
-```{r}
-sessionInfo()
-```
-

@@ -1,6 +1,6 @@
 Package: tweetio
 Title: Really, Really, Ridiculously Fast I/O, Transformation, and Analytical Routines Twitter Data
-Version: 0.1
+Version: 0.2
 Authors@R: 
     person("Brendan", "Knapp", 
            email = "brendan.g.knapp@gmail.com", 
@@ -21,28 +21,21 @@ LinkingTo:
     Rcpp, 
     RcppProgress
 Imports:
-    bit64,
     data.table (>= 1.12.4),
-    jsonify,
-    magrittr,
     Rcpp,
     stringi,
-    utils
+    magrittr
 Suggests:
     covr,
     igraph,
+    jsonify,
     knitr,
-    future,
-    future.apply,
     network,
-    openxlsx,
+    rmarkdown
     rtweet,
     sf,
     testthat (>= 2.1.0),
-    tibble,
-    rmarkdown
-Remotes: 
-    SymbolixAU/jsonify
+    tibble
 URL: https://github.com/knapply/tweetio, https://knapply.github.io/tweetio
 BugReports: https://github.com/knapply/tweetio/issues
 Encoding: UTF-8

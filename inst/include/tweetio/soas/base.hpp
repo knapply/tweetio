@@ -16,7 +16,7 @@ template <typename... Ts> class SoA {
   std::array<std::string_view, sizeof...(Ts)> col_names_;
 
 public:
-  constexpr explicit SoA(std::tuple<Ts...> cols) : cols_(cols) {
+  constexpr explicit SoA(std::tuple<Ts...> cols) noexcept : cols_(cols) {
     std::size_t i = 0;
     std::apply(
         [=, &i](auto&&... args) {
@@ -25,11 +25,11 @@ public:
         cols_);
   }
 
-  constexpr void reserve(std::size_t n) {
+  constexpr void reserve(std::size_t n) noexcept {
     std::apply([&n](auto&&... args) { ((args.reserve(n)), ...); }, cols_);
   }
 
-  template <typename T> constexpr void bind_row(T x) {
+  template <typename T> constexpr void bind_row(T x) noexcept {
     std::apply([&x](auto&&... args) { ((args.emplace_back(x)), ...); }, cols_);
   }
 

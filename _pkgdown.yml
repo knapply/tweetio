@@ -19,12 +19,9 @@ reference:
   - title: File I/O
     contents:
     - read_tweets
-    - read_tweets_bulk
     - write_tweet_csv
-    - write_tweet_xlsx
-    - write_tweet_excel
     - write_graphml
-  
+
   - title: Network Analysis
     contents:
     - as_proto_net
@@ -34,12 +31,12 @@ reference:
   - title: Spatial Analysis
     contents:
     - as_tweet_sf
-    
+
   - title: Extraction
     contents:
     - extract_statuses
     - extract_users
-    
+
   - title: Information Operations Campaigns
     contents:
     - io_campaign_metadata
@@ -48,7 +45,7 @@ reference:
     contents:
     - example_tweet_file
     - tweetio_options
-    
+
 
 
 

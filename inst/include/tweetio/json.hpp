@@ -14,12 +14,21 @@ namespace tweetio {
 
 template <typename T, typename result_T> inline T to(result_T&& x) {
   if (!x.error()) {
-    if (x.first.template is<uint64_t>() && !x.first.template is<int64_t>()) {
-      Rcpp::Rcout << "uint64_t found!!!!!!!!!!!!!!!!!" << std::endl;
-    }
+    // if (x.first.template is<uint64_t>() && !x.first.template is<int64_t>()) {
+    //   Rcpp::Rcout << "uint64_t found!!!!!!!!!!!!!!!!!" << std::endl;
+    // }
     if constexpr (std::is_same_v<T, std::string>) {
       if (auto [res, err] = x.template get<std::string_view>(); !err) {
-        return std::string(res);
+        std::string out(res);
+        out.erase(std::remove_if(std::begin(out), std::end(out),
+                                 [](char c) { return c == 0x04; }
+                                 //   { return c < 32; }
+                                 ),
+                  std::end(out));
+        if (std::count_if(std::cbegin(out), std::cend(out),
+                          [](char c) { return c != ' '; }) > 0) {
+          return out;
+        }
       }
     } else if constexpr (std::is_same_v<T, int>) {
       if (auto [res, err] = x.template get<int64_t>(); !err) {
@@ -38,7 +47,7 @@ template <typename T, typename result_T> inline T to(result_T&& x) {
 inline double
 to_timestamp_ms(simdjson::simdjson_result<simdjson::dom::element> x) {
   if (!x.error() && x.first.is<std::string_view>()) {
-    return std::atof(x.first.get<const char*>().take_value());
+    return std::atof(x.first.get<const char*>().first);
   }
   return NA_REAL;
 }
@@ -47,7 +56,7 @@ to_timestamp_ms(simdjson::simdjson_result<simdjson::dom::element> x) {
 inline double
 to_created_at(simdjson::simdjson_result<simdjson::dom::element> x) {
   if (!x.error() && x.first.is<std::string_view>()) {
-    if (auto sv = x.get<std::string_view>().take_value(); sv.size() == 30) {
+    if (auto sv = x.get<std::string_view>().first; sv.size() == 30) {
       std::tm            ptm{};
       std::istringstream ss(sv.data());
       //   ss.imbue(std::locale("en_US.UTF-8"));
@@ -162,7 +171,7 @@ inline vec_dbl get_bbox(simdjson::simdjson_result<simdjson::dom::element> x) {
         for (auto array3 : array2) {
           std::size_t i = 0;
           for (auto element : array3.get<simdjson::dom::array>().first) {
-            out[i + j] = element.get<double>().take_value();
+            out[i + j] = element.get<double>().first;
             i += 4;
           }
           j++;

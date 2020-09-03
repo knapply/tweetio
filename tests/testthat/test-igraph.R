@@ -24,4 +24,10 @@ test_that("igraph functions work", {
     "igraph"
   )
   
+  expect_true(
+    igraph::is_bipartite(
+      as_igraph(test_df, target_class = "media")
+    )
+  )
+  
 })

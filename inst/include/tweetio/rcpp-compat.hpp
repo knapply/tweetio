@@ -19,12 +19,9 @@ inline SEXP wrap<std::vector<int64_t>>(const std::vector<int64_t>& obj) {
 template <>
 inline SEXP
 wrap<std::vector<std::string>>(const std::vector<std::string>& obj) {
-  const R_xlen_t n(std::size(obj));
-  auto           out = Rcpp::CharacterVector(n);
-  for (R_xlen_t i = 0; i < n; ++i) {
-    out[i] = !obj[i].empty() ? Rcpp::String(obj[i].c_str()) : NA_STRING;
-  }
-  return out;
+  return Rcpp::CharacterVector(std::cbegin(obj), std::cend(obj), [](auto x) {
+    return !x.empty() ? Rcpp::String(x.c_str()) : NA_STRING;
+  });
 }
 
 

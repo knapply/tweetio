@@ -10,7 +10,7 @@ extract_statuses(tweet_df, as_tibble = tweetio_as_tibble(), ...)
 
 \method{extract_statuses}{data.frame}(tweet_df, as_tibble = tweetio_as_tibble(), ...)
 
-\method{extract_statuses}{data.table}(tweet_df, as_tibble = tweetio_as_tibble(), ...)
+\method{extract_statuses}{data.table}(tweet_df, as_tibble = FALSE, ...)
 }
 \arguments{
 \item{tweet_df}{A data frame of tweets, as obtained by \code{read_tweets()} or
@@ -30,7 +30,7 @@ each column hold the most recent non-\code{NA}/non-empty value.
 path_to_tweet_file <- example_tweet_file()
 tweet_df <- read_tweets(path_to_tweet_file)
 
-extract_statuses(tweet_df, as_tibble = TRUE) 
+extract_statuses(tweet_df, as_tibble = TRUE)
 
 }
 \author{

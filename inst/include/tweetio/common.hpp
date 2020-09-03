@@ -2,15 +2,25 @@
 #define __TWEETIO__COMMON_HPP__
 
 
+// #define SIMDJSON_EXCEPTIONS 0
+
+
 #include "rcpp-compat.hpp"
 
 #include <Rcpp.h>
 
 #include <charconv>
 
-#include "third-party/gzstream/gzstream.h"
-
 #include "third-party/simdjson/simdjson.h"
+
+
+#ifdef __cpp_lib_filesystem
+#include <filesystem>
+namespace fs = std::filesystem;
+#else
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif
 
 
 namespace tweetio {

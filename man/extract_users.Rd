@@ -54,9 +54,9 @@ Extract all users and relevant data, including retweeters, quoters, repliers, an
 path_to_tweet_file <- example_tweet_file()
 tweet_df <- read_tweets(path_to_tweet_file)
 
-extract_users(tweet_df, as_tibble = TRUE) 
+extract_users(tweet_df, as_tibble = TRUE)
 
-extract_users(tweet_df, summarize = FALSE, as_tibble = TRUE) 
+extract_users(tweet_df, summarize = FALSE, as_tibble = TRUE)
 
 split_users <- extract_users(tweet_df, summarize = FALSE, split = TRUE, as_tibble = TRUE)
 

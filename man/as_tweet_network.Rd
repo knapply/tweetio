@@ -47,17 +47,17 @@ Convert Various Objects to \code{network} graphs.
 path_to_tweet_file <- example_tweet_file()
 tweet_df <- read_tweets(path_to_tweet_file)
 
-tweet_df \%>\% 
+tweet_df \%>\%
   as_tweet_network()
-  
-tweet_df \%>\% 
-  as_proto_net() \%>\% 
+
+tweet_df \%>\%
+  as_proto_net() \%>\%
   as_tweet_network()
-  
-tweet_df \%>\% 
+
+tweet_df \%>\%
   as_tweet_network(all_status_data = TRUE)
-  
-tweet_df \%>\% 
+
+tweet_df \%>\%
   as_tweet_network(all_user_data = TRUE)
 
 }

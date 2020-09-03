@@ -3,9 +3,10 @@ Language: Cpp
 Standard: Cpp11
 BasedOnStyle: LLVM
 
+
+MaxEmptyLinesToKeep: 2
 BinPackParameters: false
 ColumnLimit: 80
-MaxEmptyLinesToKeep: 2
 PointerAlignment: Left
 SortIncludes: false
 IndentWidth: 2
@@ -14,6 +15,8 @@ IndentWidth: 2
 AlignConsecutiveDeclarations: true
 AlignConsecutiveAssignments: true
 AlignTrailingComments: true
+
+IndentCaseLabels: true
 
 # AllowShortFunctionsOnASingleLine: Inline
 

@@ -91,16 +91,16 @@ tweet_df <- read_tweets(path_to_tweet_file)
 tweet_df \%>\%
   as_proto_net(as_tibble = TRUE)
 
-tweet_df \%>\% 
+tweet_df \%>\%
   as_proto_net(target_class = "hashtag", as_tibble = TRUE)
-  
-tweet_df \%>\% 
+
+tweet_df \%>\%
   as_proto_net(target_class = "url", as_tibble = TRUE)
-  
-tweet_df \%>\% 
+
+tweet_df \%>\%
   as_proto_net(target_class = "media", as_tibble = TRUE)
-  
-tweet_df \%>\% 
+
+tweet_df \%>\%
   as_proto_net(all_status_data = TRUE, all_user_data = TRUE, as_tibble = TRUE)
 
 }

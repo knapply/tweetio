@@ -187,7 +187,7 @@ inline auto profile_image_url    = col_spec<std::string>("profile_image_url", "/
 inline auto contributors_enabled = col_spec<bool>("contributors_enabled", "/user/contributors_enabled");
 
 inline auto hashtags             = entity_col_spec<vec_str, std::string>("hashtags", "/hashtags", "/text");
-inline auto urls_expanded_urls   = entity_col_spec<vec_str, std::string>("urls_expanded_urls", "/urls", "/expanded_url");
+inline auto urls_expanded_url   = entity_col_spec<vec_str, std::string>("urls_expanded_url", "/urls", "/expanded_url");
 inline auto media_url            = entity_col_spec<vec_str, std::string>("media_url", "/media", "/media_url");
 inline auto media_type           = entity_col_spec<vec_str, std::string>("media_type", "/media", "/type");
 inline auto mentions_user_id     = entity_col_spec<vec_str, std::string>("mentions_user_id", "/user_mentions", "/id_str");
@@ -320,7 +320,7 @@ inline auto base = std::tuple{
     profile_image_url,
     contributors_enabled,
     hashtags,
-    urls_expanded_urls,
+    urls_expanded_url,
     media_url,
     media_type,
     mentions_user_id,

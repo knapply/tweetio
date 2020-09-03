@@ -2,15 +2,9 @@
 % Please edit documentation in R/spreadsheets.R
 \name{write_tweet_csv}
 \alias{write_tweet_csv}
-\alias{write_tweet_xlsx}
-\alias{write_tweet_excel}
 \title{Write Tweets to Spreadsheets}
 \usage{
 write_tweet_csv(tweet_df, file_path, ...)
-
-write_tweet_xlsx(tweet_df, file_path, asTable = TRUE, ...)
-
-write_tweet_excel(tweet_df, file_path, asTable = TRUE, ...)
 }
 \arguments{
 \item{tweet_df}{A data frame of tweets, as obtained by \code{read_tweets()} or
@@ -19,8 +13,6 @@ one of \code{{rtweet}}'s collection functions, e.g. \code{\link[rtweet:search_tw
 \item{file_path}{File path to which to write or from which to read.}
 
 \item{...}{Arguments passed to or from other methods.}
-
-\item{asTable}{\verb{<logical>}, default: \code{TRUE}.}
 }
 \description{
 Write Tweets to Spreadsheets
@@ -34,22 +26,11 @@ tweet_df <- read_tweets(file_path = path_to_tweet_file)[1:5, ]
 target_csv_file <- tempfile(fileext = ".csv")
 target_csv_file
 
-write_tweet_csv(tweet_df, file_path = target_csv_file) 
-
-# write Microsoft Excel files =========================================================
-target_excel_file <- tempfile(fileext = ".xlsx")
-target_excel_file
-
-write_tweet_xlsx(tweet_df, file_path = target_excel_file)
-
-# same as `write_tweet_xlsx()`
-write_tweet_excel(tweet_df, file_path = target_excel_file)
+write_tweet_csv(tweet_df, file_path = target_csv_file)
 
 }
 \seealso{
 \code{\link[data.table:fwrite]{data.table::fwrite()}}
-
-\code{\link[openxlsx:write.xlsx]{openxlsx::write.xlsx()}}
 }
 \author{
 Brendan Knapp \email{brendan.g.knapp@gmail.com}
