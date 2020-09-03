@@ -17,7 +17,7 @@
 #'
 #' tweet_df <- read_tweets(file_path = path_to_tweet_file)
 #'
-#' if (!requireNamespace("igraph", quietly = TRUE)) {
+#' if (requireNamespace("igraph", quietly = TRUE)) {
 #'   tweet_graph <- as_igraph(tweet_df)
 #'   tweet_graph
 #'

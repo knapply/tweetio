@@ -27,7 +27,7 @@
 }
 
 
-#' Convert Various Objects to `network` graphs.
+#' Convert tweets to `network` graphs.
 #'
 #' @param x Tweet data frame or `proto_net`.
 #' @template param-target_class
@@ -43,7 +43,7 @@
 #' path_to_tweet_file <- example_tweet_file()
 #' tweet_df <- read_tweets(path_to_tweet_file)
 #'
-#' if (!requireNamespace("network", quietly = TRUE)) {
+#' if (requireNamespace("network", quietly = TRUE)) {
 #'   tweet_df %>%
 #'     as_tweet_network()
 #'
@@ -64,6 +64,10 @@ as_tweet_network <- function(x,
                              all_status_data = all_status_data,
                              all_user_data = all_user_data,
                              ...) {
+  if (!requireNamespace("network", quietly = TRUE)) {
+    stop("The {network} package is required for this funcitonality.", call. = FALSE) # nocov
+  }
+
   UseMethod("as_tweet_network")
 }
 
@@ -75,10 +79,6 @@ as_tweet_network <- function(x,
 #'
 #' @export
 as_tweet_network.proto_net <- function(x, ...) {
-  if (!requireNamespace("network", quietly = TRUE)) {
-    stop("The {network} package is required for this funcitonality.", call. = FALSE) # nocov
-  }
-
   # silence R CMD Check NOTE =============================================================
   name <- NULL
   is_actor <- NULL

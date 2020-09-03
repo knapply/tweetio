@@ -19,7 +19,7 @@
 #'
 #' tweet_df <- read_tweets(file_path = path_to_tweet_file)
 #'
-#' if (!requireNamespace("sf", quietly = TRUE)) {
+#' if (requireNamespace("sf", quietly = TRUE)) {
 #'   bbox_coords <- as_tweet_sf(tweet_df)
 #'
 #'   rwtweet_bbox_cooords <- as_tweet_sf(tweet_df, geom_col = "retweet_bbox_coords")
