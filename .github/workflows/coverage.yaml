@@ -15,19 +15,29 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@master
 
-      - name: Query dependencies
+      - name: System Dependencies
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          sudo apt-get update -y
+          Rscript -e "install.packages('remotes')"
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+          sudo apt update
+          sudo apt install \
+            libudunits2-dev \
+            libgdal-dev \
+            libgeos-dev \
+            libproj-dev
+
+      - name: Prep R
         shell: Rscript {0}
-
-
-      - name: Install dependencies
         run: |
-          install.packages(c("remotes"))
+          if (!requireNamespace('remotes', quietly = TRUE)) install.packages('remotes')
           remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("covr")
-        shell: Rscript {0}
+          remotes::install_cran("curl", dependencies = TRUE)
+          remotes::install_cran("covr", dependencies = TRUE)
+
 
       - name: Test coverage
         run: covr::codecov()

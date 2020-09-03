@@ -1,5 +1,5 @@
 test_that("network functions work (data.table)", {
-  if (requireNamespace("network", package = TRUE)) {
+  if (requireNamespace("network", quietly = TRUE)) {
 
     test_df <- read_tweets(
       example_tweet_file()
@@ -51,7 +51,7 @@ test_that("network functions work (data.table)", {
 
 
 test_that("network functions work (tibble)", {
-  if (requireNamespace("network", package = TRUE)) {
+  if (requireNamespace("network", quietly = TRUE)) {
 
     test_df <- read_tweets(
       example_tweet_file(), as_tibble = TRUE

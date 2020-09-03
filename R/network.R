@@ -44,28 +44,26 @@
 #' tweet_df <- read_tweets(path_to_tweet_file)
 #'
 #' if (requireNamespace("network", quietly = TRUE)) {
-#'   tweet_df %>%
-#'     as_tweet_network()
 #'
-#'   tweet_df %>%
-#'     as_proto_net() %>%
-#'     as_tweet_network()
+#'   as_tweet_network(tweet_df)
 #'
-#'   tweet_df %>%
-#'     as_tweet_network(all_status_data = TRUE)
+#'   proto_net <- as_proto_net(tweet_df)
+#'   as_tweet_network(proto_net)
 #'
-#'   tweet_df %>%
-#'     as_tweet_network(all_user_data = TRUE)
+#'   as_tweet_network(tweet_df, all_status_data = TRUE)
+#'
+#'   as_tweet_network(tweet_df, all_user_data = TRUE)
 #' }
 #'
 #' @export
 as_tweet_network <- function(x,
-                             target_class = target_class,
-                             all_status_data = all_status_data,
-                             all_user_data = all_user_data,
+                             target_class = c("user", "hashtag",
+                                              "url", "media"),
+                             all_status_data = FALSE,
+                             all_user_data = FALSE,
                              ...) {
   if (!requireNamespace("network", quietly = TRUE)) {
-    stop("The {network} package is required for this funcitonality.", call. = FALSE) # nocov
+    stop("The {network} package is required for this functionality.", call. = FALSE) # nocov
   }
 
   UseMethod("as_tweet_network")
@@ -73,9 +71,6 @@ as_tweet_network <- function(x,
 
 
 #' @rdname as_tweet_network
-#'
-#' @importFrom data.table := %chin%
-#' @importFrom utils getFromNamespace
 #'
 #' @export
 as_tweet_network.proto_net <- function(x, ...) {

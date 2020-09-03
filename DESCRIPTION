@@ -22,11 +22,8 @@ LinkingTo:
     RcppProgress
 Imports:
     data.table (>= 1.12.4),
-    Rcpp,
-    stringi,
-    magrittr
+    Rcpp
 Suggests:
-    covr,
     igraph,
     jsonify,
     network,

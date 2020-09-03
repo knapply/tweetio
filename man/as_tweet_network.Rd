@@ -8,9 +8,9 @@
 \usage{
 as_tweet_network(
   x,
-  target_class = target_class,
-  all_status_data = all_status_data,
-  all_user_data = all_user_data,
+  target_class = c("user", "hashtag", "url", "media"),
+  all_status_data = FALSE,
+  all_user_data = FALSE,
   ...
 )
 
@@ -48,18 +48,15 @@ path_to_tweet_file <- example_tweet_file()
 tweet_df <- read_tweets(path_to_tweet_file)
 
 if (requireNamespace("network", quietly = TRUE)) {
-  tweet_df \%>\%
-    as_tweet_network()
 
-  tweet_df \%>\%
-    as_proto_net() \%>\%
-    as_tweet_network()
+  as_tweet_network(tweet_df)
 
-  tweet_df \%>\%
-    as_tweet_network(all_status_data = TRUE)
+  proto_net <- as_proto_net(tweet_df)
+  as_tweet_network(proto_net)
 
-  tweet_df \%>\%
-    as_tweet_network(all_user_data = TRUE)
+  as_tweet_network(tweet_df, all_status_data = TRUE)
+
+  as_tweet_network(tweet_df, all_user_data = TRUE)
 }
 
 }

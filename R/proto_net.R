@@ -35,20 +35,15 @@
 #'
 #' tweet_df <- read_tweets(path_to_tweet_file)
 #'
-#' tweet_df %>%
-#'   as_proto_net(as_tibble = TRUE)
+#' as_proto_net(tweet_df, as_tibble = TRUE)
 #'
-#' tweet_df %>%
-#'   as_proto_net(target_class = "hashtag", as_tibble = TRUE)
+#' as_proto_net(tweet_df, target_class = "hashtag", as_tibble = TRUE)
 #'
-#' tweet_df %>%
-#'   as_proto_net(target_class = "url", as_tibble = TRUE)
+#' as_proto_net(tweet_df, target_class = "url", as_tibble = TRUE)
 #'
-#' tweet_df %>%
-#'   as_proto_net(target_class = "media", as_tibble = TRUE)
+#' as_proto_net(tweet_df, target_class = "media", as_tibble = TRUE)
 #'
-#' tweet_df %>%
-#'   as_proto_net(all_status_data = TRUE, all_user_data = TRUE, as_tibble = TRUE)
+#' as_proto_net(tweet_df, all_status_data = TRUE, all_user_data = TRUE, as_tibble = TRUE)
 #'
 #' @export
 as_proto_net <- function(tweet_df,
@@ -84,7 +79,6 @@ as_proto_net.data.frame <- function(tweet_df,
 #' @rdname as_proto_net
 #'
 #' @importFrom data.table %chin% rbindlist setcolorder setDT setnames
-#' @importFrom stringi stri_trans_tolower
 #'
 #' @export
 as_proto_net.data.table <- function(tweet_df,
@@ -156,7 +150,7 @@ as_proto_net.data.table <- function(tweet_df,
   ))
 
   if (target_class == "hashtag") {
-    edges[, to := stri_trans_tolower(to)]
+    edges[, to := tolower(to)]
   }
 
   nodes <- data.table(name = unique(c(edges$from, edges$to)))
