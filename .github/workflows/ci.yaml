@@ -59,6 +59,39 @@ jobs:
           mkdir -p ~/.R/
           echo $'CXX1X=${{ matrix.config.run }}\nCXX17=${{ matrix.config.run }}\nCXX14=${{ matrix.config.run }}\nCXX11=${{ matrix.config.run }}' >> ~/.R/Makevars
 
+      - name: Spatial Dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+          sudo apt update
+          sudo apt install \
+            libudunits2-dev \
+            libgdal-dev \
+            libgeos-dev \
+            libproj-dev
+
+      - name: Brew and macOS config
+        if: runner.os == 'macOS'
+        run: |
+          brew install pkg-config
+          brew install udunits
+          brew install gdal
+          cat <<EOT >> .Renviron
+          PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/
+          PROJ_LIB=/usr/local/opt/proj/share/proj/
+          # for installing XML package from source
+          XML_CONFIG=/usr/local/opt/libxml2/bin/xml2-config
+          EOT
+          cat <<EOT >> .Rprofile
+          r <- getOption("repos")
+          r["CRAN"] <- "https://cran.rstudio.com"
+          r["rccp_drat"] <- "https://RcppCore.github.io/drat"
+          config_args <- c("sf" = "--with-proj-lib=/usr/local/lib/", "rgdal" = "--with-proj-lib=/usr/local/lib/ --with-proj-include=/usr/local/include/")
+          options(configure.args = config_args,
+                  install.packages.compile.from.source = "yes",
+                  repos = r)
+          EOT
+
       - name: Prep R
         shell: Rscript {0}
         run: |
