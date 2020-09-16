@@ -1,5 +1,5 @@
 Package: tweetio
-Title: Really, Really, Ridiculously Fast I/O, Transformation, and Analytical Routines Twitter Data
+Title: Powerful I/O, Transformation, and Analytical Routines for Twitter Data
 Version: 0.2
 Authors@R: 
     person("Brendan", "Knapp", 
@@ -9,7 +9,7 @@ Authors@R:
 Description: 
     `{tweetio}` has three goals: 1) efficiently read Twitter data into R from multiple 
     sources, 2) provide the building blocks for robust analytical pipelines that use 
-    network, spatial, and/or natural language processing perspectives, and 3) write Twitter
+    network, spatial, and/or natural language processing techniques, and 3) write Twitter
     data to multiple file formats, including those that best enable non-technical analysts 
     to work. The primary data structure is inspired by `{rtweet}`, and 
     all analytical routines being compatible with `{rtweet}` data frames is heavily

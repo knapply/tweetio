@@ -51,8 +51,7 @@ as_tweet_sf <- function(tweet_df,
   geom_col <- match.arg(geom_col, c(all_geoms, "all"))
 
   if (geom_col == "all") {
-
-    geom_col <- all_geoms
+    geom_col <- intersect(names(tweet_df), all_geoms)
   }
   names(geom_col) <- geom_col
 
@@ -71,10 +70,26 @@ as_tweet_sf <- function(tweet_df,
   )
 
   if (combine) {
-    out <- do.call(rbind, out)
+    out <- data.table::rbindlist(out, use.names = TRUE, fill = TRUE)
+    if (!nrow(out)) {
+      return(NULL)
+    }
   }
 
-  out
+  # out[, (geom_col) := lapply(.SD, function(.x) NULL), .SDcols = geom_col]
+  # data.table::setattr(out, "sf_column", "geometry")
+  # data.table::setattr(
+  #   out, "agr",
+  #   structure(
+  #     `names<-`(NA_integer_[names(out)[-(ncol(tweet_df))]], names(out)[-(ncol(tweet_df))]),
+  #     # `names<-`(rep(NA_integer_, ncol(tweet_df)), names(out)[-(ncol(tweet_df))]),
+  #     .Label = c("constant", "aggregate", "identity"),
+  #     class = "factor"
+  #   )
+  # )
+  # data.table::setattr(out, "class", c("sf", "data.table", "data.frame"))
+
+  .finalize_df(sf::st_as_sf(out), as_tibble = as_tibble)
 }
 
 #' @importFrom data.table :=
@@ -108,10 +123,25 @@ as_tweet_sf <- function(tweet_df,
       )]
 
   } else {
-    out <- init[, geometry := sf::st_sfc(.prep_bbox(geometry), crs = 4326L)]
+    out <- init[, geometry := sf::st_sfc(.prep_bbox(geometry), crs = 4326L)
+                ]
   }
+  out[, (geom_col) := NULL
+      ][, which_geom := ..geom_col
+        ]
 
-  out[, which_geom := ..geom_col]
+  out
 
-  sf::st_sf(out, sf_column_name = "geometry")
+  # data.table::setattr(out, "sf_column", "geometry")
+  # data.table::setattr(
+  #   out, "agr",
+  #   structure(
+  #     `names<-`(rep(NA_integer_, ncol(out) - 1L), names(out)[-(ncol(out) - 1L)]),
+  #     .Label = c("constant", "aggregate", "identity"),
+  #     class = "factor"
+  #   )
+  # )
+  # data.table::setattr(out, "rownames", as.character(seq_len(nrow(out))))
+  # data.table::setattr(out, "class", c("sf", "data.table", "data.frame"))
+  # out
 }

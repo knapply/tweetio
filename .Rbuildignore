@@ -28,3 +28,4 @@
 ^inst/example-data/test-data$
 .covrignore
 ^compile_flags\.txt$
+^inst/extdata$

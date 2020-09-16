@@ -139,7 +139,7 @@ res[, 1:9]
 With bigger files, using `rtweet::parse_stream()` is no longer realistic, especially if the JSON are invalid, but _big_ tweet data sets are where `{tweetio}` can help.
 
 ```{r}
-many_files <- dir("inst/example-data/", full.names = TRUE, recursive = TRUE)
+many_files <- dir("inst/example-data/", full.names = TRUE, recursive = TRUE)[1:10]
 scales::number_bytes(sum(file.size(many_files)))
 
 big_df <- read_tweets(many_files)
@@ -166,7 +166,7 @@ If you have `{sf}` installed, you can use `as_tweet_sf()` to only keep those twe
 
 ```{r}
 tweet_sf <- as_tweet_sf(big_df)
-tweet_sf$geometry
+tweet_sf[, "geometry"]
 ```
 
 
@@ -180,7 +180,7 @@ There are currently four columns that can potentially hold spatial geometries:
 You can select which one to use to build your `sf` object by modifying the `geom_col=` parameter (default: `"bbox_coords"`)
 
 ```{r}
-as_tweet_sf(big_df, geom_col = "retweet_bbox_coords")$geometry
+as_tweet_sf(big_df, geom_col = "retweet_bbox_coords")[, "geometry"]
 ```
 
 You can also build _all_ the supported bounding boxes by setting `geom_col=` to `"all"`.
@@ -219,8 +219,10 @@ ggplot(all_bboxes) +
 If you want to analyze tweet networks and have `{igraph}` or `{network}` installed, you can get started immediately using `tweetio::as_tweet_igraph()` or `tweetio::as_tweet_network()`.
 
 ```{r}
+for_network <- big_df[1:1e4, ]
+
 as_tweet_igraph(big_df)
-as_tweet_network(big_df[1:1e4, ])
+as_tweet_network(for_network)
 ```
 
 If you want to take advantage of all the metadata available, you can set `all_status_data` and/or `all_user_data` to `TRUE`
@@ -228,7 +230,7 @@ If you want to take advantage of all the metadata available, you can set `all_st
 ```{r}
 as_tweet_igraph(big_df,
                 all_user_data = TRUE, all_status_data = TRUE)
-as_tweet_network(big_df[1:1e4, ],
+as_tweet_network(for_network,
                  all_user_data = TRUE, all_status_data = TRUE)
 ```
 
@@ -245,21 +247,21 @@ If bipartite, the returned objects are always set as undirected.
 
 ```{r}
 as_tweet_igraph(big_df, target_class = "hashtag")
-as_tweet_network(big_df[1:1e4, ], target_class = "hashtag")
+as_tweet_network(for_network, target_class = "hashtag")
 ```
 
 ### Users to URLs
 
 ```{r}
 as_tweet_igraph(big_df, target_class = "url")
-as_tweet_network(big_df[1:1e4, ], target_class = "url")
+as_tweet_network(for_network, target_class = "url")
 ```
 
 ### Users to Media
 
 ```{r}
 as_tweet_igraph(big_df, target_class = "media")
-as_tweet_network(big_df[1:1e4, ], target_class = "media")
+as_tweet_network(for_network, target_class = "media")
 ```
 
 ## `<proto_net>`

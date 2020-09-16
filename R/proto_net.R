@@ -93,8 +93,9 @@ as_proto_net.data.table <- function(tweet_df,
   # ======================================================================================
   target_class <- match.arg(target_class, c("user", "hashtag", "url", "media"))
 
-  target <- switch (
-    target_class,
+  target <- switch(
+    target_class
+    ,
     user = "user_id",
     hashtag = "hashtags",
     url = "urls_expanded_url",

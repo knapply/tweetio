@@ -1,23 +1,18 @@
 #' @importFrom data.table setattr setDT
-prep_tweets <- function(file_path, verbose, reserve, batch_size, ...) {
-  stopifnot("`reserve` must be a single positive number" = length(reserve) == 1L && is.numeric(reserve) && reserve > 0)
-  stopifnot("`batch_size` must be a single positive number" = length(batch_size) == 1L && is.numeric(batch_size) && batch_size > 0)
-
-  init <- .read_tweets(file_path,
-                       reserve = reserve,
-                       verbose = verbose,
-                       batch_size = batch_size)
+prep_tweets <- function(file_path, schema, verbose, ...) {
+  out <- .read_tweets(file_paths = file_path,
+                      schema = schema,
+                      verbose = verbose)
 
   for (dttm_col in intersect(c("created_at", "account_created_at", "quoted_created_at", "retweet_created_at"),
-                             names(init$tweets))) {
-      setattr(init$tweets[[dttm_col]], "class", c("POSIXct", "POSIXt"))
-      setattr(init$tweets[[dttm_col]], "tzone", "UTC")
+                             names(out))) {
+      setattr(out[[dttm_col]], "class", c("POSIXct", "POSIXt"))
+      setattr(out[[dttm_col]], "tzone", "UTC")
   }
 
-  setDT(init$tweets)
-  setDT(init$metadata)
+  setDT(out)
 
-  cbind(init$tweets, init$metadata)
+  out
 }
 
 
@@ -26,6 +21,7 @@ prep_tweets <- function(file_path, verbose, reserve, batch_size, ...) {
 #' Go from a file of raw tweet data to a convenient, `{rtweet}`-style data frame.
 #'
 #' @param file_path Path(s) to tweet files.
+#' @param schema Select a known file schema. Default: `"auto"`.
 #' @template param-as_tibble
 #' @template param-verbose
 #' @template param-dots
@@ -46,16 +42,25 @@ prep_tweets <- function(file_path, verbose, reserve, batch_size, ...) {
 #'
 #' @export
 read_tweets <- function(file_path,
+                        schema = c("auto", "qcr"),
                         as_tibble = tweetio_as_tibble(),
                         verbose = tweetio_verbose() || length(file_path) >= 3L,
                         ...) {
   stopifnot("`file_path` must be a character vector" = is.character(file_path))
   stopifnot("`file_path` contains paths that don't exist" = all(file.exists(file_path)))
 
-  out <- prep_tweets(path.expand(file_path),
+  schema <- switch(
+    match.arg(schema, choices = c("auto", "qcr")),
+    auto = 0,
+    qcr = 1,
+    stop("unknown `schema`", call. = FALSE)
+  )
+
+  file_path <- path.expand(file_path)
+
+  out <- prep_tweets(file_path,
+                     schema = schema,
                      verbose = verbose,
-                     reserve = length(file_path) * 1e5,
-                     batch_size = 1e7,
                      ...)
   .finalize_df(out, as_tibble = as_tibble)
 }

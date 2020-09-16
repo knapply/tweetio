@@ -13,8 +13,12 @@
     .Call(`_tweetio_prep_bbox`, bbox_coords)
 }
 
-.read_tweets <- function(file_paths, verbose, batch_size, reserve) {
-    .Call(`_tweetio_read_tweets`, file_paths, verbose, batch_size, reserve)
+.read_tweets <- function(file_paths, schema, verbose) {
+    .Call(`_tweetio_read_tweets`, file_paths, schema, verbose)
+}
+
+.detect_belarus <- function(x) {
+    .Call(`_tweetio_detect_belarus`, x)
 }
 
 unnest_entities2_impl <- function(tracker, source, target, col_names) {
@@ -23,5 +27,17 @@ unnest_entities2_impl <- function(tracker, source, target, col_names) {
 
 .unnest_edges <- function(user_id, target, status_id, created_at) {
     .Call(`_tweetio_unnest_edges`, user_id, target, status_id, created_at)
+}
+
+.coalesce_impl <- function(sub_df) {
+    .Call(`_tweetio_coalesce_impl`, sub_df)
+}
+
+.null_to_na_dbl <- function(x) {
+    invisible(.Call(`_tweetio_null_to_na_dbl`, x))
+}
+
+.null_to_na_chr <- function(x) {
+    invisible(.Call(`_tweetio_null_to_na_chr`, x))
 }
 

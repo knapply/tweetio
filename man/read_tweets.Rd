@@ -6,6 +6,7 @@
 \usage{
 read_tweets(
   file_path,
+  schema = c("auto", "qcr"),
   as_tibble = tweetio_as_tibble(),
   verbose = tweetio_verbose() || length(file_path) >= 3L,
   ...
@@ -13,6 +14,8 @@ read_tweets(
 }
 \arguments{
 \item{file_path}{Path(s) to tweet files.}
+
+\item{schema}{Select a known file schema. Default: \code{"auto"}.}
 
 \item{as_tibble}{\verb{<logical>}, Default: \code{tweetio_as_tibble()}.
 Whether a \code{\link[tibble:tibble]{tibble::tibble()}} should be returned. Ignored if the \code{{tibble}}

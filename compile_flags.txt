@@ -1,3 +1,4 @@
+g++-8
 -std=c++17
 -O3
 -I/usr/share/R/include/

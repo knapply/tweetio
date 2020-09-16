@@ -2,7 +2,7 @@
 #define __TWEETIO__COMMON_HPP__
 
 
-// #define SIMDJSON_EXCEPTIONS 0
+#define SIMDJSON_EXCEPTIONS 0
 
 
 #include "rcpp-compat.hpp"

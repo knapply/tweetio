@@ -16,3 +16,4 @@ inst/example-data/ufc-tweet-stream.json
 inst/example-data/ufc-tweet-stream.json.gz
 parquet
 inst/example-data/test-data/not4git
+inst/extdata

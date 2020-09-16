@@ -99,7 +99,7 @@ extract_users.data.frame <- function(tweet_df,
 
 #' @rdname extract_users
 #'
-#' @importFrom data.table .N .SD
+#' @importFrom data.table .N .SD setkey
 #'
 #' @export
 extract_users.data.table <- function(tweet_df,
@@ -147,17 +147,21 @@ extract_users.data.table <- function(tweet_df,
 
 
   out <- rbindlist(split_users, use.names = TRUE, fill = TRUE)
+  if ("bbox_coords" %chin% names(out)) {
+    .null_to_na_dbl(out$bbox_coords)
+  }
 
   col_order <- intersect(
     c("user_id", "observation_type", setdiff(names(out), "user_id")),
     names(out)
   )
+
   setcolorder(out, col_order)
-  setnames(out, old = "created_at", new = "timestamp_ms")
+  setkey(out, user_id)
 
   if (!summarize) {
     if (split) {
-      out <- split(out[order(timestamp_ms)], by = "user_id")
+      out <- split(out, by = "user_id")
 
       if (as_tibble && requireNamespace("tibble", quietly = TRUE)) {
         out <- lapply(out, tibble::as_tibble)
@@ -169,16 +173,12 @@ extract_users.data.table <- function(tweet_df,
     return(.finalize_df(out, as_tibble = as_tibble))
   }
 
-  out <- out[
-    order(-timestamp_ms),
-    lapply(.SD, function(x) {
-      if (.N == 1L) x
-      else if (is.atomic(x)) .subset2(x, which.min(is.na(x))) # which.min() return first `FALSE` here if any not-NA
-      else .subset(x, which.min( vapply(.subset2(x, 1L), length, integer(1L)) == 0L))
-    }),
-    by = user_id
-  ][, timestamp_ms := .as_posixct(timestamp_ms)
-    ][order(timestamp_ms)]
+  if ("created_at" %chin% names(out)) {
+    setnames(out, old = "created_at", new = "timestamp_ms")
+    out <- out[order(-timestamp_ms), .coalesce_impl(.SD), by = "user_id"]
+  } else {
+    out <- out[, .coalesce_impl(.SD), by = "user_id"]
+  }
 
   .finalize_df(out, as_tibble = as_tibble)
 }

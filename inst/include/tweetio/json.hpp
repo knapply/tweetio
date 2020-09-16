@@ -2,9 +2,6 @@
 #define TWEETIO__JSON_HPP
 
 
-// #include <boost/lexical_cast.hpp>
-// #include <boost/date_time.hpp>
-
 #include <chrono>
 
 #include "common.hpp"
@@ -12,23 +9,12 @@
 
 namespace tweetio {
 
-template <typename T, typename result_T> inline T to(result_T&& x) {
+template <typename T>
+inline T to(simdjson::simdjson_result<simdjson::dom::element> x) noexcept {
   if (!x.error()) {
-    // if (x.first.template is<uint64_t>() && !x.first.template is<int64_t>()) {
-    //   Rcpp::Rcout << "uint64_t found!!!!!!!!!!!!!!!!!" << std::endl;
-    // }
     if constexpr (std::is_same_v<T, std::string>) {
-      if (auto [res, err] = x.template get<std::string_view>(); !err) {
-        std::string out(res);
-        out.erase(std::remove_if(std::begin(out), std::end(out),
-                                 [](char c) { return c == 0x04; }
-                                 //   { return c < 32; }
-                                 ),
-                  std::end(out));
-        if (std::count_if(std::cbegin(out), std::cend(out),
-                          [](char c) { return c != ' '; }) > 0) {
-          return out;
-        }
+      if (auto [res, err] = x.get<std::string_view>(); !err) {
+        return std::string(res);
       }
     } else if constexpr (std::is_same_v<T, int>) {
       if (auto [res, err] = x.template get<int64_t>(); !err) {
@@ -45,7 +31,7 @@ template <typename T, typename result_T> inline T to(result_T&& x) {
 
 
 inline double
-to_timestamp_ms(simdjson::simdjson_result<simdjson::dom::element> x) {
+to_timestamp_ms(simdjson::simdjson_result<simdjson::dom::element> x) noexcept {
   if (!x.error() && x.first.is<std::string_view>()) {
     return std::atof(x.first.get<const char*>().first);
   }
@@ -54,7 +40,7 @@ to_timestamp_ms(simdjson::simdjson_result<simdjson::dom::element> x) {
 
 
 inline double
-to_created_at(simdjson::simdjson_result<simdjson::dom::element> x) {
+to_created_at(simdjson::simdjson_result<simdjson::dom::element> x) noexcept {
   if (!x.error() && x.first.is<std::string_view>()) {
     if (auto sv = x.get<std::string_view>().first; sv.size() == 30) {
       std::tm            ptm{};
@@ -76,7 +62,7 @@ to_created_at(simdjson::simdjson_result<simdjson::dom::element> x) {
 inline std::vector<std::string>
 get_entities(simdjson::dom::element  x,
              const std::string_view& entity,
-             const std::string_view& inner_name) {
+             const std::string_view& inner_name) noexcept {
   for (auto loc : std::array<std::string_view, 2>{"/extended_tweet/entities",
                                                   "/entities"}) {
     if (auto [array, error] =
@@ -95,7 +81,7 @@ get_entities(simdjson::dom::element  x,
 
 
 template <typename... Ts>
-inline std::string find_chr(simdjson::dom::element x, Ts... targets) {
+inline std::string find_chr(simdjson::dom::element x, Ts... targets) noexcept {
   for (auto&& loc : {std::forward<Ts>(targets)...}) {
     if (auto [element, error] = x.at_pointer(loc); !error) {
       if (auto [res, err] = element.template get<std::string_view>(); !err) {
@@ -105,31 +91,6 @@ inline std::string find_chr(simdjson::dom::element x, Ts... targets) {
   }
   return "";
 }
-
-
-// inline std::string find_chr2(simdjson::dom::element x,
-//                              std::vector<std::string_view> targets) {
-//   for (auto&& loc : targets) {
-//     if (auto [element, error] = x.at_pointer(loc); !error) {
-//       if (auto [res, err] = element.template get<std::string_view>(); !err) {
-//         return std::string(res);
-//       }
-//     }
-//   }
-//   return "";
-// }
-
-// template <typename element_T, typename... Ts>
-// inline std::string find_chr2(element_T x, Ts... targets) {
-//   for (auto&& loc : {std::forward<Ts>(targets)...}) {
-//     if (auto [element, error] = x.at_pointer(loc); !error) {
-//       if (auto [res, err] = element.template get<std::string_view>(); !err) {
-//         return std::string(res);
-//       }
-//     }
-//   }
-//   return "";
-// }
 
 /**
  * @brief Get the bbox object, but set up to become an R (column-major) matrix
@@ -159,7 +120,8 @@ downstream.
 }
  *
  */
-inline vec_dbl get_bbox(simdjson::simdjson_result<simdjson::dom::element> x) {
+inline vec_dbl
+get_bbox(simdjson::simdjson_result<simdjson::dom::element> x) noexcept {
   if (!x.error()) {
     if (auto [array1, array1_error] = x.first.get<simdjson::dom::array>();
         !array1_error && std::size(array1) == 1) {

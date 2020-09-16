@@ -39,16 +39,26 @@ BEGIN_RCPP
 END_RCPP
 }
 // read_tweets
-SEXP read_tweets(const std::vector<std::string>& file_paths, const bool verbose, double batch_size, const double reserve);
-RcppExport SEXP _tweetio_read_tweets(SEXP file_pathsSEXP, SEXP verboseSEXP, SEXP batch_sizeSEXP, SEXP reserveSEXP) {
+SEXP read_tweets(const std::vector<std::string>& file_paths, const int schema, const bool verbose);
+RcppExport SEXP _tweetio_read_tweets(SEXP file_pathsSEXP, SEXP schemaSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::vector<std::string>& >::type file_paths(file_pathsSEXP);
+    Rcpp::traits::input_parameter< const int >::type schema(schemaSEXP);
     Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
-    Rcpp::traits::input_parameter< double >::type batch_size(batch_sizeSEXP);
-    Rcpp::traits::input_parameter< const double >::type reserve(reserveSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_tweets(file_paths, verbose, batch_size, reserve));
+    rcpp_result_gen = Rcpp::wrap(read_tweets(file_paths, schema, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// detect_belarus
+SEXP detect_belarus(const Rcpp::CharacterVector x);
+RcppExport SEXP _tweetio_detect_belarus(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::CharacterVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(detect_belarus(x));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -80,14 +90,49 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// coalesce_impl
+SEXP coalesce_impl(Rcpp::List& sub_df);
+RcppExport SEXP _tweetio_coalesce_impl(SEXP sub_dfSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type sub_df(sub_dfSEXP);
+    rcpp_result_gen = Rcpp::wrap(coalesce_impl(sub_df));
+    return rcpp_result_gen;
+END_RCPP
+}
+// null_to_na_dbl
+void null_to_na_dbl(Rcpp::List& x);
+RcppExport SEXP _tweetio_null_to_na_dbl(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type x(xSEXP);
+    null_to_na_dbl(x);
+    return R_NilValue;
+END_RCPP
+}
+// null_to_na_chr
+void null_to_na_chr(Rcpp::List& x);
+RcppExport SEXP _tweetio_null_to_na_chr(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type x(xSEXP);
+    null_to_na_chr(x);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tweetio_is_valid_point", (DL_FUNC) &_tweetio_is_valid_point, 1},
     {"_tweetio_is_valid_bbox", (DL_FUNC) &_tweetio_is_valid_bbox, 1},
     {"_tweetio_prep_bbox", (DL_FUNC) &_tweetio_prep_bbox, 1},
-    {"_tweetio_read_tweets", (DL_FUNC) &_tweetio_read_tweets, 4},
+    {"_tweetio_read_tweets", (DL_FUNC) &_tweetio_read_tweets, 3},
+    {"_tweetio_detect_belarus", (DL_FUNC) &_tweetio_detect_belarus, 1},
     {"_tweetio_unnest_entities2_impl", (DL_FUNC) &_tweetio_unnest_entities2_impl, 4},
     {"_tweetio_unnest_edges", (DL_FUNC) &_tweetio_unnest_edges, 4},
+    {"_tweetio_coalesce_impl", (DL_FUNC) &_tweetio_coalesce_impl, 1},
+    {"_tweetio_null_to_na_dbl", (DL_FUNC) &_tweetio_null_to_na_dbl, 1},
+    {"_tweetio_null_to_na_chr", (DL_FUNC) &_tweetio_null_to_na_chr, 1},
     {NULL, NULL, 0}
 };
 

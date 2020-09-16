@@ -73,7 +73,7 @@ extract_statuses.data.frame <- function(tweet_df,
 
 #' @rdname extract_statuses
 #'
-#' @importFrom data.table .N .SD
+#' @importFrom data.table .N .SD setkey
 #'
 #' @export
 extract_statuses.data.table <- function(tweet_df,
@@ -97,18 +97,19 @@ extract_statuses.data.table <- function(tweet_df,
   )
 
   out <- rbindlist(split_statuses, use.names = TRUE, fill = TRUE)
+  setkey(out, status_id)
+  if ("bbox_coords" %chin% names(out)) {
+    .null_to_na_dbl(out$bbox_coords)
+  }
+  if ("media_url" %chin% names(out)) {
+    .null_to_na_chr(out$media_url)
+  }
+  if ("media_type" %chin% names(out)) {
+    .null_to_na_chr(out$media_type)
+  }
 
-  sd_cols <- setdiff(names(out), "status_id")
-  out <- out[
-    order(-created_at),
-    lapply(.SD, function(x) {
-      if (.N == 1L) x
-      else if (is.atomic(x)) .subset2(x, which.min(is.na(x)))
-      else .subset(x, which.min( vapply(.subset2(x, 1L), length, integer(1L) ) == 0L))
-    }),
-    by = status_id, .SDcols = sd_cols
-    ][, created_at := as.POSIXct(created_at, origin = "1970-01-01")
-      ]
+
+  out <- out[order(-created_at), .coalesce_impl(.SD), by = "status_id"]
 
   .finalize_df(out, as_tibble = as_tibble)
 }

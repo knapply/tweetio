@@ -125,20 +125,20 @@ tiny_rtweet_stream <- read_tweets(temp_file)
 tiny_rtweet_stream
 ```
 
-    #> # A tibble: 654 x 84
+    #> # A tibble: 578 x 83
     #>    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen… is_quote is_retweeted lang  name 
     #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>            <chr>            <lgl>    <lgl>        <chr> <chr>
-    #>  1 717433… 13013757… 2020-09-03 12:25:39 takanaonli… "202… "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        und   Taka…
-    #>  2 130137… 13013757… 2020-09-03 12:25:40 wiwiwiww32  "#โร… "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        th    wiwi…
-    #>  3 101509… 13013757… 2020-09-03 12:25:40 Marcerbdz   "Muy… "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        es    Marc…
-    #>  4 570830… 13013757… 2020-09-03 12:25:40 mio_1228_m… "はーー… "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        ja    M.M.…
-    #>  5 124756… 13013757… 2020-09-03 12:25:40 NAsuka_05   "子供と… "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        ja    狂気と混…
-    #>  6 192201… 13013757… 2020-09-03 12:25:40 renverser_  "의사들… "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        ko    애당러 …
-    #>  7 404527… 13013757… 2020-09-03 12:25:40 koki0110f   "@im… "<a h… 130137553829709… 3275624936       impulse400_nao   FALSE    FALSE        ja    Koki…
-    #>  8 852170… 13013757… 2020-09-03 12:25:40 micamica99  "RT … "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        ja    みかん…
-    #>  9 116133… 13013757… 2020-09-03 12:25:40 JuanZam1308 "RT … "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        es    Blac…
-    #> 10 130066… 13013757… 2020-09-03 12:25:40 Suman02381… "RT … "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        hi    Suman
-    #> # … with 644 more rows, and 71 more variables: location <chr>, description <chr>, url <chr>, protected <lgl>, followers_count <int>,
+    #>  1 128920… 13062399… 2020-09-16 22:33:58 ksNu9acoLF… "كلا… "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        ar    سلطا…
+    #>  2 367853… 13062399… 2020-09-16 22:33:58 valeviscar… "RT … "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        es    val  
+    #>  3 953231… 13062399… 2020-09-16 22:33:58 yirees      "kan… "<a h… 130623961444154… 953231383        yirees           FALSE    FALSE        in    Leve…
+    #>  4 124080… 13062399… 2020-09-16 22:33:58 oo3o_oo     "느헤헤… "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        ko    베베 
+    #>  5 126702… 13062399… 2020-09-16 22:33:58 nanaMG01    "RT … "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        th    NANA…
+    #>  6 110790… 13062399… 2020-09-16 22:33:58 r_rp352     "@na… "<a h… 130623805274697… 124776042561511… nao_cat_         FALSE    FALSE        und   黒兎 
+    #>  7 125776… 13062399… 2020-09-16 22:33:58 tpwkforHar… "Hap… "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        en    𝑺𝒂𝒗 …
+    #>  8 283305… 13062399… 2020-09-16 22:33:58 1035aDbaf   "RT … "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        ja    道産子Ａ…
+    #>  9 814277… 13062399… 2020-09-16 22:33:58 bbrighttwi… "bri… "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        in    moons
+    #> 10 127674… 13062399… 2020-09-16 22:33:58 cloudcloud… "RT … "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        ko    김려욱…
+    #> # … with 568 more rows, and 70 more variables: location <chr>, description <chr>, url <chr>, protected <lgl>, followers_count <int>,
     #> #   friends_count <int>, listed_count <int>, statuses_count <int>, favourites_count <int>, account_created_at <dttm>, verified <lgl>,
     #> #   account_lang <chr>, profile_banner_url <chr>, profile_image_url <chr>, contributors_enabled <lgl>, hashtags <list>, urls_expanded_url <list>,
     #> #   media_url <list>, media_type <list>, mentions_user_id <list>, mentions_screen_name <list>, quoted_status_id <chr>, quoted_text <chr>,
@@ -150,7 +150,7 @@ tiny_rtweet_stream
     #> #   place_url <chr>, place_name <chr>, place_full_name <chr>, place_type <chr>, country <chr>, country_code <chr>, bbox_coords <list>,
     #> #   quoted_place_url <chr>, quoted_place_name <chr>, quoted_place_full_name <chr>, quoted_place_type <chr>, quoted_country <chr>,
     #> #   quoted_country_code <chr>, quoted_bbox_coords <list>, retweet_place_url <chr>, retweet_place_name <chr>, retweet_place_full_name <chr>,
-    #> #   retweet_place_type <chr>, retweet_country <chr>, retweet_country_code <chr>, retweet_bbox_coords <list>, campaign_ids <list>
+    #> #   retweet_place_type <chr>, retweet_country <chr>, retweet_country_code <chr>, retweet_bbox_coords <list>
 
 ## Performance
 
@@ -176,26 +176,26 @@ res[, 1:9]
     #> # A tibble: 2 x 6
     #>   expression   min median `itr/sec` mem_alloc `gc/sec`
     #>   <bch:expr> <dbl>  <dbl>     <dbl>     <dbl>    <dbl>
-    #> 1 rtweet      32.3   29.2       1        37.1     3.71
-    #> 2 tweetio      1      1        29.1       1       1
+    #> 1 rtweet      35.1   33.0       1        79.2      Inf
+    #> 2 tweetio      1      1        32.5       1        NaN
 
 With bigger files, using `rtweet::parse_stream()` is no longer
 realistic, especially if the JSON are invalid, but *big* tweet data sets
 are where `{tweetio}` can help.
 
 ``` r
-many_files <- dir("inst/example-data/", full.names = TRUE, recursive = TRUE)
+many_files <- dir("inst/example-data/", full.names = TRUE, recursive = TRUE)[1:10]
 scales::number_bytes(sum(file.size(many_files)))
 ```
 
-    #> [1] "5 GiB"
+    #> [1] "705 MiB"
 
 ``` r
 big_df <- read_tweets(many_files)
 big_df
 ```
 
-    #> # A tibble: 701,715 x 84
+    #> # A tibble: 102,979 x 83
     #>    user_id status_id created_at          screen_name text  source reply_to_status… reply_to_user_id reply_to_screen… is_quote is_retweeted lang  name 
     #>    <chr>   <chr>     <dttm>              <chr>       <chr> <chr>  <chr>            <chr>            <chr>            <lgl>    <lgl>        <chr> <chr>
     #>  1 194250… 11780078… 2019-09-29 02:05:23 Stgo_centro "RT … "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        es    El S…
@@ -208,7 +208,7 @@ big_df
     #>  8 437465… 11780078… 2019-09-29 02:05:27 javii_sotoo "RT … "<a h… <NA>             <NA>             <NA>             TRUE     FALSE        en    Javi 
     #>  9 117288… 11780078… 2019-09-29 02:05:29 nLfRH1      "RT … "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        ar    سما …
     #> 10 113247… 11780078… 2019-09-29 02:05:30 bexxxv97    "RT … "<a h… <NA>             <NA>             <NA>             FALSE    FALSE        en    Becc…
-    #> # … with 701,705 more rows, and 71 more variables: location <chr>, description <chr>, url <chr>, protected <lgl>, followers_count <int>,
+    #> # … with 102,969 more rows, and 70 more variables: location <chr>, description <chr>, url <chr>, protected <lgl>, followers_count <int>,
     #> #   friends_count <int>, listed_count <int>, statuses_count <int>, favourites_count <int>, account_created_at <dttm>, verified <lgl>,
     #> #   account_lang <chr>, profile_banner_url <chr>, profile_image_url <chr>, contributors_enabled <lgl>, hashtags <list>, urls_expanded_url <list>,
     #> #   media_url <list>, media_type <list>, mentions_user_id <list>, mentions_screen_name <list>, quoted_status_id <chr>, quoted_text <chr>,
@@ -220,7 +220,7 @@ big_df
     #> #   place_url <chr>, place_name <chr>, place_full_name <chr>, place_type <chr>, country <chr>, country_code <chr>, bbox_coords <list>,
     #> #   quoted_place_url <chr>, quoted_place_name <chr>, quoted_place_full_name <chr>, quoted_place_type <chr>, quoted_country <chr>,
     #> #   quoted_country_code <chr>, quoted_bbox_coords <list>, retweet_place_url <chr>, retweet_place_name <chr>, retweet_place_full_name <chr>,
-    #> #   retweet_place_type <chr>, retweet_country <chr>, retweet_country_code <chr>, retweet_bbox_coords <list>, campaign_ids <list>
+    #> #   retweet_place_type <chr>, retweet_country <chr>, retweet_country_code <chr>, retweet_bbox_coords <list>
 
 ## Data Dumps
 
@@ -247,15 +247,28 @@ those tweets that contain valid bounding box polygons or points.
 
 ``` r
 tweet_sf <- as_tweet_sf(big_df)
-tweet_sf$geometry
+tweet_sf[, "geometry"]
 ```
 
-    #> Geometry set for 7988 features 
+    #> Simple feature collection with 2140 features and 0 fields
     #> geometry type:  POLYGON
     #> dimension:      XY
-    #> bbox:           xmin: -178.4436 ymin: -56.55736 xmax: 176.6977 ymax: 70.09222
+    #> bbox:           xmin: -157.9505 ymin: -55.11686 xmax: 150.4919 ymax: 70.09222
     #> CRS:            EPSG:4326
-    #> First 5 geometries:
+    #> # A tibble: 2,140 x 1
+    #>                                                                                        geometry
+    #>                                                                                   <POLYGON [°]>
+    #>  1 ((-97.51982 35.15327, -97.51982 35.29133, -97.37053 35.29133, -97.37053 35.15327, -97.519...
+    #>  2 ((8.665852 44.37908, 8.665852 44.51991, 9.095838 44.51991, 9.095838 44.37908, 8.665852 44...
+    #>  3 ((-106.9506 31.12068, -106.9506 31.78387, -106.1854 31.78387, -106.1854 31.12068, -106.95...
+    #>  4 ((-63.39386 -41.03501, -63.39386 -33.26014, -56.66584 -33.26014, -56.66584 -41.03501, -63...
+    #>  5 ((30.42998 39.76794, 30.42998 39.80569, 30.55928 39.80569, 30.55928 39.76794, 30.42998 39...
+    #>  6 ((-118.6684 33.70454, -118.6684 34.33704, -118.1554 34.33704, -118.1554 33.70454, -118.66...
+    #>  7 ((139.136 36.24259, 139.136 36.4086, 139.2828 36.4086, 139.2828 36.24259, 139.136 36.24259))
+    #>  8 ((135.5633 34.68448, 135.5633 34.7202, 135.6046 34.7202, 135.6046 34.68448, 135.5633 34.6...
+    #>  9 ((-119.0618 34.12687, -119.0618 34.25008, -118.776 34.25008, -118.776 34.12687, -119.0618...
+    #> 10 ((-63.78454 -35.6894, -63.78454 -35.64174, -63.72472 -35.64174, -63.72472 -35.6894, -63.7...
+    #> # … with 2,130 more rows
 
 There are currently four columns that can potentially hold spatial
 geometries:
@@ -269,15 +282,28 @@ You can select which one to use to build your `sf` object by modifying
 the `geom_col=` parameter (default: `"bbox_coords"`)
 
 ``` r
-as_tweet_sf(big_df, geom_col = "retweet_bbox_coords")$geometry
+as_tweet_sf(big_df, geom_col = "retweet_bbox_coords")[, "geometry"]
 ```
 
-    #> Geometry set for 12773 features 
+    #> Simple feature collection with 2377 features and 0 fields
     #> geometry type:  POLYGON
     #> dimension:      XY
-    #> bbox:           xmin: -157.9505 ymin: -56.55736 xmax: 174.8954 ymax: 66.59999
+    #> bbox:           xmin: -124.849 ymin: -54.64819 xmax: 171.1442 ymax: 63.99495
     #> CRS:            EPSG:4326
-    #> First 5 geometries:
+    #> # A tibble: 2,377 x 1
+    #>                                                                                        geometry
+    #>                                                                                   <POLYGON [°]>
+    #>  1 ((-70.63769 -33.44997, -70.63769 -33.409, -70.58383 -33.409, -70.58383 -33.44997, -70.637...
+    #>  2 ((-80.51985 39.7198, -80.51985 42.51607, -74.68952 42.51607, -74.68952 39.7198, -80.51985...
+    #>  3 ((92.21025 6.760443, 92.21025 13.6849, 94.27577 13.6849, 94.27577 6.760443, 92.21025 6.76...
+    #>  4 ((0.010398 51.54382, 0.010398 51.62617, 0.147328 51.62617, 0.147328 51.54382, 0.010398 51...
+    #>  5 ((46.3044 24.33207, 46.3044 25.11182, 47.06576 25.11182, 47.06576 24.33207, 46.3044 24.33...
+    #>  6 ((-115.3841 36.12946, -115.3841 36.33637, -115.0622 36.33637, -115.0622 36.12946, -115.38...
+    #>  7 ((-82.66356 34.77603, -82.66356 34.89144, -82.47644 34.89144, -82.47644 34.77603, -82.663...
+    #>  8 ((-122.7792 38.39678, -122.7792 38.50766, -122.573 38.50766, -122.573 38.39678, -122.7792...
+    #>  9 ((80.12507 26.17718, 80.12507 26.63457, 80.56706 26.63457, 80.56706 26.17718, 80.12507 26...
+    #> 10 ((-46.56728 -23.81592, -46.56728 -23.60562, -46.27811 -23.60562, -46.27811 -23.81592, -46...
+    #> # … with 2,367 more rows
 
 You can also build *all* the supported bounding boxes by setting
 `geom_col=` to `"all"`.
@@ -287,12 +313,12 @@ all_bboxes <- as_tweet_sf(big_df, geom_col = "all")
 all_bboxes[, c("which_geom", "geometry")]
 ```
 
-    #> Simple feature collection with 23199 features and 1 field
+    #> Simple feature collection with 5042 features and 1 field
     #> geometry type:  POLYGON
     #> dimension:      XY
-    #> bbox:           xmin: -178.4436 ymin: -56.55736 xmax: 176.6977 ymax: 70.09222
+    #> bbox:           xmin: -157.9505 ymin: -55.11686 xmax: 150.4919 ymax: 70.09222
     #> CRS:            EPSG:4326
-    #> # A tibble: 23,199 x 2
+    #> # A tibble: 5,042 x 2
     #>    which_geom                                                                                      geometry
     #>    <chr>                                                                                      <POLYGON [°]>
     #>  1 bbox_coords ((-97.51982 35.15327, -97.51982 35.29133, -97.37053 35.29133, -97.37053 35.15327, -97.519...
@@ -305,7 +331,7 @@ all_bboxes[, c("which_geom", "geometry")]
     #>  8 bbox_coords ((135.5633 34.68448, 135.5633 34.7202, 135.6046 34.7202, 135.6046 34.68448, 135.5633 34.6...
     #>  9 bbox_coords ((-119.0618 34.12687, -119.0618 34.25008, -118.776 34.25008, -118.776 34.12687, -119.0618...
     #> 10 bbox_coords ((-63.78454 -35.6894, -63.78454 -35.64174, -63.72472 -35.64174, -63.72472 -35.6894, -63.7...
-    #> # … with 23,189 more rows
+    #> # … with 5,032 more rows
 
 From there, you can easily use the data like any other `{sf}` object.
 
@@ -338,12 +364,14 @@ installed, you can get started immediately using
 `tweetio::as_tweet_igraph()` or `tweetio::as_tweet_network()`.
 
 ``` r
+for_network <- big_df[1:1e4, ]
+
 as_tweet_igraph(big_df)
 ```
 
-    #> IGRAPH 7f0ddba DN-- 629527 1341113 -- 
+    #> IGRAPH 0b1cffe DN-- 111402 155439 -- 
     #> + attr: name (v/c), status_id (e/c), created_at (e/n), relation (e/c)
-    #> + edges from 7f0ddba (vertex names):
+    #> + edges from 0b1cffe (vertex names):
     #>  [1] 194250838          ->340309688           825459487821619201 ->966825602           1116228559616397312->3153145782         
     #>  [4] 4374655520         ->4167284315          1172885625068036102->1112877891841343488 1132474594583928832->1217220278         
     #>  [7] 20737729           ->39334221            2198859787         ->3096758526          3237877098         ->847885187325276164 
@@ -355,7 +383,7 @@ as_tweet_igraph(big_df)
     #> + ... omitted several edges
 
 ``` r
-as_tweet_network(big_df[1:1e4, ])
+as_tweet_network(for_network)
 ```
 
     #>  Network attributes:
@@ -382,21 +410,21 @@ as_tweet_igraph(big_df,
                 all_user_data = TRUE, all_status_data = TRUE)
 ```
 
-    #> IGRAPH 87a6a10 DN-- 629527 1341113 -- 
+    #> IGRAPH d3d2530 DN-- 111402 155439 -- 
     #> + attr: name (v/c), timestamp_ms (v/n), name.y (v/c), screen_name (v/c), location (v/c), description (v/c), url (v/c), protected
     #> | (v/l), followers_count (v/n), friends_count (v/n), listed_count (v/n), statuses_count (v/n), favourites_count (v/n),
     #> | account_created_at (v/n), verified (v/l), account_lang (v/c), profile_banner_url (v/c), profile_image_url (v/c), bbox_coords (v/x),
     #> | status_id (e/c), created_at (e/n), relation (e/c), text (e/c), i.created_at (e/n), source (e/c), is_quote (e/l), is_retweeted (e/l),
     #> | media_url (e/x), media_type (e/x), place_url (e/c), place_name (e/c), place_full_name (e/c), place_type (e/c), country (e/c),
     #> | country_code (e/c), bbox_coords (e/x), status_type (e/c)
-    #> + edges from 87a6a10 (vertex names):
-    #>  [1] 1240772294210981892->130557513 1240772294210981892->130557513 1240772294210981892->26548315  1240772294210981892->14834340 
-    #>  [5] 1240772294210981892->14588748  1240772294210981892->34643610  1240772294210981892->155784594 1240772294210981892->130496027
-    #>  [9] 1240772294210981892->20508720  1240772294210981892->25073877 
+    #> + edges from d3d2530 (vertex names):
+    #>  [1] 426958963          ->104190846           426958963          ->104190846           426958963          ->16312576           
+    #>  [4] 1127426916984639493->744853406           1127426916984639493->744853406           4809076840         ->1090715513586679813
+    #>  [7] 4809076840         ->1090715513586679813 2581447536         ->433041189           2581447536         ->3697993936         
     #> + ... omitted several edges
 
 ``` r
-as_tweet_network(big_df[1:1e4, ],
+as_tweet_network(for_network,
                  all_user_data = TRUE, all_status_data = TRUE)
 ```
 
@@ -437,9 +465,9 @@ If bipartite, the returned objects are always set as undirected.
 as_tweet_igraph(big_df, target_class = "hashtag")
 ```
 
-    #> IGRAPH a76978e UN-B 237978 454203 -- 
+    #> IGRAPH 4a67dcc UN-B 32019 39563 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), created_at (e/n), relation (e/c)
-    #> + edges from a76978e (vertex names):
+    #> + edges from 4a67dcc (vertex names):
     #>  [1] 218889555          --sooners               93732206           --conejopride           93732206           --inclusionishappening 
     #>  [4] 93732206           --ireadbannedbooks      1165554985406304257--ป๋อจ้าน                 1270106738         --theboss              
     #>  [7] 1270106738         --jefa                  1270106738         --nahreptop250          1270106738         --nahrep               
@@ -451,7 +479,7 @@ as_tweet_igraph(big_df, target_class = "hashtag")
     #> + ... omitted several edges
 
 ``` r
-as_tweet_network(big_df[1:1e4, ], target_class = "hashtag")
+as_tweet_network(for_network, target_class = "hashtag")
 ```
 
     #>  Network attributes:
@@ -476,9 +504,9 @@ as_tweet_network(big_df[1:1e4, ], target_class = "hashtag")
 as_tweet_igraph(big_df, target_class = "url")
 ```
 
-    #> IGRAPH 0cb018b UN-B 166501 107718 -- 
+    #> IGRAPH 0bf42d5 UN-B 21750 11882 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), created_at (e/n), relation (e/c)
-    #> + edges from 0cb018b (vertex names):
+    #> + edges from 0bf42d5 (vertex names):
     #>  [1] 401300296          --https://www.instagram.com/p/B29ty1WI8Hq/?igshid=r8cvay5bcd2b                             
     #>  [2] 4374655520         --https://twitter.com/richie_ixii/status/1173141471186300928                               
     #>  [3] 2198859787         --https://twitter.com/_trapicuI/status/1172934868155674624                                 
@@ -490,7 +518,7 @@ as_tweet_igraph(big_df, target_class = "url")
     #> + ... omitted several edges
 
 ``` r
-as_tweet_network(big_df[1:1e4, ], target_class = "url")
+as_tweet_network(for_network, target_class = "url")
 ```
 
     #>  Network attributes:
@@ -515,9 +543,9 @@ as_tweet_network(big_df[1:1e4, ], target_class = "url")
 as_tweet_igraph(big_df, target_class = "media")
 ```
 
-    #> IGRAPH 61e9ac6 UN-B 141953 110468 -- 
+    #> IGRAPH a3ca790 UN-B 21119 11767 -- 
     #> + attr: name (v/c), type (v/l), status_id (e/c), created_at (e/n), relation (e/c)
-    #> + edges from 61e9ac6 (vertex names):
+    #> + edges from a3ca790 (vertex names):
     #>  [1] 1172885625068036102--http://pbs.twimg.com/media/EFjoYwdXoAIMNDQ.jpg                                         
     #>  [2] 1132474594583928832--http://pbs.twimg.com/ext_tw_video_thumb/1177736533094256640/pu/img/dAM2VWRBvvoZHzOT.jpg
     #>  [3] 93732206           --http://pbs.twimg.com/ext_tw_video_thumb/1178007795150360577/pu/img/uJsh5Y-vTStma7Xa.jpg
@@ -529,7 +557,7 @@ as_tweet_igraph(big_df, target_class = "media")
     #> + ... omitted several edges
 
 ``` r
-as_tweet_network(big_df[1:1e4, ], target_class = "media")
+as_tweet_network(for_network, target_class = "media")
 ```
 
     #>  Network attributes:
@@ -561,37 +589,37 @@ as_proto_net(big_df,
 ```
 
     #> $edges
-    #> # A tibble: 1,341,113 x 20
+    #> # A tibble: 155,439 x 20
     #>    from  to    status_id created_at          relation text  i.created_at        source is_quote is_retweeted media_url media_type place_url place_name
     #>    <chr> <chr> <chr>     <dttm>              <chr>    <chr> <dttm>              <chr>  <lgl>    <lgl>        <list>    <list>     <chr>     <chr>     
-    #>  1 1240… 1305… 12856743… 2020-07-22 04:33:54 reply_to "@me… 2020-07-22 04:33:54 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  2 1240… 1305… 12856743… 2020-07-22 04:33:54 mentions "@me… 2020-07-22 04:33:54 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  3 1240… 2654… 12856743… 2020-07-22 04:33:54 mentions "@me… 2020-07-22 04:33:54 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  4 1240… 1483… 12856743… 2020-07-22 04:33:54 mentions "@me… 2020-07-22 04:33:54 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  5 1240… 1458… 12856743… 2020-07-22 04:33:54 mentions "@me… 2020-07-22 04:33:54 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  6 1240… 3464… 12856743… 2020-07-22 04:33:54 mentions "@me… 2020-07-22 04:33:54 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  7 1240… 1557… 12856743… 2020-07-22 04:33:54 mentions "@me… 2020-07-22 04:33:54 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  8 1240… 1304… 12856743… 2020-07-22 04:33:54 mentions "@me… 2020-07-22 04:33:54 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #>  9 1240… 2050… 12856743… 2020-07-22 04:33:54 mentions "@me… 2020-07-22 04:33:54 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #> 10 1240… 2507… 12856743… 2020-07-22 04:33:54 mentions "@me… 2020-07-22 04:33:54 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
-    #> # … with 1,341,103 more rows, and 6 more variables: place_full_name <chr>, place_type <chr>, country <chr>, country_code <chr>, bbox_coords <list>,
+    #>  1 4269… 1041… 12784859… 2020-07-02 08:29:32 retweet  "RT … 2020-07-02 08:29:32 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  2 4269… 1041… 12784859… 2020-07-02 08:29:32 mentions "RT … 2020-07-02 08:29:32 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  3 4269… 1631… 12784859… 2020-07-02 08:29:32 mentions "RT … 2020-07-02 08:29:32 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  4 1127… 7448… 12784859… 2020-07-02 08:29:31 retweet  "RT … 2020-07-02 08:29:31 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  5 1127… 7448… 12784859… 2020-07-02 08:29:31 mentions "RT … 2020-07-02 08:29:31 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  6 4809… 1090… 12784859… 2020-07-02 08:29:31 retweet  "RT … 2020-07-02 08:29:31 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  7 4809… 1090… 12784859… 2020-07-02 08:29:31 mentions "RT … 2020-07-02 08:29:31 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  8 2581… 4330… 12784859… 2020-07-02 08:29:28 retweet  "RT … 2020-07-02 08:29:28 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #>  9 2581… 3697… 12784859… 2020-07-02 08:29:28 quoted   "RT … 2020-07-02 08:29:28 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #> 10 2581… 4330… 12784859… 2020-07-02 08:29:28 mentions "RT … 2020-07-02 08:29:28 "<a h… TRUE     FALSE        <chr [1]> <chr [1]>  <NA>      <NA>      
+    #> # … with 155,429 more rows, and 6 more variables: place_full_name <chr>, place_type <chr>, country <chr>, country_code <chr>, bbox_coords <list>,
     #> #   status_type <chr>
     #> 
     #> $nodes
-    #> # A tibble: 629,527 x 19
-    #>    name  timestamp_ms        name.y screen_name location description url   protected followers_count friends_count listed_count statuses_count
-    #>    <chr> <dttm>              <chr>  <chr>       <chr>    <chr>       <chr> <lgl>               <int>         <int>        <int>          <int>
-    #>  1 1000… 2020-07-01 23:24:02 Actio… ACF_EU      "Brusse… "A global … <NA>  FALSE                 557           463           10            746
-    #>  2 1000… 2019-02-28 18:26:06 <NA>   PweODQXJ73…  <NA>     <NA>       <NA>  NA                     NA            NA           NA             NA
-    #>  3 1000… 2020-07-02 09:15:26 ᚱ      rotinmars   "Mars "  "🥀"        <NA>  FALSE                 276           216            0          24562
-    #>  4 1000… 2020-06-30 06:36:30 Raque… RaquelStas… "Nova I… "Conservad… <NA>  NA                 135051         86000           NA           3864
-    #>  5 1000… 2019-11-03 12:53:06 ᴇʟ ᴊᴜ… Urbeaner_   "Colora… "UCCS ‘21 … <NA>  FALSE                 158           250            3          16695
-    #>  6 1000… 2020-07-04 03:35:07 J👁‍🗨K   JKCRYPTO2    <NA>    "stoicism." <NA>  FALSE                 113            36            1           2806
-    #>  7 1000… 2020-07-02 03:26:53 <NA>   Cryptogal3   <NA>     <NA>       <NA>  NA                     NA            NA           NA             NA
-    #>  8 1000… 2020-06-29 22:50:08 Lil_P… arowoogun_… "Worldw… "||•MUFC |… <NA>  FALSE                1146          1147            2           7417
-    #>  9 1000… 2020-07-09 06:29:52 Berna… bernardolo…  <NA>    "1904 || i… <NA>  FALSE                 301           257            0          23804
-    #> 10 1000… 2019-09-29 02:14:16 ©️0️⃣STA  _costinhaaa "Portug… "CERCI BOY… <NA>  NA                    262           256           NA           2477
-    #> # … with 629,517 more rows, and 7 more variables: favourites_count <int>, account_created_at <dttm>, verified <lgl>, account_lang <chr>,
+    #> # A tibble: 111,402 x 19
+    #>    name  timestamp_ms name.y screen_name location description url   protected followers_count friends_count listed_count statuses_count
+    #>    <chr>        <dbl> <chr>  <chr>       <chr>    <chr>       <chr> <lgl>               <int>         <int>        <int>          <int>
+    #>  1 1000…   1593645842 Actio… ACF_EU      "Brusse… "A global … <NA>  FALSE                 557           463           10            746
+    #>  2 1000…   1593660413 <NA>   Cryptogal3   <NA>     <NA>       <NA>  NA                     NA            NA           NA             NA
+    #>  3 1000…   1593471008 Lil_P… arowoogun_… "Worldw… "||•MUFC |… <NA>  FALSE                1146          1147            2           7417
+    #>  4 1000…   1569723256 ©️0️⃣STA  _costinhaaa "Portug… "CERCI BOY… <NA>  NA                    262           256           NA           2477
+    #>  5 1000…   1593630716 jay    farhanjml    <NA>    "you're my… <NA>  FALSE                 119           497            0           6937
+    #>  6 1000…   1593588004 🇵🇸سبح… falahghafa…  <NA>    "« Le cœur… <NA>  FALSE                1636          1574            0          71481
+    #>  7 1000…   1593461581 Crypt… Tera_kev    "Hessen… "http://te… <NA>  FALSE                 204           149            1           6318
+    #>  8 1000…   1593032739 taegi… outroskjta… "louღta… "#𝙔𝙊𝙊𝙉𝙂𝙄:𝙀… <NA>  FALSE                 422           462            5          27392
+    #>  9 1000…   1593557897 Misae… McSonk      "México" "#develope… http… FALSE                 224           381            1          18411
+    #> 10 1000…   1569723012 Maria… mariana_rgr  <NA>     <NA>       <NA>  NA                    118           113           NA           1169
+    #> # … with 111,392 more rows, and 7 more variables: favourites_count <int>, account_created_at <dbl>, verified <lgl>, account_lang <chr>,
     #> #   profile_banner_url <chr>, profile_image_url <chr>, bbox_coords <list>
     #> 
     #> attr(,"class")

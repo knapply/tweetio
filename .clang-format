@@ -3,6 +3,7 @@ Language: Cpp
 Standard: Cpp11
 BasedOnStyle: LLVM
 
+IndentPPDirectives: AfterHash
 
 MaxEmptyLinesToKeep: 2
 BinPackParameters: false
@@ -32,7 +33,6 @@ IndentCaseLabels: true
 # DerivePointerAlignment: false
 
 # IndentCaseLabels: true
-# IndentPPDirectives: AfterHash
 # IndentWidth: 2
 
 # MaxEmptyLinesToKeep: 3
